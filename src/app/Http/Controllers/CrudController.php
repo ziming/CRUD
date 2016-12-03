@@ -16,11 +16,12 @@ use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Reorder;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Revisions;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\ShowDetailsRow;
 use Backpack\CRUD\app\Http\Controllers\CrudFeatures\SaveActions;
+use Backpack\CRUD\app\Http\Controllers\CrudFeatures\Hooks;
 
 class CrudController extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
-    use AjaxTable, Reorder, Revisions, ShowDetailsRow, SaveActions;
+    use AjaxTable, Reorder, Revisions, ShowDetailsRow, SaveActions, Hooks;
 
     public $data = [];
     public $crud;
@@ -100,12 +101,17 @@ class CrudController extends BaseController
      */
     public function storeCrud(StoreRequest $request = null)
     {
-        $this->crud->hasAccessOrFail('create');
-
         // fallback to global request instance
         if (is_null($request)) {
             $request = \Request::instance();
         }
+
+        // allow for custom code to be run
+        $request = $this->beforeStore($request);
+        $request = $this->beforeSave($request);
+
+        // requires the "create" permission
+        $this->crud->hasAccessOrFail('create');
 
         // replace empty values with NULL, so that it will work with MySQL strict mode on
         foreach ($request->input() as $key => $value) {
@@ -115,7 +121,10 @@ class CrudController extends BaseController
         }
 
         // insert item in the db
-        $item = $this->crud->create($request->except(['redirect_after_save', '_token', '_method']));
+        $item = $this->crud->create(
+            $request->except(['redirect_after_save', '_token', '_method'])
+        );
+
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
@@ -123,6 +132,10 @@ class CrudController extends BaseController
 
         // save the redirect choice for next time
         $this->setSaveAction();
+
+        // allow for custom code to run
+        $this->afterStore($request, $item);
+        $this->afterSave($request, $item);
 
         return $this->performSaveAction($item->getKey());
     }
@@ -160,12 +173,17 @@ class CrudController extends BaseController
      */
     public function updateCrud(UpdateRequest $request = null)
     {
-        $this->crud->hasAccessOrFail('update');
-
         // fallback to global request instance
         if (is_null($request)) {
             $request = \Request::instance();
         }
+
+        // allow for custom code to be run
+        $request = $this->beforeUpdate($request);
+        $request = $this->beforeSave($request);
+
+        // requires the "update" permission
+        $this->crud->hasAccessOrFail('update');
 
         // replace empty values with NULL, so that it will work with MySQL strict mode on
         foreach ($request->input() as $key => $value) {
@@ -175,8 +193,11 @@ class CrudController extends BaseController
         }
 
         // update the row in the db
-        $item = $this->crud->update($request->get($this->crud->model->getKeyName()),
-                            $request->except('redirect_after_save', '_token', '_method'));
+        $item = $this->crud->update(
+            $request->get($this->crud->model->getKeyName()),
+            $request->except('redirect_after_save', '_token', '_method')
+        );
+
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
@@ -184,6 +205,10 @@ class CrudController extends BaseController
 
         // save the redirect choice for next time
         $this->setSaveAction();
+
+        // allow for custom code to run
+        $this->afterUpdate($request, $item);
+        $this->afterSave($request, $item);
 
         return $this->performSaveAction();
     }

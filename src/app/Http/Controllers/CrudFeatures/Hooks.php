@@ -5,7 +5,7 @@ namespace Backpack\CRUD\app\Http\Controllers\CrudFeatures;
 trait Hooks
 {
     /**
-     * Runs before any storing takes place, allows modification to the request
+     * Runs before any storing takes place, allows modification to the request.
      *
      * @param $request - provides access to the incoming request
      *
@@ -17,7 +17,7 @@ trait Hooks
     }
 
     /**
-     * Runs before any updating takes place, allows modification to the request
+     * Runs before any updating takes place, allows modification to the request.
      *
      * @param $request - provides access to the incoming request
      *
@@ -30,7 +30,7 @@ trait Hooks
 
     /**
      * Runs before any create/update proccesses take place,
-     * but AFTER the beforeStore/beforeUpdate
+     * but AFTER the beforeStore/beforeUpdate.
      *
      * @param $request - provides access to the incoming request
      *
@@ -43,7 +43,7 @@ trait Hooks
 
     /**
      * Runs after the store action has succeeded,
-     * and provides access to the request and new item
+     * and provides access to the request and new item.
      *
      * @param $request - provides access to the incoming request
      * @param $item - the newly created model
@@ -57,7 +57,7 @@ trait Hooks
 
     /**
      * Runs after the update action has succeeded,
-     * and provides access to the request and updated item
+     * and provides access to the request and updated item.
      *
      * @param $request - provides access to the incoming request
      * @param $item - the updated model
@@ -72,7 +72,7 @@ trait Hooks
     /**
      * Runs after the create/update action has succeeded,
      * but AFTER the afterUpdate/afterStore
-     * and provides access to the request and updated item
+     * and provides access to the request and updated item.
      *
      * @param $request - provides access to the incoming request
      * @param $item - the updated model

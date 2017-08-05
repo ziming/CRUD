@@ -88,6 +88,7 @@ trait Columns
                 $this->addColumn($column);
             }
         }
+        return $this;
     }
 
     /**

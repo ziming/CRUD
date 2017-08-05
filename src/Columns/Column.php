@@ -3,6 +3,8 @@
 
 namespace Backpack\CRUD\Columns;
 
+use Backpack\CRUD\Facades\CRUDPanel;
+
 abstract class Column
 {
     protected $type;
@@ -17,6 +19,15 @@ abstract class Column
         if (is_array($data)) {
             $this->data = $data;
         }
+    }
+
+    /**
+     * Add this column to the panel columns
+     * @return \Backpack\CRUD\Facades\CRUDPanel
+     */
+    function add()
+    {
+        return CRUDPanel::addColumn($this->toArray());
     }
 
     /**

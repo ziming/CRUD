@@ -3,6 +3,7 @@
 
 namespace Backpack\CRUD\ColumnsTraits;
 
+use Backpack\CRUD\Columns\Column;
 use Backpack\CRUD\Facades\CRUDPanel;
 
 trait ManageColumns
@@ -39,13 +40,25 @@ trait ManageColumns
     }
 
     /**
-     * @param $columns [column array or array of columns]
+     * @param $columns [column array, Column, array of Columns or array of column arrays]
      */
     public function remove($columns)
     {
+        //TODO: remove seems to be buggy...
         if (! is_array($columns)) {
-            CRUDPanel::removeColumn($columns);
+            if ($columns instanceof Column) {
+                CRUDPanel::removeColumn($columns->toArray()); //does not work :/
+            } else {
+                CRUDPanel::removeColumn($columns);
+            }
         } else {
+            $columns = collect($columns)->transform(function ($column) {
+                if ($column instanceof Column) {
+                    return $column->toArray();
+                } else {
+                    return $column;
+                }
+            });
             CRUDPanel::removeColumns($columns);
         }
     }

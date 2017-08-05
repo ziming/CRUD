@@ -81,6 +81,10 @@ class CrudServiceProvider extends ServiceProvider
             return new \Backpack\CRUD\CrudPanel();
         });
 
+        $this->app->bind('CRUDColumns', function ($app) {
+            return new \Backpack\CRUD\CrudColumns();
+        });
+
         // register its dependencies
         $this->app->register(\Backpack\Base\BaseServiceProvider::class);
         $this->app->register(\Collective\Html\HtmlServiceProvider::class);
@@ -94,6 +98,7 @@ class CrudServiceProvider extends ServiceProvider
         $loader->alias('Html', \Collective\Html\HtmlFacade::class);
         $loader->alias('Image', \Intervention\Image\Facades\Image::class);
         $loader->alias('CRUDPanel', \Backpack\CRUD\Facades\CRUDPanel::class);
+        $loader->alias('CRUDColumns', \Backpack\CRUD\Facades\CRUDColumns::class);
 
         // map the elfinder prefix
         if (! \Config::get('elfinder.route.prefix')) {

@@ -21,8 +21,9 @@ abstract class Column
 
     /**
      * Generate the data for CrudPanel
+     * @return array this colums array representation
      */
-    private function generate()
+    public function toArray()
     {
         return array_merge($this->data, ['type' => $this->type]);
     }

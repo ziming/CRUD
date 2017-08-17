@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Backpack\CRUD\CRUDTraits;
-
 
 trait HasModel
 {
@@ -13,6 +11,7 @@ trait HasModel
     public function model($fqn)
     {
         $this->data['model'] = $fqn;
+
         return $this;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD;
 
-use Backpack\CRUD\Facades\TestFacade;
 use Route;
 use Illuminate\Support\ServiceProvider;
 

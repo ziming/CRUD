@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Backpack\CRUD\CRUDTraits;
-
 
 trait HasEntity
 {
@@ -13,6 +11,7 @@ trait HasEntity
     public function entity($name)
     {
         $this->data['entity'] = $name;
+
         return $this;
     }
 }

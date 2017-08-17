@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Columns;
 
-use Backpack\CRUD\CRUDTraits\HasLabel;
 use Backpack\CRUD\CRUDTraits\HasName;
+use Backpack\CRUD\CRUDTraits\HasLabel;
 
 class MultidimensionalArrayColumn extends Column
 {
@@ -18,6 +18,7 @@ class MultidimensionalArrayColumn extends Column
     public function visibleKey($key)
     {
         $this->data['visible_key'] = $key;
+
         return $this;
     }
 }

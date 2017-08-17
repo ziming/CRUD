@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Backpack\CRUD\CRUDTraits;
-
 
 trait HasAttribute
 {
@@ -13,6 +11,7 @@ trait HasAttribute
     public function attribute($attribute)
     {
         $this->data['attribute'] = $attribute;
+
         return $this;
     }
 }

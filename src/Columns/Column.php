@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Backpack\CRUD\Columns;
 
 use Backpack\CRUD\Facades\CRUDPanel;
@@ -14,7 +13,7 @@ abstract class Column
      * Column constructor.
      * @param null $data
      */
-    function __construct($data = null)
+    public function __construct($data = null)
     {
         if (is_array($data)) {
             $this->data = $data;
@@ -22,16 +21,16 @@ abstract class Column
     }
 
     /**
-     * Add this column to the panel columns
+     * Add this column to the panel columns.
      * @return \Backpack\CRUD\Facades\CRUDPanel
      */
-    function add()
+    public function add()
     {
         return CRUDPanel::addColumn($this->toArray());
     }
 
     /**
-     * Generate the data for CrudPanel
+     * Generate the data for CrudPanel.
      * @return array this colums array representation
      */
     public function toArray()

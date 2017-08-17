@@ -10,5 +10,4 @@ class CRUDColumns extends Facade
     {
         return 'CRUDColumns';
     }
-
 }

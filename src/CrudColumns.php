@@ -8,5 +8,4 @@ use Backpack\CRUD\ColumnsTraits\ManageColumns;
 class CrudColumns
 {
     use CreateColumns, ManageColumns;
-
 }

@@ -2,19 +2,19 @@
 
 namespace Backpack\CRUD\ColumnsTraits;
 
-use Backpack\CRUD\Columns\ArrayColumn;
-use Backpack\CRUD\Columns\ArrayCountColumn;
-use Backpack\CRUD\Columns\BooleanColumn;
-use Backpack\CRUD\Columns\CheckColumn;
-use Backpack\CRUD\Columns\CustomColumn;
-use Backpack\CRUD\Columns\ModelFunctionAttributeColumn;
-use Backpack\CRUD\Columns\ModelFunctionColumn;
-use Backpack\CRUD\Columns\MultidimensionalArrayColumn;
-use Backpack\CRUD\Columns\RadioColumn;
-use Backpack\CRUD\Columns\SelectColumn;
-use Backpack\CRUD\Columns\SelectMultipleColumn;
 use Backpack\CRUD\Columns\TextColumn;
+use Backpack\CRUD\Columns\ArrayColumn;
+use Backpack\CRUD\Columns\CheckColumn;
+use Backpack\CRUD\Columns\RadioColumn;
 use Backpack\CRUD\Columns\VideoColumn;
+use Backpack\CRUD\Columns\CustomColumn;
+use Backpack\CRUD\Columns\SelectColumn;
+use Backpack\CRUD\Columns\BooleanColumn;
+use Backpack\CRUD\Columns\ArrayCountColumn;
+use Backpack\CRUD\Columns\ModelFunctionColumn;
+use Backpack\CRUD\Columns\SelectMultipleColumn;
+use Backpack\CRUD\Columns\MultidimensionalArrayColumn;
+use Backpack\CRUD\Columns\ModelFunctionAttributeColumn;
 
 trait CreateColumns
 {

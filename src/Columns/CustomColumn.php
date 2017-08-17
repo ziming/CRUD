@@ -11,6 +11,7 @@ class CustomColumn extends Column
     public function type($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -26,6 +27,7 @@ class CustomColumn extends Column
         }
 
         $this->data[$key] = $value;
+
         return $this;
     }
 }

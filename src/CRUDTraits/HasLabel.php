@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Backpack\CRUD\CRUDTraits;
-
 
 trait HasLabel
 {
@@ -13,6 +11,7 @@ trait HasLabel
     public function label(string $label)
     {
         $this->data['label'] = $label;
+
         return $this;
     }
 }

@@ -67,7 +67,7 @@ trait Columns
         $column_with_details = $this->addDefaultLabel($column);
 
         // make sure the column has a name
-        if (!array_key_exists('name', $column_with_details)) {
+        if (! array_key_exists('name', $column_with_details)) {
             $column_with_details['name'] = 'anonymous_column_'.str_random(5);
         }
 
@@ -88,6 +88,7 @@ trait Columns
                 $this->addColumn($column);
             }
         }
+
         return $this;
     }
 

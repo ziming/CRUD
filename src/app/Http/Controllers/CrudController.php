@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
-use Backpack\CRUD\Facades\CRUDPanel;
 use Illuminate\Http\Request;
+use Backpack\CRUD\Facades\CRUDPanel;
 use Illuminate\Support\Facades\Form as Form;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;

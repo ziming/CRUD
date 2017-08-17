@@ -15,8 +15,9 @@ class BooleanColumn extends Column
     {
         $this->data['options'] = [
             0 => $yesText,
-            1 => $noText
+            1 => $noText,
         ];
+
         return $this;
     }
 }

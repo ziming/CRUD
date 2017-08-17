@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Backpack\CRUD\Facades;
-
 
 use Illuminate\Support\Facades\Facade;
 
@@ -12,5 +10,4 @@ class CRUDPanel extends Facade
     {
         return 'CRUDPanel';
     }
-
 }

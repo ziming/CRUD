@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Backpack\CRUD\ColumnsTraits;
 
 use Backpack\CRUD\Columns\Column;
@@ -8,9 +7,8 @@ use Backpack\CRUD\Facades\CRUDPanel;
 
 trait ManageColumns
 {
-
     /**
-     * Remove all previously set columns and add the provided ones
+     * Remove all previously set columns and add the provided ones.
      * @param $columns array
      */
     public function set($columns)
@@ -31,7 +29,7 @@ trait ManageColumns
 
         if (is_array($columns) && count($columns)) {
             // it's a column as an associative array
-            if (key_exists('name', $columns) || key_exists('label', $columns) ) {
+            if (array_key_exists('name', $columns) || array_key_exists('label', $columns)) {
                 return CRUDPanel::addColumn($columns);
             }
             // we have an array of columns

@@ -30,6 +30,11 @@ trait Fields
             $completeFieldsArray['model'] = $this->getRelationModel($completeFieldsArray['entity']);
         }
 
+        // if the key is missing, we should set it
+        if (! isset($completeFieldsArray['key'])) {
+            $completeFieldsArray['key'] = $completeFieldsArray['name'];
+        }
+
         // if the label is missing, we should set it
         if (! isset($completeFieldsArray['label'])) {
             $completeFieldsArray['label'] = ucfirst($completeFieldsArray['name']);
@@ -48,7 +53,7 @@ trait Fields
         }
 
         $this->transformFields($form, function ($fields) use ($completeFieldsArray) {
-            $fields[$completeFieldsArray['name']] = $completeFieldsArray;
+            $fields[$completeFieldsArray['key']] = $completeFieldsArray;
 
             return $fields;
         });

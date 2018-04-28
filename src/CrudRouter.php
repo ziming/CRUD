@@ -18,6 +18,12 @@ class CrudRouter
         $this->controller = $controller;
         $this->options = $options;
 
+        // if a name is defined in options, overwrite default name.
+        if(isset($this->options['name'])) {
+          $this->name = $this->options['name'];
+          unset($this->options['name']);
+        }
+
         // CRUD routes for core features
         Route::post($this->name.'/search', [
             'as' => 'crud.'.$this->name.'.search',

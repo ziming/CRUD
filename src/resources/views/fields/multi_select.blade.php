@@ -88,6 +88,23 @@
             box-shadow: inset 0 1px 1px #fff, 0 0 8px #fff;
             outline: 0 !important;
           }
+          .ms-container .ms-selectable li.ms-elem-selectable:after,
+          .ms-container .ms-selection li.ms-elem-selection:after{
+            font-family: FontAwesome;
+            font-weight: normal;
+            font-size: 1rem;
+            font-style: normal;
+            padding-top: 4px;
+            right: 10px;
+            position: absolute;
+            text-decoration:none;
+          }
+          .ms-container .ms-selectable li.ms-elem-selectable:after{
+            content: '\f067';
+          }
+          .ms-container .ms-selection li.ms-elem-selection:after{
+            content: '\f068';
+          }
         </style>
     @endpush
 

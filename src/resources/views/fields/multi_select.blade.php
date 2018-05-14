@@ -64,7 +64,7 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
     @push('crud_fields_styles')
         <!-- include select2 css-->
-        <link href="{{ asset('vendor/cord/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('vendor/backpack/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css" />
         <style type="text/css">
           .search-input { border-bottom: 0; }
           .ms-container { width: 100%; }
@@ -94,7 +94,11 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <!-- include select2 js-->
-        <script src="{{ asset('vendor/cord/multiselect/js/jquery.multi-select.js') }}"></script>
+        <script src="{{ asset('vendor/backpack/multiselect/js/jquery.multi-select.js') }}"></script>
+        @if(isset($field['searchable']) && $field['searchable'])
+          <script src="{{ asset('vendor/backpack/multiselect/jquery.quicksearch.js') }}"></script>
+        @endif
+
         <script>
             $('#{{ $field['name'] }}').multiSelect({
               @if(isset($field['searchable']) && $field['searchable'])

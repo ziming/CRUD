@@ -20,10 +20,37 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 - Nothing
 -----------
 
-## [3.4.5] - 2018-05-01
+## [3.4.10] - 2018-05-xx
+
+### Added
+- #1382 - Arabic translation;
+
+### Fixed
+- #1326 - sorting in datatables when details_row is enabled;
+- #1392 - check column type is now exportable;
+- #756 - ```CKEDITOR.style.addCustomHandler is not a function``` by updating ckeditor to 4.9.2;
+- #1318 - summernote field type can have separate configuration arrays if multiple summernotes in one form;
+
+
+## [3.4.9] - 2018-05-10
 
 ## Fixed
-- LV translation, thanks to @tomsb; merges #1358;
+- #1378 - when a custom default page length is specified, it should show up in the page length menu;
+- #1297 - possible XSS vulnerability in ```select``` field type; now using ```e()``` to escape the attribute;
+- #1383 - ability to display relationship information using dot notation in the ```text``` column type;
+
+
+## [3.4.8] - 2018-05-07
+
+## Fixed
+- better pt_br translation; merged #1368;
+- translated name for File Manager sidebar item; merged #1369;
+
+
+## [3.4.7] - 2018-05-07
+
+## Fixed
+- fixed #1364 merged #1306 - datatables javascript issue in IE11;
 
 
 ## [3.4.6] - 2018-04-23
@@ -37,7 +64,7 @@ All Notable changes to `Backpack CRUD` will be documented in this file
 ## Fixed
 - getting the correct current id for nested resources; fixes #1323; fixes #252; merges #1339;
 - #1321 - setting locale for traversable items; merges #1330;
-
+- LV translation, thanks to @tomsb; merges #1358;
 
 ## [3.4.4] - 2018-03-29
 

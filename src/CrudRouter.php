@@ -24,6 +24,8 @@ class CrudRouter
             unset($this->options['name']);
         }
 
+        $this->name = str_replace('/', '.', $this->name);
+
         // CRUD routes for core features
         Route::post($this->name.'/search', [
             'as' => 'crud.'.$this->name.'.search',

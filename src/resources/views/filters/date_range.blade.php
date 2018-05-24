@@ -1,5 +1,4 @@
 {{-- Date Range Backpack CRUD filter --}}
-
 <li filter-name="{{ $filter->name }}"
 	filter-type="{{ $filter->type }}"
 	class="dropdown {{ Request::get($filter->name)?'active':'' }}">
@@ -25,6 +24,7 @@
 					        @endphp
 					        placeholder="{{ $date_range }}"
 						@endif
+						data-bs-daterangepicker="{{ isset($filter->dateRangeOptions) ? json_encode($filter->dateRangeOptions) : '{}'}}"
 		        		>
 		        <div class="input-group-addon daterangepicker-{{ str_slug($filter->name) }}-clear-button">
 		          <a class="" href=""><i class="fa fa-times"></i></a>
@@ -95,8 +95,11 @@
   		}
 
 		jQuery(document).ready(function($) {
-			var dateRangeInput = $('#daterangepicker-{{ str_slug($filter->name) }}').daterangepicker({
+			var filter = $('#daterangepicker-{{ str_slug($filter->name) }}');
+			var config = $.extend({
 				timePicker: false,
+				format: 'dd/mm/yyyy',
+				locale: {'format' : 'YYYY/MM/DD'},
 		        ranges: {
 		            'Today': [moment().startOf('day'), moment().endOf('day')],
 		            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -111,10 +114,16 @@
 				@endif
 				alwaysShowCalendars: true,
 				autoUpdateInput: true
-			},
-			function (start, end) {
-				applyDateRangeFilter{{camel_case($filter->name)}}(start, end);
-			});
+			}, filter.data('bs-daterangepicker'));
+
+			console.log(config);
+
+			var dateRangeInput = filter.daterangepicker(
+					config,
+					function (start, end) {
+						applyDateRangeFilter{{camel_case($filter->name)}}(start, end);
+					}
+				);
 
 			$('li[filter-name={{ $filter->name }}]').on('hide.bs.dropdown', function () {
 				if($('.daterangepicker').is(':visible'))

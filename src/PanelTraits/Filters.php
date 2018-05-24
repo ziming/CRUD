@@ -202,17 +202,18 @@ class CrudFilter
 
     public function __construct($options, $values, $filter_logic)
     {
+        // check that all required options have been specified
         $this->checkOptionsIntegrity($options);
 
-        $this->name = $options['name'];
-        $this->type = $options['type'];
-        $this->label = $options['label'];
+        // transform all options from array to object properties
+        foreach ($options as $key => $option) {
+            $this->{camel_case($key)} = $option;
+        }
+
+        // some properties need more care
         $this->viewNamespace = $options['view_namespace'] ?? $this->viewNamespace;
         $this->view = $this->viewNamespace.'.'.$this->type;
         $this->placeholder = $options['placeholder'] ?? '';
-
-        $this->values = $values;
-        $this->options = $options;
 
         if (\Request::has($this->name)) {
             $this->currentValue = \Request::input($this->name);

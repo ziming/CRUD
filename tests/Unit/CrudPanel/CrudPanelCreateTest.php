@@ -111,7 +111,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'type' => 'select2_many',
             'entity' => 'articles',
             'attribute' => 'content',
-        ]
+        ],
     ];
 
     public function testCreate()

@@ -106,10 +106,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ], [
             'name' => 'password',
             'type' => 'password',
+        ],[
+            'label' => 'Roles',
+            'type' => 'select_multiple',
+            'name' => 'roles',
+            'entity' => 'roles',
+            'attribute' => 'name',
+            'pivot' => true,
         ], [
             'name' => 'articles',
             'type' => 'select2_many',
             'entity' => 'articles',
+            'model' => Article::class,
             'attribute' => 'content',
         ],
     ];

@@ -194,6 +194,7 @@ trait Create
                 $instance = new $model();
                 $model::whereIn($instance->getKeyName(), $removed)->update([$relation->getForeignKeyName() => $relationData['fallback_id'] ?? null]);
                 $model::whereIn($instance->getKeyName(), $added)->update([$relation->getForeignKeyName() => $item->getKey()]);
+                $item = $item->load($relationMethod);
             } else {
                 $relationModel = new $model();
                 $modelInstance = $relationModel->create($relationData['values']);

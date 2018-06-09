@@ -95,7 +95,7 @@ trait Update
             $relationMethod = end($relationArray);
             if ($relatedModel->{$relationMethod} && $relatedModel->{$relationMethod}() instanceof HasOne) {
                 return $relatedModel->{$relationMethod}->{$field['name']};
-            } else if ($relatedModel->{$relationMethod} && $relatedModel->{$relationMethod}() instanceof HasMany) {
+            } elseif ($relatedModel->{$relationMethod} && $relatedModel->{$relationMethod}() instanceof HasMany) {
                 return $relatedModel->{$relationMethod};
             } else {
                 return $relatedModel->{$field['name']};

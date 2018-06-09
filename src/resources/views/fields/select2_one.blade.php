@@ -10,7 +10,7 @@
     <select
             name="{{ $field['name'] }}"
             style="width: 100%"
-            @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
+            @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_one'])
     >
 
         @if (isset($field['allows_null']) && $field['allows_null']==true)
@@ -53,7 +53,7 @@
         <script>
             jQuery(document).ready(function($) {
                 // trigger select2 for each untriggered select2 box
-                $('.select2_field').each(function (i, obj) {
+                $('.select2_one').each(function (i, obj) {
                     if (!$(obj).hasClass("select2-hidden-accessible"))
                     {
                         $(obj).select2({

@@ -106,7 +106,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ], [
             'name' => 'password',
             'type' => 'password',
-        ],[
+        ], [
             'label' => 'Roles',
             'type' => 'select_multiple',
             'name' => 'roles',

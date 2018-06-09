@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\PanelTraits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait Create
@@ -105,7 +107,7 @@ trait Create
     public function createRelations($item, $data, $form = 'create')
     {
         $this->syncPivot($item, $data, $form);
-        $this->createOneToOneRelations($item, $data, $form);
+        $this->createDirectRelations($item, $data, $form);
     }
 
     /**
@@ -141,13 +143,13 @@ trait Create
     }
 
     /**
-     * Create any existing one to one relations for the current model from the form data.
+     * Create any existing direct (not n:n) relations for the current model from the form data.
      *
      * @param \Illuminate\Database\Eloquent\Model $item The current CRUD model.
      * @param array $data The form data.
      * @param string $form Optional form type. Can be either 'create', 'update' or 'both'. Default is 'create'.
      */
-    private function createOneToOneRelations($item, $data, $form = 'create')
+    private function createDirectRelations($item, $data, $form = 'create')
     {
         $relationData = $this->getRelationDataFromFormData($data, $form);
         $this->createRelationsForItem($item, $relationData);
@@ -185,6 +187,15 @@ trait Create
                     $modelInstance = $relationModel->create($relationData['values']);
                     $relation->save($modelInstance);
                 }
+            } elseif ($relation instanceof HasMany) {
+                $related_ids = collect($relationData['values'][$relationMethod]);
+                $old_ids = $item->{$relationMethod}->pluck($relation->getRelated()->getKeyName());
+                $removed = $old_ids->diff($related_ids);
+                $added = $related_ids->diff($old_ids);
+
+                $instance = new $model();
+                $model::whereIn($instance->getKeyName(), $removed)->update([$relation->getForeignKeyName() => $relationData['fallback_id'] ?? null]);
+                $model::whereIn($instance->getKeyName(), $added)->update([$relation->getForeignKeyName() => $item->getKey()]);
             } else {
                 $relationModel = new $model();
                 $modelInstance = $relationModel->create($relationData['values']);
@@ -225,6 +236,10 @@ trait Create
 
                 if (! array_key_exists('parent', $fieldData)) {
                     $fieldData['parent'] = $this->getRelationModel($relationField['entity'], -1);
+                }
+
+                if (array_key_exists('fallback_id', $relationField)) {
+                    $fieldData['fallback_id'] = $relationField['fallback_id'];
                 }
 
                 $fieldData['values'][$attributeKey] = $data[$attributeKey];

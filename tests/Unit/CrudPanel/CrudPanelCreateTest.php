@@ -94,6 +94,26 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ],
     ];
 
+    private $userInputFieldsManyToOne = [
+        [
+            'name' => 'id',
+            'type' => 'hidden',
+        ], [
+            'name' => 'name',
+        ], [
+            'name' => 'email',
+            'type' => 'email',
+        ], [
+            'name' => 'password',
+            'type' => 'password',
+        ], [
+            'name' => 'articles',
+            'type' => 'select2_many',
+            'entity' => 'articles',
+            'attribute' => 'content',
+        ]
+    ];
+
     public function testCreate()
     {
         $this->crudPanel->setModel(User::class);
@@ -139,6 +159,26 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $this->assertEntryEquals($inputData, $entry);
         $this->assertEquals($article->toArray(), $entry->toArray());
+    }
+
+    public function tesateWithManyToOneRelationship()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsManyToOne);
+        $faker = Factory::create();
+        $inputData = [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => bcrypt($faker->password()),
+            'remember_token' => null,
+            'roles' => [1, 2],
+            'articles' => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertInstanceOf(User::class, $entry);
+        $this->assertEntryEquals($inputData, $entry);
     }
 
     public function testCreateWithManyToManyRelationship()

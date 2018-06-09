@@ -170,7 +170,6 @@ trait Create
         foreach ($formattedData['relations'] as $relationMethod => $relationData) {
             $model = $relationData['model'];
             $relation = $item->{$relationMethod}();
-
             if ($relation instanceof BelongsTo) {
                 $modelInstance = $model::find($relationData['values'])->first();
                 if ($modelInstance != null) {
@@ -180,13 +179,12 @@ trait Create
                 }
             } elseif ($relation instanceof HasOne) {
                 if ($item->{$relationMethod} != null) {
-                    $item->{$relationMethod}->update($relationData['values']);
-                    $modelInstance = $item->{$relationMethod};
-                } else {
-                    $relationModel = new $model();
-                    $modelInstance = $relationModel->create($relationData['values']);
-                    $relation->save($modelInstance);
+                    $item->{$relationMethod}->update([$relation->getForeignKeyName() => $relationData['fallback_id'] ?? null]);
                 }
+
+                $modelInstance = $model::find($relationData['values'][$relationMethod]);
+                $relation->save($modelInstance);
+                $modelInstance = $item->{$relationMethod};
             } elseif ($relation instanceof HasMany) {
                 $related_ids = collect($relationData['values'][$relationMethod]);
                 $old_ids = $item->{$relationMethod}->pluck($relation->getRelated()->getKeyName());

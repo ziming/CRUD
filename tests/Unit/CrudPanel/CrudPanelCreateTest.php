@@ -161,7 +161,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($article->toArray(), $entry->toArray());
     }
 
-    public function tesateWithManyToOneRelationship()
+    public function testeWithManyToOneRelationship()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsManyToOne);

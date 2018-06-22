@@ -15,28 +15,40 @@ trait AjaxTable
 
         $totalRows = $filteredRows = $this->crud->count();
 
+        $input = $this->request->all();
+        $cookie_name = get_class($this).'_last_crud_search_request';
+
+        if ($this->crud->shouldClearSearchCookie()) {
+            \Cookie::queue(\Cookie::forget($cookie_name));
+        } else {
+            if (\Cookie::get($cookie_name)) {
+                $input = json_decode(\Cookie::get($cookie_name), true);
+            }
+            \Cookie::queue($cookie_name, json_encode($input), 5);
+        }
+
         // if a search term was present
-        if ($this->request->input('search') && $this->request->input('search')['value']) {
+        if ($input['search'] && $input['search']['value']) {
             // filter the results accordingly
-            $this->crud->applySearchTerm($this->request->input('search')['value']);
+            $this->crud->applySearchTerm($input['search']['value']);
             // recalculate the number of filtered rows
             $filteredRows = $this->crud->count();
         }
 
         // start the results according to the datatables pagination
-        if ($this->request->input('start')) {
-            $this->crud->skip($this->request->input('start'));
+        if ($input['start']) {
+            $this->crud->skip($input['start']);
         }
 
         // limit the number of results according to the datatables pagination
-        if ($this->request->input('length')) {
-            $this->crud->take($this->request->input('length'));
+        if ($input['length']) {
+            $this->crud->take($input['length']);
         }
 
         // overwrite any order set in the setup() method with the datatables order
-        if ($this->request->input('order')) {
-            $column_number = $this->request->input('order')[0]['column'];
-            $column_direction = $this->request->input('order')[0]['dir'];
+        if (isset($input['order'])) {
+            $column_number = $input['order'][0]['column'];
+            $column_direction = $input['order'][0]['dir'];
             $column = $this->crud->findColumnById($column_number);
 
             if ($column['tableColumn']) {

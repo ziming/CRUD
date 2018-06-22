@@ -203,4 +203,31 @@ trait Search
             'data'            => $rows,
         ];
     }
+
+    public function shouldClearSearchCookie()
+    {
+        return $this->request->input('clear');
+    }
+
+    public function searchIsPristine()
+    {
+        if ($this->request->input('search')['value']) {
+            return false;
+        }
+
+        if ($this->request->input('start')) {
+            return false;
+        }
+
+        if ($this->request->input('order')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function searchHasParameters()
+    {
+        return ! $this->searchIsPristine();
+    }
 }

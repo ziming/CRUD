@@ -35,13 +35,13 @@ trait Views
      */
     public function getCreateView()
     {
-      // if the view exists return it
-      if(view()->exists($this->listView)) {
-        return $this->createView;
-      }
+        // if the view exists return it
+        if (view()->exists($this->listView)) {
+            return $this->createView;
+        }
 
-      // otherwise return the default view
-      return backpack_view('create', 'crud');
+        // otherwise return the default view
+        return backpack_view('create', 'crud');
     }
 
     // -------
@@ -67,13 +67,12 @@ trait Views
     public function getListView()
     {
         // if the view exists return it
-        if(view()->exists($this->listView)) {
-          return $this->listView;
+        if (view()->exists($this->listView)) {
+            return $this->listView;
         }
 
         // otherwise return the default view
         return backpack_view('list', 'crud');
-
     }
 
     /**
@@ -95,8 +94,8 @@ trait Views
     public function getDetailsRowView()
     {
         // if the view exists return it
-        if(view()->exists($this->detailsRowView)) {
-          return $this->detailsRowView;
+        if (view()->exists($this->detailsRowView)) {
+            return $this->detailsRowView;
         }
 
         // otherwise return the default view
@@ -122,8 +121,8 @@ trait Views
     public function getShowView()
     {
         // if the view exists return it
-        if(view()->exists($this->showView)) {
-          return $this->showView;
+        if (view()->exists($this->showView)) {
+            return $this->showView;
         }
 
         // otherwise return the default view
@@ -153,8 +152,8 @@ trait Views
     public function getEditView()
     {
         // if the view exists return it
-        if(view()->exists($this->editView)) {
-          return $this->editView;
+        if (view()->exists($this->editView)) {
+            return $this->editView;
         }
 
         // otherwise return the default view
@@ -180,8 +179,8 @@ trait Views
     public function getReorderView()
     {
         // if the view exists return it
-        if(view()->exists($this->reorderView)) {
-          return $this->reorderView;
+        if (view()->exists($this->reorderView)) {
+            return $this->reorderView;
         }
 
         // otherwise return the default view
@@ -219,8 +218,8 @@ trait Views
     public function getRevisionsView()
     {
         // if the view exists return it
-        if(view()->exists($this->revisionsView)) {
-          return $this->revisionsView;
+        if (view()->exists($this->revisionsView)) {
+            return $this->revisionsView;
         }
 
         // otherwise return the default view
@@ -234,8 +233,8 @@ trait Views
     public function getRevisionsTimelineView()
     {
         // if the view exists return it
-        if(view()->exists($this->revisionsTimelineView)) {
-          return $this->revisionsTimelineView;
+        if (view()->exists($this->revisionsTimelineView)) {
+            return $this->revisionsTimelineView;
         }
 
         // otherwise return the default view

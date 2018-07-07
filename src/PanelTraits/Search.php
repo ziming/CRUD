@@ -160,8 +160,8 @@ trait Search
             }
 
             // does the column exist within a theme folder return that
-            if(view()->exists(backpack_view('columns.'.$column['type'], 'crud'))) {
-              return backpack_view('columns.'.$column['type'], 'crud');
+            if (view()->exists(backpack_view('columns.'.$column['type'], 'crud'))) {
+                return backpack_view('columns.'.$column['type'], 'crud');
             }
 
             // return the column from the package

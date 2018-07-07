@@ -1,7 +1,7 @@
 <!-- select2 -->
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+     @include(backpack_view('inc.field_translatable_icon', 'crud'))
     <?php $entity_model = $crud->getModel(); ?>
 
     <div class="row">

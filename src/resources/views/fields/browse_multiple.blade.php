@@ -10,7 +10,7 @@ if (!$multiple && is_array($value)) {
 <div @include('crud::inc.field_wrapper_attributes') >
 
     <div><label>{!! $field['label'] !!}</label></div>
-    @include('crud::inc.field_translatable_icon')
+     @include(backpack_view('inc.field_translatable_icon', 'crud'))
     @if ($multiple)
         @foreach((array)$value as $v)
             @if ($v)

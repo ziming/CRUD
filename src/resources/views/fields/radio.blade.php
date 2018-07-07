@@ -13,7 +13,7 @@
 
     <div>
         <label>{!! $field['label'] !!}</label>
-        @include('crud::inc.field_translatable_icon')
+         @include(backpack_view('inc.field_translatable_icon', 'crud'))
     </div>
 
     @if( isset($field['options']) && $field['options'] = (array)$field['options'] )

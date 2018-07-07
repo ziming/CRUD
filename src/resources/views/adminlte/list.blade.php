@@ -1,4 +1,4 @@
-@extends('backpack::layout')
+@extends(backpack_theme('layout'))
 
 @section('header')
 	<section class="content-header">
@@ -23,7 +23,7 @@
       <div class="box">
         <div class="box-header hidden-print {{ $crud->hasAccess('create')?'with-border':'' }}">
 
-          @include('crud::inc.button_stack', ['stack' => 'top'])
+					@include(backpack_view('inc.button_stack', 'crud'), ['stack' => 'top'])
 
           <div id="datatable_button_stack" class="pull-right text-right hidden-xs"></div>
         </div>
@@ -32,7 +32,7 @@
 
         {{-- Backpack List Filters --}}
         @if ($crud->filtersEnabled())
-          @include('crud::inc.filters_navbar')
+					@include(backpack_view('inc.filters_navbar', 'crud'))
         @endif
 
         <table id="crudTable" class="table table-striped table-hover display responsive nowrap" cellspacing="0">
@@ -68,7 +68,7 @@
 
         </div><!-- /.box-body -->
 
-        @include('crud::inc.button_stack', ['stack' => 'bottom'])
+        @include(backpack_view('inc.button_stack', 'crud'), ['stack' => 'bottom'])
 
       </div><!-- /.box -->
     </div>

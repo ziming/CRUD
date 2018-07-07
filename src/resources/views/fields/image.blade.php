@@ -22,7 +22,7 @@
         @include('crud::inc.field_wrapper_attributes')>
     <div>
         <label>{!! $field['label'] !!}</label>
-        @include('crud::inc.field_translatable_icon')
+         @include(backpack_view('inc.field_translatable_icon', 'crud'))
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
     <div class="row">

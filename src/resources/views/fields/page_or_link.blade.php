@@ -10,7 +10,7 @@
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <label>{!! $field['label'] !!}</label>
-    @include('crud::inc.field_translatable_icon')
+     @include(backpack_view('inc.field_translatable_icon', 'crud'))
     <div class="clearfix"></div>
 
     <div class="col-sm-3">

@@ -1,4 +1,4 @@
-@extends('backpack::layout')
+@extends(backpack_theme('layout'))
 
 @section('content-header')
 	<section class="content-header">
@@ -37,8 +37,8 @@
 		                    <strong>{{ $column['label'] }}</strong>
 		                </td>
                         <td>
-							@if (!isset($column['type']))
-		                      @include('crud::columns.text')
+												@if (!isset($column['type']))
+													@include(backpack_view('columns.text', 'crud'))
 		                    @else
 		                      @if(view()->exists('vendor.backpack.crud.columns.'.$column['type']))
 		                        @include('vendor.backpack.crud.columns.'.$column['type'])

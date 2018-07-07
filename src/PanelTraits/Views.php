@@ -4,14 +4,14 @@ namespace Backpack\CRUD\PanelTraits;
 
 trait Views
 {
-    protected $createView = 'crud::create';
-    protected $editView = 'crud::edit';
-    protected $showView = 'crud::show';
-    protected $detailsRowView = 'crud::details_row';
-    protected $revisionsView = 'crud::revisions';
-    protected $revisionsTimelineView = 'crud::inc.revision_timeline';
-    protected $reorderView = 'crud::reorder';
-    protected $listView = 'crud::list';
+    protected $createView = 'create';
+    protected $editView = 'edit';
+    protected $showView = 'show';
+    protected $detailsRowView = 'details_row';
+    protected $revisionsView = 'revisions';
+    protected $revisionsTimelineView = 'inc.revision_timeline';
+    protected $reorderView = 'reorder';
+    protected $listView = 'list';
 
     // -------
     // CREATE
@@ -35,7 +35,13 @@ trait Views
      */
     public function getCreateView()
     {
+      // if the view exists return it
+      if(view()->exists($this->listView)) {
         return $this->createView;
+      }
+
+      // otherwise return the default view
+      return backpack_view('create', 'crud');
     }
 
     // -------
@@ -60,7 +66,14 @@ trait Views
      */
     public function getListView()
     {
-        return $this->listView;
+        // if the view exists return it
+        if(view()->exists($this->listView)) {
+          return $this->listView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('list', 'crud');
+
     }
 
     /**
@@ -81,7 +94,13 @@ trait Views
      */
     public function getDetailsRowView()
     {
-        return $this->detailsRowView;
+        // if the view exists return it
+        if(view()->exists($this->detailsRowView)) {
+          return $this->detailsRowView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('details_row', 'crud');
     }
 
     /**
@@ -102,7 +121,13 @@ trait Views
      */
     public function getShowView()
     {
-        return $this->showView;
+        // if the view exists return it
+        if(view()->exists($this->showView)) {
+          return $this->showView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('show', 'crud');
     }
 
     // -------
@@ -127,7 +152,13 @@ trait Views
      */
     public function getEditView()
     {
-        return $this->editView;
+        // if the view exists return it
+        if(view()->exists($this->editView)) {
+          return $this->editView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('edit', 'crud');
     }
 
     /**
@@ -148,7 +179,13 @@ trait Views
      */
     public function getReorderView()
     {
-        return $this->reorderView;
+        // if the view exists return it
+        if(view()->exists($this->reorderView)) {
+          return $this->reorderView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('reorder', 'crud');
     }
 
     /**
@@ -181,7 +218,13 @@ trait Views
      */
     public function getRevisionsView()
     {
-        return $this->revisionsView;
+        // if the view exists return it
+        if(view()->exists($this->revisionsView)) {
+          return $this->revisionsView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('revisions', 'crud');
     }
 
     /**
@@ -190,7 +233,13 @@ trait Views
      */
     public function getRevisionsTimelineView()
     {
-        return $this->revisionsTimelineView;
+        // if the view exists return it
+        if(view()->exists($this->revisionsTimelineView)) {
+          return $this->revisionsTimelineView;
+        }
+
+        // otherwise return the default view
+        return backpack_view('inc.revision_timeline', 'crud');
     }
 
     // -------

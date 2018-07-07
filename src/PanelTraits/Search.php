@@ -118,7 +118,7 @@ trait Search
 
         // add the details_row button to the first column
         if ($this->details_row) {
-            $details_row_button = \View::make('crud::columns.details_row_button')
+            $details_row_button = \View::make(backpack_view('columns.details_row_button', 'crud'))
                                            ->with('crud', $this)
                                            ->with('entry', $entry)
                                            ->with('row_number', $rowNumber)
@@ -157,6 +157,11 @@ trait Search
             // if the column has been overwritten return that one
             if (view()->exists('vendor.backpack.crud.columns.'.$column['type'])) {
                 return 'vendor.backpack.crud.columns.'.$column['type'];
+            }
+
+            // does the column exist within a theme folder return that
+            if(view()->exists(backpack_view('columns.'.$column['type'], 'crud'))) {
+              return backpack_view('columns.'.$column['type'], 'crud');
             }
 
             // return the column from the package

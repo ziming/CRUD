@@ -1,4 +1,4 @@
-@extends('backpack::layout')
+@extends(backpack_theme('layout'))
 
 @section('header')
 	<section class="content-header">
@@ -22,7 +22,7 @@
 			<a href="{{ url($crud->route) }}" class="hidden-print"><i class="fa fa-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a><br><br>
 		@endif
 
-		@include('crud::inc.grouped_errors')
+		@include(backpack_view('inc.grouped_errors', 'crud'))
 
 		  <form method="post"
 		  		action="{{ url($crud->route) }}"
@@ -39,14 +39,16 @@
 		    <div class="box-body row display-flex-wrap" style="display: flex; flex-wrap: wrap;">
 		      <!-- load the view from the application if it exists, otherwise load the one in the package -->
 		      @if(view()->exists('vendor.backpack.crud.form_content'))
-		      	@include('vendor.backpack.crud.form_content', [ 'fields' => $crud->getFields('create'), 'action' => 'create' ])
+						@include('vendor.backpack.crud.'.config('backpack.base.theme').'.form_content', ['fields' => $crud->getFields('create'), 'action' => 'create'])
 		      @else
-		      	@include('crud::form_content', [ 'fields' => $crud->getFields('create'), 'action' => 'create' ])
+						@include(backpack_view('form_content', 'crud'), ['fields' => $crud->getFields('create'), 'action' => 'create'])
 		      @endif
+
+
 		    </div><!-- /.box-body -->
 		    <div class="box-footer">
 
-                @include('crud::inc.form_save_buttons')
+								@include(backpack_view('inc.form_save_buttons', 'crud'))
 
 		    </div><!-- /.box-footer-->
 

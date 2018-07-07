@@ -4,10 +4,10 @@
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled())
-    @include('crud::inc.show_tabbed_fields')
+    @include(backpack_view('inc.show_tabbed_fields', 'crud'))
     <input type="hidden" name="current_tab" value="{{ str_slug($crud->getTabs()[0], "") }}" />
 @else
-    @include('crud::inc.show_fields', ['fields' => $fields])
+    @include(backpack_view('inc.show_fields', 'crud'), ['fields' => $fields])
 @endif
 
 {{-- Define blade stacks so css and js can be pushed from the fields to these sections. --}}

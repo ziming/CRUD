@@ -60,7 +60,7 @@ class Install extends BaseInstall
         $this->progressBar->advance();
 
         // elFinder steps
-        if ($install_elfinder) {
+        if ($install_elfinder == 'yes') {
             $this->line(' Installing barryvdh/laravel-elfinder');
             $this->executeProcess('composer require barryvdh/laravel-elfinder');
 

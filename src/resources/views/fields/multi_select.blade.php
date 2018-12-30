@@ -118,6 +118,7 @@
 
         <script>
             $('#{{ $field['name'] }}').multiSelect({
+              keySelect: [13], // Change default selector (space "32") to enter ("13")
               @if(isset($field['searchable']) && $field['searchable'])
                 selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search..'>",
                 selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search..'>",

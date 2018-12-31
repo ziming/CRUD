@@ -3,7 +3,7 @@
 	$value = '';
 	$spacer = ' ';
 
-	if($column['spacer']) {
+	if(isset($column['spacer'])) {
 		$spacer = $column['spacer'];
 	}
 

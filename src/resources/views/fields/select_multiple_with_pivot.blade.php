@@ -53,9 +53,6 @@
                   @endif
                     <div class="col-sm-6">
                         <label>{!! $pivot_name !!} -> ({{ $connected_entity_entry->{$field['attribute']} }})</label> <input type="text" name="{!! $pivot_field !!}[{{ $connected_entity_entry->getKey() }}]" value="{{ $pivot_attr ?? null }}" @include('crud::inc.field_attributes') />
-                        @php
-                          echo '<pre>'; var_dump($pivot_field.'['.$connected_entity_entry->getKey().']'); echo '</pre>';
-                        @endphp
                     </div>
                 @endforeach
                 </div>

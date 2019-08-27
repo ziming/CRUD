@@ -48,11 +48,12 @@
 {{-- The blocks that are available for the admin to use --}}
 {{-- ################################################## --}}
 
+@push('before_scripts')
 @if (count($blocks))
 
-    <div class="template-types hidden">
+    <div class="template-types d-none">
         <div class="container-choose form-inline">
-            <select class="form-control input-sm">
+            <select class="form-control form-control-sm">
 
             @foreach($blocks as $block_item)
                 <option data-icon="{{ $block_item['icon'] }}" value="{{ $block_item['type'] }}">{{ $block_item['label'] }}</option>
@@ -74,12 +75,12 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">{{ $block_item['label'] }}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="exampleModalLabel">{{ $block_item['label'] }}</h4>
                 </div>
-                <div class="modal-body clearfix">
+                <div class="modal-body row clearfix">
 
                 @foreach($block_item['fields'] as $block_field)
                     @php
@@ -142,15 +143,15 @@
 
 @endif
 
-@if ($field['templates'])
+@if (isset($field['templates']) && $field['templates'])
     <div class="modal fade" id="browseLayoutTemplatesModal" tabindex="-1" role="dialog" aria-labelledby="browseLayoutTemplatesModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h4 class="modal-title" id="browseLayoutTemplatesModal">Load Template</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="browseLayoutTemplatesModal">Load Template</h4>
                 </div>
                 <div class="modal-body clearfix no-padding">
                 </div>
@@ -164,10 +165,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h4 class="modal-title" id="saveLayoutTemplateModal">Save as Template</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="saveLayoutTemplateModal">Save as Template</h4>
                 </div>
                 <div class="modal-body clearfix">
                     <div class="form-group">
@@ -183,6 +184,8 @@
         </div>
     </div>
 @endif
+
+@endpush
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
@@ -692,6 +695,7 @@
               cursor: pointer;
               padding: 20px 0;
               text-transform: capitalize;
+              width: 100%;
             }
             .container-glyph span:before {
               font-size: 36px;

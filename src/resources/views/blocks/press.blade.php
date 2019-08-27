@@ -56,20 +56,6 @@ $blocks['press'] = [
                'class' => 'form-group col-md-6'
              ],
 		],
-		[
-            'type'  => 'keepeek',
-            'name'  => 'another_image',
-            'label' => 'Another Keepeek Image',
-            'label_button' => 'Select another file',
-            // Map media types to keepeek links depending on size.
-            // The keepeek field will check if the media type startsWith the key given, then go down the list until it finds a match. If there is no match, 'kpk:preview' is used.
-            'sizes' => [
-                'image' => 'kpk:2_3_medium',
-                'video' => 'kpk:720p',
-                'text/html' => 'kpk:hires',
-            ],
-            'url_controller' => route('keepeek_bridge'),
-        ]
 	],
 ];
 

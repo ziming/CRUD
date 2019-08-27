@@ -10,9 +10,9 @@
     >
 
     <div class="container-multiply-elements">
-      <div class="col-md-12 well multiply-element">
+      <div class="col-md-12 well multiply-element row m-1 p-2">
         @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
-          <button type="button" class="close pull-right delete-element"><span aria-hidden="true">×</span></button>
+          <button type="button" class="close float-right delete-element"><span aria-hidden="true">×</span></button>
           @foreach($field['fields'] as $subfield)
               @php
                   $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
@@ -27,7 +27,7 @@
       </div>
 
     </div>
-    <button type="button" class="btn btn-primary pull-right multiply-elements">+</button>
+    <button type="button" class="btn btn-primary float-right multiply-elements">+</button>
 
     {{-- HINT --}}
     @if (isset($field['hint']))
@@ -44,6 +44,12 @@
 
       @push('crud_fields_styles')
           <!-- no styles -->
+          <style type="text/css">
+            .multiply-element {
+              border: 1px solid rgba(0,0,0,.1);
+              border-radius: 5px;
+            }
+          </style>
       @endpush
 
   {{-- FIELD EXTRA JS --}}

@@ -682,8 +682,10 @@
             }
 
             .modal button.delete-element {
-              margin-right: -15px;
-              margin-top: -20px;
+              /*margin-right: -15px;
+              margin-top: -20px;*/
+              position: absolute;
+              right: 0.5rem;
             }
 
             .container-choose {
@@ -1044,7 +1046,7 @@
 
                         // Add the template load/save buttons to the jsGrid interface
                         if (gridEditorHiddenInput.data('templates')) {
-                            addTemplateGroup = $('<div class="ge-addRowGroup btn-group pull-right layout-field-load-templates-buttons"></div>').appendTo(wrapper);
+                            addTemplateGroup = $('<div class="ge-addRowGroup btn-group float-right layout-field-load-templates-buttons"></div>').appendTo(wrapper);
                             loadTemplateButton = $('<a data-toggle="modal" data-target="#browseLayoutTemplatesModal" class="btn btn-xs btn-primary" title="Load Template"><i class="fa fa-folder-open"></i> &nbsp;  Load</a>').appendTo(addTemplateGroup);
                             loadTemplateButton = $('<a data-toggle="modal" data-target="#saveLayoutTemplateModal" class="btn btn-xs btn-primary" title="Save As Template"><i class="fa fa-save"></i> &nbsp; Save</a>').appendTo(addTemplateGroup);
                         }

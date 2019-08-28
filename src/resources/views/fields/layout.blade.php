@@ -80,7 +80,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body row clearfix">
+                <div class="modal-body row bold-labels clearfix">
 
                 @foreach($block_item['fields'] as $block_field)
                     @php

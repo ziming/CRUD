@@ -10,7 +10,7 @@
     >
 
     <div class="container-multiply-elements">
-      <div class="col-md-12 well multiply-element row m-1 p-2">
+      <div class="col-md-12 well multiply-element row m-1 p-2 bg-light">
         @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
           <button type="button" class="close float-right delete-element"><span aria-hidden="true">×</span></button>
           @foreach($field['fields'] as $subfield)

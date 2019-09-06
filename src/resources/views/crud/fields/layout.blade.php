@@ -684,13 +684,6 @@
               padding: 3px 5px;
             }
 
-            .modal button.delete-element {
-              /*margin-right: -15px;
-              margin-top: -20px;*/
-              position: absolute;
-              right: 0.5rem;
-            }
-
             .container-choose {
               text-align: center;
             }

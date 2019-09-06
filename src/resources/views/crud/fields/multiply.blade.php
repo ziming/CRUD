@@ -4,7 +4,7 @@
     <input
         type="hidden"
         name="{{ $field['name'] }}"
-        data-javascript-function-for-field-initialisation="bpFieldInitMultiplyElement"
+        data-init-function="bpFieldInitMultiplyElement"
         value="{{ old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' )) }}"
         @include('crud::inc.field_attributes')
     >
@@ -12,7 +12,7 @@
     <div class="container-multiply-elements">
       <div class="col-md-12 well multiply-element row m-1 p-2 bg-light">
         @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
-          <button type="button" class="close float-right delete-element"><span aria-hidden="true">×</span></button>
+          <button type="button" class="close position-absolute delete-element"><span aria-hidden="true">×</span> &nbsp; </button>
           @foreach($field['fields'] as $subfield)
               @php
                   $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
@@ -48,6 +48,9 @@
             .multiply-element {
               border: 1px solid rgba(0,0,0,.1);
               border-radius: 5px;
+            }
+            .container-multiply-elements .delete-element {
+              z-index: 99;
             }
           </style>
       @endpush

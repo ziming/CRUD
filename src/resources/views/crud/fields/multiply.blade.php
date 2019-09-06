@@ -105,14 +105,14 @@
                         container.find('.multiply-element').remove();
 
                         element.parent().find('.multiply-elements').click(function(){
-                            new_element(container,field_group);
+                            newMultiplyElement(container,field_group);
                         });
 
                         if (element.val()) {
                             var multiply_fields_values = JSON.parse(element.val());
 
                             for (var i = 0; i < multiply_fields_values.length; ++i) {
-                                new_element(container,field_group,multiply_fields_values[i]);
+                                newMultiplyElement(container,field_group,multiply_fields_values[i]);
                             }
                         } else {
                             element.parent().find('.multiply-elements').trigger('click');
@@ -135,7 +135,7 @@
                     /**
                      * Adds a new field group to the multiply input.
                      */
-                    function new_element(container, field_group, values) {
+                    function newMultiplyElement(container, field_group, values) {
 
                         var new_field_group = field_group.clone();
                         new_field_group.find('.delete-element')

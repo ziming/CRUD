@@ -12,7 +12,7 @@
     <div class="container-multiply-elements">
       <div class="col-md-12 well multiply-element row m-1 p-2 bg-light">
         @if (isset($field['fields']) && is_array($field['fields']) && count($field['fields']))
-          <button type="button" class="close position-absolute delete-element"><span aria-hidden="true">×</span> &nbsp; </button>
+          <button type="button" class="close delete-element"><span aria-hidden="true">×</span></button>
           @foreach($field['fields'] as $subfield)
               @php
                   $fieldViewNamespace = $subfield['view_namespace'] ?? 'crud::fields';
@@ -51,6 +51,14 @@
             }
             .container-multiply-elements .delete-element {
               z-index: 99;
+              position: absolute!important;
+              margin-left: -24px;
+              margin-top: 0px;
+              height: 30px;
+              width: 30px;
+              border-radius: 15px;
+              text-align: center;
+              background-color: #c0d0ed!important;
             }
           </style>
       @endpush

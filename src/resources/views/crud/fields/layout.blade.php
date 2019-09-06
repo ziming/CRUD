@@ -48,7 +48,7 @@
 {{-- The blocks that are available for the admin to use --}}
 {{-- ################################################## --}}
 
-@push('before_scripts')
+{{-- @push('before_scripts') --}}
 @if (count($blocks))
 
     <div class="template-types d-none">
@@ -71,7 +71,7 @@
 
     @foreach($blocks as $block_item)
 
-    <div class="modal fade" id="modal{{ $block_item['type'] }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal{{ $block_item['type'] }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -107,7 +107,7 @@
         @php
             $row_settings = $field['row_settings'];
         @endphp
-        <div class="modal fade" id="modal_row_settings" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal_row_settings" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -144,7 +144,7 @@
 @endif
 
 @if (isset($field['templates']) && $field['templates'])
-    <div class="modal fade" id="browseLayoutTemplatesModal" tabindex="-1" role="dialog" aria-labelledby="browseLayoutTemplatesModal" aria-hidden="true">
+    <div class="modal fade" id="browseLayoutTemplatesModal" tabindex="-1" role="dialog" aria-labelledby="browseLayoutTemplatesModal" aria-hidden="true" data-backdrop="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -161,7 +161,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="saveLayoutTemplateModal" tabindex="-1" role="dialog" aria-labelledby="saveLayoutTemplateModal" aria-hidden="true">
+    <div class="modal fade" id="saveLayoutTemplateModal" tabindex="-1" role="dialog" aria-labelledby="saveLayoutTemplateModal" aria-hidden="true" data-backdrop="false">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -185,7 +185,7 @@
     </div>
 @endif
 
-@endpush
+{{-- @endpush --}}
 
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}

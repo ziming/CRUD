@@ -11,7 +11,7 @@
 
 
 
-Quickly build an admin interface for your Eloquent models (using Laravel 6). Build your own CMS at 10 minutes/model. Customize every little detail, easily.
+Quickly build an admin interface for your Eloquent models (using Laravel 6). Build your own CMS at 10 minutes/model. Customize every little detail, easily. Test test test
 
 Features:
 - 50+ field types

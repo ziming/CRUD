@@ -55,7 +55,7 @@
                 const hiddenField = document.getElementById('{{ $field['name'] }}');
                 hiddenField.value = window['editor_{{ $field['name'] }}'].getText();
             },
-            modes: @json($modes ?? ['form', 'tree', 'code']),
+            modes: @json($field['modes'] ?? ['form', 'tree', 'code']),
         };
 
         window['editor_{{ $field['name'] }}'] = new JSONEditor(container, options, JSON.parse(jsonString));

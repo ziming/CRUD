@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
+use Backpack\CRUD\app\Library\CrudPanel\FieldGroup;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -573,5 +574,19 @@ trait Fields
     public function field($nameOrDefinition)
     {
         return new CrudField($nameOrDefinition);
+    }
+
+    /**
+     * Allow to add an attribute to multiple fields at same time.
+     *
+     * Using the fluent syntax allow the developer to add attributes to multiple fields at the same time. Eg:
+     *
+     * - CRUD::fieldGroup(CRUD::field('price')->type('number'), CRUD::field('title')->type('text'))->tab('both_on_same_tab');
+     *
+     * @param  mixed fluent syntax fields.
+     * @return FieldGroup
+     */
+    public function fieldGroup(...$fields) {
+        return new FieldGroup(...$fields);
     }
 }

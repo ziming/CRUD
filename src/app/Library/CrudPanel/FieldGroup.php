@@ -29,10 +29,11 @@ class FieldGroup
      */
     public function __call($method, $parameter)
     {
-        foreach($this->fields as $field) {
+        foreach ($this->fields as $field) {
             $field->setAttributeValue($method, $parameter[0]);
             $field->save();
         }
+
         return $this;
     }
 }

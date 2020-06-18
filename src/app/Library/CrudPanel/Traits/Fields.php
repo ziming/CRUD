@@ -586,7 +586,8 @@ trait Fields
      * @param  mixed fluent syntax fields.
      * @return FieldGroup
      */
-    public function fieldGroup(...$fields) {
+    public function fieldGroup(...$fields)
+    {
         return new FieldGroup(...$fields);
     }
 }

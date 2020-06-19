@@ -2,13 +2,13 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-class FieldGroup
+class ObjectGroup
 {
-    protected $fields;
+    protected $objects;
 
-    public function __construct(...$fields)
+    public function __construct(...$objects)
     {
-        $this->fields = $fields;
+        $this->objects = $objects;
     }
 
     // -------------
@@ -16,17 +16,17 @@ class FieldGroup
     // -------------
 
     /**
-     * We foward any call into FieldGroup class to the Field class once per defined field.
+     * We foward any call to the corresponding class passed by developer (Field, Columns, Filters etc ..)
      *
      * @param  string $method     The method being called that doesn't exist.
      * @param  array $parameters  The arguments when that method was called.
      *
-     * @return FieldGroup
+     * @return ObjectGroup
      */
     public function __call($method, $parameter)
     {
-        foreach ($this->fields as $field) {
-            $field->{$method}($parameter[0]);
+        foreach ($this->objects as $object) {
+            $object->{$method}($parameter[0]);
         }
 
         return $this;

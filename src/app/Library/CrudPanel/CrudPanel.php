@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Backpack\CRUD\app\Library\CrudPanel\ObjectGroup;
 
 class CrudPanel
 {
@@ -517,5 +518,20 @@ class CrudPanel
         }
 
         return $results;
+    }
+
+    /**
+     * Allow to add an attribute to multiple fields/columns/filters/buttons at same time.
+     *
+     * Using the fluent syntax allow the developer to add attributes to multiple fields at the same time. Eg:
+     *
+     * - CRUD::group(CRUD::field('price')->type('number'), CRUD::field('title')->type('text'))->tab('both_on_same_tab');
+     *
+     * @param  mixed fluent syntax objects.
+     * @return ObjectGroup
+     */
+    public function group(...$objects)
+    {
+        return new ObjectGroup(...$objects);
     }
 }

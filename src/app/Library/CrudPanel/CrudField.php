@@ -425,7 +425,7 @@ class CrudField
     {
         $this->attributes[$attribute] = $value;
     }
-    
+
     /**
      * Update the global CrudPanel object with the current field attributes.
      *

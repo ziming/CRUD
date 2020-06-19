@@ -416,6 +416,17 @@ class CrudField
     // ---------------
 
     /**
+     * Set the value for a certain attribute on the CrudField object.
+     *
+     * @param string $attribute Name of the attribute.
+     * @param string $value     Value of that attribute.
+     */
+    private function setAttributeValue($attribute, $value)
+    {
+        $this->attributes[$attribute] = $value;
+    }
+
+    /**
      * Replace all field attributes on the CrudField object
      * with the given array of attribute-value pairs.
      *

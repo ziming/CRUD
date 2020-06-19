@@ -16,21 +16,17 @@ class FieldGroup
     // -------------
 
     /**
-     * If a developer calls a method that doesn't exist, assume they want:
-     * - the CrudField object to have an attribute with that value;
-     * - that field be updated inside the global CrudPanel object;.
-     *
-     * Eg: type('number') will set the "type" attribute to "number"
+     * We foward any call into FieldGroup class to the Field class once per defined field
      *
      * @param  string $method     The method being called that doesn't exist.
      * @param  array $parameters  The arguments when that method was called.
      *
-     * @return CrudField
+     * @return FieldGroup
      */
     public function __call($method, $parameter)
     {
         foreach ($this->fields as $field) {
-            $field->setAttributeValue($method, $parameter[0]);
+            $field->{$method}($parameter[0]);
             $field->save();
         }
 

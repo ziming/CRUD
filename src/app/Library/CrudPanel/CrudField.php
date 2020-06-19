@@ -425,6 +425,24 @@ class CrudField
     {
         $this->attributes[$attribute] = $value;
     }
+    
+    /**
+     * Update the global CrudPanel object with the current field attributes.
+     *
+     * @return CrudField
+     */
+    private function save()
+    {
+        $key = $this->attributes['name'];
+
+        if ($this->crud()->hasFieldWhere('name', $key)) {
+            $this->crud()->modifyField($key, $this->attributes);
+        } else {
+            $this->crud()->addField($this->attributes);
+        }
+
+        return $this;
+    }
 
     /**
      * Replace all field attributes on the CrudField object

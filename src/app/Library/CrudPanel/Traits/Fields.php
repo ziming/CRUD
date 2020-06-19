@@ -574,5 +574,4 @@ trait Fields
     {
         return new CrudField($nameOrDefinition);
     }
-
 }

@@ -16,7 +16,7 @@ class FieldGroup
     // -------------
 
     /**
-     * We foward any call into FieldGroup class to the Field class once per defined field
+     * We foward any call into FieldGroup class to the Field class once per defined field.
      *
      * @param  string $method     The method being called that doesn't exist.
      * @param  array $parameters  The arguments when that method was called.

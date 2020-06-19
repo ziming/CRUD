@@ -27,7 +27,6 @@ class FieldGroup
     {
         foreach ($this->fields as $field) {
             $field->{$method}($parameter[0]);
-            $field->save();
         }
 
         return $this;

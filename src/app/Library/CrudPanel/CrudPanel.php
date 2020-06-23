@@ -527,10 +527,10 @@ class CrudPanel
      * - CRUD::group(CRUD::field('price')->type('number'), CRUD::field('title')->type('text'))->tab('both_on_same_tab');
      *
      * @param  mixed fluent syntax objects.
-     * @return ObjectGroup
+     * @return CrudObjectGroup
      */
     public function group(...$objects)
     {
-        return new ObjectGroup(...$objects);
+        return new CrudObjectGroup(...$objects);
     }
 }

@@ -34,7 +34,8 @@
     <div class="row">
         <div class="col-sm-4">
             <label class="font-weight-normal">
-                <input type="checkbox"  id="select-all" {{ count($field['options']) == count($field['value']) ? 'checked' : '' }}> <strong> Select all </strong>
+                <input type="checkbox"  id="select-all" {{ count($field['options']) == count($field['value']) ? 'checked' : '' }}> 
+                <strong> Select all </strong>
             </label>
         </div>
     </div>
@@ -77,26 +78,26 @@
 
                 // set the default checked/unchecked states on checklist options
                 checkboxes.each(function(key, option) {
-                    var id = $(this).val();
+                  var id = $(this).val();
 
-                    if (selected_options.map(String).includes(id)) {
-                        $(this).prop('checked', 'checked');
-                    } else {
-                        $(this).prop('checked', false);
-                    }
+                  if (selected_options.map(String).includes(id)) {
+                    $(this).prop('checked', 'checked');
+                  } else {
+                    $(this).prop('checked', false);
+                  }
                 });
 
                 // when a checkbox is clicked
                 // set the correct value on the hidden input
                 checkboxes.click(function() {
-                    var newValue = [];
+                  var newValue = [];
 
-                    checkboxes.each(function() {
-                        if ($(this).is(':checked')) {
-                            var id = $(this).val();
-                            newValue.push(id);
-                        }
-                    });
+                  checkboxes.each(function() {
+                    if ($(this).is(':checked')) {
+                      var id = $(this).val();
+                      newValue.push(id);
+                    }
+                  });
 
                   hidden_input.val(JSON.stringify(newValue)).trigger('change');
 
@@ -119,27 +120,27 @@
                 var allCheckbox = $('#checkbox-wrapper :input[type=checkbox]');
 
                 if ($("#select-all").is(':checked')) {
-                    allCheckbox.each(function(){
-                        if ($(this).is(':checked') == false) {
-                            $(this).click();
-                        }
-                    });
+                  allCheckbox.each(function(){
+                    if ($(this).is(':checked') == false) {
+                      $(this).click();
+                    }
+                  });
                 } else {
-                    allCheckbox.each(function(){
-                        $(this).click();
-                    });
+                  allCheckbox.each(function(){
+                    $(this).click();
+                  });
                 }
             };
 
             function toggleAllSelectCheckbox() {
-                var selectedItems = JSON.parse(document.getElementsByName("{{ $field['name'] }}")['0'].value);
-                var allItems = "{{ count($field['options']) }}";
+              var selectedItems = JSON.parse(document.getElementsByName("{{ $field['name'] }}")['0'].value);
+              var allItems = "{{ count($field['options']) }}";
 
-                if(selectedItems.length == allItems) {
-                    $('#select-all').prop('checked', 'checked');
-                } else {
-                    $('#select-all').prop('checked', false);
-                }
+              if(selectedItems.length == allItems) {
+                $('#select-all').prop('checked', 'checked');
+              } else {
+                $('#select-all').prop('checked', false);
+              }
             }
         </script>
         @endBassetBlock

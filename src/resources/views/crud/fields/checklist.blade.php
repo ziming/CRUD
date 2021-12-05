@@ -70,7 +70,6 @@
         @bassetBlock('backpack/crud/fields/checklist-field.js')
         <script>
             function bpFieldInitChecklist(element) {
-                console.log('element', element);
                 var hidden_input = element.find('input[type=hidden]');
                 var selected_options = JSON.parse(hidden_input.val() || '[]');
                 var checkboxes = element.find('#checkbox-wrapper :input[type=checkbox]');

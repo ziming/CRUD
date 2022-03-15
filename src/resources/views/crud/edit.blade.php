@@ -41,7 +41,17 @@
 		  {!! method_field('PUT') !!}
 
 		  	@if ($crud->model->translationEnabled())
+			
 		    <div class="mb-2 text-right">
+				@php
+					$editLocale = request()->input('_locale') ?? App::getLocale();
+					$translatedAttributes = array_filter($entry->getTranslatableAttributes(), function($attribute) use ($entry, $editLocale) {
+						return $entry->getTranslation($attribute, $editLocale, false) ?? false;
+					});
+				@endphp
+				@if(empty($translatedAttributes) && !request('_use_fallback'))
+					{{ trans('backpack::crud.no_attributes_translated') }} <a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback=true">{{trans('backpack::crud.no_attributes_translated_href_text')}} </a>
+				@endif
 		    	<!-- Single button -->
 				<div class="btn-group">
 				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

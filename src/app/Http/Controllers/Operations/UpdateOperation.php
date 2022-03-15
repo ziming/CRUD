@@ -65,9 +65,21 @@ trait UpdateOperation
         $this->crud->hasAccessOrFail('update');
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
-        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+        
         // get the info for that entry
-        $this->data['entry'] = $this->crud->getEntry($id);
+        $entry = $this->crud->getEntry($id);
+
+        if($entry->translationEnabled()) {
+            $locale = request('_locale', \App::getLocale());
+            if(in_array($locale, array_keys($entry->getAvailableLocales()))) {
+                $entry->setLocale($locale);
+                $entry->useFallbackLocale = request('_use_fallback') ? true : false;
+            }
+        }
+        
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['entry'] = $entry;
         $this->data['crud'] = $this->crud;
         $this->data['saveAction'] = $this->crud->getSaveAction();
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;

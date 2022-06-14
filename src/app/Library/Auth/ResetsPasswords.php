@@ -69,7 +69,7 @@ trait ResetsPasswords
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => ['required', 'confirmed', Password::min(8)->uncompromised()],
+            'password' => ['required', 'confirmed', 'min:8', Password::defaults()],
         ];
     }
 

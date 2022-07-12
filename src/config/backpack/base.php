@@ -279,6 +279,7 @@ return [
     'gravatar_fallback' => 'blank',
     
     'password_validation_rules' => [
+        Password::min(8),
         // Password::defaults(),
     ],
 

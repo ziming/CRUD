@@ -6,7 +6,6 @@ use Backpack\CRUD\app\Library\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Validation\Rules\Password;
 use Validator;
 
 class RegisterController extends Controller

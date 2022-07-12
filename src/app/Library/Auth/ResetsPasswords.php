@@ -69,7 +69,7 @@ trait ResetsPasswords
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => ['required', 'confirmed', 'min:8', PasswordValidation::defaults()],
+            'password' => ['required', 'confirmed', 'min:8', ...config('backpack.base.password_validation_rules')],
         ];
     }
 

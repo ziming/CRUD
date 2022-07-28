@@ -270,7 +270,7 @@ trait Update
                         $result[$name] = [$relatedModel->{$name}->only(array_column($subfield['subfields'], 'name'))];
                     } else {
                         $result[$name] = $relatedModel->{$name};
-                    }    
+                    }
                 } else {
                     // if the subfield name contains a dot, we are going to iterate through
                     // those parts to get the last connected part and parse it for returning.

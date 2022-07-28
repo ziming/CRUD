@@ -44,12 +44,12 @@
 			
 		    <div class="mb-2 text-right">
 				@php
-					$editLocale = request()->input('_locale') ?? App::getLocale();
+					$editLocale = $crud->getRequest()->input('_locale', App::getLocale());
 					$translatedAttributes = array_filter($entry->getTranslatableAttributes(), function($attribute) use ($entry, $editLocale) {
 						return $entry->getTranslation($attribute, $editLocale, false) ?? false;
 					});
 				@endphp
-				@if(empty($translatedAttributes) && !request('_use_fallback'))
+				@if(empty($translatedAttributes) && ! $crud->getRequest()->input('_use_fallback'))
 					{{ trans('backpack::crud.no_attributes_translated') }} <a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback=true">{{trans('backpack::crud.no_attributes_translated_href_text')}} </a>
 				@endif
 		    	<!-- Single button -->

@@ -49,7 +49,7 @@
 						return $entry->getTranslation($attribute, $editLocale, false) ?? false;
 					});
 				@endphp
-				@if(empty($translatedAttributes) && ! $crud->getRequest()->input('_use_fallback'))
+				@if(empty($translatedAttributes) && ! empty($entry->getTranslatableAttributes()) && ! $crud->getRequest()->input('_use_fallback'))
 					{{ trans('backpack::crud.no_attributes_translated') }} <a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback=true">{{trans('backpack::crud.no_attributes_translated_href_text')}} </a>
 				@endif
 		    	<!-- Single button -->

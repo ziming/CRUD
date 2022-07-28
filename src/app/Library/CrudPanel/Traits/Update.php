@@ -198,6 +198,7 @@ trait Update
             $locale = request('_locale', app()->getLocale());
             if (in_array($locale, array_keys($model->getAvailableLocales()))) {
                 $model->setLocale($locale);
+                $model->useFallbackLocale = false;
             }
         }
 

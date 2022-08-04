@@ -12,7 +12,7 @@ class Backpack
      *
      * @var string|array|callable|null
      */
-    public static $defaultPasswordRulesCallback;
+    protected static $defaultPasswordRulesCallback;
 
     /**
      * Get the default configuration of the password rule.

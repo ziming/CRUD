@@ -45,6 +45,7 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
+        Backpack::passwordRulesDefaults(config('backpack.base.password_validation_rules'));
         $this->sendUsageStats();
     }
 

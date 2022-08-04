@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
 use Backpack\CRUD\app\Library\Auth\RegistersUsers;
+use Backpack\CRUD\Backpack;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -56,7 +57,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'                             => 'required|max:255',
             backpack_authentication_column()   => 'required|'.$email_validation.'max:255|unique:'.$users_table,
-            'password'                         => ['required', 'confirmed', ...config('backpack.base.password_validation_rules')],
+            'password'                         => ['required', 'confirmed', Backpack::passwordRulesDefaults()],
         ]);
     }
 

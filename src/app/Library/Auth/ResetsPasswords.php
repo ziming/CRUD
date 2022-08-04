@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\Auth;
 
+use Backpack\CRUD\Backpack;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ trait ResetsPasswords
         return [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => ['required', 'confirmed', ...config('backpack.base.password_validation_rules')],
+            'password' => ['required', 'confirmed', Backpack::passwordRulesDefaults()],
         ];
     }
 

@@ -278,10 +278,7 @@ return [
     // 'blank' will keep the generic image with the user first letter
     'gravatar_fallback' => 'blank',
     
-    'password_validation_rules' => [
-        Password::min(8),
-        // Password::defaults(),
-    ],
+    'password_validation_rules' => Password::min(8),
 
     /*
     |--------------------------------------------------------------------------

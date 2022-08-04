@@ -15,7 +15,7 @@ class Backpack
     protected static $defaultPasswordRulesCallback;
 
     /**
-     * Get the default configuration of the password rule.
+     * Get the default configuration of backpack password rule.
      *
      * @return static
      */
@@ -29,7 +29,7 @@ class Backpack
     }
     
     /**
-     * Set the default callback to be used for determining a password's default rules.
+     * Set the default callback to be used for determining backpack password's default rules.
      *
      * If no arguments are passed, the default password rule configuration will be returned.
      *

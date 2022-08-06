@@ -1,0 +1,33 @@
+name: Rector PHP Downgrade Dry Run
+
+on: [pull_request]
+
+jobs:
+  rector-php-downgrade:
+    name: Run Rector PHP Downgrade Dry Run
+    runs-on: ubuntu-latest
+
+    steps:
+      -   uses: actions/checkout@v3
+          with:
+            ref: ${{ github.head_ref }}
+
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.1'
+            extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, gmp
+            tools: composer:v2
+            coverage: none
+
+      -   name: Cache composer dependencies
+          uses: actions/cache@v3
+          with:
+            path: vendor
+            key: composer-${{ hashFiles('composer.lock') }}
+
+      -   name: Run composer install
+          run: composer install -n --prefer-dist
+
+      -   name: Rector PHP Downgrade Dry Run
+          run: ./vendor/bin/rector process --dry-run --config rector-downgrade.php 

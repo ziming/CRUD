@@ -10,6 +10,7 @@ use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\DowngradeLevelSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
+use Rector\Core\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
 

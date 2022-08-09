@@ -13,6 +13,11 @@ use Rector\Set\ValueObject\SetList;
 
 return static function (RectorConfig $rectorConfig): void {
 
+    // If you want to speed things up
+    // $rectorConfig->parallel();
+    
+    // you can instruct rector to only run against the changed files too, but I have forgotten that rule for now.
+    
     // is your PHP version different from the one you refactor to? [default: your PHP version], uses PHP_VERSION_ID format
     $rectorConfig->phpVersion(PhpVersion::PHP_73);
 

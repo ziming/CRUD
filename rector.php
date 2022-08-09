@@ -19,7 +19,7 @@ return static function (RectorConfig $rectorConfig): void {
     // you can instruct rector to only run against the changed files too, but I have forgotten that rule for now.
     
     // is your PHP version different from the one you refactor to? [default: your PHP version], uses PHP_VERSION_ID format
-    $rectorConfig->phpVersion(PhpVersion::PHP_73);
+    // $rectorConfig->phpVersion(PhpVersion::PHP_73);
 
     $rectorConfig->paths([
         __DIR__.'/src',

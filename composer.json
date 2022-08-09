@@ -65,7 +65,7 @@
         "test": "vendor/bin/phpunit --testdox",
         "test-failing": "vendor/bin/phpunit --order-by=defects --stop-on-failure",
         "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text",
-        "rector-dry-run": "./vendor/bin/rector process --dry-run"
+        "rector-dry-run": "./vendor/bin/rector --dry-run"
     },
     "extra": {
         "branch-alias": {

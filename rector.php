@@ -12,7 +12,7 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Core\ValueObject\PhpVersion;
 
-return static function (RectorConfig $rectorConfig): void {
+return static function (RectorConfig $rectorConfig) {
 
     // If you want to speed things up
     // $rectorConfig->parallel();

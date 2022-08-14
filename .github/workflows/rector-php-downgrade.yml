@@ -30,4 +30,4 @@ jobs:
           run: composer install -n --prefer-dist
 
       -   name: Rector PHP Downgrade Dry Run
-          run: ./vendor/bin/rector process --dry-run --config rector-downgrade.php 
+          run: ./vendor/bin/rector --dry-run --config rector-downgrade.php 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
 use Rector\Laravel\Set\LaravelSetList;
-use Rector\Nette\Set\NetteSetList;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\DowngradeLevelSetList;
 use Rector\Set\ValueObject\LevelSetList;
@@ -55,7 +54,6 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::TYPE_DECLARATION, // declare those types natively or in docblock for older PHP versions
         // SetList::EARLY_RETURN,
         // SetList::TYPE_DECLARATION_STRICT, // not too sure of the difference between this and TYPE_DECLARATION
-        // NetteSetList::NETTE_UTILS_CODE_QUALITY,
         // PHPUnitSetList::PHPUNIT_CODE_QUALITY,
         // SetList::CODING_STYLE, // u prob use pint instead for code style.
     ]);

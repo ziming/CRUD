@@ -13,6 +13,8 @@
 
     if(is_array($column['value'])) {
         $column['value'] = json_encode($column['value']);
+    } elseif (function_exists('enum_exists') && $column['value'] instanceof \UnitEnum) {
+        $column['value'] = $column['value']->value;
     }
 
     if(!empty($column['value'])) {

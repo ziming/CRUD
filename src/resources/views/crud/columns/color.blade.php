@@ -2,10 +2,7 @@
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['escaped'] = $column['escaped'] ?? true;
-    $column['limit'] = $column['limit'] ?? 32;
-    $column['prefix'] = $column['prefix'] ?? '';
-    $column['suffix'] = $column['suffix'] ?? '';
-    $column['text'] = $column['default'] ?? '-';
+    $column['text'] = $column['default'] ?? '#000000';
 
     if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
@@ -16,7 +13,7 @@
     }
 
     if(!empty($column['value'])) {
-        $column['text'] = $column['prefix'].Str::limit($column['value'], $column['limit'], '…').$column['suffix'];
+        $column['text'] = $column['value'];
     }
 @endphp
 

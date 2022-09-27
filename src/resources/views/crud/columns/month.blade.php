@@ -1,7 +1,7 @@
 {{-- localized date using nesbot carbon --}}
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
-    $column['value'] = date('M', strtotime($column['value']));
+    $column['value'] = date(config('backpack.base.default_month_format'), strtotime($column['value']));
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';

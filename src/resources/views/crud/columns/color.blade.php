@@ -20,9 +20,9 @@
 <span>
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
-            <span style="background-color: {{ $column['text'] }}"></span>
+            <span style="background-color: {{ $column['text'] }}"></span> {{ $column['text'] }}
         @else
-            <span style="background-color: {!! $column['text'] !!}"></span>
+            <span style="background-color: {!! $column['text'] !!}"></span> {{ $column['text'] }}
         @endif
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>

@@ -1,4 +1,3 @@
-{{-- regular object attribute --}}
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['value'] = str_repeat("*", strlen($column['value']));

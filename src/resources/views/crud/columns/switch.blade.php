@@ -1,1 +1,1 @@
-@include('crud::columns.switch')
+@include('crud::columns.check')

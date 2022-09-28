@@ -17,10 +17,6 @@
     }
 @endphp
 
-@php
-    if($column['text'] != "-"):
-@endphp
+@if ($column['text'] != "-"):
 <div title="{{ $column['text'] }}%" style="float: left; width: 100%; border:1px blue solid;"> <span style="width: {{ $column['text'] }}%; background: green; float: left;">&nbsp;</span></div>
-@php
-    endif;
-@endphp
+@endif

@@ -1,1 +1,6 @@
-@include('crud::columns.checklist')
+@include('crud::columns.checklist', ['column' => $column['subfields']['primary']]) <br />
+
+@php
+    
+@endphp
+@include('crud::columns.select_dependency', ['column' => $column['subfields']['secondary']])

@@ -8,10 +8,6 @@
         $column['value'] = $column['value']($entry);
     }
 
-    if(is_array($column['value'])) {
-        $column['value'] = json_encode($column['value']);
-    }
-
     if(!empty($column['value'])) {
         $column['text'] = $column['value'];
     }

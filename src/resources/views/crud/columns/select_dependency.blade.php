@@ -38,11 +38,9 @@
         @endforeach
         {{ $column['suffix'] }}
     @else
-        <?php
-            $entity_model = $crud->getModel();
-        ?>
-
         @php
+            $entity_model = $crud->getModel();
+            
             $id = $entry->id;
 
             $entity_dependencies = $entity_model->with($column['entity_primary'])
@@ -65,9 +63,7 @@
             $field_text = $column['default'] ?? '-';
 
             $secondary_data = ($secondary_ids ? implode(", ", $secondary_ids) : "");
-        @endphp
 
-        @php
             echo ($secondary_data) ? $secondary_data : $field_text;
         @endphp
     @endif

@@ -3,16 +3,5 @@
     $column['value'] = str_repeat("*", strlen($column['value']));
     $column['escaped'] = $column['escaped'] ?? true;
     $column['limit'] = $column['limit'] ?? 6;
-
-    if($column['value'] instanceof \Closure) {
-        $column['value'] = $column['value']($entry);
-    }
-
-    if(!empty($column['value'])) {
-        $column['text'] = Str::limit($column['value'], $column['limit'], '');
-    }
 @endphp
-
-<span>
-    {{ $column['text'] }}
-</span>
+@include('crud::columns.text')

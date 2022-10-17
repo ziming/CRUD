@@ -17,13 +17,9 @@
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
         @if($column['escaped'])
             @if($column['text'] != "-")
-                <span title="{{ $column['text'] }}" style="width: 100%; float: left; background-color: {{ $column['text'] }}">&nbsp;</span><br />
+                <span title="{{ $column['text'] }}" class="btn rounded-circle" style="font-size: 0.5rem; background-color: {{ $column['text'] }}">&nbsp;</span><br />
             @endif
-            {{ $column['text'] }}
         @else
-            @if($column['text'] != "-")
-                <span title="{!! $column['text'] !!}" style="width: 100%; float: left; background-color: {!! $column['text'] !!}">&nbsp;</span><br />
-            @endif
             {!! $column['text'] !!}
         @endif
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')

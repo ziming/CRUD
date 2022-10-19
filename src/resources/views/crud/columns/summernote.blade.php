@@ -1,4 +1,1 @@
-@php
-    $column['escaped'] = $column['escaped'] ?? false;
-@endphp
-@include('crud::columns.text')
+@include('crud::columns.textarea')

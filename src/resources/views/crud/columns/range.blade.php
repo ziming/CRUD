@@ -2,7 +2,7 @@
 @php
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
     $column['text'] = $column['default'] ?? '-';
-    $max_value = (isset($column['max'])) ? $column['max'] : '100';
+    $max_value = (isset($column['attributes']['max'])) ? $column['attributes']['max'] : '100';
 
     if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
@@ -18,7 +18,9 @@
 @endphp
 
 @if ($column['text'] != "-")
-<div title="{{ $column['text'] }}%" style="float: left; width: 100%; border:1px blue solid;"> <span style="width: {{ $column['text'] }}%; background: green; float: left;">&nbsp;</span></div>
+<div class="progress">
+    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ $column['text'] }}%" aria-valuenow="{{ $column['text'] }}" aria-valuemin="0" aria-valuemax="{{ $max_value }}"></div>
+</div>
 @else
     <span>{{ $column['text'] }}</span>
 @endif

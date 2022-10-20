@@ -9,6 +9,7 @@
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 32;
+    $field_primary_text = $column['default'] ?? '';
     $field_text = $column['default'] ?? '-';
 
     if($column['value'] instanceof \Closure) {
@@ -66,7 +67,7 @@
         {{-- Show Secondary depenedency if exists with primary --}}
 
         @php
-            echo ($secondary_data) ? ", ".$secondary_data : $field_text;
+            echo ($secondary_data) ? ", ".$secondary_data : $field_primary_text;
         @endphp
 
         {{ $column['suffix'] }}

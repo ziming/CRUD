@@ -4,6 +4,8 @@
     $column['escaped'] = $column['escaped'] ?? true;
     $column['text'] = $column['default'] ?? '-';
 
+    $column['showColorHex'] = $column['showColorHex'] ?? '';
+
     if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
@@ -18,11 +20,14 @@
         @if($column['escaped'])
             @if($column['text'] != "-")
                 <span title="{{ $column['text'] }}" class="btn rounded-circle" style="font-size: 0.5rem; background-color: {{ $column['text'] }}">&nbsp;</span>
+                @if($column['showColorHex'])
+                <br />{{ $column['text'] }}
+                @endif
             @else
                 {{ $column['text'] }}
             @endif
         @else
-            {!! $column['text'] !!} &nbsp;<span title="{{ $column['text'] }}" class="btn" style="width: 16px; height: 16px; padding: 0px; border-radius: 0px; background-color: {{ $column['text'] }}">&nbsp;</span>
+            {!! $column['text'] !!} &nbsp; <span title="{{ $column['text'] }}" class="btn rounded-circle" style="font-size: 0.5rem; background-color: {{ $column['text'] }}">&nbsp;</span>
         @endif
     @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
 </span>

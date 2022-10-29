@@ -45,33 +45,28 @@
 
 <span>
     @if(count($column['value']))
+        {!! $column['label'] !!}:
         {{ $column['prefix'] }}
         @foreach($column['value'] as $key => $text)
             @php
                 $related_key = $key;
             @endphp
 
-            <span class="d-inline-flex">
-                @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
-                    @if($column['escaped'])
-                        {{ $text }}
-                    @else
-                        {!! $text !!}
-                    @endif
-                @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
-
-                @if(!$loop->last), @endif
-            </span>
+            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+                @if($column['escaped'])
+                    {{ $text }}@php echo ($secondary_data) ? "," : ""; @endphp
+                @else
+                    {!! $text !!}
+                @endif
+            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
         @endforeach
-
-        {{-- Show Secondary depenedency if exists with primary --}}
-
         @php
-            echo ($secondary_data) ? ", ".$secondary_data : $field_primary_text;
+            echo ($secondary_data) ? "".$secondary_data : $field_primary_text;
         @endphp
 
         {{ $column['suffix'] }}
     @else
+        {!! $column['label'] !!}:
 
         {{-- Show Secondary depenedency --}}
         @php

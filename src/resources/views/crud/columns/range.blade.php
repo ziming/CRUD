@@ -21,7 +21,7 @@
 
 @if ($column['text'] != "-")
 <div class="progress">
-    <div class="{{ $column['progress_class'].' '.$column['striped_class'] }}" role="progressbar" style="width: {{ $column['text'] }}%" aria-valuenow="{{ $column['text'] }}" aria-valuemin="0" aria-valuemax="{{ $max_value }}">{{ $column['text'] }}%</div>
+    <div class="progress-bar {{ $column['progress_class'].' '.$column['striped_class'] }}" role="progressbar" style="width: {{ $column['text'] }}%" aria-valuenow="{{ $column['text'] }}" aria-valuemin="0" aria-valuemax="{{ $max_value }}">{{ $column['text'] }}%</div>
 </div>
 @else
     <span>{{ $column['text'] }}</span>

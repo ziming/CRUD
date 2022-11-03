@@ -4,7 +4,7 @@
     $column['escaped'] = $column['escaped'] ?? true;
     $column['text'] = $column['default'] ?? '-';
 
-    $column['showColorHex'] = $column['showColorHex'] ?? '';
+    $column['showColorHex'] = $column['showColorHex'] ?? true;
 
     if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);

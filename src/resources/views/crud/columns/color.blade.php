@@ -21,7 +21,7 @@
             @if($column['text'] != "-")
                 <span title="{{ $column['text'] }}" class="btn rounded-circle" style="font-size: 0.5rem; background-color: {{ $column['text'] }}">&nbsp;</span>
                 @if($column['showColorHex'])
-                <br />{{ $column['text'] }}
+                {{ $column['text'] }}
                 @endif
             @else
                 {{ $column['text'] }}

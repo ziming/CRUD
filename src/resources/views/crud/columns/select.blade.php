@@ -19,7 +19,6 @@
 
 <span>
     @if(count($column['value']))
-        {!! $column['label'] !!}: 
         {{ $column['prefix'] }}
         @foreach($column['value'] as $key => $text)
             @php
@@ -38,8 +37,8 @@
             </span>
         @endforeach
         {{ $column['suffix'] }}
-    @else
-        {!! $column['label'] !!}: 
+    @else 
+        {{ $column['prefix'] }}
         {{ $column['default'] ?? '-' }}
     @endif
 </span>

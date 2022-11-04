@@ -1,4 +1,4 @@
 @php
-    $column['format'] = $column['format'] ?? 'HH:mm';
+    $column['format'] = $column['format'] ?? 'hh:mm a';
 @endphp
 @include('crud::columns.date')

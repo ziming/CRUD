@@ -176,21 +176,21 @@
       @endif
 
       // Add inline errors to the DOM
-      @if ($crud->inlineErrorsEnabled() && $errors->any())
+      @if ($crud->inlineErrorsEnabled() && session()->get('errors'))
 
-        window.errors = {!! json_encode($errors->messages()) !!};
+        window.errors = {!! json_encode(session()->get('errors')->getBags()) !!};
 
-        $.each(errors, function(property, messages){
-
-            var normalizedProperty = property.split('.').map(function(item, index){
+        $.each(errors, function(bag, errorMessages){
+          $.each(errorMessages,  function (inputName, messages) {
+            var normalizedProperty = inputName.split('.').map(function(item, index){
                     return index === 0 ? item : '['+item+']';
                 }).join('');
 
             var field = $('[name="' + normalizedProperty + '[]"]').length ?
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
-                        container = field.parents('.form-group');
-
+                        container = field.parent('.form-group');
+          
             // iterate the inputs to add invalid classes to fields and red text to the field container.
             container.children('input, textarea, select').each(function() {
                 let containerField = $(this);
@@ -199,9 +199,8 @@
                 // get field container
                 let container = containerField.parent('.form-group');
 
-                // if container is a repeatable group we don't want to add red text to the whole group,
-                // we only want to add it to the fields that have errors inside that repeatable.
-                if(!container.hasClass('repeatable-group')){
+                // TODO: `repeatable-group` should be deprecated in future version as a BC in favor of a more generic class `no-error-display`
+                if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
                   container.addClass('text-danger');
                 }
             });
@@ -209,7 +208,12 @@
             $.each(messages, function(key, msg){
                 // highlight the input that errored
                 var row = $('<div class="invalid-feedback d-block">' + msg + '</div>');
-                row.appendTo(container);
+
+                // TODO: `repeatable-group` should be deprecated in future version as a BC in favor of a more generic class `no-error-display`
+                if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
+                  row.appendTo(container);
+                }
+                
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())
@@ -218,7 +222,7 @@
                 @endif
             });
         });
-
+      });
       @endif
 
       $("a[data-toggle='tab']").click(function(){

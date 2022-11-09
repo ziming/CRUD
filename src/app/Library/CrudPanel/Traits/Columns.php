@@ -250,10 +250,26 @@ trait Columns
     public function getColumnsRelationships()
     {
         $columns = $this->columns();
+        $relations = [];
+        foreach ($columns as $column) {
+            if (! isset($column['entity']) || ! $column['entity']) {
+                continue;
+            }
+            if (! isset($column['subfields'])) {
+                array_push($relations, $column['entity']);
 
-        return collect($columns)->pluck('entity')->reject(function ($value, $key) {
-            return ! $value;
-        })->toArray();
+                continue;
+            }
+            foreach ($column['subfields'] as $subfield) {
+                if (! isset($subfield['entity']) || ! $subfield['entity'] || ($subfield['is_pivot_select'] ?? false)) {
+                    continue;
+                }
+
+                array_push($relations, $subfield['baseEntity'].'.'.$subfield['entity']);
+            }
+        }
+
+        return $relations;
     }
 
     /**

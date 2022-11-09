@@ -72,4 +72,11 @@ class ViewNamespaces
 
         return array_unique(array_merge($viewNamespacesFromConfig, self::getFor($domain)));
     }
+
+    public static function getFullNamespacesFor(string $domain, string $viewName)
+    {
+        return array_map(function ($item) use ($viewName) {
+            return $item.'.'.$viewName;
+        }, self::getFor($domain));
+    }
 }

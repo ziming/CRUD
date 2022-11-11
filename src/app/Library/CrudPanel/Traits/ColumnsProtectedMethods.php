@@ -232,6 +232,17 @@ trait ColumnsProtectedMethods
     }
 
     /**
+     * Infer the attribute for the column when needed.
+     *
+     * @param array $column
+     * @return void
+     */
+    protected function makeSureColumnHasAttribute(array $column)
+    {
+        return $this->makeSureFieldHasAttribute($column);
+    }
+
+    /**
      * If an entity has been defined for the column, but no model,
      * determine the model from that relationship.
      *

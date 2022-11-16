@@ -2,7 +2,8 @@
 @php
     $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
     $column['value'] = $column['value'] ?? $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
-    $column['escaped'] = $column['escaped'] ?? true;
+    $column['escaped'] = $column['escaped'] ?? true;    
+    $column['label'] = $column['label'] ?? '';
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
     $column['limit'] = $column['limit'] ?? 32;
@@ -27,17 +28,17 @@
             <span class="d-inline-flex">
                 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
                     @if($column['escaped'])
-                        {{ $text }}
+                        {{ $text }}@if(!$loop->last),@endif
                     @else
                         {!! $text !!}
                     @endif
                 @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
-
-                @if(!$loop->last), @endif
+                
             </span>
         @endforeach
         {{ $column['suffix'] }}
-    @else
+    @else 
+        {{ $column['prefix'] }}
         {{ $column['default'] ?? '-' }}
     @endif
 </span>

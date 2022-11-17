@@ -1,28 +1,33 @@
-{{-- regular object attribute --}}
 @php
+    $maxValue = $column['attributes']['max'] ?? 100;
+    $minValue = $column['attributes']['min'] ?? 0;
+
+    $column['showMaxValue'] = $column['showMaxValue'] ?? true;
+    $column['showValue'] = $column['showValue'] ?? $column['showMaxValue'];
+    $column['progressColor'] = $column['progressColor'] ?? 'bg-success';
+    $column['striped'] = $column['striped'] ?? false;
+
     $column['value'] = $column['value'] ?? data_get($entry, $column['name']);
-    $column['text'] = $column['default'] ?? '-';
-    $column['progress_class'] = $column['progress_class'] ?? '';
-    $column['striped_class'] = $column['is_striped'] ? 'progress-bar-striped' : '';
-    $max_value = (isset($column['attributes']['max'])) ? $column['attributes']['max'] : '100';
 
     if($column['value'] instanceof \Closure) {
         $column['value'] = $column['value']($entry);
     }
-
-    if(is_array($column['value'])) {
-        $column['value'] = json_encode($column['value']);
-    }
-
-    if(!empty($column['value'])) {
-        $column['text'] = ($column['value'] / $max_value) * 100;
-    }
 @endphp
 
-@if ($column['text'] != "-")
+@if (!empty($column['value']))
 <div class="progress">
-    <div class="progress-bar {{ $column['progress_class'].' '.$column['striped_class'] }}" role="progressbar" style="width: {{ $column['text'] }}%" aria-valuenow="{{ $column['text'] }}" aria-valuemin="0" aria-valuemax="{{ $max_value }}">{{ $column['text'] }}</div>
+    <div 
+        class="progress-bar {{ $column['progressColor']}} @if($column['striped']) progress-bar-striped @endif" 
+        role="progressbar" 
+        style="width: {{ ($column['value']/$maxValue)*100 }}%" 
+        aria-valuenow="{{ $column['value'] }}" 
+        aria-valuemin="{{$minValue}}" 
+        aria-valuemax="{{ $maxValue }}"
+        >
+        @if($column['showValue']){{ $column['value'] }}&nbsp; @if($column['showMaxValue']) / {{$maxValue}} @endif
+         @endif
+    </div>
 </div>
 @else
-    <span>{{ $column['text'] }}</span>
+    <span>{{ $column['default'] ?? '-' }}</span>
 @endif

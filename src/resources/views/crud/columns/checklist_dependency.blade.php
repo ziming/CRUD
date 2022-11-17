@@ -1,76 +1,40 @@
-@include('crud::columns.checklist', ['column' => $column['subfields']['primary']]) <br />
 
 @php
-	$column = $column['subfields']['secondary'];
+    // since this field is sensible to have long list, for example a list of permissions, we enforce
+    // a maximum column width in px so that we avoid taking up the whole table space.
+    $column['maxWidth'] = $column['maxWidth'] ?? 400;
+    
+    $primaryDependency = $column['subfields']['primary'];
+    $secondaryDependency = $column['subfields']['secondary'];
+    $secondaryDependency['options'] = $secondaryDependency['value'] = [];
 
-    $column['attribute'] = $column['attribute'] ?? (new $column['model'])->identifiableAttribute();
-    $column['value'] = $column['value'] ?? $crud->getRelatedEntriesAttributes($entry, $column['entity'], $column['attribute']);
-    $column['escaped'] = $column['escaped'] ?? true;
-    $column['prefix'] = $column['prefix'] ?? '';
-    $column['suffix'] = $column['suffix'] ?? '';
-    $column['limit'] = $column['limit'] ?? 32;
-    $field_primary_text = $column['default'] ?? '';
-    $field_text = $column['default'] ?? '-';
+    // Primary dependency field is the direct relation with the entry, so a select multiple is the way to go.
+    $primaryDependency['type'] = 'select_multiple';
+    // The second dependency we build from the items selected in the first dependency plus the direct entry associations.
+    // Having all the information on our side we can use the select from array and give the desired options/values to show.
+    $secondaryDependency['type'] = 'select_from_array';
 
-    if($column['value'] instanceof \Closure) {
-        $column['value'] = $column['value']($entry);
-    }
+    // Get the primary and secondary dependencies directly associated with entry.
+    $primaryDependencies = $entry->{$primaryDependency['entity']} ?? [];
+    $secondaryDependencies = $entry->{$secondaryDependency['entity']} ?? [];
 
-    foreach ($column['value'] as &$value) {
-        $value = Str::limit($value, $column['limit'], '…');
-    }
-
-    $entity_model = $crud->getModel();
-            
-    $id = $entry->id;
-
-    $entity_dependencies = $entity_model->with($column['entity_primary'])
-      ->with($column['entity_primary'].'.'.$column['entity'])
-      ->find($id);
-
-    $primary_array = $entity_dependencies->{$column['entity_primary']}->toArray();
-
-    $secondary_ids = [];
-    if($primary_array)
-    {
-        foreach ($primary_array as $primary_item) {
-            foreach ($primary_item[$column['entity']] as $second_item) {
-                $secondary_ids[$second_item['id']] = $second_item[$column['attribute']];
-            }
+    $secondaryDependencyOptions = [];
+    // Loop the primary dependencies to get related secondary dependencies and add them as options for the select.
+    foreach ($primaryDependencies as $primary) {
+        foreach ($primary->{$secondaryDependency['entity']} as $secondary) {
+            $secondaryDependencyOptions[] = $secondary->{$secondaryDependency['attribute']};
         }
     }
 
-    $secondary_data = ($secondary_ids ? implode(", ", $secondary_ids) : "");
+    // Merge the direct secondary dependencies items with secondary dependencies from primary
+    foreach($secondaryDependencies as $secondary) {
+        $secondaryDependencyOptions[] = $secondary->{$secondaryDependency['attribute']};
+    }
+
+    $secondaryDependency['options'] = $secondaryDependency['value'] = array_unique($secondaryDependencyOptions);
 @endphp
 
-<span>
-    @if(count($column['value']))
-        {!! $column['label'] !!}:
-        {{ $column['prefix'] }}
-        @foreach($column['value'] as $key => $text)
-            @php
-                $related_key = $key;
-            @endphp
-
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
-                @if($column['escaped'])
-                    {{ $text }}@php echo ($secondary_data) ? "," : ""; @endphp
-                @else
-                    {!! $text !!}
-                @endif
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
-        @endforeach
-        @php
-            echo ($secondary_data) ? "".$secondary_data : $field_primary_text;
-        @endphp
-
-        {{ $column['suffix'] }}
-    @else
-        {!! $column['label'] !!}:
-
-        {{-- Show Secondary depenedency --}}
-        @php
-            echo ($secondary_data) ? $secondary_data : $field_text;
-        @endphp
-    @endif
-</span>
+<div style="max-width: {{$column['maxWidth']}}px; white-space: normal;">
+    <b>{!!$column['subfields']['primary']['label'] !!}: &nbsp;</b> {!! $crud->getCellView($primaryDependency, $entry) !!} <br/>
+    <b>{!!$column['subfields']['secondary']['label'] !!}: &nbsp;</b> {!! $crud->getCellView($secondaryDependency, $entry) !!}
+</div>

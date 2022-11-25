@@ -181,7 +181,7 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasAttribute($field)
     {
-        if ($field['entity']) {
+        if (isset($field['entity']) && $field['entity']) {
             // if the user setup the attribute in relation string, we are not going to infer that attribute from model
             // instead we get the defined attribute by the user.
             if ($this->isAttributeInRelationString($field)) {

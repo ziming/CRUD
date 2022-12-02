@@ -18,7 +18,7 @@
   </nav>
 
 @push('crud_list_scripts')
-	<script src="{{ asset('packages/URI.js/URI.min.js') }}" type="text/javascript"></script>
+    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/URI.js/URI.min.js')
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);

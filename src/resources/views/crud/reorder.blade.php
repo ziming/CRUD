@@ -221,8 +221,8 @@
 @endsection
 
 @section('after_scripts')
-    <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
+    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/jquery-ui-dist/jquery-ui.min.js')
+    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/nestedSortable/jquery.mjs.nestedSortable2.js')
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {

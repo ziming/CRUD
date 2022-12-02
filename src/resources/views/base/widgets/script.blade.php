@@ -4,9 +4,5 @@
 @endphp
 
 @push($widget['stack'] ?? 'after_scripts')
-    <script src="{{ $src }}"
-        @foreach($attributes as $key => $value)
-        {{ $key }}{!! $value === true || $value === '' ? '' : "=\"$value\"" !!}
-        @endforeach
-    ></script>
+    @basset($src, true, $attributes)
 @endpush

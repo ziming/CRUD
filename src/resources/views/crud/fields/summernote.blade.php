@@ -31,8 +31,8 @@
     {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     {{-- include summernote css --}}
-    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/summernote/dist/summernote-bs4.css?variable')
-    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/summernote/dist/font/summernote.woff2', false)
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/font/summernote.woff2', false)
     @loadOnce('summernoteCss')
     <style type="text/css">
         .note-editor.note-frame .note-status-output, .note-editor.note-airframe .note-status-output {
@@ -44,7 +44,7 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     {{-- include summernote js --}}
-    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/summernote/dist/summernote-bs4.min.js')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote.min.js')
     @loadOnce('bpFieldInitSummernoteElement')
     <script>
         function bpFieldInitSummernoteElement(element) {

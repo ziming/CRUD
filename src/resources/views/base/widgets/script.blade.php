@@ -4,5 +4,5 @@
 @endphp
 
 @push($widget['stack'] ?? 'after_scripts')
-    @basset($src, true, $attributes)
+    @basset($src, true, $attributes, 'script')
 @endpush

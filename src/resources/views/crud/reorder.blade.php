@@ -221,8 +221,8 @@
 @endsection
 
 @section('after_scripts')
-    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/jquery-ui-dist/jquery-ui.min.js')
-    @basset('https://cdn.jsdelivr.net/gh/laravel-backpack/crud@5.4.7/src/public/packages/nestedSortable/jquery.mjs.nestedSortable2.js')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/nestedSortable/2.0.0/jquery.mjs.nestedSortable.min.js')
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {

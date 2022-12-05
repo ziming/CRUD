@@ -6,5 +6,5 @@
 @endphp
 
 @push($widget['stack'] ?? 'after_styles')
-    @basset($href, true, $attributes)
+    @basset($href, true, $attributes, 'style')
 @endpush

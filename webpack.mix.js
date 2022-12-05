@@ -32,3 +32,11 @@ mix.sass('src/resources/assets/scss/blue-bundle.scss', 'src/public/packages/back
 	.options({
       processCssUrls: false
     });
+
+// copy the Backstrap CSS
+mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages/@digitallyhappy/backstrap/css');
+
+// FOR MAINTAINERS
+// copy asset files from Base's public folder the main app's public folder
+// so that you don't have to publish the assets with artisan to test them
+mix.copyDirectory('src/public', '../../../public')

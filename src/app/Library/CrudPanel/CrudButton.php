@@ -19,9 +19,13 @@ use Backpack\CRUD\ViewNamespaces;
 class CrudButton
 {
     public $stack;
+
     public $name;
+
     public $type;
+
     public $content;
+
     public $position;
 
     public function __construct($name, $stack = null, $type = null, $content = null, $position = null)
@@ -316,7 +320,7 @@ class CrudButton
     public function makeFirst()
     {
         $this->remove();
-        $this->collection()->prepend($this);
+        $this->crud()->setOperationSetting('buttons', $this->collection()->prepend($this));
 
         return $this;
     }
@@ -329,7 +333,7 @@ class CrudButton
     public function makeLast()
     {
         $this->remove();
-        $this->collection()->push($this);
+        $this->crud()->setOperationSetting('buttons', $this->collection()->push($this));
 
         return $this;
     }
@@ -367,7 +371,7 @@ class CrudButton
      */
     public function remove()
     {
-        $this->collection()->pull($this->getKey());
+        $this->crud()->setOperationSetting('buttons', $this->collection()->except($this->getKey()));
 
         return $this;
     }
@@ -443,16 +447,16 @@ class CrudButton
 
         if (! $itemExists) {
             if ($this->position == 'beginning') {
-                $this->collection()->prepend($this);
+                $this->crud()->setOperationSetting('buttons', $this->collection()->prepend($this));
             } else {
-                $this->collection()->push($this);
+                $this->crud()->setOperationSetting('buttons', $this->collection()->push($this));
             }
 
             // clear the custom position, so that the next daisy chained method
             // doesn't move it yet again
             $this->position = null;
         } else {
-            $this->collection()->replace([$this->getKey() => $this]);
+            $this->crud()->setOperationSetting('buttons', $this->collection()->replace([$this->getKey() => $this]));
         }
 
         return $this;

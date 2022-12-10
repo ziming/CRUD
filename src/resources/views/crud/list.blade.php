@@ -153,8 +153,8 @@
 @section('after_styles')
   {{-- DATA TABLES --}}
   @basset('https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css')
-  @basset('https://cdnjs.cloudflare.com/ajax/libs/datatables.net-fixedheader-bs4/3.2.4/fixedHeader.bootstrap4.min.css')
-  @basset('https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive-bs4/2.2.9/responsive.bootstrap4.min.css')
+  @basset('https://unpkg.com/datatables.net-fixedheader-bs4@3.2.4/css/fixedHeader.bootstrap4.min.css')
+  @basset('https://unpkg.com/datatables.net-responsive-bs4@2.2.9/css/responsive.bootstrap4.min.css')
 
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')

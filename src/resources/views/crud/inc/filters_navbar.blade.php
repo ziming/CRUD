@@ -18,7 +18,7 @@
   </nav>
 
 @push('crud_list_scripts')
-    @basset('https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.11/URI.min.js')
+    @basset('https://unpkg.com/urijs@1.19.11/src/URI.min.js')
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);

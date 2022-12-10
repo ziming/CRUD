@@ -221,7 +221,7 @@
 @endsection
 
 @section('after_scripts')
-    @basset('https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js')
+    @basset('https://unpkg.com/jquery-ui@1.13.2/dist/jquery-ui.min.js')
     @basset('https://cdnjs.cloudflare.com/ajax/libs/nestedSortable/2.0.0/jquery.mjs.nestedSortable.min.js')
 
     <script type="text/javascript">

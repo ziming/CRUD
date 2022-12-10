@@ -9,9 +9,9 @@
   @basset('https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js')
   @basset('https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js')
   @basset('https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js')
-  @basset('https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive-bs4/2.2.9/responsive.bootstrap4.min.js')
+  @basset('https://unpkg.com/datatables.net-responsive-bs4@2.2.9/css/responsive.bootstrap4.min.css')
   @basset('https://cdn.datatables.net/fixedheader/3.2.4/js/dataTables.fixedHeader.min.js')
-  @basset('https://cdnjs.cloudflare.com/ajax/libs/datatables.net-fixedheader-bs4/3.2.4/fixedHeader.bootstrap4.min.js')
+  @basset('https://unpkg.com/datatables.net-fixedheader-bs4@3.2.4/css/fixedHeader.bootstrap4.min.css')
 
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.

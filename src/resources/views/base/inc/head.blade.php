@@ -29,5 +29,9 @@
         @vite(config('backpack.base.vite_styles'))
     @endif
 
+    {{-- Custom Backpack Rules --}}
+    <style>{!! file_get_contents(base_path('vendor/backpack/crud/src/resources/assets/css/backstrap.min.css')) !!}</style>
+    <style>{!! file_get_contents(base_path('vendor/backpack/crud/src/resources/assets/css/custom.min.css')) !!}</style>
+
     @yield('after_styles')
     @stack('after_styles')

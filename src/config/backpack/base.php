@@ -49,13 +49,10 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        'packages/backpack/base/css/bundle.css', // has primary color electric purple (backpack default)
-        // 'packages/backpack/base/css/blue-bundle.css', // has primary color blue
-
         // Here's what's inside the bundle:
-        // 'packages/@digitallyhappy/backstrap/css/style.min.css',
-        // 'packages/animate.css/animate.min.css',
-        // 'packages/noty/noty.css',
+        'https://unpkg.com/@coreui/coreui@2.1.16/dist/css/coreui.min.css',
+        'https://unpkg.com/animate.css@4.1.1/animate.compat.css',
+        'https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.css',
 
         // Load the fonts separately (so that you can replace them at will):
         ['https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap', true, [], 'style'],
@@ -64,13 +61,6 @@ return [
         'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-regular-400.woff2',
         'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-solid-900.woff2',
         'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-brands-400.woff2',
-
-        // Example (the fonts above, loaded from CDN instead)
-        // 'https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css',
-        // 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic',
-
-        // Example (load font-awesome instead of line-awesome):
-        // 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css',
     ],
 
     // CSS files that are loaded in all pages, using Laravel's mix() helper
@@ -137,17 +127,13 @@ return [
 
     // JS files that are loaded in all pages, using Laravel's asset() helper
     'scripts' => [
-        // Backstrap includes jQuery, Bootstrap, CoreUI, PNotify, Popper
-        'packages/backpack/base/js/bundle.js',
-
-        // examples (everything inside the bundle, loaded from CDN)
-        // 'https://code.jquery.com/jquery-3.4.1.min.js',
-        // 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
-        // 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
-        // 'https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js',
-        // 'https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
-        // 'https://unpkg.com/sweetalert/dist/sweetalert.min.js',
-        // 'https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js'
+        'https://unpkg.com/jquery@3.6.1/dist/jquery.min.js',
+        'https://unpkg.com/popper.js@1.16.1/dist/popper.min.js',
+        'https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.min.js',
+        'https://unpkg.com/bootstrap@4.6.0/dist/js/bootstrap.min.js',
+        'https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js',
+        'https://unpkg.com/pace-js@1.2.4/pace.min.js',
+        'https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js',
 
         // examples (VueJS or React)
         // 'https://unpkg.com/vue@2.4.4/dist/vue.min.js',

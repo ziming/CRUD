@@ -2,10 +2,10 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonPositionEnum;
+use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonStackEnum;
 use Backpack\CRUD\ViewNamespaces;
 use Illuminate\Contracts\Support\Arrayable;
-use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonStackEnum;
-use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonPositionEnum;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
@@ -46,9 +46,9 @@ class CrudButton implements Arrayable
 
         // check if stack is a valid stack
         if ($stack && ! ButtonStackEnum::isValid($stack)) {
-                throw new \Exception('CRUD Button stack "'.$stack.'" is not a valid stack. Please use one of the following: '.implode(', ', ButtonStackEnum::getValues()), 500);
+            throw new \Exception('CRUD Button stack "'.$stack.'" is not a valid stack. Please use one of the following: '.implode(', ', ButtonStackEnum::getValues()), 500);
         }
-        
+
         $this->name = $name ?? 'button_'.rand(1, 999999999);
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
@@ -452,33 +452,33 @@ class CrudButton implements Arrayable
      */
     private function save()
     {
-        if($this->collection()->isEmpty()) {
+        if ($this->collection()->isEmpty()) {
             $this->crud()->addCrudButton($this);
+
             return $this;
         }
 
         $itemExists = $this->collection()->contains('name', $this->name);
-       
-        if (! $itemExists) { 
+
+        if (! $itemExists) {
             $this->crud()->addCrudButton($this);
             if ($this->position == 'beginning') {
                 $this->before($this->collection()->first()->name);
             } else {
                 $this->after($this->collection()->last()->name);
-            }    
+            }
 
             // clear the custom position, so that the next daisy chained method
             // doesn't move it yet again
             $this->position = null;
         } else {
-           
             $this->crud()->modifyButton($this->name, $this->toArray());
         }
 
         return $this;
     }
 
-    public function toArray() 
+    public function toArray()
     {
         return (array) $this;
     }

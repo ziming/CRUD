@@ -77,7 +77,8 @@ trait Buttons
         return new CrudButton($name, $stack, $type, $content, $position);
     }
 
-    public function addCrudButton($crudButton) {
+    public function addCrudButton($crudButton)
+    {
         $this->setOperationSetting('buttons', $this->buttons()->push($crudButton));
     }
 
@@ -111,7 +112,6 @@ trait Buttons
     public function modifyButton($name, $modifications = null)
     {
         /**
-         * 
          * @var CrudButton|null
          */
         $button = $this->buttons()->firstWhere('name', $name);
@@ -183,7 +183,7 @@ trait Buttons
      * @param  bool  $before  If true, the button will be moved before the target button, otherwise it will be moved after it.
      */
     public function moveButton($target, $where, $destination)
-    {   
+    {
         $targetButton = $this->firstButtonWhere('name', $target);
 
         $destinationButton = $this->firstButtonWhere('name', $destination);
@@ -206,7 +206,7 @@ trait Buttons
         $lastSlice = $newButtons->slice($newDestinationKey, null);
 
         $newButtons = $firstSlice->push($targetButton);
-   
+
         $lastSlice->each(function ($item, $key) use ($newButtons) {
             $newButtons->push($item);
         });
@@ -247,7 +247,7 @@ trait Buttons
     public function getButtonKey($name)
     {
         $array = $this->buttons()->toArray();
-       
+
         foreach ($array as $key => $value) {
             //dd($value);
             if ((is_object($value) ? $value->name : $value['name']) == $name) {
@@ -255,10 +255,11 @@ trait Buttons
             }
         }
     }
+
     /**
      * Return the buttons for a given stack.
      *
-     * @param string $stack
+     * @param  string  $stack
      * @return \Illuminate\Support\Collection
      */
     public function getButtonsForStack(string $stack)
@@ -276,5 +277,4 @@ trait Buttons
     {
         return new CrudButton('name');
     }
-    
 }

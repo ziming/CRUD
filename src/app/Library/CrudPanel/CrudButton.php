@@ -3,6 +3,9 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Backpack\CRUD\ViewNamespaces;
+use Illuminate\Contracts\Support\Arrayable;
+use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonStackEnum;
+use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonPositionEnum;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
@@ -16,7 +19,7 @@ use Backpack\CRUD\ViewNamespaces;
  * And if the developer uses CrudButton as Button in their CrudController:
  * - Button::name('create')->stack('top')->view('crud::butons.create');
  */
-class CrudButton
+class CrudButton implements Arrayable
 {
     public $stack;
 
@@ -36,6 +39,16 @@ class CrudButton
             extract($name);
         }
 
+        // check if position is a valid position
+        if ($position && ! ButtonPositionEnum::isValid($position)) {
+            throw new \Exception('CRUD Button position "'.$position.'" is not a valid position. Please use one of the following: '.implode(', ', ButtonPositionEnum::getValues()), 500);
+        }
+
+        // check if stack is a valid stack
+        if ($stack && ! ButtonStackEnum::isValid($stack)) {
+                throw new \Exception('CRUD Button stack "'.$stack.'" is not a valid stack. Please use one of the following: '.implode(', ', ButtonStackEnum::getValues()), 500);
+        }
+        
         $this->name = $name ?? 'button_'.rand(1, 999999999);
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
@@ -319,10 +332,7 @@ class CrudButton
      */
     public function makeFirst()
     {
-        $this->remove();
-        $this->crud()->setOperationSetting('buttons', $this->collection()->prepend($this));
-
-        return $this;
+        return $this->before($this->collection()->first()->name);
     }
 
     /**
@@ -332,10 +342,7 @@ class CrudButton
      */
     public function makeLast()
     {
-        $this->remove();
-        $this->crud()->setOperationSetting('buttons', $this->collection()->push($this));
-
-        return $this;
+        return $this->after($this->collection()->last()->name);
     }
 
     /**
@@ -367,13 +374,11 @@ class CrudButton
     /**
      * Remove the button from the global button collection.
      *
-     * @return CrudButton
+     * @return void
      */
     public function remove()
     {
-        $this->crud()->setOperationSetting('buttons', $this->collection()->except($this->getKey()));
-
-        return $this;
+        $this->crud()->removeButton($this->getKey());
     }
 
     // --------------
@@ -447,22 +452,34 @@ class CrudButton
      */
     private function save()
     {
-        $itemExists = $this->collection()->contains('name', $this->name);
+        if($this->collection()->isEmpty()) {
+            $this->crud()->addCrudButton($this);
+            return $this;
+        }
 
-        if (! $itemExists) {
+        $itemExists = $this->collection()->contains('name', $this->name);
+       
+        if (! $itemExists) { 
+            $this->crud()->addCrudButton($this);
             if ($this->position == 'beginning') {
-                $this->crud()->setOperationSetting('buttons', $this->collection()->prepend($this));
+                $this->before($this->collection()->first()->name);
             } else {
-                $this->crud()->setOperationSetting('buttons', $this->collection()->push($this));
-            }
+                $this->after($this->collection()->last()->name);
+            }    
 
             // clear the custom position, so that the next daisy chained method
             // doesn't move it yet again
             $this->position = null;
         } else {
-            $this->crud()->setOperationSetting('buttons', $this->collection()->replace([$this->getKey() => $this]));
+           
+            $this->crud()->modifyButton($this->name, $this->toArray());
         }
 
         return $this;
+    }
+
+    public function toArray() 
+    {
+        return (array) $this;
     }
 }

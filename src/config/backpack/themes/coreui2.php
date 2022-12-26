@@ -9,7 +9,7 @@ return [
     ],
 
     /**
-     * Styles
+     * Styles.
      */
     'styles' => [
         'https://unpkg.com/@coreui/coreui@2.1.16/dist/css/coreui.min.css',
@@ -25,7 +25,7 @@ return [
     ],
 
     /**
-     * Scripts
+     * Scripts.
      */
     'scripts' => [
         'https://unpkg.com/jquery@3.6.1/dist/jquery.min.js',

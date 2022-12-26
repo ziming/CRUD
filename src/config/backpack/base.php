@@ -11,8 +11,10 @@ return [
     |
     */
 
+    'theme' => 'coreui4',
+
     // Date & Datetime Format Syntax: https://carbon.nesbot.com/docs/#api-localization
-    'default_date_format'     => 'D MMM YYYY',
+    'default_date_format' => 'D MMM YYYY',
     'default_datetime_format' => 'D MMM YYYY, HH:mm',
 
     // Direction, according to language
@@ -49,11 +51,6 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        // Here's what's inside the bundle:
-        'https://unpkg.com/@coreui/coreui@2.1.16/dist/css/coreui.min.css',
-        'https://unpkg.com/animate.css@4.1.1/animate.compat.css',
-        'https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.css',
-
         // Load the fonts separately (so that you can replace them at will):
         ['https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap', true, [], 'style'],
 
@@ -79,38 +76,14 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<b>Back</b>pack',
+    'project_logo' => '<b>Back</b>pack',
 
     // Show / hide breadcrumbs on admin panel pages.
     'breadcrumbs' => true,
 
-    // Horizontal navbar classes. Helps make the admin panel look similar to your project's design.
-    'header_class' => 'app-header bg-light border-0 navbar',
-    // For background colors use: bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
-    // For links to be visible on different background colors use: "navbar-dark", "navbar-light", "navbar-color"
-
-    // ----
-    // BODY
-    // ----
-
-    // Body element classes.
-    'body_class' => 'app aside-menu-fixed sidebar-lg-show',
-    // Try sidebar-hidden, sidebar-fixed, sidebar-compact, sidebar-lg-show
-
-    // Sidebar element classes.
-    'sidebar_class' => 'sidebar sidebar-pills bg-light',
-    // Remove "sidebar-transparent" for standard sidebar look
-    // Try "sidebar-light" or "sidebar-dark" for dark/light links
-    // You can also add a background class like bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan
-
     // ------
     // FOOTER
     // ------
-
-    // Footer element classes.
-    'footer_class' => 'app-footer d-print-none',
-    // hide it with d-none
-    // change background color with bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
 
     // Developer or company name. Shown in footer.
     'developer_name' => 'Cristian Tabacitu',
@@ -127,14 +100,6 @@ return [
 
     // JS files that are loaded in all pages, using Laravel's asset() helper
     'scripts' => [
-        'https://unpkg.com/jquery@3.6.1/dist/jquery.min.js',
-        'https://unpkg.com/popper.js@1.16.1/dist/popper.min.js',
-        'https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.min.js',
-        'https://unpkg.com/bootstrap@4.6.0/dist/js/bootstrap.min.js',
-        'https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.min.js',
-        'https://unpkg.com/pace-js@1.2.4/pace.min.js',
-        'https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js',
-
         // examples (VueJS or React)
         // 'https://unpkg.com/vue@2.4.4/dist/vue.min.js',
         // 'https://unpkg.com/react@16/umd/react.production.min.js',
@@ -263,7 +228,7 @@ return [
     // Username column for authentication
     // The Backpack default is the same as the Laravel default (email)
     // If you need to switch to username, you also need to create that column in your db
-    'authentication_column'      => 'email',
+    'authentication_column' => 'email',
     'authentication_column_name' => 'Email',
 
     // Backpack assumes that your "database email column" for operations like Login and Register is called "email".

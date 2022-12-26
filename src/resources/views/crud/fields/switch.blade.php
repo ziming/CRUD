@@ -32,7 +32,7 @@
         </label>
 
         {{-- Label --}}
-        <label class="font-weight-normal mb-0 ml-2">{!! $field['label'] !!}</label>
+        <label class="font-weight-normal mb-0 ms-2">{!! $field['label'] !!}</label>
     </div>
 
     {{-- Label for the required * --}}

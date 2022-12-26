@@ -6,12 +6,12 @@
  @endphp
 
   {{-- DATA TABLES SCRIPT --}}
-  @basset('https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js')
-  @basset('https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js')
-  @basset('https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js')
-  @basset('https://unpkg.com/datatables.net-responsive-bs4@2.2.9/css/responsive.bootstrap4.min.css')
-  @basset('https://cdn.datatables.net/fixedheader/3.2.4/js/dataTables.fixedHeader.min.js')
-  @basset('https://unpkg.com/datatables.net-fixedheader-bs4@3.2.4/css/fixedHeader.bootstrap4.min.css')
+  @basset('https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js')
+  @basset('https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
 
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
@@ -297,7 +297,7 @@
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
-        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
+        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ms-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
 
         $('#datatable_info_stack').append(crudTableResetButton);
 

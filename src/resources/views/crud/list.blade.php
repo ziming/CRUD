@@ -14,8 +14,8 @@
 @section('header')
   <div class="container-fluid">
     <h2>
-      <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
+      <span class="text-capitalize fs-4">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+      <small id="datatable_info_stack" class="fs-6 fw-normal">{!! $crud->getSubheading() ?? '' !!}</small>
     </h2>
   </div>
 @endsection
@@ -49,7 +49,7 @@
 
         <table
           id="crudTable"
-          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
+          class="bg-white table table-striped table-hover nowrap rounded shadow-sm border mt-2"
           data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
           data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
           data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
@@ -152,9 +152,9 @@
 
 @section('after_styles')
   {{-- DATA TABLES --}}
-  @basset('https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css')
-  @basset('https://unpkg.com/datatables.net-fixedheader-bs4@3.2.4/css/fixedHeader.bootstrap4.min.css')
-  @basset('https://unpkg.com/datatables.net-responsive-bs4@2.2.9/css/responsive.bootstrap4.min.css')
+  @basset('https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
 
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')

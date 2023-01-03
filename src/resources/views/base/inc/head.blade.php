@@ -11,11 +11,11 @@
 
     @if (config('backpack.base.styles') && count(config('backpack.base.styles')))
         @foreach (config('backpack.base.styles') as $path)
-        @if(is_array($path))
-        @basset(...$path)
-        @else
-        @basset($path)
-        @endif
+            @if(is_array($path))
+                @basset(...$path)
+            @else
+                @basset($path)
+            @endif
         @endforeach
     @endif
 

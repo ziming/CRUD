@@ -5,8 +5,10 @@ node_modules/
 .composer.lock
 composer.lock
 .phpunit.result.cache
+package-lock.json
+mix-manifest.json
 
-# forget some files and folders inside the published CSS and JS assets, 
+# forget some files and folders inside the published CSS and JS assets,
 # since they're not actually used anywhere
 src/public/packages/ckeditor/samples/
 

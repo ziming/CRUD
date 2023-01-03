@@ -18,9 +18,6 @@ const mix = require('laravel-mix');
  | (this will also publish the assets for you to test, so no need to do that too)
  */
 
-// merge all needed JS into a big bundle file
-mix.js('src/resources/assets/js/bundle.js', 'src/public/packages/backpack/base/js/');
-
 // merge all needed CSS into a big bundle file
 mix.sass('src/resources/assets/scss/bundle.scss', 'src/public/packages/backpack/base/css/')
 	.options({
@@ -32,9 +29,6 @@ mix.sass('src/resources/assets/scss/blue-bundle.scss', 'src/public/packages/back
 	.options({
       processCssUrls: false
     });
-
-// copy the Backstrap CSS
-mix.copy('node_modules/@digitallyhappy/backstrap/dist/css', 'src/public/packages/@digitallyhappy/backstrap/css');
 
 // FOR MAINTAINERS
 // copy asset files from Base's public folder the main app's public folder

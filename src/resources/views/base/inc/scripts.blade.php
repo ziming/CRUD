@@ -2,6 +2,7 @@
 @basset('https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js')
+@basset('https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js')
 @basset('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js')
 @basset('https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.js')
 

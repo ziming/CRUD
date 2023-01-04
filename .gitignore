@@ -5,6 +5,5 @@ node_modules/
 .composer.lock
 composer.lock
 .phpunit.result.cache
-
-# we can now ignore the public packages folder
 src/public/packages/
+

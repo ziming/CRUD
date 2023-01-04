@@ -119,15 +119,8 @@
       @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new
-      var saveActions = $('#saveActions'),
-      crudForm        = saveActions.parents('form'),
-      saveActionField = $('[name="_save_action"]');
-
-      saveActions.on('click', '.dropdown-menu a', function(){
-          var saveAction = $(this).data('value');
-          saveActionField.val( saveAction );
-          crudForm.submit();
-      });
+      var saveActions = $('#saveActions')
+      crudForm        = saveActions.parents('form')
 
       // Ctrl+S and Cmd+S trigger Save button click
       $(document).keydown(function(e) {
@@ -189,15 +182,15 @@
             var field = $('[name="' + normalizedProperty + '[]"]').length ?
                         $('[name="' + normalizedProperty + '[]"]') :
                         $('[name="' + normalizedProperty + '"]'),
-                        container = field.parent('.form-group');
-          
+                        container = field.closest('.form-group');
+
             // iterate the inputs to add invalid classes to fields and red text to the field container.
-            container.children('input, textarea, select').each(function() {
+            container.find('input, textarea, select').each(function() {
                 let containerField = $(this);
-                // add the invalida class to the field.
+                // add the invalid class to the field.
                 containerField.addClass('is-invalid');
                 // get field container
-                let container = containerField.parent('.form-group');
+                let container = containerField.closest('.form-group');
 
                 // TODO: `repeatable-group` should be deprecated in future version as a BC in favor of a more generic class `no-error-display`
                 if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
@@ -213,7 +206,7 @@
                 if(!container.hasClass('repeatable-group') && !container.hasClass('no-error-display')){
                   row.appendTo(container);
                 }
-                
+
 
                 // highlight its parent tab
                 @if ($crud->tabsEnabled())

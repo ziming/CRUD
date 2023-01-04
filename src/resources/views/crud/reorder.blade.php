@@ -221,8 +221,8 @@
 @endsection
 
 @section('after_scripts')
-    <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
+    @basset('https://unpkg.com/jquery-ui@1.13.2/dist/jquery-ui.min.js')
+    @basset('https://cdnjs.cloudflare.com/ajax/libs/nestedSortable/2.0.0/jquery.mjs.nestedSortable.min.js')
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {

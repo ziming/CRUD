@@ -6,12 +6,12 @@
  @endphp
 
   {{-- DATA TABLES SCRIPT --}}
-  <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
+  @basset('https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js')
+  @basset('https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js')
+  @basset('https://unpkg.com/datatables.net-responsive-bs4@2.2.9/css/responsive.bootstrap4.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.2.4/js/dataTables.fixedHeader.min.js')
+  @basset('https://unpkg.com/datatables.net-fixedheader-bs4@3.2.4/css/fixedHeader.bootstrap4.min.css')
 
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.

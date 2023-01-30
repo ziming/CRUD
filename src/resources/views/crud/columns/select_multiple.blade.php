@@ -1,6 +1,6 @@
 {{-- relationships with pivot table (n-n) --}}
 @php
-    $column['value'] = $column['value'] ?? data_get($entry, $column['name'], []);
+    $column['value'] = $column['value'] ?? data_get($entry, $column['name'], collect([]));
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';

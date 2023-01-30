@@ -18,7 +18,7 @@
   </nav>
 
 @push('crud_list_scripts')
-	<script src="{{ asset('packages/URI.js/URI.min.js') }}" type="text/javascript"></script>
+    @basset('https://unpkg.com/urijs@1.19.11/src/URI.min.js')
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);

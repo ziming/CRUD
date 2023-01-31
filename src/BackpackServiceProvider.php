@@ -39,7 +39,7 @@ class BackpackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Routing\Router$router)
+    public function boot(\Illuminate\Routing\Router $router)
     {
         $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
@@ -247,31 +247,31 @@ class BackpackServiceProvider extends ServiceProvider
         // add the backpack_users authentication provider to the configuration
         app()->config['auth.providers'] = app()->config['auth.providers'] +
             [
-            'backpack' => [
-                'driver' => 'eloquent',
-                'model' => config('backpack.base.user_model_fqn'),
-            ],
-        ];
+                'backpack' => [
+                    'driver' => 'eloquent',
+                    'model' => config('backpack.base.user_model_fqn'),
+                ],
+            ];
 
         // add the backpack_users password broker to the configuration
         app()->config['auth.passwords'] = app()->config['auth.passwords'] +
             [
-            'backpack' => [
-                'provider' => 'backpack',
-                'table' => 'password_resets',
-                'expire' => 60,
-                'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
-            ],
-        ];
+                'backpack' => [
+                    'provider' => 'backpack',
+                    'table' => 'password_resets',
+                    'expire' => 60,
+                    'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
+                ],
+            ];
 
         // add the backpack_users guard to the configuration
         app()->config['auth.guards'] = app()->config['auth.guards'] +
             [
-            'backpack' => [
-                'driver' => 'session',
-                'provider' => 'backpack',
-            ],
-        ];
+                'backpack' => [
+                    'driver' => 'session',
+                    'provider' => 'backpack',
+                ],
+            ];
     }
 
     /**

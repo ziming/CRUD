@@ -23,7 +23,6 @@ form .help-block {
 }
 
 form .nav-tabs .nav-link:hover {
-	border-bottom: none;
 	color: #384c74;
 }
 
@@ -394,9 +393,6 @@ form .select2.select2-container.select2-container--open {
 	color: #333;
 }
 
-.pagination > li > a:focus,
-.pagination > li > a:hover,
-.pagination > li > span:focus,
 .pagination > li > span:hover {
 	background: white;
 }

@@ -64,11 +64,10 @@
         }
     });
 
-    {{-- Enable deep link to tab --}}
-    var activeTab = $('[href="' + location.hash.replace("#", "#tab_") + '"]');
-    location.hash && activeTab && activeTab.tab('show');
-    $('.nav-tabs a').on('shown.bs.tab', function (e) {
-        location.hash = e.target.hash.replace("#tab_", "#");
+    // Enable deep link to tab
+    document.querySelectorAll('.nav-tabs a').forEach(function (elem) {
+        if(elem.dataset.name === location.hash.substr(1)) (new bootstrap.Tab(elem)).show();
+        elem.addEventListener('click', () => location.hash = elem.dataset.name);
     });
 </script>
 

@@ -3,7 +3,6 @@
     $field['value'] = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '0';
     $field['onLabel'] = $field['onLabel'] ?? '';
     $field['offLabel'] = $field['offLabel'] ?? '';
-    $field['color'] = $field['color'] ?? 'primary';
 @endphp
 
 {{-- Wrapper --}}
@@ -14,7 +13,7 @@
 
     <div class="d-inline-flex">
         {{-- Switch --}}
-        <label class="switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
+        <label class="form-switch">
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
@@ -23,16 +22,11 @@
                 type="checkbox"
                 data-init-function="bpFieldInitSwitch"
                 {{ (bool) $field['value'] ? 'checked' : '' }}
-                class="switch-input" />
-            <span
-                class="switch-slider"
-                data-checked="{{ $field['onLabel'] ?? '' }}"
-                data-unchecked="{{ $field['offLabel'] ?? '' }}">
-            </span>
+                class="form-check-input" />
         </label>
 
         {{-- Label --}}
-        <label class="font-weight-normal mb-0 ms-2">{!! $field['label'] !!}</label>
+        <label class="font-weight-normal mb-0 ms-1">{!! $field['label'] !!}</label>
     </div>
 
     {{-- Label for the required * --}}
@@ -53,6 +47,8 @@
     @loadOnce('bpFieldInitSwitchScript')
     <script>
         function bpFieldInitSwitch($element) {
+            console.log($element[0]);
+
             let element = $element[0];
             let hiddenElement = element.previousElementSibling;
             let id = `switch_${hiddenElement.name}_${Math.random() * 1e18}`;
@@ -79,16 +75,6 @@
             });
         }
     </script>
-    @endLoadOnce
-@endpush
-
-@push('crud_fields_styles')
-    @loadOnce('bpFieldInitSwitchStyle')
-    <style>
-        .switch-input:checked+.switch-slider {
-            background-color: var(--bg-color);
-        }
-    </style>
     @endLoadOnce
 @endpush
 

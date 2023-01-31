@@ -15,9 +15,9 @@
     
     @include(backpack_view('inc.main_header'))
 
-    <div class="app-body">
+    <div class="app-body flex-grow-1 px-2">
 
-    <main class="main mx-3">
+    <main class="main">
 
        @yield('before_breadcrumbs_widgets')
 

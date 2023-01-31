@@ -3,35 +3,24 @@
     --cui-primary: #7c69ef;
     --cui-link-color: #7c69ef;
     --cui-link-hover-color: #6852ed;
+    --cui-primary-rgb: 124, 105, 239;
 
+    --cui-input-group-addon-bg: #f9fbfd;
+    --cui-input-group-addon-border-color: #0028641f;
+    --cui-input-border-color: #0028641f;
+
+    --cui-form-check-input-checked-bg-color: #7c69ef;
+    --cui-form-check-input-checked-border-color: #7c69ef;
 }
 
 body {
+    background-color: #f1f4f8;
     font-size: 90%;
 }
 
 .header {
     --cui-header-bg: transparent;
     --cui-header-border: transparent;
-}
-.sidebar {
-    --cui-sidebar-bg: transparent;
-    --cui-sidebar-brand-bg: transparent;
-    --cui-sidebar-nav-title-color: rgb(0 0 0 / 80%);
-    --cui-sidebar-nav-link-color: rgb(0 0 0 / 80%);
-    --cui-sidebar-nav-link-active-color: rgb(124 105 239 / 87%);
-    --cui-sidebar-nav-link-active-bg: rgb(0 0 0 / 5%);
-    --cui-sidebar-nav-link-active-icon-color: rgb(124 105 239 / 87%);
-    --cui-sidebar-nav-link-disabled-color: rgb(0 0 0 / 38%);
-    --cui-sidebar-nav-link-disabled-icon-color: rgb(0 0 0 / 80%);
-    --cui-sidebar-nav-link-hover-color: rgb(124 105 239 / 87%);
-    --cui-sidebar-nav-link-hover-bg: rgb(0 0 0 / 5%);
-    --cui-sidebar-nav-link-hover-icon-color: rgb(124 105 239 / 87%);
-    --cui-sidebar-nav-link-icon-color: rgb(0 0 0 / 80%);
-    --cui-sidebar-nav-group-bg: rgb(255 255 255 / 20%);
-    --cui-navbar-brand-color: rgb(0 0 0 / 80%);
-    --cui-navbar-brand-hover-color: rgb(0 0 0 / 100%);
-    --cui-sidebar-nav-group-toggle-show-color: rgb(0 0 0 / 87%);
 }
 
 a {
@@ -59,4 +48,17 @@ a:hover {
     --cui-pagination-focus-bg: #6852ed;
     --cui-pagination-active-bg: #7c69ef;
     --cui-pagination-active-border-color: #7c69ef;
+}
+.card,
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-control, .input-group-text {
+    border-radius: 0.2rem;
+}
+.form-group > label {
+    font-weight: bold;
+}
+.form-switch > [type="checkbox"] {
+    transform: scale(1.2);
 }

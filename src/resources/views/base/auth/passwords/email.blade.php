@@ -2,7 +2,7 @@
 
 {{-- Main Content --}}
 @section('content')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center align-items-center d-flex flex-row min-vh-100">
         <div class="col-12 col-md-9 col-lg-6">
             <h3 class="text-center mb-4">{{ trans('backpack::base.reset_password') }}</h3>
             <div class="nav-steps-wrapper">
@@ -12,8 +12,8 @@
                 </ul>
             </div>
             <div class="nav-tabs-custom">
-                <div class="tab-content">
-                  <div class="tab-pane active" id="tab_1">
+                <div class="tab-content border bg-white">
+                  <div class="tab-pane active p-3" id="tab_1">
                     @if (session('status'))
                         <div class="alert alert-success mt-3">
                             {{ session('status') }}
@@ -22,7 +22,7 @@
                     <form class="col-md-12 p-t-10" role="form" method="POST" action="{{ route('backpack.auth.password.email') }}">
                         {!! csrf_field() !!}
 
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label class="control-label" for="email">{{ trans('backpack::base.email_address') }}</label>
 
                             <div>

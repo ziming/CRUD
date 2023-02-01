@@ -56,7 +56,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'                             => 'required|max:255',
             backpack_authentication_column()   => 'required|'.$email_validation.'max:255|unique:'.$users_table,
-            'password'                         => 'required|min:6|confirmed',
+            'password'                         => 'required|min:8|confirmed',
         ]);
     }
 

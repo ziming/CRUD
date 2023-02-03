@@ -171,8 +171,7 @@
                 // if the file input has a data-row-number attribute, it means it's inside a repeatable field
                 // in that case, will send the value of the cleared input to the server
                 if(fileInput.attr('data-row-number')) {
-                  $("<input type='hidden' name='clear_"+fieldName+"' value='"+fileInput.data('filename')+"'>").insertAfter(fileInput);
-                  console.log(fileInput.siblings('.order_uploads'));
+                  $("<input type='hidden' name='_clear_"+fieldName+"' value='"+fileInput.data('filename')+"'>").insertAfter(fileInput);
                   fileInput.siblings('.order_uploads').remove();
                 }
                 fileInput.parent().removeClass('d-none');
@@ -181,8 +180,6 @@
                 // redo the selector, so we can use the same fileInput variable going forward
                 fileInput = element.find(".file_input");
 
-                
-                
                 // add a hidden input with the same name, so that the setXAttribute method is triggered
                 $("<input type='hidden' name='"+fieldName+"' value=''>").insertAfter(fileInput);
             });

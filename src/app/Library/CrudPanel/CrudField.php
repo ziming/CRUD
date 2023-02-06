@@ -1,8 +1,8 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
-use Closure;
 
+use Closure;
 use Illuminate\Support\Traits\Macroable;
 
 /**
@@ -38,7 +38,7 @@ use Illuminate\Support\Traits\Macroable;
 class CrudField
 {
     use Macroable;
-    
+
     protected $attributes;
 
     public function __construct($name)
@@ -437,7 +437,7 @@ class CrudField
     {
         $macro = static::$macros[$method] ?? null;
 
-        if(! $macro) {
+        if (! $macro) {
             $this->setAttributeValue($method, $parameters[0]);
 
             return $this->save();
@@ -448,6 +448,5 @@ class CrudField
         }
 
         return call_user_func_array($macro, $parameters);
-        
     }
 }

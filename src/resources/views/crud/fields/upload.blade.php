@@ -154,9 +154,10 @@
                 mutations.forEach(function(mutation) {
                   if(mutation.attributeName == 'data-row-number') {                    
                     let field = $(mutation.target);
-                    field = field.next('input[name="'+mutation.target.getAttribute('name')+'"]')
+                    field = field.next('input[name="'+mutation.target.getAttribute('name')+'"]');
                     field.attr('name', '_order_'+mutation.target.getAttribute('name'));
-                    field.val(mutation.target.getAttribute('data-filename'));                  }
+                    field.val(mutation.target.getAttribute('data-filename'));                  
+                  }
                 });
               });
 

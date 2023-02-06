@@ -1,6 +1,9 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
+use Closure;
+
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
@@ -34,6 +37,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  */
 class CrudField
 {
+    use Macroable;
+    
     protected $attributes;
 
     public function __construct($name)
@@ -430,8 +435,19 @@ class CrudField
      */
     public function __call($method, $parameters)
     {
-        $this->setAttributeValue($method, $parameters[0]);
+        $macro = static::$macros[$method] ?? null;
 
-        return $this->save();
+        if(! $macro) {
+            $this->setAttributeValue($method, $parameters[0]);
+
+            return $this->save();
+        }
+
+        if ($macro instanceof Closure) {
+            return call_user_func_array($macro->bindTo($this, static::class), $parameters);
+        }
+
+        return call_user_func_array($macro, $parameters);
+        
     }
 }

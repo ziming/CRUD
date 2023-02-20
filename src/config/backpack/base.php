@@ -11,8 +11,6 @@ return [
     |
     */
 
-    'theme' => 'coreui4',
-
     // Date & Datetime Format Syntax: https://carbon.nesbot.com/docs/#api-localization
     'default_date_format' => 'D MMM YYYY',
     'default_datetime_format' => 'D MMM YYYY, HH:mm',

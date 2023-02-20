@@ -205,19 +205,19 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
     }
 
-    protected function mergeConfigFromOperationsDirectory()
+    protected function mergeConfigsFromDirectory($dir)
     {
-        $operationConfigs = scandir(__DIR__.'/config/backpack/operations/');
-        $operationConfigs = array_diff($operationConfigs, ['.', '..']);
+        $configs = scandir(__DIR__ . "/config/backpack/$dir/");
+        $configs = array_diff($configs, ['.', '..']);
 
-        if (! count($operationConfigs)) {
+        if (!count($configs)) {
             return;
         }
 
-        foreach ($operationConfigs as $configFile) {
+        foreach ($configs as $configFile) {
             $this->mergeConfigFrom(
-                __DIR__.'/config/backpack/operations/'.$configFile,
-                'backpack.operations.'.substr($configFile, 0, strrpos($configFile, '.'))
+                __DIR__ . "/config/backpack/$dir/$configFile",
+                "backpack.$dir." . substr($configFile, 0, strrpos($configFile, '.'))
             );
         }
     }
@@ -227,7 +227,7 @@ class BackpackServiceProvider extends ServiceProvider
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
-        $this->mergeConfigFromOperationsDirectory();
+        $this->mergeConfigsFromDirectory('operations');
 
         // add the root disk to filesystem configuration
         app()->config['filesystems.disks.'.config('backpack.base.root_disk_name')] = [

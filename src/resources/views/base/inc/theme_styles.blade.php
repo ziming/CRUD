@@ -14,3 +14,7 @@
 {{-- TODO: We should use Basset for Google Fonts too, but it doesn't quite work yet: --}}
 {{-- @basset('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap',
 true, [], 'style') --}}
+
+{{-- Custom Backpack Rules --}}
+@basset(base_path('vendor/backpack/crud/src/resources/assets/css/coreui4.css'))
+@basset(base_path('vendor/backpack/crud/src/resources/assets/css/common.css'))

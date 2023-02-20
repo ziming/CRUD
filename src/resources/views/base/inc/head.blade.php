@@ -36,10 +36,6 @@
         @vite(config('backpack.base.vite_styles'))
     @endif
 
-    {{-- Custom Backpack Rules --}}
-    <style>{!! file_get_contents(base_path('vendor/backpack/crud/src/resources/assets/css/coreui4.css')) !!}</style>
-    <style>{!! file_get_contents(base_path('vendor/backpack/crud/src/resources/assets/css/common.css')) !!}</style>
-
     @yield('after_styles')
     @stack('after_styles')
 

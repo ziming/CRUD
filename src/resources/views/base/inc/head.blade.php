@@ -9,6 +9,13 @@
     @yield('before_styles')
     @stack('before_styles')
 
+        @include('backpack::inc.theme_styles')
+
+        @basset('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css')
+        @basset('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-regular-400.woff2')
+        @basset('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-solid-900.woff2')
+        @basset('https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-brands-400.woff2')
+
     @if (config('backpack.base.styles') && count(config('backpack.base.styles')))
         @foreach (config('backpack.base.styles') as $path)
         @if(is_array($path))

@@ -51,13 +51,8 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        // Load the fonts separately (so that you can replace them at will):
-        ['https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap', true, [], 'style'],
-
-        'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css',
-        'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-regular-400.woff2',
-        'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-solid-900.woff2',
-        'https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/fonts/la-brands-400.woff2',
+        // examples (VueJS or React)
+        // 'https://path/to/css/vue.css',
     ],
 
     // CSS files that are loaded in all pages, using Laravel's mix() helper
@@ -69,6 +64,17 @@ return [
     // Please note that support for Vite was added in Laravel 9.19. Earlier versions are not able to use this feature.
     'vite_styles' => [ // resource file_path
         // 'resources/css/app.css' => '',
+    ],
+
+    // -------
+    // CLASSES
+    // -------
+
+    'class' => [
+        'header' => 'header',
+        'body' => 'app aside-menu-fixed sidebar-lg-show', // TODO: why used nowhere?!
+        'sidebar' => 'sidebar sidebar-dark sidebar-fixed',  // TODO: why used nowhere?!
+        'footer' => 'app-footer d-print-none',  // TODO: why used nowhere?!
     ],
 
     // ------

@@ -1,4 +1,4 @@
-<header class="{{ config('backpack.themes.coreui4.class.header') }}">
+<header class="{{ config('backpack.base.class.header') }}">
     <div class="container-fluid">
         <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()"  aria-label="{{ trans('backpack::base.toggle_navigation')}}">
             <svg class="icon icon-lg" viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'>

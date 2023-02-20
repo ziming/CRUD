@@ -222,7 +222,7 @@
 
 @section('after_scripts')
     @basset('https://unpkg.com/jquery-ui@1.13.2/dist/jquery-ui.min.js')
-    @basset('https://cdnjs.cloudflare.com/ajax/libs/nestedSortable/2.0.0/jquery.mjs.nestedSortable.min.js')
+    @basset(base_path('vendor/backpack/crud/src/resources/assets/libs/jquery.mjs.nestedSortable2.js'))
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {

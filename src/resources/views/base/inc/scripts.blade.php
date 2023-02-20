@@ -1,10 +1,10 @@
-@basset('https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js')
-@basset('https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js')
-@basset('https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js')
-@basset('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js')
-@basset('https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js')
-@basset('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js')
-@basset('https://unpkg.com/@coreui/coreui@2.1.16/dist/js/coreui.js')
+@basset('https://unpkg.com/jquery@3.6.1/dist/jquery.min.js')
+@basset('https://unpkg.com/popper.js@1.16.1/dist/umd/popper.min.js')
+@basset('https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.min.js')
+@basset('https://unpkg.com/pace-js@1.2.4/pace.min.js')
+@basset('https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js')
+
+@include('backpack::inc.theme_scripts')
 
 @if (config('backpack.base.scripts') && count(config('backpack.base.scripts')))
     @foreach (config('backpack.base.scripts') as $path)

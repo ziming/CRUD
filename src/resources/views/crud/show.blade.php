@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div class="row" bp-section="crud-operation-show">
 	<div class="{{ $crud->getShowContentClass() }}">
 
 	{{-- Default box --}}

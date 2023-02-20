@@ -1,7 +1,7 @@
 @extends(backpack_view('layouts.plain'))
 
 @section('content')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" bp-section="login-page">
         <div class="col-12 col-md-8 col-lg-4">
             <h3 class="text-center mb-4">{{ trans('backpack::base.login') }}</h3>
             <div class="card">

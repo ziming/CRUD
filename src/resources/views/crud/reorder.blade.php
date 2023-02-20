@@ -63,7 +63,7 @@
 
     ?>
 
-    <div class="row mt-4">
+    <div class="row mt-4" bp-section="crud-operation-reorder">
         <div class="{{ $crud->getReorderContentClass() }}">
             <div class="card p-4">
                 <p>{{ trans('backpack::crud.reorder_text') }}</p>

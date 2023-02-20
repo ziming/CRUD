@@ -22,7 +22,7 @@
 
 @section('content')
   {{-- Default box --}}
-  <div class="row">
+  <div class="row" bp-section="crud-operation-list">
 
     {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">

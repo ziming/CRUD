@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-    <div class="row">
+    <div class="row" bp-section="my-account-page">
 
         @if (session('success'))
         <div class="col-lg-8">

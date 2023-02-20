@@ -11,7 +11,7 @@
   @yield('content')
   </div>
 
-  <footer class="app-footer sticky-footer">
+  <footer class="app-footer sticky-footer" bp-section="footer-plain">
     @include('backpack::inc.footer')
   </footer>
 

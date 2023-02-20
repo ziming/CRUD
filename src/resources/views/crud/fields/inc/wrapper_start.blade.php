@@ -25,6 +25,7 @@
 	$field['wrapper']['bp-field-wrapper'] = 'true';
 	$field['wrapper']['bp-field-name'] = square_brackets_to_dots(implode(',', (array)$field['name']));
 	$field['wrapper']['bp-field-type'] = $field['type'];
+	$field['wrapper']['bp-section'] = 'crud-field';
 @endphp
 
 <{{ $field['wrapper']['element'] }}

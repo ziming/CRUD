@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-<div class="row">
+<div class="row" bp-section="crud-operation-update">
 	<div class="{{ $crud->getEditContentClass() }}">
 		{{-- Default box --}}
 

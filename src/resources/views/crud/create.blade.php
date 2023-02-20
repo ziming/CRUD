@@ -26,7 +26,7 @@
 
 @section('content')
 
-<div class="row">
+<div class="row" bp-section="crud-operation-create">
 	<div class="{{ $crud->getCreateContentClass() }}">
 		{{-- Default box --}}
 

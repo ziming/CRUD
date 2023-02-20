@@ -8,11 +8,11 @@
 
 @if (config('backpack.base.scripts') && count(config('backpack.base.scripts')))
     @foreach (config('backpack.base.scripts') as $path)
-    @if(is_array($path))
-    @basset(...$path)
-    @else
-    @basset($path)
-    @endif
+        @if(is_array($path))
+            @basset(...$path)
+        @else
+            @basset($path)
+        @endif
     @endforeach
 @endif
 

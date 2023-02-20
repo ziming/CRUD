@@ -17,6 +17,7 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
+        \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
@@ -29,8 +30,10 @@ class BackpackServiceProvider extends ServiceProvider
 
     // Indicates if loading of the provider is deferred.
     protected $defer = false;
+
     // Where the route file lives, both inside the package and in the app (if overwritten).
     public $routeFilePath = '/routes/backpack/base.php';
+
     // Where custom routes can be written, and will be registered by Backpack.
     public $customRoutesFilePath = '/routes/backpack/custom.php';
 
@@ -39,7 +42,7 @@ class BackpackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Routing\Router $router)
+    public function boot(Router $router)
     {
         $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
@@ -229,7 +232,7 @@ class BackpackServiceProvider extends ServiceProvider
         // add the root disk to filesystem configuration
         app()->config['filesystems.disks.'.config('backpack.base.root_disk_name')] = [
             'driver' => 'local',
-            'root' => base_path(),
+            'root'   => base_path(),
         ];
 
         /*
@@ -254,14 +257,14 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users password broker to the configuration
         app()->config['auth.passwords'] = app()->config['auth.passwords'] +
-            [
-                'backpack' => [
-                    'provider' => 'backpack',
-                    'table' => 'password_resets',
-                    'expire' => 60,
-                    'throttle' => config('backpack.base.password_recovery_throttle_notifications'),
-                ],
-            ];
+        [
+            'backpack' => [
+                'provider'  => 'backpack',
+                'table'     => 'password_resets',
+                'expire'    => config('backpack.base.password_recovery_token_expiration', 60),
+                'throttle'  => config('backpack.base.password_recovery_throttle_notifications'),
+            ],
+        ];
 
         // add the backpack_users guard to the configuration
         app()->config['auth.guards'] = app()->config['auth.guards'] +

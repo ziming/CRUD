@@ -49,8 +49,8 @@ return [
 
     // CSS files that are loaded in all pages, using Laravel's asset() helper
     'styles' => [
-        // examples (VueJS or React)
-        // 'https://path/to/css/vue.css',
+        // 'styles/example.css',
+        // 'https://some-cdn.com/example.css',
     ],
 
     // CSS files that are loaded in all pages, using Laravel's mix() helper
@@ -104,7 +104,7 @@ return [
 
     // JS files that are loaded in all pages, using Laravel's asset() helper
     'scripts' => [
-        // examples (VueJS or React)
+        // 'js/example.js',
         // 'https://unpkg.com/vue@2.4.4/dist/vue.min.js',
         // 'https://unpkg.com/react@16/umd/react.production.min.js',
         // 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
@@ -194,6 +194,10 @@ return [
     // How many seconds should a visitor wait, after they've requested a
     // password reset, before they can try again for the same email?
     'password_recovery_throttle_notifications' => 600, // time in seconds
+
+    // How much time should the token sent to the user email be considered valid?
+    // After this time expires, user needs to request a new reset token.
+    'password_recovery_token_expiration' => 60, // time in minutes
 
     // Backpack will prevent an IP from trying to reset the password too many times,
     // so that a malicious actor cannot try too many emails, too see if they have

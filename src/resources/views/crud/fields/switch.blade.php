@@ -47,8 +47,6 @@
     @loadOnce('bpFieldInitSwitchScript')
     <script>
         function bpFieldInitSwitch($element) {
-            console.log($element[0]);
-
             let element = $element[0];
             let hiddenElement = element.previousElementSibling;
             let id = `switch_${hiddenElement.name}_${Math.random() * 1e18}`;

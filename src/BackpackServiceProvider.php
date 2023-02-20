@@ -207,17 +207,17 @@ class BackpackServiceProvider extends ServiceProvider
 
     protected function mergeConfigsFromDirectory($dir)
     {
-        $configs = scandir(__DIR__ . "/config/backpack/$dir/");
+        $configs = scandir(__DIR__."/config/backpack/$dir/");
         $configs = array_diff($configs, ['.', '..']);
 
-        if (!count($configs)) {
+        if (! count($configs)) {
             return;
         }
 
         foreach ($configs as $configFile) {
             $this->mergeConfigFrom(
-                __DIR__ . "/config/backpack/$dir/$configFile",
-                "backpack.$dir." . substr($configFile, 0, strrpos($configFile, '.'))
+                __DIR__."/config/backpack/$dir/$configFile",
+                "backpack.$dir.".substr($configFile, 0, strrpos($configFile, '.'))
             );
         }
     }

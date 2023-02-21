@@ -56,7 +56,7 @@
 {{-- ########################################## --}}
 {{-- Extra CSS and JS for this particular field --}}
 	@push('crud_fields_styles')
-	@loadOnce('upload_field_styles')
+	@bassetBlock('backpack/crud/fields/upload-multiple-field.css')
 	<style type="text/css">
 		.existing-file {
 			border: 1px solid rgba(0,40,100,.12);
@@ -137,10 +137,11 @@
 			border-radius: 0 0.25rem 0.25rem 0;
 		}
 	</style>
-	@endLoadOnce
+	@endBassetBlock
 	@endpush
+
     @push('crud_fields_scripts')
-    	@loadOnce('bpFieldInitUploadMultipleElement')
+    	@bassetBlock('backpack/crud/fields/upload-multiple-field.js')
         <script>
         	function bpFieldInitUploadMultipleElement(element) {
         		var fieldName = element.attr('data-field-name');
@@ -199,5 +200,5 @@
 				});
         	}
         </script>
-        @endLoadOnce
+        @endBassetBlock
     @endpush

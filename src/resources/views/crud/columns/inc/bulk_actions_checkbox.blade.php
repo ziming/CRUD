@@ -7,7 +7,7 @@
         <input type="checkbox" class="crud_bulk_actions_line_checkbox" data-primary-key-value="{{ $entry->getKey() }}">
     </span>
 
-    @loadOnce('bpFieldInitCheckboxScript')
+    @bassetBlock('backpack/crud/operations/list/bulk-actions-checkbox.js')
     <script>
     if (typeof addOrRemoveCrudCheckedItem !== 'function') {
         function addOrRemoveCrudCheckedItem(element) {
@@ -123,5 +123,5 @@
     crud.addFunctionToDataTablesDrawEventQueue('addBulkActionMainCheckboxesFunctionality');
     crud.addFunctionToDataTablesDrawEventQueue('enableOrDisableBulkButtons');
     </script>
-    @endLoadOnce
+    @endBassetBlock
 @endif

@@ -51,7 +51,7 @@
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
 
 @push('crud_fields_styles')
-  @loadOnce('upload_field_styles')
+  @bassetBlock('backpack/crud/fields/upload-field.css')
     <style type="text/css">
         .existing-file {
             border: 1px solid rgba(0,40,100,.12);
@@ -132,11 +132,11 @@
           border-radius: 0 0.25rem 0.25rem 0;
         }
     </style>
-  @endLoadOnce
+  @endBassetBlock
 @endpush
 
 @push('crud_fields_scripts')
-  @loadOnce('bpFieldInitUploadElement')
+  @bassetBlock('backpack/crud/fields/upload-field.js')
     <script>
         function bpFieldInitUploadElement(element) {
             var fileInput = element.find(".file_input");
@@ -169,9 +169,9 @@
 
             element.on('CrudField:disable', function(e) {
               element.children('.backstrap-file').find('input').prop('disabled', 'disabled');
-              
+
               let $deleteButton = element.children('.existing-file').children('a.file_clear_button');
-              
+
               if($deleteButton.length > 0) {
                 $deleteButton.on('click.prevent', function(e) {
                     e.stopImmediatePropagation();
@@ -189,5 +189,5 @@
 
         }
     </script>
-  @endLoadOnce
+  @endBassetBlock
 @endpush

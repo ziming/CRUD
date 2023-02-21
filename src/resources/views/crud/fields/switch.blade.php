@@ -44,7 +44,7 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    @loadOnce('bpFieldInitSwitchScript')
+    @bassetBlock('backpack/crud/fields/switch-field.js')
     <script>
         function bpFieldInitSwitch($element) {
             let element = $element[0];
@@ -73,7 +73,17 @@
             });
         }
     </script>
-    @endLoadOnce
+    @endBassetBlock
+@endpush
+
+@push('crud_fields_styles')
+    @bassetBlock('backpack/crud/fields/switch-field.css')
+    <style>
+        .switch-input:checked+.switch-slider {
+            background-color: var(--bg-color);
+        }
+    </style>
+    @endBassetBlock
 @endpush
 
 {{-- End of Extra CSS and JS --}}

@@ -37,7 +37,7 @@
 
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        @loadOnce('bpFieldInitCheckbox')
+        @bassetBlock('backpack/crud/fields/checkbox-field.js')
         <script>
             function bpFieldInitCheckbox(element) {
                 var hidden_element = element.siblings('input[type=hidden]');
@@ -76,7 +76,7 @@
                 })
             }
         </script>
-        @endLoadOnce
+        @endBassetBlock
     @endpush
 
 {{-- End of Extra CSS and JS --}}

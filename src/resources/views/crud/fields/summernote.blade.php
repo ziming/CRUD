@@ -28,29 +28,30 @@
 {{-- Extra CSS and JS for this particular field --}}
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
 
-    {{-- FIELD CSS - will be loaded in the after_styles section --}}
+{{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     {{-- include summernote css --}}
     @basset('https://unpkg.com/summernote@0.8.20/dist/summernote-bs4.min.css')
     @basset('https://unpkg.com/summernote@0.8.20/dist/font/summernote.woff2', false)
-    @loadOnce('summernoteCss')
+    @bassetBlock('backpack/crud/fields/checklist-field.css')
     <style type="text/css">
         .note-editor.note-frame .note-status-output, .note-editor.note-airframe .note-status-output {
                 height: auto;
         }
     </style>
-    @endLoadOnce
+    @endBassetBlock
 @endpush
+
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     {{-- include summernote js --}}
     @basset('https://unpkg.com/summernote@0.8.20/dist/summernote.min.js')
-    @loadOnce('bpFieldInitSummernoteElement')
+    @bassetBlock('backpack/crud/fields/summernote-field.js')
     <script>
         function bpFieldInitSummernoteElement(element) {
              var summernoteOptions = element.data('options');
 
-            let summernotCallbacks = { 
+            let summernotCallbacks = {
                 onChange: function(contents, $editable) {
                     element.val(contents).trigger('change');
                 }
@@ -63,13 +64,13 @@
             element.on('CrudField:enable', function(e) {
                 element.summernote('enable');
             });
-            
+
             summernoteOptions['callbacks'] = summernotCallbacks;
-            
-            element.summernote(summernoteOptions); 
+
+            element.summernote(summernoteOptions);
         }
     </script>
-    @endLoadOnce
+    @endBassetBlock
 @endpush
 
 {{-- End of Extra CSS and JS --}}

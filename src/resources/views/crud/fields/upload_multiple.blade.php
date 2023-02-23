@@ -150,8 +150,8 @@
 
 				if(fileInput.attr('data-row-number')) {
 					let selectedFiles = [];
-					fileInput.parent().siblings('.existing-file').find('a').not('.file-clear-button').each(function(item) {
-						selectedFiles.push($(this).attr('href'));
+					fileInput.parent().siblings('.existing-file').find('a.file-clear-button').each(function(item) {
+						selectedFiles.push($(this).data('filename'));
 					});
 					
 					$('<input type="hidden" class="order-uploads" name="_order_'+fieldName+'" value="'+selectedFiles+'">').insertAfter(fileInput);
@@ -164,8 +164,8 @@
 								fieldOrder = field.siblings('input[name="'+mutation.target.getAttribute('name').slice(0,-2)+'"]')
 								fieldOrder.attr('name', '_order_'+mutation.target.getAttribute('name').slice(0,-2));
 								let selectedFiles = [];
-								fieldOrder.parent().siblings('.existing-file').find('a').not('.file-clear-button').each(function(item) {
-									selectedFiles.push($(this).attr('href'));
+								fieldOrder.parent().siblings('.existing-file').find('a.file-clear-button').each(function(item) {
+									selectedFiles.push($(this).data('filename'));
 								});
 								fieldOrder.val(selectedFiles);
 							
@@ -189,8 +189,8 @@
 
 					if(fileInput.attr('data-row-number')) {
 						let selectedFiles = [];
-						fileInput.parent().siblings('.existing-file').find('a').not('.file-clear-button').each(function(item) {
-							selectedFiles.push($(this).attr('href'));
+						fileInput.parent().siblings('.existing-file').find('a.file-clear-button').each(function(item) {
+							selectedFiles.push($(this).data('filename'));
 						});
 						if(selectedFiles.length > 0) {
 							fileInput.siblings('.order-uploads').val(selectedFiles);

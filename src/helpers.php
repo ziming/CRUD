@@ -320,9 +320,8 @@ if (! function_exists('backpack_pro')) {
 
     if (! function_exists('array_merge_recursive_distinct')) {
         /**
-         * @param array<int|string, mixed> $array1
-         * @param array<int|string, mixed> $array2
-         *
+         * @param  array<int|string, mixed>  $array1
+         * @param  array<int|string, mixed>  $array2
          * @return array<int|string, mixed>
          */
         function array_merge_recursive_distinct(array &$array1, array &$array2): array
@@ -335,7 +334,7 @@ if (! function_exists('backpack_pro')) {
                     $merged[$key] = $value;
                 }
             }
-    
+
             return $merged;
         }
     }

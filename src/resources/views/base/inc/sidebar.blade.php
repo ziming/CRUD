@@ -1,7 +1,7 @@
 @if (backpack_auth()->check())
-<div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+<div class="sidebar sidebar-dark sidebar-fixed bg-dark-gradient" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-        <a class="navbar-brand fs-6 opacity-75 text-decoration-none text-uppercase" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
+        <a class="navbar-brand fs-6 text-decoration-none text-uppercase" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
             {!! config('backpack.base.project_logo') !!}
         </a>
     </div>

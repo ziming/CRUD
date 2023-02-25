@@ -11,6 +11,11 @@
 
     --cui-form-check-input-checked-bg-color: #7c69ef;
     --cui-form-check-input-checked-border-color: #7c69ef;
+
+    --cui-table-hover: #f2f1ff;
+
+    --cui-sidebar-1: #5c4fa9;
+    --cui-sidebar-2: #2c2950;
 }
 
 body {
@@ -61,4 +66,21 @@ a:hover {
 }
 .form-switch > [type="checkbox"] {
     transform: scale(1.2);
+}
+
+a.btn:hover, li.paginate_button a {
+    text-decoration: none !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--cui-table-hover) !important;
+}
+
+.table-hover tbody tr:hover td {
+    box-shadow: none !important;
+}
+
+#sidebar.bg-dark-gradient {
+    background: var(--cui-sidebar-2);
+    background: linear-gradient(0deg, var(--cui-sidebar-1) 0%, var(--cui-sidebar-2) 100%);
 }

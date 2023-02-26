@@ -18,3 +18,5 @@ true, [], 'style') --}}
 {{-- Custom Backpack Rules --}}
 @basset(base_path('vendor/backpack/crud/src/resources/assets/css/coreui4.css'))
 @basset(base_path('vendor/backpack/crud/src/resources/assets/css/common.css'))
+
+{{-- TODO: change to Tabler --}}

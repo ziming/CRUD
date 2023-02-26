@@ -50,7 +50,7 @@ $value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['de
             padding: 0 0.4rem;
         }
     </style>
-    @endLoaendBassetBlockdOnce
+    @endBassetBlock
 @endpush
 
 

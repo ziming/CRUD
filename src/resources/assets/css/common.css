@@ -588,3 +588,9 @@ table.dataTable.table-hover > tbody > tr:hover > * {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+/* Headers for operations */
+.main .container-fluid h2 small {
+    font-size: .5em;
+    font-weight: 400;
+}

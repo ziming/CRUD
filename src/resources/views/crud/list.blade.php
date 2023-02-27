@@ -14,8 +14,8 @@
 @section('header')
   <div class="container-fluid">
     <h2>
-      <span class="text-capitalize fs-3">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack" class="fs-6 fw-normal">{!! $crud->getSubheading() ?? '' !!}</small>
+      <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
     </h2>
   </div>
 @endsection
@@ -49,7 +49,7 @@
 
         <table
           id="crudTable"
-          class="bg-white table table-striped table-hover nowrap rounded"
+          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
           data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
           data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
           data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"

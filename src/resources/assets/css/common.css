@@ -594,3 +594,12 @@ table.dataTable.table-hover > tbody > tr:hover > * {
     font-size: .5em;
     font-weight: 400;
 }
+
+/* Fix table row hover */
+.table-hover tbody tr:hover {
+    background-color: var(--cui-table-hover) !important;
+}
+
+.table-hover tbody tr:hover td {
+    box-shadow: none !important;
+}

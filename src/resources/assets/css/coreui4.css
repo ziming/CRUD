@@ -72,14 +72,6 @@ a.btn:hover, li.paginate_button a {
     text-decoration: none !important;
 }
 
-.table-hover tbody tr:hover {
-    background-color: var(--cui-table-hover) !important;
-}
-
-.table-hover tbody tr:hover td {
-    box-shadow: none !important;
-}
-
 #sidebar.bg-dark-gradient {
     background: var(--cui-sidebar-2);
     background: linear-gradient(0deg, var(--cui-sidebar-1) 0%, var(--cui-sidebar-2) 100%);

@@ -601,7 +601,7 @@ table.dataTable.table-hover > tbody > tr:hover > * {
 
 /* Fix table row hover */
 .table-hover tbody tr:hover {
-    background-color: var(--table-row-hover !important;
+    background-color: var(--table-row-hover) !important;
 }
 
 .table-hover tbody tr:hover td {

@@ -7,7 +7,7 @@
 
 </head>
 
-<body class="{{ config('backpack.base.body_class') }} theme-dark">
+<body class="{{ config('backpack.base.body_class') }}">
 
 <div class="page">
     @include(backpack_view('inc.sidebar'))

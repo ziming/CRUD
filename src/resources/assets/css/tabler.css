@@ -2,11 +2,11 @@
     background-color: transparent;
 }
 
-header .sidebar-toggler span {
+header .sidebar-toggler i {
     color: var(--tblr-light-text);
 }
 
-aside .sidebar-toggler span {
+aside .sidebar-toggler i {
     color: white;
 }
 

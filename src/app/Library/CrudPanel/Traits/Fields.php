@@ -351,9 +351,16 @@ trait Fields
     {
         $fields = $this->getCleanStateFields();
         $upload_fields = Arr::where($fields, function ($value, $key) {
+            if(isset($value['subfields'])) {
+                foreach($value['subfields'] as $subfield) {
+                    if(isset($subfield['upload']) && $subfield['upload'] === true) {
+                        return true;
+                    }
+                }
+            }
             return isset($value['upload']) && $value['upload'] == true;
         });
-
+        
         return count($upload_fields) ? true : false;
     }
 

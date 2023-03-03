@@ -6,6 +6,6 @@ header .sidebar-toggler span {
     color: var(--tblr-light-text);
 }
 
-aside .sidebar-toggler span {
+aside .sidebar-toggler i {
     color: white;
 }

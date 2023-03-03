@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Closure;
 use Illuminate\Support\Traits\Macroable;
 
 /**

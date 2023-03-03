@@ -37,7 +37,7 @@ use Illuminate\Support\Traits\Macroable;
  */
 class CrudField
 {
-    use Macroable;
+    use Macroable { __call as macroCall; }
 
     protected $attributes;
 
@@ -435,14 +435,12 @@ class CrudField
      */
     public function __call($method, $parameters)
     {
-        $macro = static::$macros[$method] ?? null;
-
-        if (! $macro) {
-            $this->setAttributeValue($method, $parameters[0]);
-
-            return $this->save();
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
         }
 
-        return call_user_func_array($macro->bindTo($this, static::class), $parameters);
+        $this->setAttributeValue($method, $parameters[0]);
+
+        return $this->save();
     }
 }

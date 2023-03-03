@@ -1,0 +1,11 @@
+.sidebar-toggler {
+    background-color: transparent;
+}
+
+header .sidebar-toggler span {
+    color: var(--tblr-light-text);
+}
+
+aside .sidebar-toggler span {
+    color: white;
+}

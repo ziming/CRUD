@@ -8,7 +8,7 @@
                     @include(backpack_view('inc.menu_user_dropdown'))
                 </div>
             </ul>
-            <h1 class="navbar-brand navbar-brand-autodark d-none">
+            <h1 class="navbar-brand navbar-brand-autodark d-none d-lg-block align-self-center mb-3">
                 <a class="h2 text-decoration-none" href="{{ url(config('backpack.base.home_link')) }}" title="{{ config('backpack.base.project_name') }}">
                     {!! config('backpack.base.project_logo') !!}
                 </a>

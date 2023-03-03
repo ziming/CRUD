@@ -6,6 +6,27 @@ header .sidebar-toggler span {
     color: var(--tblr-light-text);
 }
 
-aside .sidebar-toggler i {
+aside .sidebar-toggler span {
     color: white;
+}
+
+.navbar-collapse .dropdown-toggle:after {
+    all: unset;
+    font-family: "Line Awesome Free";
+    color: var(--tblr-light-text);
+    content: "\f107";
+    font-weight: 900;
+    font-size: 12px;
+}
+
+aside .nav-item {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.nav-separator {
+    margin-left: 10px;
+    margin-top: 25px;
+    margin-bottom: 5px;
+    font-weight: bold;
 }

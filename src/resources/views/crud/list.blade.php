@@ -14,8 +14,8 @@
 @section('header')
   <div class="container-fluid">
     <h2>
-      <span class="text-capitalize fs-3">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack" class="fs-6 fw-normal">{!! $crud->getSubheading() ?? '' !!}</small>
+      <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
+      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
     </h2>
   </div>
 @endsection

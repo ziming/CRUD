@@ -1,7 +1,7 @@
 @if (backpack_auth()->check())
     <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark sidebar px-3">
         <div class="container-fluid">
-            <ul class="nav navbar-nav d-flex flex-row justify-content-between w-100 d-block d-lg-none">
+            <ul class="nav navbar-nav d-flex flex-row align-items-center justify-content-between w-100 d-block d-lg-none">
                 @include(backpack_view('inc.sidebar_toggle_btn'), ['forceWhiteLabelText' => true])
                 <div class="d-flex flex-row align-items-center">
                     @include(backpack_view('inc.switch_theme'))

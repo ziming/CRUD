@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-filters mb-1 py-0">
+<nav class="navbar navbar-expand-lg navbar-filters mb-1 py-0 shadow-none">
       {{-- Brand and toggle get grouped for better mobile display --}}
       <a class="nav-item d-none d-lg-block my-auto"><span class="la la-filter"></span></a>
       <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#bp-filters-navbar" aria-controls="bp-filters-navbar" aria-expanded="false" aria-label="{{ trans('backpack::crud.toggle_filters') }}">

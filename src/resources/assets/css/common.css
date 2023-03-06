@@ -70,6 +70,32 @@ form .select2.select2-container.select2-container--open {
     border-radius: 4px;
 }
 
+/*Table - List View*/
+#crudTable_wrapper tfoot tr {
+    font-size: .625rem;
+    font-weight: var(--tblr-font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    line-height: 1rem;
+    color: var(--tblr-muted);
+}
+
+body.theme-dark #crudTable_wrapper thead, body.theme-dark #crudTable_wrapper tfoot {
+    background: var(--tblr-dark-mode-border-color);
+}
+
+body.light tbody {
+    background: var(--tblr-table-bg);
+}
+
+body.theme-dark #crudTable_wrapper tbody {
+    background: var(--tblr-dark);
+}
+
+body.theme-dark #crudTable_wrapper .table-striped > tbody > tr:nth-of-type(odd) > * {
+    color: var(--tblr-table-color);
+}
+
 #crudTable_wrapper div.row .col-sm-12 {
     position: relative;
 }
@@ -86,6 +112,10 @@ form .select2.select2-container.select2-container--open {
     border-radius: 5px;
 }
 
+body.theme-dark #crudTable_processing.dataTables_processing.card {
+    background: var(--tblr-dark-text);
+}
+
 #crudTable_processing.dataTables_processing.card > img {
     margin: 0;
     position: absolute;
@@ -98,10 +128,10 @@ form .select2.select2-container.select2-container--open {
     display: none !important;
 }
 
-#crudTable_wrapper .dataTables_length select {
-    min-width: 3.6rem;
-    margin-right: 0.4rem;
-}
+/*#crudTable_wrapper .dataTables_length select {*/
+/*    min-width: 3.6rem;*/
+/*    margin-right: 0.4rem;*/
+/*}*/
 
 #crudTable_wrapper #crudTable,
 #crudTable_wrapper table.dataTable {
@@ -126,26 +156,26 @@ form .select2.select2-container.select2-container--open {
     margin: 0 0 0 -0.25rem;
 }
 
-#crudTable_wrapper #crudTable.dtr-inline.collapsed > tbody > tr > .dtr-control:before,
-#crudTable_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
-    top: 0;
-}
+/*#crudTable_wrapper #crudTable.dtr-inline.collapsed > tbody > tr > .dtr-control:before,*/
+/*#crudTable_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr > .dtr-control:before {*/
+/*    top: 0;*/
+/*}*/
 
-#crudTable_wrapper #crudTable td,
-#crudTable_wrapper #crudTable th,
-#crudTable_wrapper table.dataTable td,
-#crudTable_wrapper table.dataTable th {
-    outline: none;
-    vertical-align: middle;
-    line-height: 1em;
-}
+/*#crudTable_wrapper #crudTable td,*/
+/*#crudTable_wrapper #crudTable th,*/
+/*#crudTable_wrapper table.dataTable td,*/
+/*#crudTable_wrapper table.dataTable th {*/
+/*    outline: none;*/
+/*    vertical-align: middle;*/
+/*    line-height: 1em;*/
+/*}*/
 
-#crudTable_wrapper #crudTable thead > tr > th:not(.sorting_disabled),
-#crudTable_wrapper #crudTable thead > tr > td,
-#crudTable_wrapper table.dataTable thead > tr > th:not(.sorting_disabled),
-#crudTable_wrapper table.dataTable thead > tr > td {
-    padding-right: 30px;
-}
+/*#crudTable_wrapper #crudTable thead > tr > th:not(.sorting_disabled),*/
+/*#crudTable_wrapper #crudTable thead > tr > td,*/
+/*#crudTable_wrapper table.dataTable thead > tr > th:not(.sorting_disabled),*/
+/*#crudTable_wrapper table.dataTable thead > tr > td {*/
+/*    padding-right: 30px;*/
+/*}*/
 
 #crudTable_wrapper #crudTable .sorting:before,
 #crudTable_wrapper #crudTable .sorting_asc:before,
@@ -180,53 +210,53 @@ form .select2.select2-container.select2-container--open {
     font-weight: 900;
 }
 
-#crudTable_wrapper #crudTable.has-hidden-columns .details-control,
-#crudTable_wrapper table.dataTable.has-hidden-columns .details-control {
-    margin-left: 0.25rem;
-}
+/*#crudTable_wrapper #crudTable.has-hidden-columns .details-control,*/
+/*#crudTable_wrapper table.dataTable.has-hidden-columns .details-control {*/
+/*    margin-left: 0.25rem;*/
+/*}*/
 
-#crudTable_wrapper #crudTable[data-has-bulk-actions="1"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="1"].has-hidden-columns tfoot tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"].has-hidden-columns tfoot tr th:first-child {
-    padding-left: 1.35rem !important;
-}
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="1"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="1"].has-hidden-columns tfoot tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"].has-hidden-columns tfoot tr th:first-child {*/
+/*    padding-left: 1.35rem !important;*/
+/*}*/
 
-#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"] thead tr th:first-child,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"] tfoot tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"] thead tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"] tfoot tr th:first-child {
-    padding-left: 1.6rem !important;
-}
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"] thead tr th:first-child,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"] tfoot tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"] thead tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"] tfoot tr th:first-child {*/
+/*    padding-left: 1.6rem !important;*/
+/*}*/
 
-#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child {
-    padding-left: 2.6rem !important;
-}
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="1"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child {*/
+/*    padding-left: 2.6rem !important;*/
+/*}*/
 
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"] thead tr th:first-child,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"] tfoot tr th:first-child, #crudTable_wrapper #crudTable[data-has-bulk-actions="0"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"].has-hidden-columns tfoot tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"] thead tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"] tfoot tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"].has-hidden-columns tfoot tr th:first-child {
-    padding-left: 1.8rem !important;
-}
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"] thead tr th:first-child,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"] tfoot tr th:first-child, #crudTable_wrapper #crudTable[data-has-bulk-actions="0"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"].has-hidden-columns tfoot tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"] thead tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"] tfoot tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"].has-hidden-columns tfoot tr th:first-child {*/
+/*    padding-left: 1.8rem !important;*/
+/*}*/
 
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child {
-    padding-left: 3rem !important;
-}
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns thead tr th:first-child,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="1"].has-hidden-columns tfoot tr th:first-child {*/
+/*    padding-left: 3rem !important;*/
+/*}*/
 
-#crudTable_wrapper #crudTable .details-control,
-#crudTable_wrapper table.dataTable .details-control {
-    display: flex;
-}
+/*#crudTable_wrapper #crudTable .details-control,*/
+/*#crudTable_wrapper table.dataTable .details-control {*/
+/*    display: flex;*/
+/*}*/
 
 #crudTable_wrapper #crudTable .crud_bulk_actions_checkbox,
 #crudTable_wrapper table.dataTable .crud_bulk_actions_checkbox {
@@ -234,17 +264,17 @@ form .select2.select2-container.select2-container--open {
     margin: 0 0.6rem 0 0.45rem;
 }
 
-#crudTable_wrapper #crudTable .crud_bulk_actions_checkbox input,
-#crudTable_wrapper table.dataTable .crud_bulk_actions_checkbox input {
-    width: 1rem;
-    height: 1rem;
-}
+/*#crudTable_wrapper #crudTable .crud_bulk_actions_checkbox input,*/
+/*#crudTable_wrapper table.dataTable .crud_bulk_actions_checkbox input {*/
+/*    width: 1rem;*/
+/*    height: 1rem;*/
+/*}*/
 
-#crudTable_wrapper #crudTable:not(.has-hidden-columns) tr td:first-child,
-#crudTable_wrapper table.dataTable:not(.has-hidden-columns) tr td:first-child {
-    padding-top: 1.25rem !important;
-    padding-bottom: 1.25rem !important;
-}
+/*#crudTable_wrapper #crudTable:not(.has-hidden-columns) tr td:first-child,*/
+/*#crudTable_wrapper table.dataTable:not(.has-hidden-columns) tr td:first-child {*/
+/*    padding-top: 1.25rem !important;*/
+/*    padding-bottom: 1.25rem !important;*/
+/*}*/
 
 #crudTable_wrapper #crudTable tr th:first-child,
 #crudTable_wrapper #crudTable tr td:first-child,
@@ -252,31 +282,31 @@ form .select2.select2-container.select2-container--open {
 #crudTable_wrapper table.dataTable tr td:first-child {
     display: flex;
     align-items: center;
-    padding-top: 1.1rem !important;
-    padding-bottom: 1.1rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
     padding-left: 0.6rem !important;
 }
 
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"] .details-control,
-#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="0"] .dtr-control:before,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"] .details-control,
-#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="0"] .dtr-control:before {
-    margin-right: 0.4rem !important;
-}
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"] .details-control,*/
+/*#crudTable_wrapper #crudTable[data-has-bulk-actions="0"][data-has-details-row="0"] .dtr-control:before,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"] .details-control,*/
+/*#crudTable_wrapper table.dataTable[data-has-bulk-actions="0"][data-has-details-row="0"] .dtr-control:before {*/
+/*    margin-right: 0.4rem !important;*/
+/*}*/
 
-#crudTable_wrapper #crudTable[data-responsive-table="0"] thead tr th,
-#crudTable_wrapper #crudTable tr td.dataTables_empty,
-#crudTable_wrapper #crudTable tr.dt-hasChild + tr td,
-#crudTable_wrapper table.dataTable[data-responsive-table="0"] thead tr th,
-#crudTable_wrapper table.dataTable tr td.dataTables_empty,
-#crudTable_wrapper table.dataTable tr.dt-hasChild + tr td {
-    display: table-cell;
-}
+/*#crudTable_wrapper #crudTable[data-responsive-table="0"] thead tr th,*/
+/*#crudTable_wrapper #crudTable tr td.dataTables_empty,*/
+/*#crudTable_wrapper #crudTable tr.dt-hasChild + tr td,*/
+/*#crudTable_wrapper table.dataTable[data-responsive-table="0"] thead tr th,*/
+/*#crudTable_wrapper table.dataTable tr td.dataTables_empty,*/
+/*#crudTable_wrapper table.dataTable tr.dt-hasChild + tr td {*/
+/*    display: table-cell;*/
+/*}*/
 
-#crudTable_wrapper .dataTables_scrollBody #crudTable[data-responsive-table="0"] tr th:first-child {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
+/*#crudTable_wrapper .dataTables_scrollBody #crudTable[data-responsive-table="0"] tr th:first-child {*/
+/*    padding-top: 0 !important;*/
+/*    padding-bottom: 0 !important;*/
+/*}*/
 
 #crudTable_wrapper .dt-buttons .dt-button-collection,
 #crudTable_wrapper tr td .btn-group .dropdown-menu {
@@ -288,6 +318,8 @@ form .select2.select2-container.select2-container--open {
     padding: 0;
     border: 0;
 }
+
+/*/Table - List View/*/
 
 .navbar-filters {
     min-height: 25px;
@@ -397,7 +429,6 @@ form .select2.select2-container.select2-container--open {
     background: transparent;
     border: none;
     border-radius: 5px;
-    color: #333;
 }
 
 .pagination > li > span:hover {
@@ -468,7 +499,7 @@ form .select2.select2-container.select2-container--open {
 }
 
 .pace .pace-progress {
-    background: #7c69ef;
+    background: var(--tblr-primary);
     position: fixed;
     z-index: 2000;
     top: 0;

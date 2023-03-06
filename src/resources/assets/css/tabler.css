@@ -24,6 +24,13 @@ aside .nav-item {
     margin-bottom: 3px;
 }
 
+aside .navbar-nav .nav-item.dropdown span.badge {
+    transform: none;
+    position: initial;
+    font-size: 10px;
+    margin-left: 7px;
+}
+
 .nav-separator {
     margin-left: 10px;
     margin-top: 25px;

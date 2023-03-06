@@ -49,7 +49,7 @@
 
         <table
           id="crudTable"
-          class="bg-white table table-striped table-hover nowrap rounded"
+          class="bg-white table table-striped table-hover nowrap rounded card-table table-vcenter card-table shadow-xs border-xs"
           data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
           data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
           data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"

@@ -37,3 +37,23 @@ aside .navbar-nav .nav-item.dropdown span.badge {
     margin-bottom: 5px;
     font-weight: bold;
 }
+
+body.theme-dark #crudTable_wrapper thead, body.theme-dark #crudTable_wrapper tfoot {
+    background: var(--tblr-dark-mode-border-color);
+}
+
+body.light tbody {
+    background: var(--tblr-table-bg);
+}
+
+body.theme-dark #crudTable_wrapper tbody {
+    background: var(--tblr-dark);
+}
+
+body.theme-dark #crudTable_wrapper .table-striped > tbody > tr:nth-of-type(odd) > * {
+    color: var(--tblr-table-color);
+}
+
+body.theme-dark #crudTable_processing.dataTables_processing.card {
+    background: var(--tblr-dark-text);
+}

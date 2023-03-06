@@ -357,7 +357,7 @@ body.theme-dark #crudTable_processing.dataTables_processing.card {
 }
 
 .fixed .wrapper {
-	overflow: visible;
+    overflow: visible;
 }
 
 /* SELECT 2  */
@@ -510,10 +510,6 @@ body.theme-dark #crudTable_processing.dataTables_processing.card {
 }
 
 /* Fix table row hover */
-.table-hover tbody tr:hover {
-    background-color: var(--table-row-hover) !important;
-}
-
 .table-hover tbody tr:hover td {
     box-shadow: none !important;
 }

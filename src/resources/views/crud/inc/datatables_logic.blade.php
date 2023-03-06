@@ -13,6 +13,8 @@
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js')
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
 
+  @basset(base_path('vendor/backpack/crud/src/resources/assets/img/spinner.svg'))
+
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
     // datatables caches the ajax responses with pageLength in LocalStorage so when changing this
@@ -232,7 +234,7 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "<img src='{{ asset('packages/backpack/base/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
+              "processing":     "<img src='{{ asset('storage/bassets/vendor/backpack/crud/src/resources/assets/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search": "_INPUT_",
               "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",

@@ -1,8 +1,5 @@
 @basset('https://unpkg.com/bootstrap@5.2.3/dist/css/bootstrap.min.css')
 @basset('https://unpkg.com/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css')
-@basset('https://unpkg.com/@tabler/core@1.0.0-beta17/dist/css/tabler-flags.min.css')
-@basset('https://unpkg.com/@tabler/core@1.0.0-beta17/dist/css/tabler-payments.min.css')
-@basset('https://unpkg.com/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css')
 @basset('https://unpkg.com/animate.css@4.1.1/animate.compat.css')
 @basset('https://unpkg.com/noty@3.2.0-beta-deprecated/lib/noty.css')
 

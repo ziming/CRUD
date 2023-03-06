@@ -19,6 +19,11 @@ aside .sidebar-toggler i {
     font-size: 12px;
 }
 
+/* Fix table row hover */
+.table-hover tbody tr:hover td {
+    box-shadow: none !important;
+}
+
 aside .nav-item {
     margin-top: 3px;
     margin-bottom: 3px;

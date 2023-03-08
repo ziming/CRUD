@@ -186,6 +186,10 @@ table.dataTable.table-striped > tbody > tr:nth-of-type(2n+1):hover {
     background-color: rgba(124, 105, 239, 0.1);
 }
 
+.table-hover tbody tr:hover {
+    background-color: var(--table-row-hover) !important;
+}
+
 /* Headers for operations */
 .main .container-fluid h2 small {
     font-size: .5em;

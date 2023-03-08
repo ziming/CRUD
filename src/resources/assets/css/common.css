@@ -89,9 +89,9 @@ form .select2.select2-container.select2-container--open {
     position: absolute;
     background: rgba(255, 255, 255, 0.9);
     height: calc(100% - 6px);
-    width: calc(100% - 25px);
+    width: calc(100% - 20px);
     top: 0;
-    left: 12px;
+    left: 10px;
     z-index: 999;
     border-radius: 5px;
 }

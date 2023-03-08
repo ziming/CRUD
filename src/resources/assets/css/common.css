@@ -80,22 +80,6 @@ form .select2.select2-container.select2-container--open {
     color: var(--tblr-muted);
 }
 
-body.theme-dark #crudTable_wrapper thead, body.theme-dark #crudTable_wrapper tfoot {
-    background: var(--tblr-dark-mode-border-color);
-}
-
-body.light tbody {
-    background: var(--tblr-table-bg);
-}
-
-body.theme-dark #crudTable_wrapper tbody {
-    background: var(--tblr-dark);
-}
-
-body.theme-dark #crudTable_wrapper .table-striped > tbody > tr:nth-of-type(odd) > * {
-    color: var(--tblr-table-color);
-}
-
 #crudTable_wrapper div.row .col-sm-12 {
     position: relative;
 }
@@ -110,10 +94,6 @@ body.theme-dark #crudTable_wrapper .table-striped > tbody > tr:nth-of-type(odd) 
     left: 12px;
     z-index: 999;
     border-radius: 5px;
-}
-
-body.theme-dark #crudTable_processing.dataTables_processing.card {
-    background: var(--tblr-dark-text);
 }
 
 #crudTable_processing.dataTables_processing.card > img {
@@ -503,13 +483,12 @@ body.theme-dark #crudTable_processing.dataTables_processing.card {
 
 /*# sourceMappingURL=style.css.map */
 
+.table-hover tbody tr:hover {
+    background-color: var(--table-row-hover) !important;
+}
+
 /* Headers for operations */
 .main .container-fluid h2 small {
     font-size: .5em;
     font-weight: 400;
-}
-
-/* Fix table row hover */
-.table-hover tbody tr:hover td {
-    box-shadow: none !important;
 }

@@ -102,7 +102,7 @@
 [data-bs-theme=dark] {
     --tblr-body-color: #6c7a91;
     --tblr-body-color-rgb: 108, 122, 145;
-    --tblr-body-bg: #0f172a;
+    --tblr-body-bg: #20262E;
     --tblr-body-bg-rgb: 15, 23, 42;
     --tblr-emphasis-color: #f1f5f9;
     --tblr-emphasis-color-rgb: 241, 245, 249;
@@ -122,22 +122,12 @@
     --tblr-danger-text: #e68888;
     --tblr-light-text: #f1f5f9;
     --tblr-dark-text: #c8d3e1;
-    --tblr-primary-bg-subtle: #061527;
-    --tblr-secondary-bg-subtle: #0f172a;
-    --tblr-success-bg-subtle: #09240e;
-    --tblr-info-bg-subtle: #052025;
-    --tblr-warning-bg-subtle: #312000;
-    --tblr-danger-bg-subtle: #2b0b0b;
     --tblr-light-bg-subtle: #1d273b;
     --tblr-dark-bg-subtle: #0f141e;
     --tblr-primary-border-subtle: #134076;
     --tblr-secondary-border-subtle: #313c52;
-    --tblr-success-border-subtle: #1c6b29;
-    --tblr-info-border-subtle: #09414a;
-    --tblr-warning-border-subtle: #624000;
-    --tblr-danger-border-subtle: #802222;
     --tblr-light-border-subtle: #313c52;
-    --tblr-dark-border-subtle: #1d273b;
+    --tblr-dark-border-subtle: #241d3b;
     --tblr-heading-color: #fff;
     --tblr-link-color: #79a6dc;
     --tblr-link-hover-color: #a6c4e7;
@@ -146,4 +136,53 @@
     --tblr-code-color: #e685a7;
     --tblr-border-color: #313c52;
     --tblr-border-color-translucent: rgba(255, 255, 255, 0.15);
+}
+
+/*dark mode backpack*/
+.navbar-dark {
+    background-color: #29273b;
+}
+
+[data-bs-theme=dark] ul.pagination li.paginate_button.page-item.active a.page-link {
+    color: var(--tblr-light) !important;
+}
+
+.select2-selection__rendered {
+    background-color: var(--tblr-gray-800) !important;
+}
+
+[data-bs-theme=dark] .select2-selection--multiple {
+    background-color: var(--tblr-gray-800) !important;
+    color: var(--tblr-light) !important;
+}
+
+[data-bs-theme=dark] .select2-selection--multiple input {
+    color: var(--tblr-light) !important;
+}
+
+[data-bs-theme=dark] body .page {
+    background-color: #201c21 !important;
+}
+
+[data-bs-theme=dark] .card-body, [data-bs-theme=dark] header.navbar {
+    background: #23222d;
+    box-shadow: inset 0 calc(-1 * var(--tblr-navbar-border-width)) 0 0 #372f56 !important;
+}
+
+[data-bs-theme=dark] .card {
+    border: var(--tblr-card-border-width) solid #372f56;
+    background: #23222d;
+}
+
+[data-bs-theme=dark] .card-header, [data-bs-theme=dark] .card-footer {
+    background: #2d2b3b;
+    border-color: #372f56 !important;
+}
+
+[data-bs-theme=dark] aside {
+    box-shadow: inset calc(-1 * var(--tblr-navbar-border-width)) 0 0 0 #372f56 !important;
+}
+
+.progress {
+    background-color: #372f56 !important;
 }

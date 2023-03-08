@@ -102,7 +102,7 @@ aside .navbar-nav .nav-item.dropdown span.badge {
     background-color: #1d273b;
 }
 
-[data-bs-theme=dark] .btn-link, [data-bs-theme=dark] a:not(.btn) :not(.nav-link) {
+[data-bs-theme=dark] .btn-link, [data-bs-theme=dark] a:not(.btn):not(.nav-link) {
     color: var(--tblr-gray-600) !important;
 }
 
@@ -111,7 +111,7 @@ aside .navbar-nav .nav-item.dropdown span.badge {
     color: var(--tblr-gray-200) !important;
 }
 
-[data-bs-theme=light] .btn-link, [data-bs-theme=dark] a:not(.btn) {
+[data-bs-theme=light] .btn-link, [data-bs-theme=light] a:not(.btn) {
     color: var(--tblr-primary);
 }
 
@@ -178,4 +178,8 @@ aside .navbar-nav .nav-item.dropdown span.badge {
 
 [data-bs-theme=dark] ul.pagination li.paginate_button.page-item.active a:hover {
     background-color: rgb(var(--tblr-primary-rgb));
+}
+
+span.badge.bg-warning {
+    color: var(--tblr-dark) !important;
 }

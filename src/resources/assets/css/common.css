@@ -486,9 +486,3 @@ form .select2.select2-container.select2-container--open {
 .table-hover tbody tr:hover {
     background-color: var(--table-row-hover) !important;
 }
-
-/* Headers for operations */
-.main .container-fluid h2 small {
-    font-size: .5em;
-    font-weight: 400;
-}

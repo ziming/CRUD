@@ -185,3 +185,9 @@ a.btn:hover, li.paginate_button a {
 table.dataTable.table-striped > tbody > tr:nth-of-type(2n+1):hover {
     background-color: rgba(124, 105, 239, 0.1);
 }
+
+/* Headers for operations */
+.main .container-fluid h2 small {
+    font-size: .5em;
+    font-weight: 400;
+}

@@ -210,6 +210,11 @@ class CrudColumn
         return $this;
     }
 
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------

@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Illuminate\Support\Traits\Macroable;
+
 /**
  * Adds fluent syntax to Backpack CRUD Columns.
  *
@@ -29,6 +31,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  */
 class CrudColumn
 {
+    use Macroable { __call as macroCall; }
+
     protected $attributes;
 
     public function __construct($name)
@@ -267,6 +271,10 @@ class CrudColumn
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         $this->setAttributeValue($method, $parameters[0]);
 
         return $this->save();

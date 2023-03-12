@@ -5,7 +5,7 @@
 
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
 
-<div @foreach($widget['attributes'] ?? [] as $key => $value) {{ $key }}="{{ $value }}" @endforeach>
+<div class="{{ $widget['class'] ?? 'card' }}" @foreach($widget['attributes'] ?? [] as $key => $value) {{ $key }}="{{ $value }}" @endforeach>
     @livewire($widget['component'], $widget['params'] ?? [])
 </div>
 

@@ -10,3 +10,11 @@
 </div>
 
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')
+
+@pushOnce('after_styles')
+    @livewireStyles
+@endPushOnce
+
+@pushOnce('after_scripts')
+    @livewireScripts
+@endPushOnce

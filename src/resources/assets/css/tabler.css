@@ -126,6 +126,7 @@ span.badge.bg-warning {
 
 [data-bs-theme=dark] .select2-dropdown {
     border: 0 !important;
+    box-shadow: 0 0 3px var(--tblr-primary) !important;
 }
 
 [data-bs-theme=dark] .nav-item.dropdown.active a {
@@ -150,6 +151,9 @@ span.badge.bg-warning {
     border: 0 !important;
     border-radius: 0 !important;
     caret-color: var(--tblr-light-text);
+}
+[data-bs-theme=dark] .navbar-filters .dropdown-menu {
+    box-shadow: none;
 }
 [data-bs-theme=dark] .navbar-filters .select2-selection--single {
     background-color: var(--tblr-dark) !important;

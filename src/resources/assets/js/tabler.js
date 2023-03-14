@@ -19,3 +19,10 @@ function setTheme(theme) {
 }
 
 setTheme(window.localStorage.getItem('mode'));
+
+$('a[href*="'+window.location.href+'"]')
+    .addClass('active')
+    .parent()
+    .addClass('show')
+    .prev()
+    .addClass('show');

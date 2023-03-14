@@ -195,3 +195,13 @@ table.dataTable.table-striped > tbody > tr:nth-of-type(2n+1):hover {
     font-size: .5em;
     font-weight: 400;
 }
+
+form .select2.select2-container.select2-container--focus,
+form .select2.select2-container.select2-container--open {
+    background-color: #fff;
+    border: 1px solid var(--primary, #9080f1) !important;
+    box-shadow: 0 0 0 2px #e1dcfb;
+    color: #495057;
+    outline: 0;
+    border-radius: 4px;
+}

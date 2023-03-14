@@ -60,16 +60,6 @@ form .select2.select2-container {
     border: 1px solid rgba(0, 40, 100, 0.12) !important;
 }
 
-form .select2.select2-container.select2-container--focus,
-form .select2.select2-container.select2-container--open {
-    background-color: #fff;
-    border: 1px solid var(--primary, #9080f1) !important;
-    box-shadow: 0 0 0 2px #e1dcfb;
-    color: #495057;
-    outline: 0;
-    border-radius: 4px;
-}
-
 /*Table - List View*/
 #crudTable_wrapper tfoot tr {
     font-size: .625rem;

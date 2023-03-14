@@ -89,7 +89,7 @@
     --tblr-black-rgb: var(--tblr-dark-rgb);
     --tblr-body-color-rgb: 29, 39, 59;
     --tblr-body-bg-rgb: 241, 245, 249;
-    --tblr-body-color: #1b2a4e;
+    --tblr-body-color: #2f2746;
     --tblr-emphasis-color: #000000;
     --tblr-emphasis-color-rgb: 0, 0, 0;
     --tblr-secondary-color: var(--tblr-secondary);
@@ -101,19 +101,10 @@
 }
 [data-bs-theme=dark] {
     --tblr-body-color: #6c7a91;
-    --tblr-body-color-rgb: 108, 122, 145;
     --tblr-body-bg: #20262E;
-    --tblr-body-bg-rgb: 15, 23, 42;
     --tblr-emphasis-color: #f1f5f9;
-    --tblr-emphasis-color-rgb: 241, 245, 249;
-    --tblr-secondary-color: rgba(108, 122, 145, 0.75);
-    --tblr-secondary-color-rgb: 108, 122, 145;
     --tblr-secondary-bg: #1d273b;
-    --tblr-secondary-bg-rgb: 29, 39, 59;
-    --tblr-tertiary-color: rgba(108, 122, 145, 0.5);
-    --tblr-tertiary-color-rgb: 108, 122, 145;
     --tblr-tertiary-bg: #161f33;
-    --tblr-tertiary-bg-rgb: 22, 31, 51;
     --tblr-primary-text: #79a6dc;
     --tblr-secondary-text: #c8d3e1;
     --tblr-success-text: #82d18f;
@@ -124,18 +115,26 @@
     --tblr-dark-text: #c8d3e1;
     --tblr-light-bg-subtle: #1d273b;
     --tblr-dark-bg-subtle: #0f141e;
-    --tblr-primary-border-subtle: #134076;
-    --tblr-secondary-border-subtle: #313c52;
-    --tblr-light-border-subtle: #313c52;
+    --tblr-secondary-border-subtle: #372f56;
+    --tblr-light-border-subtle: #372f56;
     --tblr-dark-border-subtle: #241d3b;
     --tblr-heading-color: #fff;
     --tblr-link-color: #79a6dc;
     --tblr-link-hover-color: #a6c4e7;
-    --tblr-link-color-rgb: 121, 166, 220;
-    --tblr-link-hover-color-rgb: 166, 196, 231;
-    --tblr-code-color: #e685a7;
     --tblr-border-color: #313c52;
-    --tblr-border-color-translucent: rgba(255, 255, 255, 0.15);
+    --tblr-dark-mode-border-color: #23222d;
+    --tblr-gray: #49566c;
+    --tblr-gray-dark: #2a2938;
+    --tblr-table-color-bg-lighter: #302d3b;
+    --tblr-table-color-bg-darker: var(--tblr-gray-dark);
+    --tblr-gray-100: #f1f5f9;
+    --tblr-gray-200: #e2e8f0;
+    --tblr-gray-300: #c8d3e1;
+    --tblr-gray-400: #9ba9be;
+    --tblr-dark: #29273b;
+    --tblr-bg: #201c21;
+    --tblr-card-head: #2d2b3b;
+    --tblr-primary-border-subtle: #534f6e;
 }
 
 /*dark mode backpack*/
@@ -147,42 +146,88 @@
     color: var(--tblr-light) !important;
 }
 
-.select2-selection__rendered {
-    background-color: var(--tblr-gray-800) !important;
-}
-
-[data-bs-theme=dark] .select2-selection--multiple {
-    background-color: var(--tblr-gray-800) !important;
-    color: var(--tblr-light) !important;
-}
-
 [data-bs-theme=dark] .select2-selection--multiple input {
     color: var(--tblr-light) !important;
 }
 
 [data-bs-theme=dark] body .page {
-    background-color: #201c21 !important;
+    background-color: var(--tblr-bg) !important;
 }
 
-[data-bs-theme=dark] .card-body, [data-bs-theme=dark] header.navbar {
-    background: #23222d;
-    box-shadow: inset 0 calc(-1 * var(--tblr-navbar-border-width)) 0 0 #372f56 !important;
+[data-bs-theme=dark] .card-body {
+    box-shadow: inset 0 calc(-1 * var(--tblr-navbar-border-width)) 0 0 var(--tblr-light-border-subtle) !important;
+}
+
+[data-bs-theme=dark] header.navbar {
+    background: var(--tblr-dark-mode-border-color);
+    box-shadow: inset 0 calc(-1 * var(--tblr-navbar-border-width)) 0 0 var(--tblr-light-border-subtle) !important;
 }
 
 [data-bs-theme=dark] .card {
-    border: var(--tblr-card-border-width) solid #372f56;
-    background: #23222d;
+    border: var(--tblr-card-border-width) solid var(--tblr-light-border-subtle);
+    background: var(--tblr-dark-mode-border-color);
 }
 
 [data-bs-theme=dark] .card-header, [data-bs-theme=dark] .card-footer {
-    background: #2d2b3b;
-    border-color: #372f56 !important;
-}
-
-[data-bs-theme=dark] aside {
-    box-shadow: inset calc(-1 * var(--tblr-navbar-border-width)) 0 0 0 #372f56 !important;
+    background: var(--tblr-card-head);
+    border-color: var(--tblr-light-border-subtle) !important;
 }
 
 .progress {
-    background-color: #372f56 !important;
+    background-color: var(--tblr-light-border-subtle) !important;
+}
+
+/*tables - list operation*/
+[data-bs-theme=dark] #crudTable_wrapper .table-striped > tbody > tr:nth-of-type(even) > * {
+    --tblr-table-accent-bg: var(--tblr-table-color-bg-lighter);
+}
+
+/*inputs*/
+[data-bs-theme=dark] input[type=checkbox]:not(:checked).form-check-input {
+    background-color: var(--tblr-primary-border-subtle);
+}
+[data-bs-theme=dark] input[type=search].form-control,
+[data-bs-theme=dark] input[type=date].form-control,
+[data-bs-theme=dark] input[type=text].form-control,
+[data-bs-theme=dark] select.form-control,
+[data-bs-theme=dark] select.form-select,
+[data-bs-theme=dark] :not(.navbar-filters) .select2-selection--single {
+    background-color: var(--tblr-table-color-bg-lighter);
+    border-color: var(--tblr-card-head);
+}
+[data-bs-theme=dark] input[type=search].form-control:focus,
+[data-bs-theme=dark] input[type=date].form-control:focus,
+[data-bs-theme=dark] input[type=text].form-control:focus,
+[data-bs-theme=dark] select.form-control:focus,
+[data-bs-theme=dark] select.form-select:focus,
+[data-bs-theme=dark] :not(.navbar-filters) .select2-selection--single:focus {
+    box-shadow: 0 0 3px var(--tblr-primary);
+}
+[data-bs-theme=dark] input[type=date].form-control::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+}
+[data-bs-theme=dark] :not(.navbar-filters) .select2-selection--multiple {
+    background-color: var(--tblr-table-color-bg-lighter) !important;
+    border-color: var(--tblr-card-head) !important;
+}
+[data-bs-theme=dark] :not(.navbar-filters) .select2-container--open {
+    box-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+    border-color: var(--tblr-card-head) !important;
+}
+
+/*filters*/
+[data-bs-theme=dark] .navbar-filters .select2-selection__rendered {
+    background-color: var(--tblr-gray) !important;
+    box-shadow: 0 0 3px var(--tblr-primary) !important;
+}
+[data-bs-theme=dark] .navbar-filters .select2-selection--multiple {
+    background-color: var(--tblr-gray-800) !important;
+    color: var(--tblr-light) !important;
+}
+
+/*aside*/
+[data-bs-theme=dark] aside {
+    box-shadow: inset calc(-1 * var(--tblr-navbar-border-width)) 0 0 0 var(--tblr-light-border-subtle) !important;
 }

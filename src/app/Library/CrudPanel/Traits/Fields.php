@@ -110,15 +110,16 @@ trait Fields
         $this->enableTabsIfFieldUsesThem($field);
         $this->addFieldToOperationSettings($field);
 
-        if(! app('UploadStore')->isUploadHandled($field['name'])) {
+        if (! app('UploadStore')->isUploadHandled($field['name'])) {
             $crudFieldObject = (new CrudField($field['name']));
-            
-            foreach($field as $attribute => $value) {
+
+            foreach ($field as $attribute => $value) {
                 if ($crudFieldObject->hasMacro($attribute)) {
                     $crudFieldObject->{$attribute}($value);
                 }
             }
         }
+
         return $this;
     }
 

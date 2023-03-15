@@ -82,6 +82,12 @@ header .sidebar-toggler i {
 }
 
 /*aside*/
+aside a.nav-link.active, aside a.nav-link.active:hover {
+    background-color: var(--tblr-navbar-active-bg);
+}
+aside a.dropdown-item.active {
+    border-radius: var(--tblr-border-radius) !important;
+}
 aside .sidebar-toggler i {
     color: white;
 }

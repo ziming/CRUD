@@ -260,7 +260,7 @@ class BackpackServiceProvider extends ServiceProvider
         [
             'backpack' => [
                 'provider'  => 'backpack',
-                'table'     => 'password_resets',
+                'table'     => config('backpack.base.password_resets_table') ?? config('auth.passwords.users.table'),
                 'expire'    => config('backpack.base.password_recovery_token_expiration', 60),
                 'throttle'  => config('backpack.base.password_recovery_throttle_notifications'),
             ],

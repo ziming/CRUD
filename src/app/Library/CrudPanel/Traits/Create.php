@@ -184,7 +184,7 @@ trait Create
 
             // Scenario D
             if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
-                $relation->delete();
+                $relation->first()->delete();
 
                 return null;
             }

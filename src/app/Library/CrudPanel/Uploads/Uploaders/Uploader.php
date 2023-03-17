@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
-use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HasCrudObjectType;
@@ -19,63 +17,63 @@ abstract class Uploader implements UploaderInterface
     use HasCrudObjectType, HasName;
 
     /**
-     * Indicates the uploaded file should be deleted when entry is deleted
+     * Indicates the uploaded file should be deleted when entry is deleted.
      *
      * @var bool
      */
     public $deleteWhenEntryIsDeleted = true;
 
     /**
-     * Indicates if this uploader instance is inside a repeatable container
+     * Indicates if this uploader instance is inside a repeatable container.
      *
      * @var bool
      */
     public $isRepeatable = false;
 
     /**
-     * When inside a repeatable container, indicates the container name
+     * When inside a repeatable container, indicates the container name.
      *
      * @var string|null
      */
     public $repeatableContainerName = null;
 
     /**
-     * Developer provided filename
+     * Developer provided filename.
      *
      * @var null|string|Closure
      */
     public $fileName = null;
 
     /**
-     * The disk where upload will be stored. By default `public`
+     * The disk where upload will be stored. By default `public`.
      *
      * @var string
      */
     public $disk = 'public';
 
     /**
-     * Indicates if the upload handles multiple files
+     * Indicates if the upload handles multiple files.
      *
      * @var bool
      */
     public $isMultiple = false;
 
     /**
-     * The class of the entry where uploads will be attached to
+     * The class of the entry where uploads will be attached to.
      *
      * @var string
      */
     public $entryClass;
 
     /**
-     * The path inside the disk to store the uploads
+     * The path inside the disk to store the uploads.
      *
      * @var string
      */
     public $path = '';
 
     /**
-     * Should the url to the object be a temporary one (eg: s3)
+     * Should the url to the object be a temporary one (eg: s3).
      *
      * @var bool
      */
@@ -92,7 +90,7 @@ abstract class Uploader implements UploaderInterface
     public $expiration = 1;
 
     /**
-     * Indicates if the upload is relative to a relationship field/column
+     * Indicates if the upload is relative to a relationship field/column.
      *
      * @var bool
      */
@@ -115,8 +113,8 @@ abstract class Uploader implements UploaderInterface
     /**
      * An abstract function that all uploaders must implement with the saving process.
      *
-     * @param Model $entry
-     * @param mixed $values
+     * @param  Model  $entry
+     * @param  mixed  $values
      * @return mixed
      */
     abstract public function save(Model $entry, $values = null);
@@ -124,7 +122,7 @@ abstract class Uploader implements UploaderInterface
     /**
      * The function called in the saving event that starts the upload process.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return Model
      */
     public function processFileUpload(Model $entry)
@@ -135,7 +133,7 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the uploader name
+     * Return the uploader name.
      *
      * @return string
      */
@@ -145,7 +143,7 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the uploader disk
+     * Return the uploader disk.
      *
      * @return string
      */
@@ -155,7 +153,7 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the uploader path
+     * Return the uploader path.
      *
      * @return string
      */
@@ -165,7 +163,7 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the uploader temporary option
+     * Return the uploader temporary option.
      *
      * @return bool
      */
@@ -175,7 +173,7 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the uploader expiration time in minutes
+     * Return the uploader expiration time in minutes.
      *
      * @return int
      */
@@ -185,9 +183,9 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * The function called in the retrieved event that handles the display of uploaded values
+     * The function called in the retrieved event that handles the display of uploaded values.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return Model
      */
     public function retrieveUploadedFile(Model $entry)
@@ -204,9 +202,9 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * The function called in the deleting event to delete the uploaded files upon entry deletion
+     * The function called in the deleting event to delete the uploaded files upon entry deletion.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return void
      */
     public function deleteUploadedFile(Model $entry)
@@ -229,8 +227,8 @@ abstract class Uploader implements UploaderInterface
     /**
      * Build an uploader instance.
      *
-     * @param array $crudObject
-     * @param array $definition
+     * @param  array  $crudObject
+     * @param  array  $definition
      * @return self
      */
     public static function for(array $crudObject, array $definition)
@@ -255,9 +253,9 @@ abstract class Uploader implements UploaderInterface
      * When true, it also removes the repeatable in case the relationship is handled
      * by repeatable interface.
      * This is because the uploads are only repeatable on the "main model", but they represent
-     * one entry per row. (not repeatable in the "relationship model")
+     * one entry per row. (not repeatable in the "relationship model").
      *
-     * @param bool $isRelationship
+     * @param  bool  $isRelationship
      * @return self
      */
     public function relationship(bool $isRelationship): self
@@ -274,7 +272,7 @@ abstract class Uploader implements UploaderInterface
      * Set the repeatable attribute to true in the uploader and the
      * corresponding container name.
      *
-     * @param string $repeatableContainerName
+     * @param  string  $repeatableContainerName
      * @return self
      */
     public function repeats(string $repeatableContainerName): self
@@ -305,7 +303,7 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return a new instance of the entry class for the uploader
+     * Return a new instance of the entry class for the uploader.
      *
      * @return Model
      */
@@ -315,9 +313,9 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the uploader stored values when in a repeatable container
+     * Return the uploader stored values when in a repeatable container.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return array
      */
     protected function getPreviousRepeatableValues(Model $entry)
@@ -331,9 +329,9 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the file extension
+     * Return the file extension.
      *
-     * @param mixed $file
+     * @param  mixed  $file
      * @return string
      */
     protected function getExtensionFromFile($file)
@@ -344,7 +342,7 @@ abstract class Uploader implements UploaderInterface
     /**
      * Return the file name built by Backpack or by the developer in `fileName` configuration.
      *
-     * @param mixed $file
+     * @param  mixed  $file
      * @return string
      */
     protected function getFileName($file)
@@ -357,9 +355,9 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return the complete filename and extension
+     * Return the complete filename and extension.
      *
-     * @param mixed $file
+     * @param  mixed  $file
      * @return string
      */
     protected function getFileNameWithExtension($file)
@@ -372,9 +370,9 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Allow developer to override the default Backpack fileName
+     * Allow developer to override the default Backpack fileName.
      *
-     * @param mixed $file
+     * @param  mixed  $file
      * @return string|null
      */
     private function fileNameFrom($file)

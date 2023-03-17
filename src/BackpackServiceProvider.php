@@ -4,11 +4,11 @@ namespace Backpack\CRUD;
 
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Backpack\CRUD\app\Library\CrudPanel\Uploads\UploadStore;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\UploadStore;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -83,7 +83,7 @@ class BackpackServiceProvider extends ServiceProvider
             return new Collection();
         });
 
-        $this->app->scoped('UploadStore', function($app) {
+        $this->app->scoped('UploadStore', function ($app) {
             return new UploadStore();
         });
 

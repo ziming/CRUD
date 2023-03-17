@@ -26,7 +26,7 @@ class MultipleFiles extends Uploader
         $value = $value ?? CRUD::getRequest()->file($this->name);
 
         $previousFiles = $entry->getOriginal($this->name) ?? [];
-        
+
         if (! is_array($previousFiles) && is_string($previousFiles)) {
             $previousFiles = json_decode($previousFiles, true);
         }

@@ -121,9 +121,9 @@ class RepeatableUploader implements RepeatableUploaderInterface
     }
 
     /**
-     * The function called in the deleting event to delete the uploaded files upon entry deletion
+     * The function called in the deleting event to delete the uploaded files upon entry deletion.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return void
      */
     public function deleteUploadedFile(Model $entry)

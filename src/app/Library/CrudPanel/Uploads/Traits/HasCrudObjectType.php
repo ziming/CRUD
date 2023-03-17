@@ -12,7 +12,7 @@ trait HasCrudObjectType
     public string $crudObjectType;
 
     /**
-     * Return the crud object type, field or column
+     * Return the crud object type, field or column.
      *
      * @return string
      */

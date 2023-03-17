@@ -17,11 +17,11 @@ final class RegisterUploadEvents
 
     /**
      * From the given crud object and upload definition provide the event registry
-     * service so that uploads are stored and retrieved automatically
+     * service so that uploads are stored and retrieved automatically.
      *
-     * @param CrudField|CrudColumn $crudObject
-     * @param array $uploadDefinition
-     * @param array $defaultUploaders
+     * @param  CrudField|CrudColumn  $crudObject
+     * @param  array  $uploadDefinition
+     * @param  array  $defaultUploaders
      * @return void
      */
     public static function handle($crudObject, $uploadDefinition): void
@@ -44,6 +44,7 @@ final class RegisterUploadEvents
             $uploaderType = $instance->getUploader($attributes, $uploadDefinition);
             $instance->setupModelEvents($attributes['entryClass'], $uploaderType);
             self::setupUploadConfigsInCrudObject($crudObject, $uploaderType);
+
             return;
         }
 
@@ -54,8 +55,8 @@ final class RegisterUploadEvents
      * Register the saving and retrieved events on model to handle the upload process.
      * In case of CrudColumn we only register the retrieved event.
      *
-     * @param string $model
-     * @param UploaderInterface|RepeatableUploaderInterface $uploader
+     * @param  string  $model
+     * @param  UploaderInterface|RepeatableUploaderInterface  $uploader
      * @return void
      */
     private function setupModelEvents(string $model, UploaderInterface|RepeatableUploaderInterface $uploader): void
@@ -104,8 +105,8 @@ final class RegisterUploadEvents
      * Handles the use case when the events need to be setup on subfields (Repeatable fields/columns)
      * We will configure the subfields accordingly before setting up the entry events for uploads.
      *
-     * @param array $crudObject
-     * @param array $uploadDefinition
+     * @param  array  $crudObject
+     * @param  array  $uploadDefinition
      * @return void
      */
     private function handleRepeatableUploads(array $crudObject, array $uploadDefinition)
@@ -143,9 +144,10 @@ final class RegisterUploadEvents
      *
      * Throws an exception in case no uploader for the given object type is found.
      *
-     * @param array $crudObject
-     * @param array $uploadDefinition
+     * @param  array  $crudObject
+     * @param  array  $uploadDefinition
      * @return UploaderInterface|RepeatableUploaderInterface
+     *
      * @throws Exception
      */
     private function getUploader(array $crudObject, array $uploadDefinition)
@@ -162,10 +164,10 @@ final class RegisterUploadEvents
     }
 
     /**
-     * Set up the upload attributes in the field/column
+     * Set up the upload attributes in the field/column.
      *
-     * @param CrudField|CrudColumn $crudObject
-     * @param UploaderInterface $uploader
+     * @param  CrudField|CrudColumn  $crudObject
+     * @param  UploaderInterface  $uploader
      * @return void
      */
     private static function setupUploadConfigsInCrudObject(CrudField|CrudColumn $crudObject, UploaderInterface $uploader)

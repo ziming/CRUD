@@ -23,11 +23,13 @@ final class UploadStore
         return in_array($objectName, $this->handledUploaders);
     }
 
-    public function hasUploadFor(string $objectType) {
+    public function hasUploadFor(string $objectType)
+    {
         return array_key_exists($objectType, $this->uploaders);
     }
 
-    public function getUploadFor(string $objectType) {
+    public function getUploadFor(string $objectType)
+    {
         return $this->uploaders[$objectType];
     }
 

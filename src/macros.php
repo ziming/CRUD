@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
+use Backpack\CRUD\app\Library\CrudPanel\Uploads\RegisterUploadEvents;
 
 /**
  * This macro adds the ability to convert a dot.notation string into a [braket][notation] with some special
@@ -29,6 +32,23 @@ if (! Str::hasMacro('dotsToSquareBrackets')) {
         }
 
         return $result;
+    });
+}
+if (! CrudColumn::hasMacro('withUploads')) {
+    CrudColumn::macro('withUploads', function ($uploadDefinition = []) {
+        /** @var CrudField|CrudColumn $this */
+        RegisterUploadEvents::handle($this, $uploadDefinition);
+
+        return $this;
+    });
+}
+
+if (! CrudField::hasMacro('withUploads')) {
+    CrudField::macro('withUploads', function ($uploadDefinition = []) {
+        /** @var CrudField|CrudColumn $this */
+        RegisterUploadEvents::handle($this, $uploadDefinition);
+
+        return $this;
     });
 }
 

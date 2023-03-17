@@ -8,6 +8,7 @@ use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Backpack\CRUD\app\Library\CrudPanel\Uploads\UploadStore;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -80,6 +81,10 @@ class BackpackServiceProvider extends ServiceProvider
         // Bind the widgets collection object to Laravel's service container
         $this->app->singleton('widgets', function ($app) {
             return new Collection();
+        });
+
+        $this->app->scoped('UploadStore', function($app) {
+            return new UploadStore();
         });
 
         // register the helper functions
@@ -291,6 +296,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadStore'];
     }
 }

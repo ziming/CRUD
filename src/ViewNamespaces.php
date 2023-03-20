@@ -56,7 +56,7 @@ class ViewNamespaces
     private static function getFromConfigFor(string $domain, $customConfigKey = null)
     {
         return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ??
-            [ config('backpack.base.view_namespace').$domain ] ;
+            [config('backpack.base.view_namespace').$domain];
     }
 
     /**

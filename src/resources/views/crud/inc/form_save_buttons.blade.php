@@ -1,5 +1,5 @@
 @if(isset($saveAction['active']) && !is_null($saveAction['active']['value']))
-    <div id="saveActions" class="form-group">
+    <div id="saveActions" class="form-group my-3">
         <input type="hidden" name="_save_action" value="{{ $saveAction['active']['value'] }}">
 
         @if(!empty($saveAction['options']))

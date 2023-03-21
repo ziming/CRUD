@@ -121,8 +121,8 @@ class BackpackServiceProvider extends ServiceProvider
 
         // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
-            __DIR__.'/resources/views/base/inc/sidebar_content.blade.php'      => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php'  => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
+            __DIR__.'/resources/views/base/inc/sidebar_content.blade.php' => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
+            __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php' => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
             __DIR__.'/resources/views/base/inc/topbar_right_content.blade.php' => resource_path('views/vendor/backpack/base/inc/topbar_right_content.blade.php'),
         ];
         $backpack_custom_routes_file = [__DIR__.$this->customRoutesFilePath => base_path($this->customRoutesFilePath)];
@@ -249,12 +249,12 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users authentication provider to the configuration
         app()->config['auth.providers'] = app()->config['auth.providers'] +
-        [
-            'backpack' => [
-                'driver'  => 'eloquent',
-                'model'   => config('backpack.base.user_model_fqn'),
-            ],
-        ];
+            [
+                'backpack' => [
+                    'driver' => 'eloquent',
+                    'model' => config('backpack.base.user_model_fqn'),
+                ],
+            ];
 
         // add the backpack_users password broker to the configuration
         app()->config['auth.passwords'] = app()->config['auth.passwords'] +
@@ -269,12 +269,12 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users guard to the configuration
         app()->config['auth.guards'] = app()->config['auth.guards'] +
-        [
-            'backpack' => [
-                'driver'   => 'session',
-                'provider' => 'backpack',
-            ],
-        ];
+            [
+                'backpack' => [
+                    'driver' => 'session',
+                    'provider' => 'backpack',
+                ],
+            ];
     }
 
     /**

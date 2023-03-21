@@ -19,7 +19,7 @@
 	// subfields also get here with `showAsterisk` already set.
 	$required = isset($field['showAsterisk']) ? ($field['showAsterisk'] ? ' required' : '') : ($required ?? '');
 	
-	$field['wrapper']['class'] = $field['wrapper']['class'] ?? "form-group col-sm-12";
+	$field['wrapper']['class'] = $field['wrapper']['class'] ?? "form-group col-sm-12 mb-3";
 	$field['wrapper']['class'] = $field['wrapper']['class'].$required;
 	$field['wrapper']['element'] = $field['wrapper']['element'] ?? 'div';
 	$field['wrapper']['bp-field-wrapper'] = 'true';

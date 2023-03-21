@@ -1,10 +1,10 @@
 @if (!isset($entry))
     <span class="crud_bulk_actions_checkbox">
-        <input type="checkbox" class="crud_bulk_actions_general_checkbox">
+        <input type="checkbox" class="crud_bulk_actions_general_checkbox form-check-input">
     </span>
 @else
     <span class="crud_bulk_actions_checkbox">
-        <input type="checkbox" class="crud_bulk_actions_line_checkbox" data-primary-key-value="{{ $entry->getKey() }}">
+        <input type="checkbox" class="crud_bulk_actions_line_checkbox form-check-input" data-primary-key-value="{{ $entry->getKey() }}">
     </span>
 
     @bassetBlock('backpack/crud/operations/list/bulk-actions-checkbox.js')

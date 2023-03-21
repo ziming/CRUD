@@ -3,6 +3,7 @@
     $field['value'] = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '0';
     $field['onLabel'] = $field['onLabel'] ?? '';
     $field['offLabel'] = $field['offLabel'] ?? '';
+    $field['color'] = $field['color'] ?? 'primary';
 @endphp
 
 {{-- Wrapper --}}
@@ -13,7 +14,7 @@
 
     <div class="d-inline-flex">
         {{-- Switch --}}
-        <label class="form-switch">
+        <label class="form-switch switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
@@ -22,11 +23,16 @@
                 type="checkbox"
                 data-init-function="bpFieldInitSwitch"
                 {{ (bool) $field['value'] ? 'checked' : '' }}
-                class="form-check-input" />
+                class="switch-input form-check-input" />
+            <span
+                class="switch-slider"
+                data-checked="{{ $field['onLabel'] ?? '' }}"
+                data-unchecked="{{ $field['offLabel'] ?? '' }}">
+            </span>
         </label>
 
         {{-- Label --}}
-        <label class="font-weight-normal mb-0 ms-1">{!! $field['label'] !!}</label>
+        <label class="font-weight-normal mb-0 ml-2">{!! $field['label'] !!}</label>
     </div>
 
     {{-- Label for the required * --}}

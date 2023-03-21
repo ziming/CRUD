@@ -10,6 +10,16 @@ final class UploadStore
 
     private const DEFAULT_GROUP = 'backpack';
 
+    public function __construct()
+    {
+        $this->uploaders[self::DEFAULT_GROUP] = [
+            'image'           => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleBase64Image::class,
+            'upload'          => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleFile::class,
+            'upload_multiple' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\MultipleFiles::class,
+            'repeatable'      => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\RepeatableUploader::class,
+        ];
+    }
+
     public function markAsHandled(string $objectName)
     {
         $this->handledUploaders[] = $objectName;

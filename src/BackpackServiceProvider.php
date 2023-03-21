@@ -227,6 +227,7 @@ class BackpackServiceProvider extends ServiceProvider
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
+        $this->mergeConfigFrom(__DIR__.'/config/backpack/ui.php', 'backpack.ui');
         $this->mergeConfigsFromDirectory('operations');
 
         // add the root disk to filesystem configuration

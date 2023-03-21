@@ -34,9 +34,11 @@
                     <a href="#tab_{{ Str::slug($tab) }}"
                         aria-controls="tab_{{ Str::slug($tab) }}"
                         role="tab"
-                        tab_name="{{ Str::slug($tab) }}"
-                        data-toggle="tab"
-                        class="nav-link {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
+                        data-toggle="tab" {{-- tab indicator for Bootstrap v4 --}}
+                        tab_name="{{ Str::slug($tab) }}" {{-- tab name for Bootstrap v4 --}}
+                        data-name="{{ Str::slug($tab) }}" {{-- tab name for Bootstrap v5 --}}
+                        data-bs-toggle="tab" {{-- tab name for Bootstrap v5 --}}
+                        class="nav-link text-decoration-none {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
                         >{{ $tab }}</a>
                 </li>
             @endforeach

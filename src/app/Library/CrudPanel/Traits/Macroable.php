@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Illuminate\Support\Traits\Macroable as IlluminateMacroable;
 
 trait Macroable
@@ -25,5 +27,23 @@ trait Macroable
         }
 
         static::parentMacro($name, $macro);
+    }
+
+    /**
+     * Calls the macros registered for the given macroable attributes.
+     *
+     * @param CrudField|CrudColumn $macroable
+     * @return void
+     */
+    private function callRegisteredAttributeMacros(CrudField|CrudColumn $macroable)
+    {
+        $macros = $macroable->getMacros();
+        $attributes = $macroable->getAttributes();
+
+        foreach (array_keys($macros) as $macro) {
+            if (isset($attributes[$macro])) {
+                $macroable->{$macro}($attributes[$macro]);
+            }
+        }
     }
 }

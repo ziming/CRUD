@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\HasMacros;
 use Illuminate\Support\Traits\Macroable;
 
 /**
@@ -37,6 +38,7 @@ use Illuminate\Support\Traits\Macroable;
 class CrudField
 {
     use Macroable { __call as macroCall; }
+    use HasMacros;
 
     protected $attributes;
 

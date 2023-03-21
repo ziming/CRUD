@@ -131,7 +131,7 @@ final class RegisterUploadEvents
         }
 
         foreach ($repeatableDefinitions as $model => $uploaderTypes) {
-            $repeatableDefinition = app('UploadStore')->getUploadFor('repeatable')::for($crudObject)->uploads(...$uploaderTypes);
+            $repeatableDefinition = app('UploadStore')->getUploadFor('repeatable', $uploadDefinition['uploaders'] ?? null)::for($crudObject)->uploads(...$uploaderTypes);
             $this->setupModelEvents($model, $repeatableDefinition);
         }
     }
@@ -155,9 +155,9 @@ final class RegisterUploadEvents
         if (isset($uploadDefinition['uploaderType'])) {
             return $uploadDefinition['uploaderType']::for($crudObject, $uploadDefinition);
         }
-
-        if (app('UploadStore')->hasUploadFor($crudObject['type'])) {
-            return app('UploadStore')->getUploadFor($crudObject['type'])::for($crudObject, $uploadDefinition);
+        $uploaders = $uploadDefinition['uploaders'] ?? null;
+        if (app('UploadStore')->hasUploadFor($crudObject['type'], $uploaders)) {
+            return app('UploadStore')->getUploadFor($crudObject['type'], $uploaders)::for($crudObject, $uploadDefinition);
         }
 
         throw new Exception('Undefined upload type for '.$crudObject['crudObjectType'].' type: '.$crudObject['type']);

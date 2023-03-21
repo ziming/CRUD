@@ -52,6 +52,7 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
+        $this->registerDefaultUploaders();
         $this->sendUsageStats();
     }
 
@@ -177,6 +178,16 @@ class BackpackServiceProvider extends ServiceProvider
         }
 
         $this->loadRoutesFrom($routeFilePathInUse);
+    }
+
+    public function registerDefaultUploaders()
+    {
+        app('UploadStore')->addUploaders([
+            'image'           => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleBase64Image::class,
+            'upload'          => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleFile::class,
+            'upload_multiple' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\MultipleFiles::class,
+            'repeatable'      => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\RepeatableUploader::class,
+        ]);
     }
 
     /**

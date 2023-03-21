@@ -8,10 +8,7 @@ final class UploadStore
 
     private array $handledUploaders = [];
 
-    public function __construct()
-    {
-        $this->uploaders = config('backpack.base.uploaders');
-    }
+    private const DEFAULT_GROUP = 'backpack';
 
     public function markAsHandled(string $objectName)
     {
@@ -23,18 +20,31 @@ final class UploadStore
         return in_array($objectName, $this->handledUploaders);
     }
 
-    public function hasUploadFor(string $objectType)
+    public function hasUploadFor(string $objectType, $group = null)
     {
-        return array_key_exists($objectType, $this->uploaders);
+        $group = $group ?? self::DEFAULT_GROUP;
+
+        return array_key_exists($objectType, $this->uploaders[$group]);
     }
 
-    public function getUploadFor(string $objectType)
+    public function getUploadFor(string $objectType, $group = null)
     {
-        return $this->uploaders[$objectType];
+        $group = $group ?? self::DEFAULT_GROUP;
+
+        return $this->uploaders[$group][$objectType];
     }
 
-    public function addUploaders(array $uploaders)
+    public function addUploaders(array $uploaders, $group = null)
     {
-        $this->uploaders = array_merge($this->uploaders, $uploaders);
+        $group = $group ?? self::DEFAULT_GROUP;
+
+        $this->uploaders[$group] = array_merge($this->getGroupUploaders($group), $uploaders);
+    }
+
+    private function getGroupUploaders($group = null)
+    {
+        $group = $group ?? self::DEFAULT_GROUP;
+
+        return $this->uploaders[$group] ?? [];
     }
 }

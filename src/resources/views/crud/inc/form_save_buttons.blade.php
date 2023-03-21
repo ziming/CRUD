@@ -34,79 +34,80 @@
 @endif
 
 @push('after_scripts')
-    <script>
-        // this function checks if form is valid.
-        function checkFormValidity(form) {
-            // the condition checks if `checkValidity` is defined in the form (browser compatibility)
-            if (form[0].checkValidity) {
-                return form[0].checkValidity();
-            }
-            return false;
-        }
+<script>
 
-        // this function checks if any of the inputs has errors and report them on page.
-        // we use it to report the errors after form validation fails and making the error fields visible
-        function reportValidity(form) {
-            // the condition checks if `reportValidity` is defined in the form (browser compatibility)
-            if (form[0].reportValidity) {
-                // hide the save actions drop down if open
-                $('#saveActions').find('.dropdown-menu').removeClass('show');
-                // validate and display form errors
-                form[0].reportValidity();
-            }
+    // this function checks if form is valid.
+    function checkFormValidity(form) {
+        // the condition checks if `checkValidity` is defined in the form (browser compatibility)
+        if (form[0].checkValidity) {
+            return form[0].checkValidity();
         }
+        return false;
+    }
 
-        function changeTabIfNeededAndDisplayErrors(form) {
-            // we get the first erroed field
-            var $firstErrorField = form.find(":invalid").first();
-            // we find the closest tab
-            var $closestTab = $($firstErrorField).closest('.tab-pane');
-            // if we found the tab we will change to that tab before reporting validity of form
-            if ($closestTab.length) {
-                var id = $closestTab.attr('id');
+    // this function checks if any of the inputs has errors and report them on page.
+    // we use it to report the errors after form validation fails and making the error fields visible
+    function reportValidity(form) {
+        // the condition checks if `reportValidity` is defined in the form (browser compatibility)
+        if (form[0].reportValidity) {
+            // hide the save actions drop down if open
+            $('#saveActions').find('.dropdown-menu').removeClass('show');
+            // validate and display form errors
+            form[0].reportValidity();
+        }
+    }
+
+    function changeTabIfNeededAndDisplayErrors(form) {
+        // we get the first erroed field
+        var $firstErrorField = form.find(":invalid").first();
+        // we find the closest tab
+        var $closestTab = $($firstErrorField).closest('.tab-pane');
+        // if we found the tab we will change to that tab before reporting validity of form
+        if($closestTab.length) {
+            var id = $closestTab.attr('id');
                 // switch tabs
                 $('.nav a[href="#' + id + '"]').tab('show');
-            }
-            reportValidity(form);
         }
+        reportValidity(form);
+    }
 
-        // make all submit buttons trigger HTML5 validation
-        jQuery(document).ready(function ($) {
+    // make all submit buttons trigger HTML5 validation
+    jQuery(document).ready(function($) {
 
-            var selector = $('#bpSaveButtonsGroup').next();
-            var form = $(selector).closest('form');
-            var saveActionField = $('[name="_save_action"]');
-            var $defaultSubmitButton = $(form).find(':submit');
-            // this is the main submit button, the default save action.
-            $($defaultSubmitButton).on('click', function (e) {
-                e.preventDefault();
-                $saveAction = $(this).children('span').eq(1);
-                // if form is valid just submit it
+        var selector = $('#bpSaveButtonsGroup').next();
+        var form = $(selector).closest('form');
+        var saveActionField = $('[name="_save_action"]');
+        var $defaultSubmitButton = $(form).find(':submit');
+        // this is the main submit button, the default save action.
+        $($defaultSubmitButton).on('click', function(e) {
+            e.preventDefault();
+            $saveAction = $(this).children('span').eq(1);
+            // if form is valid just submit it
+            if(checkFormValidity(form)) {
+                saveActionField.val( $saveAction.attr('data-value') );
+                form[0].requestSubmit();
+            }else{
+                // navigate to the tab where the first error happens
+                changeTabIfNeededAndDisplayErrors(form);
+            }
+        });
+
+        //this is for the anchors AKA other non-default save actions.
+        $(selector).find('button').each(function() {
+            $(this).click(function(e) {
+                //we check if form is valid
                 if (checkFormValidity(form)) {
-                    saveActionField.val($saveAction.attr('data-value'));
+                    //if everything is validated we proceed with the submission
+                    var saveAction = $(this).data('value');
+                    saveActionField.val( saveAction );
                     form[0].requestSubmit();
-                } else {
+                }else{
                     // navigate to the tab where the first error happens
                     changeTabIfNeededAndDisplayErrors(form);
                 }
-            });
-
-            //this is for the anchors AKA other non-default save actions.
-            $(selector).find('button').each(function () {
-                $(this).click(function (e) {
-                    //we check if form is valid
-                    if (checkFormValidity(form)) {
-                        //if everything is validated we proceed with the submission
-                        var saveAction = $(this).data('value');
-                        saveActionField.val(saveAction);
-                        form[0].requestSubmit();
-                    } else {
-                        // navigate to the tab where the first error happens
-                        changeTabIfNeededAndDisplayErrors(form);
-                    }
-                    e.stopPropagation();
-                });
+                e.stopPropagation();
             });
         });
-    </script>
+    });
+</script>
 @endpush

@@ -241,12 +241,20 @@ if (! function_exists('backpack_theme_config')) {
      * @param string
      * @return string
      */
-    function backpack_theme_config($string)
+    function backpack_theme_config($key)
     {
-        $key = config('backpack.base.view_namespace').$string;
-        $key = str_replace('::', '.', $key);
+        $namespacedKey = config('backpack.base.view_namespace').$key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
 
-        return config($key);
+        // if the config exists in the theme config file, use it
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        // if not, fall back to a general config/backpack/theme.php file
+        $namespacedKey = 'backpack.ui.'.$key;
+
+        return config($namespacedKey);
     }
 }
 

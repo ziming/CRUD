@@ -51,10 +51,8 @@ final class UploadStore
         $this->uploaders[$group] = array_merge($this->getGroupUploaders($group), $uploaders);
     }
 
-    private function getGroupUploaders($group = null)
+    private function getGroupUploaders($group)
     {
-        $group = $group ?? self::DEFAULT_GROUP;
-
         return $this->uploaders[$group] ?? [];
     }
 }

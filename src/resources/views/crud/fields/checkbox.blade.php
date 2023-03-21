@@ -1,30 +1,34 @@
 {{-- checkbox field --}}
 
 @php
-  $field['value'] = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
+  $field['value'] = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
+  $field['attributes']['class'] = $field['attributes']['class'] ?? 'form-check-input';
 @endphp
+
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')
+      <div class="form-check">
         <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
 
           @if ((bool)$field['value'])
-                 checked="checked"
+            checked="checked"
           @endif
 
           @if (isset($field['attributes']))
-              @foreach ($field['attributes'] as $attribute => $value)
-    			{{ $attribute }}="{{ $value }}"
+            @foreach ($field['attributes'] as $attribute => $value)
+    			  {{ $attribute }}="{{ $value }}"
         	  @endforeach
           @endif
           >
-    	<label class="font-weight-normal mb-0">{!! $field['label'] !!}</label>
+    	  <label class="font-weight-normal mb-0">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))
             <p class="help-block">{!! $field['hint'] !!}</p>
         @endif
+      </div>
 @include('crud::fields.inc.wrapper_end')
 
 {{-- ########################################## --}}

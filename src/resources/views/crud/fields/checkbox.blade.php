@@ -2,7 +2,7 @@
 
 @php
   $field['value'] = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '';
-  $field['attributes']['class'] = ($field['attributes']['class'] ?? '') . ' form-check-input';
+  $field['attributes']['class'] = $field['attributes']['class'] ?? 'form-check-input';
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

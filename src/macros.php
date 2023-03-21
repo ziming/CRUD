@@ -37,6 +37,7 @@ if (! Str::hasMacro('dotsToSquareBrackets')) {
 if (! CrudColumn::hasMacro('withUploads')) {
     CrudColumn::macro('withUploads', function ($uploadDefinition = []) {
         /** @var CrudField|CrudColumn $this */
+        $uploadDefinition['uploadersGroup'] = 'withUploads';
         RegisterUploadEvents::handle($this, $uploadDefinition);
 
         return $this;
@@ -46,6 +47,7 @@ if (! CrudColumn::hasMacro('withUploads')) {
 if (! CrudField::hasMacro('withUploads')) {
     CrudField::macro('withUploads', function ($uploadDefinition = []) {
         /** @var CrudField|CrudColumn $this */
+        $uploadDefinition['uploadersGroup'] = 'withUploads';
         RegisterUploadEvents::handle($this, $uploadDefinition);
 
         return $this;

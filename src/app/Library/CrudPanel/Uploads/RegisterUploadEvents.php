@@ -32,6 +32,9 @@ final class RegisterUploadEvents
 
         $attributes['entryClass'] = $attributes['model'] ?? get_class($crudObject->crud()->getModel());
 
+        // the the name of the macro that called the upload handling
+        $attributes['uploadersGroup'] = $uploadDefinition['uploadersGroup'] ?? abort(500, 'Please provide the `uploadersGroup` in the upload definition');
+
         $crudObjectType = is_a($crudObject, CrudField::class) ? 'field' : (is_a($crudObject, CrudColumn::class) ? 'column' : null);
 
         if (! $crudObjectType) {
@@ -117,6 +120,7 @@ final class RegisterUploadEvents
             if (isset($subfield['withMedia']) || isset($subfield['withUploads'])) {
                 $subfield['entryClass'] = $subfield['baseModel'] ?? $crudObject['entryClass'];
                 $subfield['crudObjectType'] = $crudObject['crudObjectType'];
+                $subfield['uploadersGroup'] = $crudObject['uploadersGroup'];
 
                 $subfielduploadDefinition = $subfield['withUploads'] ?? $subfield['withMedia'];
 
@@ -131,7 +135,7 @@ final class RegisterUploadEvents
         }
 
         foreach ($repeatableDefinitions as $model => $uploaderTypes) {
-            $repeatableDefinition = app('UploadStore')->getUploadFor('repeatable', $uploadDefinition['uploaders'] ?? null)::for($crudObject)->uploads(...$uploaderTypes);
+            $repeatableDefinition = app('UploadStore')->getUploadFor('repeatable', $uploadDefinition['uploadersGroup'] ?? null)::for($crudObject)->uploads(...$uploaderTypes);
             $this->setupModelEvents($model, $repeatableDefinition);
         }
     }
@@ -155,7 +159,9 @@ final class RegisterUploadEvents
         if (isset($uploadDefinition['uploaderType'])) {
             return $uploadDefinition['uploaderType']::for($crudObject, $uploadDefinition);
         }
-        $uploaders = $uploadDefinition['uploaders'] ?? null;
+
+        $uploaders = $uploadDefinition['uploadersGroup'] ?? null;
+
         if (app('UploadStore')->hasUploadFor($crudObject['type'], $uploaders)) {
             return app('UploadStore')->getUploadFor($crudObject['type'], $uploaders)::for($crudObject, $uploadDefinition);
         }

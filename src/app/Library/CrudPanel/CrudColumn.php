@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Interfaces\MacroableInterface;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\HasMacros;
 use Illuminate\Support\Traits\Macroable;
 
@@ -30,7 +31,7 @@ use Illuminate\Support\Traits\Macroable;
  * @method self priority(int $value)
  * @method self key(string $value)
  */
-class CrudColumn
+class CrudColumn implements MacroableInterface
 {
     use Macroable { __call as macroCall; }
     use HasMacros;

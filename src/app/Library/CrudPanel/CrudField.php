@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Interfaces\MacroableInterface;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\HasMacros;
 use Illuminate\Support\Traits\Macroable;
 
@@ -35,7 +36,7 @@ use Illuminate\Support\Traits\Macroable;
  * @method self morphTypeField(array $value)
  * @method self morphIdField(array $value)
  */
-class CrudField
+class CrudField implements MacroableInterface
 {
     use Macroable { __call as macroCall; }
     use HasMacros;

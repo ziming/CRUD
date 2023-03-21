@@ -233,6 +233,23 @@ if (! function_exists('backpack_view')) {
     }
 }
 
+if (! function_exists('backpack_theme_config')) {
+    /**
+     * Returns a config value from the current theme's config file.
+     * It assumes the theme's config namespace is the same as the view namespace.
+     *
+     * @param string
+     * @return string
+     */
+    function backpack_theme_config($string)
+    {
+        $key = config('backpack.base.view_namespace').$string;
+        $key = str_replace('::', '.', $key);
+
+        return config($key);
+    }
+}
+
 if (! function_exists('square_brackets_to_dots')) {
     /**
      * Turns a string from bracket-type array to dot-notation array.

@@ -32,7 +32,7 @@ trait Macroable
     /**
      * Calls the macros registered for the given macroable attributes.
      *
-     * @param CrudField|CrudColumn $macroable
+     * @param  CrudField|CrudColumn  $macroable
      * @return void
      */
     private function callRegisteredAttributeMacros(CrudField|CrudColumn $macroable)

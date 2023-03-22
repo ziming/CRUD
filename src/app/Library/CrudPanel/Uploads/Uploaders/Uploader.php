@@ -101,7 +101,7 @@ abstract class Uploader implements UploaderInterface
         $this->name = $crudObject['name'];
         $this->disk = $configuration['disk'] ?? $crudObject['disk'] ?? $this->disk;
         $this->temporary = $configuration['temporary'] ?? $this->temporary;
-        $this->temporaryUrlExpirationTime = $configuration['expiration'] ?? $this->temporaryUrlExpirationTime ;
+        $this->temporaryUrlExpirationTime = $configuration['expiration'] ?? $this->temporaryUrlExpirationTime;
         $this->entryClass = $crudObject['entryClass'];
         $this->path = $configuration['path'] ?? $crudObject['prefix'] ?? $this->path;
         $this->path = empty($this->path) ? $this->path : Str::of($this->path)->finish('/')->value;

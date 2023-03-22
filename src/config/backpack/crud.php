@@ -466,9 +466,9 @@ return [
             'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
         ],
     ],
-    // the uploaders for the `withUploads` macro
+    // the uploaders for the `withFiles` macro
     'uploaders' => [
-        'withUploads' => [
+        'withFiles' => [
             'image'           => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleBase64Image::class,
             'upload'          => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleFile::class,
             'upload_multiple' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\MultipleFiles::class,

@@ -16,7 +16,7 @@ class MultipleFiles extends Uploader
 
     public function save(Model $entry, $value = null)
     {
-        return $this->isRepeatable && ! $this->isRelationship ? $this->saveRepeatableMutipleFiles($entry, $value) : $this->saveMultipleFiles($entry, $value);
+        return $this->isRepeatable && ! $this->isRelationship ? $this->saveRepeatableMultipleFiles($entry, $value) : $this->saveMultipleFiles($entry, $value);
     }
 
     private function saveMultipleFiles($entry, $value = null)
@@ -56,7 +56,7 @@ class MultipleFiles extends Uploader
         return isset($entry->getCasts()[$this->name]) ? $previousFiles : json_encode($previousFiles);
     }
 
-    private function saveRepeatableMutipleFiles($entry, $files)
+    private function saveRepeatableMultipleFiles($entry, $files)
     {
         $previousFiles = $this->getPreviousRepeatableValues($entry);
 

@@ -69,9 +69,7 @@ trait Columns
         $column = $this->makeSureColumnHasNeededAttributes($column);
         $this->addColumnToOperationSettings($column);
 
-        $crudFieldObject = (new CrudColumn($column['name']));
-
-        $this->callRegisteredAttributeMacros($crudFieldObject);
+        $this->callRegisteredAttributeMacros(new CrudColumn($column['name']));
 
         return $this;
     }

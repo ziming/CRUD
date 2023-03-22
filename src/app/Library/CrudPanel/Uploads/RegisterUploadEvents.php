@@ -64,7 +64,7 @@ final class RegisterUploadEvents
      */
     private function setupModelEvents(string $model, UploaderInterface|RepeatableUploaderInterface $uploader): void
     {
-        if (app('UploadStore')->isUploadHandled($uploader->getName())) {
+        if (app('UploadersRepository')->isUploadHandled($uploader->getName())) {
             return;
         }
 
@@ -101,7 +101,7 @@ final class RegisterUploadEvents
             }
         });
 
-        app('UploadStore')->markAsHandled($uploader->getName());
+        app('UploadersRepository')->markAsHandled($uploader->getName());
     }
 
     /**
@@ -135,7 +135,7 @@ final class RegisterUploadEvents
         }
 
         foreach ($repeatableDefinitions as $model => $uploaderTypes) {
-            $repeatableDefinition = app('UploadStore')->getUploadFor('repeatable', $uploadDefinition['uploadersGroup'] ?? null)::for($crudObject)->uploads(...$uploaderTypes);
+            $repeatableDefinition = app('UploadersRepository')->getUploadFor('repeatable', $uploadDefinition['uploadersGroup'] ?? null)::for($crudObject)->uploads(...$uploaderTypes);
             $this->setupModelEvents($model, $repeatableDefinition);
         }
     }

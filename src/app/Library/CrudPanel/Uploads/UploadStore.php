@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Uploads;
 
-final class UploadStore
+final class UploadersRepository
 {
     private array $uploaders;
 

@@ -87,7 +87,7 @@ abstract class Uploader implements UploaderInterface
      *
      * @var int
      */
-    public $expiration = 1;
+    public $temporaryUrlExpirationTime = 1;
 
     /**
      * Indicates if the upload is relative to a relationship field/column.
@@ -101,7 +101,7 @@ abstract class Uploader implements UploaderInterface
         $this->name = $crudObject['name'];
         $this->disk = $configuration['disk'] ?? $crudObject['disk'] ?? $this->disk;
         $this->temporary = $configuration['temporary'] ?? $this->temporary;
-        $this->expiration = $configuration['expiration'] ?? $this->expiration;
+        $this->temporaryUrlExpirationTime = $configuration['expiration'] ?? $this->temporaryUrlExpirationTime ;
         $this->entryClass = $crudObject['entryClass'];
         $this->path = $configuration['path'] ?? $crudObject['prefix'] ?? $this->path;
         $this->path = empty($this->path) ? $this->path : Str::of($this->path)->finish('/')->value;

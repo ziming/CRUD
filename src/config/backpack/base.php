@@ -339,14 +339,6 @@ return [
     // You can rename this disk here. Default: root
     'root_disk_name' => 'root',
 
-    // default uploaders for backpack fields
-    'uploaders' =>  [
-        'image'           => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleBase64Image::class,
-        'upload'          => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleFile::class,
-        'upload_multiple' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\MultipleFiles::class,
-        'repeatable'      => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\RepeatableUploader::class,
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Backpack Token Username

@@ -109,7 +109,6 @@ trait Fields
 
         $this->enableTabsIfFieldUsesThem($field);
         $this->addFieldToOperationSettings($field);
-
         $this->callRegisteredAttributeMacros(new CrudField($field['name']));
 
         return $this;

@@ -9,12 +9,7 @@ use Illuminate\Support\Str;
 
 class SingleBase64Image extends Uploader
 {
-    public function save(Model $entry, $value = null)
-    {
-        return $this->isRepeatable && ! $this->isRelationship ? $this->saveRepeatableSingleBase64($entry, $value) : $this->saveSingleBase64($entry, $value);
-    }
-
-    private function saveSingleBase64($entry, $value)
+    public function uploadFile(Model $entry, $value = null)
     {
         $value = $value ?? CRUD::getRequest()->get($this->name);
         $previousImage = $entry->getOriginal($this->name);
@@ -42,7 +37,7 @@ class SingleBase64Image extends Uploader
         return $previousImage;
     }
 
-    private function saveRepeatableSingleBase64($entry, $value)
+    public function saveRepeatableFile(Model $entry, $value = null)
     {
         $previousImages = $this->getPreviousRepeatableValues($entry);
 

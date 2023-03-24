@@ -5,14 +5,23 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Uploads;
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\RepeatableUploaderInterface;
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
 use Exception;
 
 final class RegisterUploadEvents
 {
-    public function __construct(private readonly CrudField|CrudColumn $crudObject, private readonly array $uploadDefinition)
-    {
+    private string $crudObjectType;
+
+    public function __construct(
+        private readonly CrudField|CrudColumn $crudObject,
+        private readonly array $uploaderConfiguration,
+        private readonly string $macro
+        ) {
+        $this->crudObjectType = is_a($crudObject, CrudField::class) ? 'field' : (is_a($crudObject, CrudColumn::class) ? 'column' : null);
+
+        if (! $this->crudObjectType) {
+            abort(500, 'Upload handlers only work for CrudField and CrudColumn classes.');
+        }
     }
 
     /**
@@ -20,38 +29,16 @@ final class RegisterUploadEvents
      * service so that uploads are stored and retrieved automatically.
      *
      * @param  CrudField|CrudColumn  $crudObject
-     * @param  array  $uploadDefinition
+     * @param  array  $uploaderConfiguration
      * @param  array  $defaultUploaders
+     * @param  array|null $subfield
      * @return void
      */
-    public static function handle($crudObject, $uploadDefinition): void
+    public static function handle($crudObject, $uploaderConfiguration, $macro, $subfield = null): void
     {
-        $instance = new self($crudObject, $uploadDefinition);
-
-        $attributes = $crudObject->getAttributes();
-
-        $attributes['entryClass'] = $attributes['model'] ?? get_class($crudObject->crud()->getModel());
-
-        // the the name of the macro that called the upload handling
-        $attributes['uploadersGroup'] = $uploadDefinition['uploadersGroup'] ?? abort(500, 'Please provide the `uploadersGroup` in the upload definition');
-
-        $crudObjectType = is_a($crudObject, CrudField::class) ? 'field' : (is_a($crudObject, CrudColumn::class) ? 'column' : null);
-
-        if (! $crudObjectType) {
-            abort(500, 'Upload handlers only work for CrudField and CrudColumn classes.');
-        }
-
-        $attributes['crudObjectType'] = $crudObjectType;
-
-        if (! isset($attributes['subfields'])) {
-            $uploaderType = $instance->getUploader($attributes, $uploadDefinition);
-            $instance->setupModelEvents($attributes['entryClass'], $uploaderType);
-            self::setupUploadConfigsInCrudObject($crudObject, $uploaderType);
-
-            return;
-        }
-
-        $instance->handleRepeatableUploads($attributes, $uploadDefinition);
+        $instance = new self($crudObject, $uploaderConfiguration, $macro);
+    
+        $instance->registerEvents($subfield);
     }
 
     /**
@@ -59,24 +46,26 @@ final class RegisterUploadEvents
      * In case of CrudColumn we only register the retrieved event.
      *
      * @param  string  $model
-     * @param  UploaderInterface|RepeatableUploaderInterface  $uploader
+     * @param  UploaderInterface  $uploader
      * @return void
      */
-    private function setupModelEvents(string $model, UploaderInterface|RepeatableUploaderInterface $uploader): void
+    private function setupModelEvents(string $model, UploaderInterface $uploader): void
     {
-        if (app('UploadersRepository')->isUploadHandled($uploader->getName())) {
+        if (app('UploadersRepository')->isUploadHandled($uploader->getIdentifier())) {
             return;
         }
-
-        if ($uploader->getCrudObjectType() === 'field') {
+        
+        if ($this->crudObjectType === 'field') {
             $model::saving(function ($entry) use ($uploader) {
-                $updatedCountKey = 'uploaded_'.$uploader->getName().'_count';
+                $updatedCountKey = 'uploaded_'.($uploader->getRepeatableContainerName() ?? $uploader->getName()).'_count';
 
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) ?? 0);
 
                 $entry = $uploader->processFileUpload($entry);
 
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
+
+                return $entry;
             });
         }
 
@@ -85,61 +74,78 @@ final class RegisterUploadEvents
         });
 
         $model::deleting(function ($entry) use ($uploader) {
-            if (is_a($uploader, RepeatableUploaderInterface::class)) {
-                $uploader->deleteUploadedFile($entry);
-
-                return;
-            }
-            if ($uploader->deleteWhenEntryIsDeleted) {
-                if (! in_array(SoftDeletes::class, class_uses_recursive($entry), true)) {
-                    $uploader->deleteUploadedFile($entry);
-                } else {
-                    if ($entry->forceDeleting === true) {
-                        $uploader->deleteUploadedFile($entry);
-                    }
-                }
-            }
+           $uploader->deleteUploadedFile($entry);
         });
 
-        app('UploadersRepository')->markAsHandled($uploader->getName());
+        app('UploadersRepository')->markAsHandled($uploader->getIdentifier());
     }
 
-    /**
-     * Handles the use case when the events need to be setup on subfields (Repeatable fields/columns)
-     * We will configure the subfields accordingly before setting up the entry events for uploads.
-     *
-     * @param  array  $crudObject
-     * @param  array  $uploadDefinition
-     * @return void
-     */
-    private function handleRepeatableUploads(array $crudObject, array $uploadDefinition)
+    public function registerEvents(array $subfield = [])
     {
-        $repeatableDefinitions = [];
-
-        foreach ($crudObject['subfields'] as $subfield) {
-            if (isset($subfield['withMedia']) || isset($subfield['withUploads'])) {
-                $subfield['entryClass'] = $subfield['baseModel'] ?? $crudObject['entryClass'];
-                $subfield['crudObjectType'] = $crudObject['crudObjectType'];
-                $subfield['uploadersGroup'] = $crudObject['uploadersGroup'];
-
-                $subfielduploadDefinition = $subfield['withUploads'] ?? $subfield['withMedia'];
-
-                $subfielduploadDefinition = is_array($subfielduploadDefinition) ?
-                                                array_merge($uploadDefinition, $subfielduploadDefinition) :
-                                                $uploadDefinition;
-
-                $uploaderType = $this->getUploader($subfield, $subfielduploadDefinition);
-
-                $repeatableDefinitions[$subfield['entryClass']][] = $uploaderType;
-            }
+        if(!empty($subfield)) {
+            return $this->registerSubfieldEvent($subfield);
         }
+      
+        $attributes = $this->crudObject->getAttributes();
 
-        foreach ($repeatableDefinitions as $model => $uploaderTypes) {
-            $repeatableDefinition = app('UploadersRepository')->getUploadFor('repeatable', $uploadDefinition['uploadersGroup'] ?? null)::for($crudObject)->uploads(...$uploaderTypes);
-            $this->setupModelEvents($model, $repeatableDefinition);
-        }
+        $model = $attributes['model'] ?? get_class($this->crudObject->crud()->getModel());
+
+        $uploader = $this->getUploader($attributes, $this->uploaderConfiguration);
+
+        $this->setupModelEvents($model, $uploader);
+
+        $this->setupUploadConfigsInCrudObject($uploader);
     }
 
+
+    public function registerSubfieldEvent(array $subfield)
+    {
+        $uploader = $this->getUploader($subfield, $this->uploaderConfiguration);
+
+        $crudObject = $this->crudObject->getAttributes();
+
+        $uploader = $uploader->repeats($crudObject['name']);
+
+        // If this uploader is already registered bail out. We may endup here multiple times when doing modifications to the crud object.
+        // Changing `subfields` properties will call the macros again. We prevent duplicate entries by checking 
+        // if the uploader is already registered.
+        if (app('UploadersRepository')->isUploadRegistered($uploader->getRepeatableContainerName(), $uploader)) {
+            return;
+        }
+
+        $model = $subfield['baseModel'] ?? $crudObject['model'] ?? get_class($this->crudObject->crud()->getModel());
+        
+        if (isset($crudObject['relation_type']) && $crudObject['entity'] !== false) {
+            $uploader = $uploader->relationship(true);
+        }
+
+        // for subfields, we only register one event so that we have access to the repeatable container name.
+        // all the uploaders for a given container are stored in the UploadersRepository.
+        if (! app('UploadersRepository')->hasUploadersRegisteredFor($uploader->getRepeatableContainerName())) {
+            $this->setupModelEvents($model, $uploader);
+        }
+    
+        $subfields = collect($this->crudObject->getAttributes()['subfields']);
+        $subfields = $subfields->map(function ($item) use ($subfield, $uploader) {
+            if ($item['name'] === $subfield['name']) {
+                $item['upload'] = true;
+                $item['disk'] = $uploader->getDisk();
+                $item['prefix'] = $uploader->getPath();
+                if ($uploader->getTemporary()) {
+                    $item['temporary'] = $uploader->getTemporary();
+                    $item['expiration'] = $uploader->getExpiration();
+                }
+            }
+
+            return $item;
+        })->toArray();
+
+        app('UploadersRepository')->registerUploader($uploader->getRepeatableContainerName(), $uploader);
+
+        $this->crudObject->subfields($subfields);
+    }
+
+    
     /**
      * Return the uploader for the object beeing configured.
      * We will give priority to any uploader provided by `uploader => App\SomeUploaderClass` on upload definition.
@@ -149,21 +155,19 @@ final class RegisterUploadEvents
      * Throws an exception in case no uploader for the given object type is found.
      *
      * @param  array  $crudObject
-     * @param  array  $uploadDefinition
-     * @return UploaderInterface|RepeatableUploaderInterface
+     * @param  array  $uploaderConfiguration
+     * @return UploaderInterface
      *
      * @throws Exception
      */
-    private function getUploader(array $crudObject, array $uploadDefinition)
+    private function getUploader(array $crudObject, array $uploaderConfiguration)
     {
-        if (isset($uploadDefinition['uploaderType'])) {
-            return $uploadDefinition['uploaderType']::for($crudObject, $uploadDefinition);
+        if (isset($uploaderConfiguration['uploaderType'])) {
+            return $uploaderConfiguration['uploaderType']::for($crudObject, $uploaderConfiguration);
         }
 
-        $uploaders = $uploadDefinition['uploadersGroup'] ?? null;
-
-        if (app('UploadStore')->hasUploadFor($crudObject['type'], $uploaders)) {
-            return app('UploadStore')->getUploadFor($crudObject['type'], $uploaders)::for($crudObject, $uploadDefinition);
+        if (app('UploadersRepository')->hasUploadFor($crudObject['type'], $this->macro)) {
+            return app('UploadersRepository')->getUploadFor($crudObject['type'], $this->macro)::for($crudObject, $uploaderConfiguration);
         }
 
         throw new Exception('Undefined upload type for '.$crudObject['crudObjectType'].' type: '.$crudObject['type']);
@@ -176,8 +180,8 @@ final class RegisterUploadEvents
      * @param  UploaderInterface  $uploader
      * @return void
      */
-    private static function setupUploadConfigsInCrudObject(CrudField|CrudColumn $crudObject, UploaderInterface $uploader)
+    private function setupUploadConfigsInCrudObject(UploaderInterface $uploader)
     {
-        $crudObject->upload(true)->disk($uploader->disk)->prefix($uploader->path);
+        $this->crudObject->upload(true)->disk($uploader->getDisk())->prefix($uploader->getPath());
     }
 }

@@ -35,21 +35,17 @@ if (! Str::hasMacro('dotsToSquareBrackets')) {
     });
 }
 if (! CrudColumn::hasMacro('withFiles')) {
-    CrudColumn::macro('withFiles', function ($uploadDefinition = []) {
+    CrudColumn::macro('withFiles', function ($uploadDefinition = [], $subfield = null) {
         /** @var CrudField|CrudColumn $this */
-        $uploadDefinition['uploadersGroup'] = 'withFiles';
-        RegisterUploadEvents::handle($this, $uploadDefinition);
-
+        RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield);
         return $this;
     });
 }
 
 if (! CrudField::hasMacro('withFiles')) {
-    CrudField::macro('withFiles', function ($uploadDefinition = []) {
+    CrudField::macro('withFiles', function ($uploadDefinition = [], $subfield = null) {
         /** @var CrudField|CrudColumn $this */
-        $uploadDefinition['uploadersGroup'] = 'withFiles';
-        RegisterUploadEvents::handle($this, $uploadDefinition);
-
+        RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield);
         return $this;
     });
 }

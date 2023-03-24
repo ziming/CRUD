@@ -221,6 +221,7 @@ class CrudField implements MacroableInterface
     {
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
+        $this->crud()->callRegisteredAttributeMacros($this);
 
         return $this->save();
     }

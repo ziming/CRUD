@@ -16,7 +16,13 @@ interface UploaderInterface
 
     public function __construct(array $crudObject, array $configuration);
 
-    public function save(Model $entry, $values = null);
+    public function uploadFile(Model $entry, $values = null);
+
+    public function saveRepeatableFile(Model $entry, $values = null);
+
+    public function getRepeatableContainerName();
+
+    public function getIdentifier();
 
     public function repeats(string $repeatableContainerName): self;
 
@@ -31,6 +37,4 @@ interface UploaderInterface
     public function getTemporary();
 
     public function getExpiration();
-
-    public function getCrudObjectType();
 }

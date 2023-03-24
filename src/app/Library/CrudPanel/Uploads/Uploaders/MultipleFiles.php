@@ -14,12 +14,7 @@ class MultipleFiles extends Uploader
         return (new self($field, $configuration))->multiple();
     }
 
-    public function save(Model $entry, $value = null)
-    {
-        return $this->isRepeatable && ! $this->isRelationship ? $this->saveRepeatableMultipleFiles($entry, $value) : $this->saveMultipleFiles($entry, $value);
-    }
-
-    private function saveMultipleFiles($entry, $value = null)
+    public function uploadFile(Model $entry, $value = null)
     {
         $filesToDelete = CRUD::getRequest()->get('clear_'.$this->name);
 
@@ -56,7 +51,7 @@ class MultipleFiles extends Uploader
         return isset($entry->getCasts()[$this->name]) ? $previousFiles : json_encode($previousFiles);
     }
 
-    private function saveRepeatableMultipleFiles($entry, $files)
+    public function saveRepeatableFile(Model $entry, $files = null)
     {
         $previousFiles = $this->getPreviousRepeatableValues($entry);
 

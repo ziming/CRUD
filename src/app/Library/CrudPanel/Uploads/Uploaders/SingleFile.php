@@ -8,12 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SingleFile extends Uploader
 {
-    public function save(Model $entry, $value = null)
-    {
-        return $this->isRepeatable && ! $this->isRelationship ? $this->saveRepeatableFile($entry, $value) : $this->saveFile($entry, $value);
-    }
-
-    private function saveRepeatableFile($entry, $values)
+    public function saveRepeatableFile(Model $entry, $values = null)
     {
         $orderedFiles = $this->getFileOrderFromRequest();
 
@@ -40,7 +35,7 @@ class SingleFile extends Uploader
         return $orderedFiles;
     }
 
-    private function saveFile($entry, $value)
+    public function uploadFile(Model $entry, $value = null)
     {
         $value = $value ?? CrudPanelFacade::getRequest()->file($this->name);
 

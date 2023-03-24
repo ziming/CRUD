@@ -4,8 +4,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HasCrudObjectType;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HasName;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -14,7 +12,12 @@ use Illuminate\Support\Str;
 
 abstract class Uploader implements UploaderInterface
 {
-    use HasCrudObjectType, HasName;
+    /**
+     * The name of the uploader AKA CrudField/Column name.
+     *
+     * @var string
+     */
+    public string $name;
 
     /**
      * Indicates the uploaded file should be deleted when entry is deleted.
@@ -59,13 +62,6 @@ abstract class Uploader implements UploaderInterface
     public $isMultiple = false;
 
     /**
-     * The class of the entry where uploads will be attached to.
-     *
-     * @var string
-     */
-    public $entryClass;
-
-    /**
      * The path inside the disk to store the uploads.
      *
      * @var string
@@ -77,7 +73,7 @@ abstract class Uploader implements UploaderInterface
      *
      * @var bool
      */
-    public $temporary = false;
+    public $useTemporaryUrl = false;
 
     /**
      * When using temporary urls, defines the time that the url
@@ -100,24 +96,38 @@ abstract class Uploader implements UploaderInterface
     {
         $this->name = $crudObject['name'];
         $this->disk = $configuration['disk'] ?? $crudObject['disk'] ?? $this->disk;
-        $this->temporary = $configuration['temporary'] ?? $this->temporary;
+        $this->useTemporaryUrl = $configuration['temporary'] ?? $this->useTemporaryUrl;
         $this->temporaryUrlExpirationTime = $configuration['expiration'] ?? $this->temporaryUrlExpirationTime;
-        $this->entryClass = $crudObject['entryClass'];
         $this->path = $configuration['path'] ?? $crudObject['prefix'] ?? $this->path;
         $this->path = empty($this->path) ? $this->path : Str::of($this->path)->finish('/')->value;
-        $this->crudObjectType = $crudObject['crudObjectType'];
         $this->fileName = $configuration['fileName'] ?? $this->fileName;
         $this->deleteWhenEntryIsDeleted = $configuration['whenDelete'] ?? $this->deleteWhenEntryIsDeleted;
     }
 
     /**
-     * An abstract function that all uploaders must implement with the saving process.
+     * An abstract function that all uploaders must implement with a single file save process.
      *
      * @param  Model  $entry
      * @param  mixed  $values
      * @return mixed
      */
-    abstract public function save(Model $entry, $values = null);
+    abstract public function uploadFile(Model $entry, $values = null);
+
+    /**
+     * An function that all uploaders must implement if it also supports repeatable files
+     *
+     * @param  Model  $entry
+     * @param  mixed  $values
+     * @return mixed
+     */
+    public function saveRepeatableFile(Model $entry, $values = null)
+    {
+    }
+
+    public function getRepeatableContainerName()
+    {
+        return $this->repeatableContainerName;
+    }
 
     /**
      * The function called in the saving event that starts the upload process.
@@ -127,9 +137,52 @@ abstract class Uploader implements UploaderInterface
      */
     public function processFileUpload(Model $entry)
     {
-        $entry->{$this->name} = $this->save($entry);
+        if ($this->isRepeatable) {
+            return $this->uploadRepeatableFile($entry);
+        }
+
+        $entry->{$this->name} = $this->uploadFile($entry);
 
         return $entry;
+    }
+
+    private function uploadRepeatableFile(Model $entry)
+    {
+        $values = collect(CRUD::getRequest()->get($this->repeatableContainerName));
+        $files = collect(CRUD::getRequest()->file($this->repeatableContainerName));
+
+        $value = $this->mergeValuesRecursive($values, $files);
+
+        if (! $this->isRelationship) {
+            $entry->{$this->repeatableContainerName} = json_encode($this->processRepeatableUploads($entry, $value));
+        } else {
+            $modelCount = CRUD::get('uploaded_'.$this->repeatableContainerName.'_count');
+
+            $value = $value->slice($modelCount, 1)->toArray();
+
+            foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $uploader) {
+                if (array_key_exists($modelCount, $value) && isset($value[$modelCount][$uploader->getName()])) {
+                    $entry->{$uploader->getName()} = $uploader->uploadFile($entry, $value[$modelCount][$uploader->getName()]);
+                }
+            }
+        }
+        
+        return $entry;
+    }
+
+    private function processRepeatableUploads(Model $entry, $value)
+    {
+        foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $uploader) {
+            $uploadedValues = $uploader->saveRepeatableFile($entry, $value->pluck($uploader->name)->toArray());
+
+            $value = $value->map(function ($item, $key) use ($uploadedValues, $uploader) {
+                $item[$uploader->getName()] = $uploadedValues[$key] ?? null;
+
+                return $item;
+            });
+        }
+
+        return $value;
     }
 
     /**
@@ -169,7 +222,7 @@ abstract class Uploader implements UploaderInterface
      */
     public function getTemporary()
     {
-        return $this->temporary;
+        return $this->useTemporaryUrl;
     }
 
     /**
@@ -179,7 +232,7 @@ abstract class Uploader implements UploaderInterface
      */
     public function getExpiration()
     {
-        return $this->expiration;
+        return $this->temporaryUrlExpirationTime;
     }
 
     /**
@@ -189,6 +242,15 @@ abstract class Uploader implements UploaderInterface
      * @return Model
      */
     public function retrieveUploadedFile(Model $entry)
+    {
+        if ($this->isRepeatable) {
+            return $this->retrieveRepeatableFiles($entry);
+        }
+
+        return $this->retrieveFile($entry);
+    }
+
+    protected function retrieveFile($entry)
     {
         $value = $entry->{$this->name};
 
@@ -201,6 +263,15 @@ abstract class Uploader implements UploaderInterface
         return $entry;
     }
 
+    protected function retrieveRepeatableFiles($entry)
+    {
+        if ($this->isRelationship) {
+            return $this->retrieveFile($entry);
+        }
+
+        return $entry;
+    }
+
     /**
      * The function called in the deleting event to delete the uploaded files upon entry deletion.
      *
@@ -208,6 +279,47 @@ abstract class Uploader implements UploaderInterface
      * @return void
      */
     public function deleteUploadedFile(Model $entry)
+    {
+        if ($this->deleteWhenEntryIsDeleted) {
+            if (! in_array(SoftDeletes::class, class_uses_recursive($entry), true)) {
+                $this->performFileDeletion($entry);
+            } else {
+                if ($entry->forceDeleting === true) {
+                    $this->performFileDeletion($entry);
+                }
+            }
+        }   
+    }
+
+    private function deleteRepeatableFiles($entry)
+    {
+        if($this->isRelationship) {
+            return $this->deleteFiles($entry);
+        }
+
+        $repeatableValues = collect($entry->{$this->getName()});
+        foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $upload) {
+            if (! $upload->deleteWhenEntryIsDeleted) {
+                continue;
+            }
+            $values = $repeatableValues->pluck($upload->getName())->toArray();
+            foreach ($values as $value) {
+                if (! $value) {
+                    continue;
+                }
+                if (is_array($value)) {
+                    foreach ($value as $subvalue) {
+                        Storage::disk($upload->disk)->delete($upload->path.$subvalue);
+                    }
+
+                    continue;
+                }
+                Storage::disk($upload->disk)->delete($upload->path.$value);
+            }
+        }
+    }
+
+    private function deleteFiles($entry)
     {
         $values = $entry->{$this->name};
 
@@ -222,6 +334,16 @@ abstract class Uploader implements UploaderInterface
         foreach ($values as $value) {
             Storage::disk($this->disk)->delete($this->path.$value);
         }
+    }
+
+
+    private function performFileDeletion($entry)
+    {
+        if( $this->isRelationship) {
+            return $this->deleteFiles($entry);
+        }
+ 
+        $this->deleteRepeatableFiles($entry);
     }
 
     /**
@@ -251,18 +373,12 @@ abstract class Uploader implements UploaderInterface
     /**
      * Set relationship attribute in uploader.
      * When true, it also removes the repeatable in case the relationship is handled
-     * by repeatable interface.
-     * This is because the uploads are only repeatable on the "main model", but they represent
-     * one entry per row. (not repeatable in the "relationship model").
      *
      * @param  bool  $isRelationship
      * @return self
      */
     public function relationship(bool $isRelationship): self
     {
-        if ($isRelationship) {
-            $this->isRepeatable = false;
-        }
         $this->isRelationship = $isRelationship;
 
         return $this;
@@ -309,7 +425,7 @@ abstract class Uploader implements UploaderInterface
      */
     protected function modelInstance()
     {
-        return new $this->entryClass;
+        //return new $this->entryClass;
     }
 
     /**
@@ -382,5 +498,28 @@ abstract class Uploader implements UploaderInterface
         }
 
         return $this->fileName;
+    }
+
+    protected function mergeValuesRecursive($array1, $array2)
+    {
+        $merged = $array1;
+        foreach ($array2 as $key => &$value) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = $this->mergeValuesRecursive($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+
+        return $merged;
+    }
+
+    public function getIdentifier()
+    {
+        if ($this->isRepeatable) {
+            return $this->repeatableContainerName.'_'.$this->name;
+        }
+
+        return $this->name;
     }
 }

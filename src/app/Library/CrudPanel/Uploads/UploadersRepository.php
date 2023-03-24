@@ -19,7 +19,7 @@ final class UploadersRepository
     {
         if (! in_array($objectName, $this->handledUploaders)) {
             $this->handledUploaders[] = $objectName;
-        } 
+        }
     }
 
     public function isUploadHandled(string $objectName)
@@ -64,7 +64,8 @@ final class UploadersRepository
         return $this->registeredUploaders[$uploadName] ?? [];
     }
 
-    public function isUploadRegistered($uploadName, $upload) {
+    public function isUploadRegistered($uploadName, $upload)
+    {
         return $this->hasUploadersRegisteredFor($uploadName) && in_array($upload->getName(), $this->getRegisteredUploadNames($uploadName));
     }
 

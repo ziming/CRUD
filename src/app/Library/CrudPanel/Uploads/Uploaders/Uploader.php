@@ -114,7 +114,7 @@ abstract class Uploader implements UploaderInterface
     abstract public function uploadFile(Model $entry, $values = null);
 
     /**
-     * An function that all uploaders must implement if it also supports repeatable files
+     * An function that all uploaders must implement if it also supports repeatable files.
      *
      * @param  Model  $entry
      * @param  mixed  $values
@@ -166,7 +166,7 @@ abstract class Uploader implements UploaderInterface
                 }
             }
         }
-        
+
         return $entry;
     }
 
@@ -288,12 +288,12 @@ abstract class Uploader implements UploaderInterface
                     $this->performFileDeletion($entry);
                 }
             }
-        }   
+        }
     }
 
     private function deleteRepeatableFiles($entry)
     {
-        if($this->isRelationship) {
+        if ($this->isRelationship) {
             return $this->deleteFiles($entry);
         }
 
@@ -336,13 +336,12 @@ abstract class Uploader implements UploaderInterface
         }
     }
 
-
     private function performFileDeletion($entry)
     {
-        if( $this->isRelationship) {
+        if ($this->isRelationship) {
             return $this->deleteFiles($entry);
         }
- 
+
         $this->deleteRepeatableFiles($entry);
     }
 
@@ -372,7 +371,7 @@ abstract class Uploader implements UploaderInterface
 
     /**
      * Set relationship attribute in uploader.
-     * When true, it also removes the repeatable in case the relationship is handled
+     * When true, it also removes the repeatable in case the relationship is handled.
      *
      * @param  bool  $isRelationship
      * @return self

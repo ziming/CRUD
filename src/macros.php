@@ -38,6 +38,7 @@ if (! CrudColumn::hasMacro('withFiles')) {
     CrudColumn::macro('withFiles', function ($uploadDefinition = [], $subfield = null) {
         /** @var CrudField|CrudColumn $this */
         RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield);
+
         return $this;
     });
 }
@@ -46,6 +47,7 @@ if (! CrudField::hasMacro('withFiles')) {
     CrudField::macro('withFiles', function ($uploadDefinition = [], $subfield = null) {
         /** @var CrudField|CrudColumn $this */
         RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield);
+
         return $this;
     });
 }

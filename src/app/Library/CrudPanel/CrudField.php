@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\HasMacros;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Fields.

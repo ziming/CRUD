@@ -18,7 +18,7 @@ interface UploaderInterface
 
     public function uploadFile(Model $entry, $values = null);
 
-    public function saveRepeatableFile(Model $entry, $values = null);
+    public function uploadRepeatableFile(Model $entry, $values = null);
 
     public function getRepeatableContainerName();
 

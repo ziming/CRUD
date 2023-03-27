@@ -37,7 +37,7 @@ class SingleBase64Image extends Uploader
         return $previousImage;
     }
 
-    public function saveRepeatableFile(Model $entry, $value = null)
+    public function uploadRepeatableFile(Model $entry, $value = null)
     {
         $previousImages = $this->getPreviousRepeatableValues($entry);
 

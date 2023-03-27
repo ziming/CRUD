@@ -80,7 +80,7 @@ final class RegisterUploadEvents
         app('UploadersRepository')->markAsHandled($uploader->getIdentifier());
     }
 
-    public function registerEvents(array $subfield = [])
+    public function registerEvents(array|null $subfield = [])
     {
         if (! empty($subfield)) {
             return $this->registerSubfieldEvent($subfield);
@@ -168,7 +168,7 @@ final class RegisterUploadEvents
             return app('UploadersRepository')->getUploadFor($crudObject['type'], $this->macro)::for($crudObject, $uploaderConfiguration);
         }
 
-        throw new Exception('Undefined upload type for '.$crudObject['crudObjectType'].' type: '.$crudObject['type']);
+        throw new Exception('Undefined upload type for '.$this->crudObjectType.' type: '.$crudObject['type']);
     }
 
     /**

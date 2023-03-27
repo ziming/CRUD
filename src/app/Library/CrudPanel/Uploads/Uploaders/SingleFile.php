@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SingleFile extends Uploader
 {
-    public function saveRepeatableFile(Model $entry, $values = null)
+    public function uploadRepeatableFile(Model $entry, $values = null)
     {
         $orderedFiles = $this->getFileOrderFromRequest();
 

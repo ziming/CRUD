@@ -120,7 +120,7 @@ abstract class Uploader implements UploaderInterface
      * @param  mixed  $values
      * @return mixed
      */
-    public function saveRepeatableFile(Model $entry, $values = null)
+    public function uploadRepeatableFile(Model $entry, $values = null)
     {
     }
 
@@ -138,7 +138,7 @@ abstract class Uploader implements UploaderInterface
     public function processFileUpload(Model $entry)
     {
         if ($this->isRepeatable) {
-            return $this->uploadRepeatableFile($entry);
+            return $this->handleRepeatableFiles($entry);
         }
 
         $entry->{$this->name} = $this->uploadFile($entry);
@@ -146,7 +146,7 @@ abstract class Uploader implements UploaderInterface
         return $entry;
     }
 
-    private function uploadRepeatableFile(Model $entry)
+    private function handleRepeatableFiles(Model $entry)
     {
         $values = collect(CRUD::getRequest()->get($this->repeatableContainerName));
         $files = collect(CRUD::getRequest()->file($this->repeatableContainerName));
@@ -173,7 +173,7 @@ abstract class Uploader implements UploaderInterface
     private function processRepeatableUploads(Model $entry, $value)
     {
         foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $uploader) {
-            $uploadedValues = $uploader->saveRepeatableFile($entry, $value->pluck($uploader->name)->toArray());
+            $uploadedValues = $uploader->uploadRepeatableFile($entry, $value->pluck($uploader->name)->toArray());
 
             $value = $value->map(function ($item, $key) use ($uploadedValues, $uploader) {
                 $item[$uploader->getName()] = $uploadedValues[$key] ?? null;

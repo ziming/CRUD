@@ -36,7 +36,7 @@ trait Macroable
      */
     public function callRegisteredAttributeMacros($macroable)
     {
-        $macros = $this->getMacros();
+        $macros = $macroable->getMacros();
         $attributes = $macroable->getAttributes();
 
         foreach (array_keys($macros) as $macro) {

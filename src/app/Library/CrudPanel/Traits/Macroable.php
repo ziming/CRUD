@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Backpack\CRUD\app\Library\CrudPanel\Interfaces\MacroableInterface;
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Illuminate\Support\Traits\Macroable as IlluminateMacroable;
 
 trait Macroable
@@ -31,12 +31,12 @@ trait Macroable
     /**
      * Calls the macros registered for the given macroable attributes.
      *
-     * @param  MacroableInterface  $macroable
+     * @param  CrudColumn  $macroable
      * @return void
      */
-    public function callRegisteredAttributeMacros(MacroableInterface $macroable)
+    public function callRegisteredAttributeMacros($macroable)
     {
-        $macros = $macroable->getMacros();
+        $macros = $this->getMacros();
         $attributes = $macroable->getAttributes();
 
         foreach (array_keys($macros) as $macro) {

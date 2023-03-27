@@ -11,6 +11,11 @@ trait HasMacros
      */
     protected static $macros = [];
 
+    /**
+     * Get the registered macros.
+     *
+     * @var array
+     */
     public function getMacros()
     {
         return static::$macros;

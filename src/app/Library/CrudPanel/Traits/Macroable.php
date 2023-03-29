@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Illuminate\Support\Traits\Macroable as IlluminateMacroable;
 
 trait Macroable

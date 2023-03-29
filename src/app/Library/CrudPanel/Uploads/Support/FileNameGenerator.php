@@ -11,7 +11,7 @@ class FileNameGenerator implements FileNameGeneratorInterface
     /**
      * Generate a unique file name.
      *
-     * @param string|UploadedFile $file
+     * @param  string|UploadedFile  $file
      * @return string
      */
     public function generate($file)
@@ -31,7 +31,7 @@ class FileNameGenerator implements FileNameGeneratorInterface
     }
 
     /**
-     * Return the file name 
+     * Return the file name.
      *
      * @param  mixed  $file
      * @return string

@@ -227,7 +227,7 @@ class CrudField
     /**
      * Mark the field has having upload functionality, so that the form would become multipart.
      *
-     * @param boolean $upload
+     * @param  bool  $upload
      * @return self
      */
     public function upload($upload = true)

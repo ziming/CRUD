@@ -83,13 +83,14 @@ final class RegisterUploadEvents
     /**
      * Function responsible for managing the event registering process.
      *
-     * @param array|null $subfield
+     * @param  array|null  $subfield
      * @return void
      */
     public function registerEvents(array|null $subfield = [])
     {
         if (! empty($subfield)) {
             $this->registerSubfieldEvent($subfield);
+
             return;
         }
 
@@ -105,7 +106,7 @@ final class RegisterUploadEvents
      * Register the events for subfields. This is a bit different than the main field because we need to
      * register the events for the base field, that may contain multiple subfields with uploads.
      *
-     * @param array $subfield
+     * @param  array  $subfield
      * @return void
      */
     public function registerSubfieldEvent(array $subfield)

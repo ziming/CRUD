@@ -7,7 +7,7 @@ interface FileNameGeneratorInterface
     /**
      * Generate a unique file name.
      *
-     * @param string $file
+     * @param  string  $file
      * @return string
      */
     public function generate($file);

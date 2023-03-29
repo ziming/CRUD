@@ -4,8 +4,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 trait HandleRepeatableUploads
 {
@@ -63,7 +63,7 @@ trait HandleRepeatableUploads
     /**
      * Prepares the repeatable values from request and send them to the corresponding saving process.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return Model
      */
     private function handleRepeatableFiles(Model $entry)
@@ -74,22 +74,22 @@ trait HandleRepeatableUploads
 
         if ($this->isRelationship) {
             return $this->uploadRelationshipFiles($entry, $value);
-        } 
+        }
 
         $entry->{$this->repeatableContainerName} = json_encode($this->processRepeatableUploads($entry, $value));
 
         return $entry;
-       
     }
 
     /**
      * Uploads the files for a relationship managed with repeatable interface.
      *
-     * @param Model $entry
-     * @param mixed $value
+     * @param  Model  $entry
+     * @param  mixed  $value
      * @return Model
      */
-    private function uploadRelationshipFiles(Model $entry, mixed $value){
+    private function uploadRelationshipFiles(Model $entry, mixed $value)
+    {
         $modelCount = CRUD::get('uploaded_'.$this->repeatableContainerName.'_count');
         $value = $value->slice($modelCount, 1)->toArray();
 
@@ -105,8 +105,8 @@ trait HandleRepeatableUploads
     /**
      * Handle the repeatable files uploads.
      *
-     * @param Model $entry
-     * @param mixed $value
+     * @param  Model  $entry
+     * @param  mixed  $value
      * @return mixed
      */
     private function processRepeatableUploads(Model $entry, $value)
@@ -156,12 +156,12 @@ trait HandleRepeatableUploads
         });
 
         return $items;
-    }    
+    }
 
     /**
      * Retrieve the repeatable container files.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return void
      */
     private function retrieveRepeatableFiles(Model $entry)
@@ -176,13 +176,14 @@ trait HandleRepeatableUploads
     /**
      * Deletes the repeatable container files.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return void
      */
     private function deleteRepeatableFiles(Model $entry)
     {
         if ($this->isRelationship) {
             $this->deleteFiles($entry);
+
             return;
         }
 
@@ -211,8 +212,8 @@ trait HandleRepeatableUploads
     /**
      * Given two multidimensional arrays, merge them recursively.
      *
-     * @param array|Collection $array1
-     * @param array|Collection $array2
+     * @param  array|Collection  $array1
+     * @param  array|Collection  $array2
      * @return array|Collection
      */
     private function mergeValuesRecursive($array1, $array2)

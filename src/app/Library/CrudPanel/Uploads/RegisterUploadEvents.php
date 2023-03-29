@@ -30,7 +30,7 @@ final class RegisterUploadEvents
      *
      * @param  CrudField|CrudColumn  $crudObject
      * @param  array  $uploaderConfiguration
-     * @param  array  $defaultUploaders
+     * @param  string  $macro
      * @param  array|null  $subfield
      * @return void
      */
@@ -42,7 +42,7 @@ final class RegisterUploadEvents
     }
 
     /**
-     * Register the saving and retrieved events on model to handle the upload process.
+     * Register the saving, retrieved and deleting events on model to handle the various upload processes.
      * In case of CrudColumn we only register the retrieved event.
      *
      * @param  string  $model
@@ -80,10 +80,17 @@ final class RegisterUploadEvents
         app('UploadersRepository')->markAsHandled($uploader->getIdentifier());
     }
 
+    /**
+     * Function responsible for managing the event registering process.
+     *
+     * @param array|null $subfield
+     * @return void
+     */
     public function registerEvents(array|null $subfield = [])
     {
         if (! empty($subfield)) {
-            return $this->registerSubfieldEvent($subfield);
+            $this->registerSubfieldEvent($subfield);
+            return;
         }
 
         $attributes = $this->crudObject->getAttributes();
@@ -97,6 +104,13 @@ final class RegisterUploadEvents
         $this->setupUploadConfigsInCrudObject($uploader);
     }
 
+    /**
+     * Register the events for subfields. This is a bit different than the main field because we need to
+     * register the events for the base field, that may contain multiple subfields with uploads.
+     *
+     * @param array $subfield
+     * @return void
+     */
     public function registerSubfieldEvent(array $subfield)
     {
         $uploader = $this->getUploader($subfield, $this->uploaderConfiguration);
@@ -174,7 +188,6 @@ final class RegisterUploadEvents
     /**
      * Set up the upload attributes in the field/column.
      *
-     * @param  CrudField|CrudColumn  $crudObject
      * @param  UploaderInterface  $uploader
      * @return void
      */

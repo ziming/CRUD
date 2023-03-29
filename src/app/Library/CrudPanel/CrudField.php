@@ -34,6 +34,7 @@ use Illuminate\Support\Traits\Macroable;
  * @method self addMorphOption(string $key, string $label, array $options)
  * @method self morphTypeField(array $value)
  * @method self morphIdField(array $value)
+ * @method self upload(bool $value)
  */
 class CrudField
 {
@@ -221,6 +222,19 @@ class CrudField
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
         $this->crud()->callRegisteredAttributeMacros($this);
+
+        return $this->save();
+    }
+
+    /**
+     * Mark the field has having upload functionality, so that the form would become multipart.
+     *
+     * @param boolean $upload
+     * @return self
+     */
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
 
         return $this->save();
     }

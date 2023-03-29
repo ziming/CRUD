@@ -16,10 +16,10 @@ class SingleFile extends Uploader
 
         foreach ($values as $row => $file) {
             if ($file && is_file($file) && $file->isValid()) {
-                $fileName = $this->getFileNameWithExtension($file);
+                $fileName = $this->getFileName($file);
 
-                $file->storeAs($this->path, $fileName, $this->disk);
-                $orderedFiles[$row] = $this->path.$fileName;
+                $file->storeAs($this->getPath(), $fileName, $this->getDisk());
+                $orderedFiles[$row] = $this->getPath().$fileName;
 
                 continue;
             }
@@ -28,7 +28,7 @@ class SingleFile extends Uploader
         foreach ($previousFiles as $row => $file) {
             if ($file && ! isset($orderedFiles[$row])) {
                 $orderedFiles[$row] = null;
-                Storage::disk($this->disk)->delete($file);
+                Storage::disk($this->getDisk())->delete($file);
             }
         }
 
@@ -37,23 +37,23 @@ class SingleFile extends Uploader
 
     public function uploadFile(Model $entry, $value = null)
     {
-        $value = $value ?? CrudPanelFacade::getRequest()->file($this->name);
+        $value = $value ?? CrudPanelFacade::getRequest()->file($this->getName());
 
-        $previousFile = $entry->getOriginal($this->name);
+        $previousFile = $entry->getOriginal($this->getName());
 
         if ($value && is_file($value) && $value->isValid()) {
             if ($previousFile) {
-                Storage::disk($this->disk)->delete($previousFile);
+                Storage::disk($this->getDisk())->delete($previousFile);
             }
-            $fileName = $this->getFileNameWithExtension($value);
+            $fileName = $this->getFileName($value);
 
-            $value->storeAs($this->path, $fileName, $this->disk);
+            $value->storeAs($this->getPath(), $fileName, $this->getDisk());
 
-            return $this->path.$fileName;
+            return $this->getPath().$fileName;
         }
 
-        if (! $value && CrudPanelFacade::getRequest()->has($this->name) && $previousFile) {
-            Storage::disk($this->disk)->delete($previousFile);
+        if (! $value && CrudPanelFacade::getRequest()->has($this->getName()) && $previousFile) {
+            Storage::disk($this->getDisk())->delete($previousFile);
 
             return null;
         }

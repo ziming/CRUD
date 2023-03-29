@@ -11,25 +11,25 @@ class SingleBase64Image extends Uploader
 {
     public function uploadFile(Model $entry, $value = null)
     {
-        $value = $value ?? CRUD::getRequest()->get($this->name);
-        $previousImage = $entry->getOriginal($this->name);
+        $value = $value ?? CRUD::getRequest()->get($this->getName());
+        $previousImage = $entry->getOriginal($this->getName());
 
         if (! $value && $previousImage) {
-            Storage::disk($this->disk)->delete($previousImage);
+            Storage::disk($this->getDisk())->delete($previousImage);
 
             return null;
         }
 
         if (Str::startsWith($value, 'data:image')) {
             if ($previousImage) {
-                Storage::disk($this->disk)->delete($previousImage);
+                Storage::disk($this->getDisk())->delete($previousImage);
             }
 
             $base64Image = Str::after($value, ';base64,');
 
-            $finalPath = $this->path.$this->getFileNameWithExtension($value);
+            $finalPath = $this->getPath().$this->getFileName($value);
 
-            Storage::disk($this->disk)->put($finalPath, base64_decode($base64Image));
+            Storage::disk($this->getDisk())->put($finalPath, base64_decode($base64Image));
 
             return $finalPath;
         }
@@ -45,8 +45,8 @@ class SingleBase64Image extends Uploader
             if ($rowValue) {
                 if (Str::startsWith($rowValue, 'data:image')) {
                     $base64Image = Str::after($rowValue, ';base64,');
-                    $finalPath = $this->path.$this->getFileNameWithExtension($rowValue);
-                    Storage::disk($this->disk)->put($finalPath, base64_decode($base64Image));
+                    $finalPath = $this->getPath().$this->getFileName($rowValue);
+                    Storage::disk($this->getDisk())->put($finalPath, base64_decode($base64Image));
                     $value[$row] = $previousImages[] = $finalPath;
 
                     continue;
@@ -57,7 +57,7 @@ class SingleBase64Image extends Uploader
         $imagesToDelete = array_diff($previousImages, $value);
 
         foreach ($imagesToDelete as $image) {
-            Storage::disk($this->disk)->delete($image);
+            Storage::disk($this->getDisk())->delete($image);
         }
 
         return $value;

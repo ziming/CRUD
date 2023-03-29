@@ -29,6 +29,7 @@ use Illuminate\Support\Traits\Macroable;
  * @method self visibleInShow(bool $value)
  * @method self priority(int $value)
  * @method self key(string $value)
+ * @method self upload(bool $value)
  */
 class CrudColumn
 {
@@ -36,6 +37,14 @@ class CrudColumn
     use HasMacros;
 
     protected $attributes;
+
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
+
+        return $this->save();
+    }
+
 
     public function __construct($name)
     {

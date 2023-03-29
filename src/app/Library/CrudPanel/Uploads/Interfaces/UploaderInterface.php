@@ -37,4 +37,8 @@ interface UploaderInterface
     public function getTemporary();
 
     public function getExpiration();
+    
+    public function getFileName($file);
+
+    public function shouldDeleteFiles();
 }

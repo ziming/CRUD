@@ -16,11 +16,11 @@ class MultipleFiles extends Uploader
 
     public function uploadFile(Model $entry, $value = null)
     {
-        $filesToDelete = CRUD::getRequest()->get('clear_'.$this->name);
+        $filesToDelete = CRUD::getRequest()->get('clear_'.$this->getName());
 
-        $value = $value ?? CRUD::getRequest()->file($this->name);
+        $value = $value ?? CRUD::getRequest()->file($this->getName());
 
-        $previousFiles = $entry->getOriginal($this->name) ?? [];
+        $previousFiles = $entry->getOriginal($this->getName()) ?? [];
 
         if (! is_array($previousFiles) && is_string($previousFiles)) {
             $previousFiles = json_decode($previousFiles, true);
@@ -29,7 +29,7 @@ class MultipleFiles extends Uploader
         if ($filesToDelete) {
             foreach ($previousFiles as $previousFile) {
                 if (in_array($previousFile, $filesToDelete)) {
-                    Storage::disk($this->disk)->delete($previousFile);
+                    Storage::disk($this->getDisk())->delete($previousFile);
 
                     $previousFiles = Arr::where($previousFiles, function ($value, $key) use ($previousFile) {
                         return $value != $previousFile;
@@ -40,15 +40,15 @@ class MultipleFiles extends Uploader
 
         foreach ($value ?? [] as $file) {
             if ($file && is_file($file)) {
-                $fileName = $this->getFileNameWithExtension($file);
+                $fileName = $this->getFileName($file);
 
-                $file->storeAs($this->path, $fileName, $this->disk);
+                $file->storeAs($this->getPath(), $fileName, $this->getDisk());
 
-                $previousFiles[] = $this->path.$fileName;
+                $previousFiles[] = $this->getPath().$fileName;
             }
         }
 
-        return isset($entry->getCasts()[$this->name]) ? $previousFiles : json_encode($previousFiles);
+        return isset($entry->getCasts()[$this->getName()]) ? $previousFiles : json_encode($previousFiles);
     }
 
     public function uploadRepeatableFile(Model $entry, $files = null)
@@ -60,10 +60,10 @@ class MultipleFiles extends Uploader
         foreach ($files as $row => $files) {
             foreach ($files ?? [] as $file) {
                 if ($file && is_file($file)) {
-                    $fileName = $this->getFileNameWithExtension($file);
+                    $fileName = $this->getFileName($file);
 
-                    $file->storeAs($this->path, $fileName, $this->disk);
-                    $fileOrder[$row][] = $this->path.$fileName;
+                    $file->storeAs($this->getPath(), $fileName, $this->getDisk());
+                    $fileOrder[$row][] = $this->getPath().$fileName;
                 }
             }
         }
@@ -72,7 +72,7 @@ class MultipleFiles extends Uploader
             foreach ($files ?? [] as $key => $file) {
                 $key = array_search($file, $fileOrder, true);
                 if ($key === false) {
-                    Storage::disk($this->disk)->delete($file);
+                    Storage::disk($this->getDisk())->delete($file);
                 }
             }
         }

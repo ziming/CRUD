@@ -17,9 +17,7 @@ class MultipleFiles extends Uploader
     public function uploadFile(Model $entry, $value = null)
     {
         $filesToDelete = CRUD::getRequest()->get('clear_'.$this->getName());
-
         $value = $value ?? CRUD::getRequest()->file($this->getName());
-
         $previousFiles = $entry->getOriginal($this->getName()) ?? [];
 
         if (! is_array($previousFiles) && is_string($previousFiles)) {
@@ -54,7 +52,6 @@ class MultipleFiles extends Uploader
     public function uploadRepeatableFile(Model $entry, $files = null)
     {
         $previousFiles = $this->getPreviousRepeatableValues($entry);
-
         $fileOrder = $this->getFileOrderFromRequest();
 
         foreach ($files as $row => $files) {

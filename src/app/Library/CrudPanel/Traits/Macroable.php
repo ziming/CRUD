@@ -27,32 +27,4 @@ trait Macroable
 
         static::parentMacro($name, $macro);
     }
-
-    /**
-     * Calls the macros registered for the given macroable attributes.
-     *
-     * @param  CrudColumn  $macroable
-     * @return void
-     */
-    public function callRegisteredAttributeMacros($macroable)
-    {
-        $macros = $macroable->getMacros();
-        $attributes = $macroable->getAttributes();
-
-        foreach (array_keys($macros) as $macro) {
-            if (isset($attributes[$macro])) {
-                $macroable->{$macro}($attributes[$macro]);
-
-                continue;
-            }
-            if (isset($attributes['subfields'])) {
-                foreach ($attributes['subfields'] as $subfield) {
-                    if (isset($subfield[$macro])) {
-                        $config = ! is_array($subfield[$macro]) ? [] : $subfield[$macro];
-                        $macroable->{$macro}($config, $subfield);
-                    }
-                }
-            }
-        }
-    }
 }

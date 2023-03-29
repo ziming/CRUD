@@ -2,8 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\HasMacros;
-use Illuminate\Support\Traits\Macroable;
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
@@ -38,8 +37,7 @@ use Illuminate\Support\Traits\Macroable;
  */
 class CrudField
 {
-    use Macroable { __call as macroCall; }
-    use HasMacros;
+    use MacroableWithAttributes;
 
     protected $attributes;
 
@@ -221,7 +219,7 @@ class CrudField
     {
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
-        $this->crud()->callRegisteredAttributeMacros($this);
+        $this->callRegisteredAttributeMacros();
 
         return $this->save();
     }

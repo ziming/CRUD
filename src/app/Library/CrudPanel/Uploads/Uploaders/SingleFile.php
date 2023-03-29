@@ -11,7 +11,6 @@ class SingleFile extends Uploader
     public function uploadRepeatableFile(Model $entry, $values = null)
     {
         $orderedFiles = $this->getFileOrderFromRequest();
-
         $previousFiles = $this->getPreviousRepeatableValues($entry);
 
         foreach ($values as $row => $file) {
@@ -19,8 +18,8 @@ class SingleFile extends Uploader
                 $fileName = $this->getFileName($file);
 
                 $file->storeAs($this->getPath(), $fileName, $this->getDisk());
-                $orderedFiles[$row] = $this->getPath().$fileName;
 
+                $orderedFiles[$row] = $this->getPath().$fileName;
                 continue;
             }
         }
@@ -38,7 +37,6 @@ class SingleFile extends Uploader
     public function uploadFile(Model $entry, $value = null)
     {
         $value = $value ?? CrudPanelFacade::getRequest()->file($this->getName());
-
         $previousFile = $entry->getOriginal($this->getName());
 
         if ($value && is_file($value) && $value->isValid()) {

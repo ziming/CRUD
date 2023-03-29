@@ -94,13 +94,10 @@ final class RegisterUploadEvents
         }
 
         $attributes = $this->crudObject->getAttributes();
-
         $model = $attributes['model'] ?? get_class($this->crudObject->crud()->getModel());
-
         $uploader = $this->getUploader($attributes, $this->uploaderConfiguration);
 
         $this->setupModelEvents($model, $uploader);
-
         $this->setupUploadConfigsInCrudObject($uploader);
     }
 
@@ -114,9 +111,7 @@ final class RegisterUploadEvents
     public function registerSubfieldEvent(array $subfield)
     {
         $uploader = $this->getUploader($subfield, $this->uploaderConfiguration);
-
         $crudObject = $this->crudObject->getAttributes();
-
         $uploader = $uploader->repeats($crudObject['name']);
 
         // If this uploader is already registered bail out. We may endup here multiple times when doing modifications to the crud object.

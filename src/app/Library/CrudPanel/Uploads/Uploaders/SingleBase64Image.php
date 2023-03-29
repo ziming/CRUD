@@ -26,7 +26,6 @@ class SingleBase64Image extends Uploader
             }
 
             $base64Image = Str::after($value, ';base64,');
-
             $finalPath = $this->getPath().$this->getFileName($value);
 
             Storage::disk($this->getDisk())->put($finalPath, base64_decode($base64Image));

@@ -418,16 +418,6 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * Return a new instance of the entry class for the uploader.
-     *
-     * @return Model
-     */
-    protected function modelInstance()
-    {
-        //return new $this->entryClass;
-    }
-
-    /**
      * Return the uploader stored values when in a repeatable container.
      *
      * @param  Model  $entry
@@ -475,7 +465,7 @@ abstract class Uploader implements UploaderInterface
      * @param  mixed  $file
      * @return string
      */
-    protected function getFileNameWithExtension($file)
+    public function getFileNameWithExtension($file)
     {
         if (is_file($file)) {
             return $this->getFileName($file).'.'.$this->getExtensionFromFile($file);

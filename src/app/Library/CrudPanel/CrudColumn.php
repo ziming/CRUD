@@ -45,7 +45,6 @@ class CrudColumn
         return $this->save();
     }
 
-
     public function __construct($name)
     {
         $column = $this->crud()->firstColumnWhere('name', $name);

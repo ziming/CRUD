@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Uploads;
+
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
 
 final class UploadersRepository
@@ -34,7 +35,7 @@ final class UploadersRepository
     /**
      * Mark the given uploader as handled.
      *
-     * @param string $objectName  - the field/column name 
+     * @param  string  $objectName  - the field/column name
      * @return void
      */
     public function markAsHandled(string $objectName)
@@ -47,8 +48,8 @@ final class UploadersRepository
     /**
      * Check if the given uploader for field/column have been handled.
      *
-     * @param string $objectName
-     * @return boolean
+     * @param  string  $objectName
+     * @return bool
      */
     public function isUploadHandled(string $objectName)
     {
@@ -60,7 +61,7 @@ final class UploadersRepository
      *
      * @param  string  $objectType
      * @param  string  $group
-     * @return boolean
+     * @return bool
      */
     public function hasUploadFor(string $objectType, string $group)
     {
@@ -70,8 +71,8 @@ final class UploadersRepository
     /**
      * Return the uploader for the given object type.
      *
-     * @param string $objectType
-     * @param string $group
+     * @param  string  $objectType
+     * @param  string  $group
      * @return void
      */
     public function getUploadFor(string $objectType, string $group)
@@ -82,8 +83,8 @@ final class UploadersRepository
     /**
      * Register new uploaders or override existing ones.
      *
-     * @param array $uploaders
-     * @param string $group
+     * @param  array  $uploaders
+     * @param  string  $group
      * @return void
      */
     public function addUploaderClasses(array $uploaders, string $group)
@@ -94,7 +95,7 @@ final class UploadersRepository
     /**
      * Return the uploaders classes for the given group.
      *
-     * @param string $group
+     * @param  string  $group
      * @return void
      */
     private function getGroupUploadersClasses(string $group)
@@ -105,8 +106,8 @@ final class UploadersRepository
     /**
      * Register the specified uploader for the given upload name.
      *
-     * @param string $uploadName
-     * @param UploaderInterface $uploader
+     * @param  string  $uploadName
+     * @param  UploaderInterface  $uploader
      * @return void
      */
     public function registerUploader(string $uploadName, UploaderInterface $uploader)
@@ -119,8 +120,8 @@ final class UploadersRepository
     /**
      * Check if there are uploaders registered for the given upload name.
      *
-     * @param string $uploadName
-     * @return boolean
+     * @param  string  $uploadName
+     * @return bool
      */
     public function hasUploadersRegisteredFor(string $uploadName)
     {
@@ -130,7 +131,7 @@ final class UploadersRepository
     /**
      * Get the registered uploaders for the given upload name.
      *
-     * @param string $uploadName
+     * @param  string  $uploadName
      * @return array
      */
     public function getRegisteredUploadersFor(string $uploadName)
@@ -141,9 +142,9 @@ final class UploadersRepository
     /**
      * Check if the specified upload is registered for the given upload name.
      *
-     * @param string $uploadName
-     * @param UploaderInterface $upload
-     * @return boolean
+     * @param  string  $uploadName
+     * @param  UploaderInterface  $upload
+     * @return bool
      */
     public function isUploadRegistered(string $uploadName, UploaderInterface $upload)
     {
@@ -153,7 +154,7 @@ final class UploadersRepository
     /**
      * Return the registered uploaders names for the given upload name.
      *
-     * @param string $uploadName
+     * @param  string  $uploadName
      * @return array
      */
     public function getRegisteredUploadNames(string $uploadName)

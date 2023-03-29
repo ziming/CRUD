@@ -6,9 +6,9 @@ use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HandleFileNaming;
 use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HandleRepeatableUploads;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 abstract class Uploader implements UploaderInterface
 {
@@ -86,7 +86,7 @@ abstract class Uploader implements UploaderInterface
         $this->path = empty($this->path) ? $this->path : Str::of($this->path)->finish('/')->value();
 
         $this->setFileNameGenerator($configuration['fileNameGenerator'] ?? null);
-        $this->fileName = $configuration['fileName'] ?? $this->fileName;    
+        $this->fileName = $configuration['fileName'] ?? $this->fileName;
     }
 
     /**
@@ -193,7 +193,6 @@ abstract class Uploader implements UploaderInterface
         return $entry;
     }
 
-
     /**
      * The function called in the deleting event. It checks if the uploaded file should be deleted.
      *
@@ -205,6 +204,7 @@ abstract class Uploader implements UploaderInterface
         if ($this->deleteWhenEntryIsDeleted) {
             if (! in_array(SoftDeletes::class, class_uses_recursive($entry), true)) {
                 $this->performFileDeletion($entry);
+
                 return;
             }
 
@@ -238,16 +238,17 @@ abstract class Uploader implements UploaderInterface
     }
 
     /**
-     * When the file should be deleted, this function is called to delete the file using the 
+     * When the file should be deleted, this function is called to delete the file using the
      * appropriate delete method depending on some uploader properties.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return void
      */
     private function performFileDeletion($entry)
     {
         if ($this->isRelationship || ! $this->isRepeatable) {
             $this->deleteFiles($entry);
+
             return;
         }
 
@@ -295,7 +296,7 @@ abstract class Uploader implements UploaderInterface
     /**
      * Should the files be deleted when the entry is deleted.
      *
-     * @return boolean
+     * @return bool
      */
     public function shouldDeleteFiles()
     {

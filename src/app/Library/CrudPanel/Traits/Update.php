@@ -167,7 +167,7 @@ trait Update
                 }
 
                 // when subfields exists developer used the repeatable interface to manage this relation
-                if ($field['subfields']) {
+                if (isset($field['subfields'])) {
                     return [$this->getSubfieldsValues($field['subfields'], $model)];
                 }
 

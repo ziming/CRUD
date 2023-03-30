@@ -475,4 +475,6 @@ return [
         ],
     ],
 
+    'file_name_generator' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Support\FileNameGenerator::class,
+
 ];

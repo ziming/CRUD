@@ -180,7 +180,13 @@ abstract class Uploader implements UploaderInterface
         return $this->retrieveFile($entry);
     }
 
-    protected function retrieveFile($entry)
+    /**
+     * Retrive the regular entry files.
+     *
+     * @param Model $entry
+     * @return Model
+     */
+    protected function retrieveFile(Model $entry)
     {
         $value = $entry->{$this->name};
 
@@ -227,16 +233,19 @@ abstract class Uploader implements UploaderInterface
         $values = $entry->{$this->name};
 
         if ($this->isMultiple) {
+            // ensure we have an array of values when field is not casted in model.
             if (! isset($entry->getCasts()[$this->name]) && is_string($values)) {
                 $values = json_decode($values, true);
             }
-        } else {
-            $values = (array) Str::after($values, $this->path);
+            foreach ($values as $value) {
+                Storage::disk($this->disk)->delete($this->path.$value);
+            }
+
+            return;
         }
 
-        foreach ($values as $value) {
-            Storage::disk($this->disk)->delete($this->path.$value);
-        }
+        $values = (array) Str::after($values, $this->path);
+        Storage::disk($this->disk)->delete($this->path.$values);
     }
 
     /**
@@ -305,6 +314,11 @@ abstract class Uploader implements UploaderInterface
         return $this->deleteWhenEntryIsDeleted;
     }
 
+    /**
+     * Return the uploader identifier. Either the name or the combination of the repeatable container name and the name.
+     *
+     * @return void
+     */
     public function getIdentifier()
     {
         if ($this->isRepeatable) {

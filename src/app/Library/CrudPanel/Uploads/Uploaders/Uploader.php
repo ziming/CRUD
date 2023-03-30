@@ -183,7 +183,7 @@ abstract class Uploader implements UploaderInterface
     /**
      * Retrive the regular entry files.
      *
-     * @param Model $entry
+     * @param  Model  $entry
      * @return Model
      */
     protected function retrieveFile(Model $entry)

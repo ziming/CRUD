@@ -1,8 +1,8 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads;
+namespace Backpack\CRUD\app\Library\Uploaders\Support;
 
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
+use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 
 final class UploadersRepository
 {
@@ -14,18 +14,18 @@ final class UploadersRepository
     private array $uploaderClasses;
 
     /**
-     * The array of uploaders that have been handled, aka events registered.
+     * Uploaders registered in a repeatable group.
      *
+     * @var array
+     */
+    private array $repeatableUploaders = [];
+
+    /**
+     * Uploaders that have already been handled (events registered) for each field/column instance.
+     * 
      * @var array
      */
     private array $handledUploaders = [];
-
-    /**
-     * The array of uploaders that have been registered, aka would be handled if needed by the event register.
-     *
-     * @var array
-     */
-    private array $registeredUploaders = [];
 
     public function __construct()
     {
@@ -110,10 +110,10 @@ final class UploadersRepository
      * @param  UploaderInterface  $uploader
      * @return void
      */
-    public function registerUploader(string $uploadName, UploaderInterface $uploader)
+    public function registerRepeatableUploader(string $uploadName, UploaderInterface $uploader)
     {
-        if (! array_key_exists($uploadName, $this->registeredUploaders) || ! in_array($uploader, $this->registeredUploaders[$uploadName])) {
-            $this->registeredUploaders[$uploadName][] = $uploader;
+        if (! array_key_exists($uploadName, $this->repeatableUploaders) || ! in_array($uploader, $this->repeatableUploaders[$uploadName])) {
+            $this->repeatableUploaders[$uploadName][] = $uploader;
         }
     }
 
@@ -123,24 +123,24 @@ final class UploadersRepository
      * @param  string  $uploadName
      * @return bool
      */
-    public function hasUploadersRegisteredFor(string $uploadName)
+    public function hasRepeatableUploadersFor(string $uploadName)
     {
-        return array_key_exists($uploadName, $this->registeredUploaders);
+        return array_key_exists($uploadName, $this->repeatableUploaders);
     }
 
     /**
-     * Get the registered uploaders for the given upload name.
+     * Get the repeatable uploaders for the given upload name.
      *
      * @param  string  $uploadName
      * @return array
      */
-    public function getRegisteredUploadersFor(string $uploadName)
+    public function getRepeatableUploadersFor(string $uploadName)
     {
-        return $this->registeredUploaders[$uploadName] ?? [];
+        return $this->repeatableUploaders[$uploadName] ?? [];
     }
 
     /**
-     * Check if the specified upload is registered for the given upload name.
+     * Check if the specified upload is registered for the given repeatable uploads.
      *
      * @param  string  $uploadName
      * @param  UploaderInterface  $upload
@@ -148,11 +148,11 @@ final class UploadersRepository
      */
     public function isUploadRegistered(string $uploadName, UploaderInterface $upload)
     {
-        return $this->hasUploadersRegisteredFor($uploadName) && in_array($upload->getName(), $this->getRegisteredUploadNames($uploadName));
+        return $this->hasRepeatableUploadersFor($uploadName) && in_array($upload->getName(), $this->getRegisteredUploadNames($uploadName));
     }
 
     /**
-     * Return the registered uploaders names for the given upload name.
+     * Return the registered uploaders names for the given repeatable upload name.
      *
      * @param  string  $uploadName
      * @return array
@@ -161,6 +161,6 @@ final class UploadersRepository
     {
         return array_map(function ($uploader) {
             return $uploader->getName();
-        }, $this->getRegisteredUploadersFor($uploadName));
+        }, $this->getRepeatableUploadersFor($uploadName));
     }
 }

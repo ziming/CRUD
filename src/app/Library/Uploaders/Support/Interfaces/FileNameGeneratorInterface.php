@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Support\Interfaces;
+namespace Backpack\CRUD\app\Library\Uploaders\Support\Interfaces;
 
 interface FileNameGeneratorInterface
 {

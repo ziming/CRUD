@@ -4,8 +4,8 @@ namespace Backpack\CRUD;
 
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\UploadersRepository;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
+use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;

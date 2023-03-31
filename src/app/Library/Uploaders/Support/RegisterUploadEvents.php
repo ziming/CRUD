@@ -1,12 +1,13 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads;
+namespace Backpack\CRUD\app\Library\Uploaders\Support;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
+use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 final class RegisterUploadEvents
 {
@@ -64,8 +65,6 @@ final class RegisterUploadEvents
                 $entry = $uploader->processFileUpload($entry);
 
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
-
-                return $entry;
             });
         }
 
@@ -97,7 +96,7 @@ final class RegisterUploadEvents
         $attributes = $this->crudObject->getAttributes();
         $model = $attributes['model'] ?? get_class($this->crudObject->crud()->getModel());
         $uploader = $this->getUploader($attributes, $this->uploaderConfiguration);
-
+  
         $this->setupModelEvents($model, $uploader);
         $this->setupUploadConfigsInCrudObject($uploader);
     }
@@ -130,7 +129,7 @@ final class RegisterUploadEvents
 
         // for subfields, we only register one event so that we have access to the repeatable container name.
         // all the uploaders for a given container are stored in the UploadersRepository.
-        if (! app('UploadersRepository')->hasUploadersRegisteredFor($uploader->getRepeatableContainerName())) {
+        if (! app('UploadersRepository')->hasRepeatableUploadersFor($uploader->getRepeatableContainerName())) {
             $this->setupModelEvents($model, $uploader);
         }
 
@@ -149,7 +148,7 @@ final class RegisterUploadEvents
             return $item;
         })->toArray();
 
-        app('UploadersRepository')->registerUploader($uploader->getRepeatableContainerName(), $uploader);
+        app('UploadersRepository')->registerRepeatableUploader($uploader->getRepeatableContainerName(), $uploader);
 
         $this->crudObject->subfields($subfields);
     }
@@ -170,11 +169,15 @@ final class RegisterUploadEvents
      */
     private function getUploader(array $crudObject, array $uploaderConfiguration)
     {
-        if (isset($uploaderConfiguration['uploaderType'])) {
-            return $uploaderConfiguration['uploaderType']::for($crudObject, $uploaderConfiguration);
+        $customUploader = isset($uploaderConfiguration['uploader']) && class_exists($uploaderConfiguration['uploader']);
+
+        if ($customUploader) {
+            return $uploaderConfiguration['uploader']::for($crudObject, $uploaderConfiguration);
         }
 
-        if (app('UploadersRepository')->hasUploadFor($crudObject['type'], $this->macro)) {
+        $uploader = app('UploadersRepository')->hasUploadFor($crudObject['type'], $this->macro);
+
+        if ($uploader) {
             return app('UploadersRepository')->getUploadFor($crudObject['type'], $this->macro)::for($crudObject, $uploaderConfiguration);
         }
 

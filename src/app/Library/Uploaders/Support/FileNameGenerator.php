@@ -1,8 +1,8 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Support;
+namespace Backpack\CRUD\app\Library\Uploaders\Support;
 
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Support\Interfaces\FileNameGeneratorInterface;
+use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\FileNameGeneratorInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits;
+namespace Backpack\CRUD\app\Library\Uploaders\Support\Traits;
 
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Support\Interfaces\FileNameGeneratorInterface;
+use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\FileNameGeneratorInterface;
 use Illuminate\Http\UploadedFile;
 
 trait HandleFileNaming

@@ -1,10 +1,10 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders;
+namespace Backpack\CRUD\app\Library\Uploaders;
 
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Interfaces\UploaderInterface;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HandleFileNaming;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits\HandleRepeatableUploads;
+use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
+use Backpack\CRUD\app\Library\Uploaders\Support\Traits\HandleFileNaming;
+use Backpack\CRUD\app\Library\Uploaders\Support\Traits\HandleRepeatableUploads;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;

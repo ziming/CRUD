@@ -2,7 +2,7 @@
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
-use Backpack\CRUD\app\Library\CrudPanel\Uploads\RegisterUploadEvents;
+use Backpack\CRUD\app\Library\Uploaders\Support\RegisterUploadEvents;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;

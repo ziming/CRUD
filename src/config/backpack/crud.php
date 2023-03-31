@@ -469,12 +469,12 @@ return [
     // the uploaders for the `withFiles` macro
     'uploaders' => [
         'withFiles' => [
-            'image'           => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleBase64Image::class,
-            'upload'          => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\SingleFile::class,
-            'upload_multiple' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders\MultipleFiles::class,
+            'image'           => \Backpack\CRUD\app\Library\Uploaders\SingleBase64Image::class,
+            'upload'          => \Backpack\CRUD\app\Library\Uploaders\SingleFile::class,
+            'upload_multiple' => \Backpack\CRUD\app\Library\Uploaders\MultipleFiles::class,
         ],
     ],
 
-    'file_name_generator' => \Backpack\CRUD\app\Library\CrudPanel\Uploads\Support\FileNameGenerator::class,
+    'file_name_generator' => \Backpack\CRUD\app\Library\Uploaders\Support\FileNameGenerator::class,
 
 ];

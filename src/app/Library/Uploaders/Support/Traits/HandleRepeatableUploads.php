@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Traits;
+namespace Backpack\CRUD\app\Library\Uploaders\Support\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Database\Eloquent\Model;
@@ -93,7 +93,7 @@ trait HandleRepeatableUploads
         $modelCount = CRUD::get('uploaded_'.$this->repeatableContainerName.'_count');
         $value = $value->slice($modelCount, 1)->toArray();
 
-        foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $uploader) {
+        foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->repeatableContainerName) as $uploader) {
             if (array_key_exists($modelCount, $value) && isset($value[$modelCount][$uploader->getName()])) {
                 $entry->{$uploader->getName()} = $uploader->uploadFile($entry, $value[$modelCount][$uploader->getName()]);
             }
@@ -111,7 +111,7 @@ trait HandleRepeatableUploads
      */
     private function processRepeatableUploads(Model $entry, $value)
     {
-        foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $uploader) {
+        foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->repeatableContainerName) as $uploader) {
             $uploadedValues = $uploader->uploadRepeatableFile($entry, $value->pluck($uploader->getName())->toArray());
 
             $value = $value->map(function ($item, $key) use ($uploadedValues, $uploader) {
@@ -188,7 +188,7 @@ trait HandleRepeatableUploads
         }
 
         $repeatableValues = collect($entry->{$this->getName()});
-        foreach (app('UploadersRepository')->getRegisteredUploadersFor($this->repeatableContainerName) as $upload) {
+        foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->repeatableContainerName) as $upload) {
             if (! $upload->shouldDeleteFiles()) {
                 continue;
             }

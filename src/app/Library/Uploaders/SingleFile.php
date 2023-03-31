@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\CrudPanel\Uploads\Uploaders;
+namespace Backpack\CRUD\app\Library\Uploaders;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +20,7 @@ class SingleFile extends Uploader
                 $file->storeAs($this->getPath(), $fileName, $this->getDisk());
 
                 $orderedFiles[$row] = $this->getPath().$fileName;
+
                 continue;
             }
         }

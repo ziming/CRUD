@@ -22,7 +22,7 @@ final class UploadersRepository
 
     /**
      * Uploaders that have already been handled (events registered) for each field/column instance.
-     * 
+     *
      * @var array
      */
     private array $handledUploaders = [];

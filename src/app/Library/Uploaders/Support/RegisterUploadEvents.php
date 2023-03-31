@@ -7,7 +7,6 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 final class RegisterUploadEvents
 {
@@ -96,7 +95,7 @@ final class RegisterUploadEvents
         $attributes = $this->crudObject->getAttributes();
         $model = $attributes['model'] ?? get_class($this->crudObject->crud()->getModel());
         $uploader = $this->getUploader($attributes, $this->uploaderConfiguration);
-  
+
         $this->setupModelEvents($model, $uploader);
         $this->setupUploadConfigsInCrudObject($uploader);
     }

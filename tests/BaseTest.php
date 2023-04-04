@@ -2,10 +2,10 @@
 
 namespace Backpack\CRUD\Tests;
 
-use Orchestra\Testbench\TestCase;
-use Illuminate\Support\Facades\Route;
 use Backpack\Basset\BassetServiceProvider;
 use Backpack\CRUD\BackpackServiceProvider;
+use Illuminate\Support\Facades\Route;
+use Orchestra\Testbench\TestCase;
 
 abstract class BaseTest extends TestCase
 {

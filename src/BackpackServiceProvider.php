@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD;
 
-use Backpack\Basset\BassetManager as Basset;
+use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;

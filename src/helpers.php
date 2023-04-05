@@ -216,17 +216,17 @@ if (! function_exists('backpack_view')) {
      */
     function backpack_view($view)
     {
-        $originalTheme = 'backpack::';
         $theme = config('backpack.base.view_namespace');
+        $fallbackTheme = config('backpack.base.view_namespace_fallback');
 
         if (is_null($theme)) {
-            $theme = $originalTheme;
+            $theme = $fallbackTheme;
         }
 
         $returnView = $theme.$view;
 
         if (! view()->exists($returnView)) {
-            $returnView = $originalTheme.$view;
+            $returnView = $fallbackTheme.$view;
         }
 
         return $returnView;
@@ -251,10 +251,15 @@ if (! function_exists('backpack_theme_config')) {
             return config($namespacedKey);
         }
 
-        // if not, fall back to a general config/backpack/theme.php file
-        $namespacedKey = 'backpack.ui.'.$key;
+        // if not, fall back to a general the config in the fallback theme
+        $namespacedKey = config('backpack.base.view_namespace_fallback') . $key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
 
-        return config($namespacedKey);
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        return config('backpack.ui.' . $key);
     }
 }
 

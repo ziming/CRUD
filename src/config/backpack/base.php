@@ -10,9 +10,12 @@ return [
     // Change the view namespace in order to load a different theme than the one Backpack provides.
     // You can create child themes yourself, by creating a view folder anywhere in your resources/views
     // and choosing that view_namespace instead of the default one. Backpack will load a file from there
-    // if it exists, otherwise it will load it from the default namespace ("backpack::").
+    // if it exists, otherwise it will load it from the fallback namespace.
 
-    'view_namespace' => env('BACKPACK_THEME').'::' ?? 'backpack.theme-coreuiv2::',
+    'view_namespace' => env('BACKPACK_THEME', 'backpack.theme-tabler').'::',
+
+    // When a view doesn't exist in the current theme, fall back to:
+    'view_namespace_fallback' => 'backpack.theme-tabler::',
 
     // EXAMPLE: if you create a new folder in resources/views/vendor/myname/mypackage,
     // your namespace would be the one below. IMPORTANT: in this case the namespace ends with a dot.

@@ -48,7 +48,7 @@ class MultipleFiles extends Uploader
         return isset($entry->getCasts()[$this->getName()]) ? $previousFiles : json_encode($previousFiles);
     }
 
-    public function uploadRepeatableFiles(Model $entry, $files, $previousRepeatableValues)
+    public function uploadRepeatableFiles($files, $previousRepeatableValues)
     {
         $fileOrder = $this->getFileOrderFromRequest();
 

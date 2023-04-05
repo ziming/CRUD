@@ -37,7 +37,7 @@ trait HandleRepeatableUploads
     /*******************************
      * Default implementation methods
      *******************************/
-    protected function uploadRepeatableFiles(Model $entry, $values, $previousValues)
+    protected function uploadRepeatableFiles($values, $previousValues)
     {
 
     }
@@ -71,19 +71,19 @@ trait HandleRepeatableUploads
         return $entry;
     }
 
-    private function processRepeatableUploads(Model $entry, Collection $value): Collection
+    private function processRepeatableUploads(Model $entry, Collection $values): Collection
     {
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
-            $uploadedValues = $uploader->uploadRepeatableFiles($entry, $value->pluck($uploader->getName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
+            $uploadedValues = $uploader->uploadRepeatableFiles($values->pluck($uploader->getName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
 
-            $value = $value->map(function ($item, $key) use ($uploadedValues, $uploader) {
+            $values = $values->map(function ($item, $key) use ($uploadedValues, $uploader) {
                 $item[$uploader->getName()] = $uploadedValues[$key] ?? null;
 
                 return $item;
             });
         }
 
-        return $value;
+        return $values;
     }
 
     private function retrieveRepeatableFiles(Model $entry): Model

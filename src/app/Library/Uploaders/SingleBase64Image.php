@@ -36,27 +36,27 @@ class SingleBase64Image extends Uploader
         return $previousImage;
     }
 
-    public function uploadRepeatableFiles(Model $entry, $value, $previousRepeatableValues)
+    public function uploadRepeatableFiles($values, $previousRepeatableValues)
     {
-        foreach ($value as $row => $rowValue) {
+        foreach ($values as $row => $rowValue) {
             if ($rowValue) {
                 if (Str::startsWith($rowValue, 'data:image')) {
                     $base64Image = Str::after($rowValue, ';base64,');
                     $finalPath = $this->getPath().$this->getFileName($rowValue);
                     Storage::disk($this->getDisk())->put($finalPath, base64_decode($base64Image));
-                    $value[$row] = $previousRepeatableValues[] = $finalPath;
+                    $values[$row] = $previousRepeatableValues[] = $finalPath;
 
                     continue;
                 }
             }
         }
 
-        $imagesToDelete = array_diff($previousRepeatableValues, $value);
+        $imagesToDelete = array_diff($previousRepeatableValues, $values);
 
         foreach ($imagesToDelete as $image) {
             Storage::disk($this->getDisk())->delete($image);
         }
 
-        return $value;
+        return $values;
     }
 }

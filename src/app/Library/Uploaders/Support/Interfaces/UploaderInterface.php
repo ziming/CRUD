@@ -3,96 +3,39 @@
 namespace Backpack\CRUD\app\Library\Uploaders\Support\Interfaces;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 
 interface UploaderInterface
-{
-    /**
-     * Method called by `saving` event.
-     *
-     * @param Model $entry
-     * @return void
-     */
-    public function processFileUpload(Model $entry);
-
-    /**
-     * Method called by `retrieved` event.
-     *
-     * @param Model $entry
-     * @return void
-     */
-    public function retrieveUploadedFile(Model $entry);
-
-    /**
-     * Method called by `deleting` event.
-     *
-     * @param Model $entry
-     * @return void
-     */
-    public function deleteUploadedFile(Model $entry);
-
+ {
     /**
      * Static constructor function
-     *
-     * @param array $field
-     * @param array $configuration
-     * @return void
      */
-    public static function for(array $field, array $configuration);
+    public static function for(array $field, array $configuration): UploaderInterface;
 
     /**
-     * Called to upload a single file
-     *
-     * @param Model $entry
-     * @param mixed $values
-     * @return void
+     * Default implementation functions
      */
-    public function uploadFile(Model $entry, $values = null);
+    public function storeUploadedFiles(Model $entry);
+    public function retrieveUploadedFiles(Model $entry);
+    public function deleteUploadedFiles(Model $entry);
 
     /**
-     * Called to upload a group of repeatable files
-     *
-     * @param Model $entry
-     * @param mixed $values
-     * @return void
+     * Setters - configuration methods
      */
-    public function uploadRepeatableFile(Model $entry, $values = null);
-
-    /**
-     * Configures the repeatable settings on the uploader.
-     *
-     * @param string $repeatableContainerName
-     * @return self
-     */
+    public function multiple(): self;
     public function repeats(string $repeatableContainerName): self;
-
-    /**
-     * Configures the relationship settings on the uploader.
-     *
-     * @param bool $isRelation
-     * @return self
-     */
     public function relationship(bool $isRelation): self;
 
-    public function getName();
-
-    public function getDisk();
-
-    public function getPath();
-
-    public function getTemporary();
-
-    public function getExpiration();
-
-    public function getFileName($file);
-
-    public function getRepeatableContainerName();
-
-    public function getIdentifier();
-
     /**
-     * Return the `deleteWhenEntryIsDeleted` property value
-     *
-     * @return bool
+     * Getters
      */
-    public function shouldDeleteFiles();
+    public function getName(): string;
+    public function getDisk(): string;
+    public function getPath(): string;
+    public function useTemporaryUrl(): bool;
+    public function getExpirationTimeInMinutes(): int;
+    public function getFileName(string|UploadedFile $file): string;
+    public function getRepeatableContainerName(): ?string;
+    public function getIdentifier(): string;
+    public function shouldDeleteFiles(): bool;
 }

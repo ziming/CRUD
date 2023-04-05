@@ -62,18 +62,18 @@ final class RegisterUploadEvents
 
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) ?? 0);
 
-                $entry = $uploader->processFileUpload($entry);
+                $entry = $uploader->storeUploadedFiles($entry);
 
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
             });
         }
 
         $model::retrieved(function ($entry) use ($uploader) {
-            $entry = $uploader->retrieveUploadedFile($entry);
+            $entry = $uploader->retrieveUploadedFiles($entry);
         });
 
         $model::deleting(function ($entry) use ($uploader) {
-            $uploader->deleteUploadedFile($entry);
+            $uploader->deleteUploadedFiles($entry);
         });
 
         app('UploadersRepository')->markAsHandled($uploader->getIdentifier());
@@ -139,9 +139,9 @@ final class RegisterUploadEvents
                 $item['upload'] = true;
                 $item['disk'] = $uploader->getDisk();
                 $item['prefix'] = $uploader->getPath();
-                if ($uploader->getTemporary()) {
-                    $item['temporary'] = $uploader->getTemporary();
-                    $item['expiration'] = $uploader->getExpiration();
+                if ($uploader->useTemporaryUrl()) {
+                    $item['temporary'] = $uploader->useTemporaryUrl();
+                    $item['expiration'] = $uploader->getExpirationTimeInMinutes();
                 }
             }
 

@@ -8,34 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SingleFile extends Uploader
 {
-    public function uploadRepeatableFile(Model $entry, $values = null)
-    {
-        $orderedFiles = $this->getFileOrderFromRequest();
-        $previousFiles = $this->getPreviousRepeatableValues($entry);
-
-        foreach ($values as $row => $file) {
-            if ($file && is_file($file) && $file->isValid()) {
-                $fileName = $this->getFileName($file);
-
-                $file->storeAs($this->getPath(), $fileName, $this->getDisk());
-
-                $orderedFiles[$row] = $this->getPath().$fileName;
-
-                continue;
-            }
-        }
-
-        foreach ($previousFiles as $row => $file) {
-            if ($file && ! isset($orderedFiles[$row])) {
-                $orderedFiles[$row] = null;
-                Storage::disk($this->getDisk())->delete($file);
-            }
-        }
-
-        return $orderedFiles;
-    }
-
-    public function uploadFile(Model $entry, $value = null)
+    public function uploadFiles(Model $entry, $value = null)
     {
         $value = $value ?? CrudPanelFacade::getRequest()->file($this->getName());
         $previousFile = $entry->getOriginal($this->getName());
@@ -45,7 +18,6 @@ class SingleFile extends Uploader
                 Storage::disk($this->getDisk())->delete($previousFile);
             }
             $fileName = $this->getFileName($value);
-
             $value->storeAs($this->getPath(), $fileName, $this->getDisk());
 
             return $this->getPath().$fileName;
@@ -58,5 +30,29 @@ class SingleFile extends Uploader
         }
 
         return $previousFile;
+    }
+
+    public function uploadRepeatableFiles(Model $entry, $values, $previousRepeatableValues)
+    {
+        $orderedFiles = $this->getFileOrderFromRequest();
+
+        foreach ($values as $row => $file) {
+            if ($file && is_file($file) && $file->isValid()) {
+                $fileName = $this->getFileName($file);
+                $file->storeAs($this->getPath(), $fileName, $this->getDisk());
+                $orderedFiles[$row] = $this->getPath().$fileName;
+
+                continue;
+            }
+        }
+
+        foreach ($previousRepeatableValues as $row => $file) {
+            if ($file && ! isset($orderedFiles[$row])) {
+                $orderedFiles[$row] = null;
+                Storage::disk($this->getDisk())->delete($file);
+            }
+        }
+
+        return $orderedFiles;
     }
 }

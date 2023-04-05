@@ -9,11 +9,11 @@ use Illuminate\Support\Str;
 
 class SingleBase64Image extends Uploader
 {
-    public function uploadFile(Model $entry, $value = null)
+    public function uploadFiles(Model $entry, $value = null)
     {
         $value = $value ?? CRUD::getRequest()->get($this->getName());
         $previousImage = $entry->getOriginal($this->getName());
-
+        
         if (! $value && $previousImage) {
             Storage::disk($this->getDisk())->delete($previousImage);
 
@@ -36,24 +36,22 @@ class SingleBase64Image extends Uploader
         return $previousImage;
     }
 
-    public function uploadRepeatableFile(Model $entry, $value = null)
+    public function uploadRepeatableFiles(Model $entry, $value, $previousRepeatableValues)
     {
-        $previousImages = $this->getPreviousRepeatableValues($entry);
-
         foreach ($value as $row => $rowValue) {
             if ($rowValue) {
                 if (Str::startsWith($rowValue, 'data:image')) {
                     $base64Image = Str::after($rowValue, ';base64,');
                     $finalPath = $this->getPath().$this->getFileName($rowValue);
                     Storage::disk($this->getDisk())->put($finalPath, base64_decode($base64Image));
-                    $value[$row] = $previousImages[] = $finalPath;
+                    $value[$row] = $previousRepeatableValues[] = $finalPath;
 
                     continue;
                 }
             }
         }
 
-        $imagesToDelete = array_diff($previousImages, $value);
+        $imagesToDelete = array_diff($previousRepeatableValues, $value);
 
         foreach ($imagesToDelete as $image) {
             Storage::disk($this->getDisk())->delete($image);

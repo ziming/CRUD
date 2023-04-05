@@ -8,35 +8,17 @@ use Illuminate\Support\Str;
 
 class FileNameGenerator implements FileNameGeneratorInterface
 {
-    /**
-     * Generate a unique file name.
-     *
-     * @param  string|UploadedFile  $file
-     * @return string
-     */
-    public function generate($file)
+    public function getName(string|UploadedFile $file): string
     {
         return $this->getFileName($file).'.'.$this->getExtensionFromFile($file);
     }
 
-    /**
-     * Return the file extension.
-     *
-     * @param  mixed  $file
-     * @return string
-     */
-    private function getExtensionFromFile($file)
+    private function getExtensionFromFile(string|UploadedFile $file): string
     {
         return is_a($file, UploadedFile::class, true) ? $file->extension() : Str::after(mime_content_type($file), '/');
     }
 
-    /**
-     * Return the file name.
-     *
-     * @param  mixed  $file
-     * @return string
-     */
-    private function getFileName($file)
+    private function getFileName(string|UploadedFile $file): string
     {
         if (is_file($file)) {
             return Str::of($file->getClientOriginalName())->beforeLast('.')->slug()->append('-'.Str::random(4));

@@ -3,23 +3,24 @@
 namespace Backpack\CRUD\app\Library\Uploaders;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
 class MultipleFiles extends Uploader
 {
-    public static function for(array $field, $configuration)
+    public static function for(array $field, $configuration): UploaderInterface
     {
         return (new self($field, $configuration))->multiple();
     }
 
-    public function uploadFile(Model $entry, $value = null)
+    public function uploadFiles(Model $entry, $value = null)
     {
         $filesToDelete = CRUD::getRequest()->get('clear_'.$this->getName());
         $value = $value ?? CRUD::getRequest()->file($this->getName());
         $previousFiles = $entry->getOriginal($this->getName()) ?? [];
-
+        
         if (! is_array($previousFiles) && is_string($previousFiles)) {
             $previousFiles = json_decode($previousFiles, true);
         }
@@ -39,9 +40,7 @@ class MultipleFiles extends Uploader
         foreach ($value ?? [] as $file) {
             if ($file && is_file($file)) {
                 $fileName = $this->getFileName($file);
-
                 $file->storeAs($this->getPath(), $fileName, $this->getDisk());
-
                 $previousFiles[] = $this->getPath().$fileName;
             }
         }
@@ -49,24 +48,22 @@ class MultipleFiles extends Uploader
         return isset($entry->getCasts()[$this->getName()]) ? $previousFiles : json_encode($previousFiles);
     }
 
-    public function uploadRepeatableFile(Model $entry, $files = null)
+    public function uploadRepeatableFiles(Model $entry, $files, $previousRepeatableValues)
     {
-        $previousFiles = $this->getPreviousRepeatableValues($entry);
         $fileOrder = $this->getFileOrderFromRequest();
 
         foreach ($files as $row => $files) {
             foreach ($files ?? [] as $file) {
                 if ($file && is_file($file)) {
                     $fileName = $this->getFileName($file);
-
                     $file->storeAs($this->getPath(), $fileName, $this->getDisk());
                     $fileOrder[$row][] = $this->getPath().$fileName;
                 }
             }
         }
 
-        foreach ($previousFiles as $previousRow => $files) {
-            foreach ($files ?? [] as $key => $file) {
+        foreach ($previousRepeatableValues as $previousRow => $previousFiles) {
+            foreach ($previousFiles ?? [] as $key => $file) {
                 $key = array_search($file, $fileOrder, true);
                 if ($key === false) {
                     Storage::disk($this->getDisk())->delete($file);

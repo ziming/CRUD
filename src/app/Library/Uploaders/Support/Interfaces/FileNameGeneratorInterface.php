@@ -2,13 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\Uploaders\Support\Interfaces;
 
+use Illuminate\Http\UploadedFile;
+
 interface FileNameGeneratorInterface
 {
-    /**
-     * Generate a unique file name.
-     *
-     * @param  string  $file
-     * @return string
-     */
-    public function generate($file);
+    public function getName(string|UploadedFile $file): string;
 }

@@ -252,14 +252,14 @@ if (! function_exists('backpack_theme_config')) {
         }
 
         // if not, fall back to a general the config in the fallback theme
-        $namespacedKey = config('backpack.ui.view_namespace_fallback') . $key;
+        $namespacedKey = config('backpack.ui.view_namespace_fallback').$key;
         $namespacedKey = str_replace('::', '.', $namespacedKey);
 
         if (config()->has($namespacedKey)) {
             return config($namespacedKey);
         }
 
-        return config('backpack.ui.' . $key);
+        return config('backpack.ui.'.$key);
     }
 }
 

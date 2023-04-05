@@ -57,7 +57,7 @@ class ViewNamespaces
     {
         return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ??
             [config('backpack.ui.view_namespace').$domain] ??
-            [config('backpack.ui.view_namespace_fallback') . $domain];
+            [config('backpack.ui.view_namespace_fallback').$domain];
     }
 
     /**

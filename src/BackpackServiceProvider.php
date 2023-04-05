@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
@@ -52,6 +53,8 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
         $this->sendUsageStats();
+
+        Basset::addViewPath(realpath(__DIR__.'/resources/views'));
     }
 
     /**

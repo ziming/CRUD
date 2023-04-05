@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\Tests;
 
+use Backpack\Basset\BassetServiceProvider;
 use Backpack\CRUD\BackpackServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase;
@@ -31,6 +32,7 @@ abstract class BaseTest extends TestCase
     protected function getPackageProviders($app)
     {
         return [
+            BassetServiceProvider::class,
             BackpackServiceProvider::class,
         ];
     }

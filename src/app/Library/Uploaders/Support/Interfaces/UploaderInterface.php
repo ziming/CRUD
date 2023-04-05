@@ -6,36 +6,48 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
 interface UploaderInterface
- {
+{
     /**
-     * Static constructor function
+     * Static constructor function.
      */
     public static function for(array $field, array $configuration): UploaderInterface;
 
     /**
-     * Default implementation functions
+     * Default implementation functions.
      */
     public function storeUploadedFiles(Model $entry);
+
     public function retrieveUploadedFiles(Model $entry);
+
     public function deleteUploadedFiles(Model $entry);
 
     /**
-     * Setters - configuration methods
+     * Setters - configuration methods.
      */
     public function multiple(): self;
+
     public function repeats(string $repeatableContainerName): self;
+
     public function relationship(bool $isRelation): self;
 
     /**
-     * Getters
+     * Getters.
      */
     public function getName(): string;
+
     public function getDisk(): string;
+
     public function getPath(): string;
+
     public function useTemporaryUrl(): bool;
+
     public function getExpirationTimeInMinutes(): int;
+
     public function getFileName(string|UploadedFile $file): string;
+
     public function getRepeatableContainerName(): ?string;
+
     public function getIdentifier(): string;
+
     public function shouldDeleteFiles(): bool;
 }

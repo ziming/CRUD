@@ -126,7 +126,7 @@ abstract class Uploader implements UploaderInterface
     {
         return $this->temporaryUrlExpirationTimeInMinutes;
     }
-    
+
     public function shouldDeleteFiles(): bool
     {
         return $this->deleteWhenEntryIsDeleted;
@@ -161,8 +161,9 @@ abstract class Uploader implements UploaderInterface
     /*******************************
      * Default implementation functions
      *******************************/
-    protected function uploadFiles(Model $entry, $values = null) {
-        return;
+    protected function uploadFiles(Model $entry, $values = null)
+    {
+
     }
 
     private function retrieveFiles(Model $entry): Model

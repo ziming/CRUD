@@ -39,7 +39,7 @@ trait HandleRepeatableUploads
      *******************************/
     protected function uploadRepeatableFiles(Model $entry, $values, $previousValues)
     {
-        return;
+
     }
 
     private function handleRepeatableFiles(Model $entry): Model
@@ -110,8 +110,9 @@ trait HandleRepeatableUploads
             }
             $values = $repeatableValues->pluck($upload->getName())->toArray();
             foreach ($values as $value) {
-
-                if (! $value) { continue; }
+                if (! $value) {
+                    continue;
+                }
 
                 if (is_array($value)) {
                     foreach ($value as $subvalue) {
@@ -119,7 +120,7 @@ trait HandleRepeatableUploads
                     }
                     continue;
                 }
-                
+
                 Storage::disk($upload->getDisk())->delete($upload->getPath().$value);
             }
         }
@@ -131,7 +132,7 @@ trait HandleRepeatableUploads
     /**
      * Given two multidimensional arrays/collections, merge them recursively.
      */
-    private function mergeValuesRecursive(array|Collection $array1,array|Collection $array2): array|Collection
+    private function mergeValuesRecursive(array|Collection $array1, array|Collection $array2): array|Collection
     {
         $merged = $array1;
         foreach ($array2 as $key => &$value) {
@@ -164,7 +165,7 @@ trait HandleRepeatableUploads
     private function getPreviousRepeatableValues(Model $entry, UploaderInterface $uploader): array
     {
         $previousValues = json_decode($entry->getOriginal($uploader->getRepeatableContainerName()), true);
-       
+
         if (! empty($previousValues)) {
             $previousValues = array_column($previousValues, $uploader->getName());
         }

@@ -135,9 +135,8 @@ final class RegisterUploadEvents
      * If none provided, we will use the Backpack defaults for the given object type.
      *
      * Throws an exception in case no uploader for the given object type is found.
-     * 
+     *
      * @throws Exception
-     * 
      */
     private function getUploader(array $crudObject, array $uploaderConfiguration): UploaderInterface
     {

@@ -8,22 +8,16 @@ final class UploadersRepository
 {
     /**
      * The array of uploaders classes for field types.
-     *
-     * @var array
      */
     private array $uploaderClasses;
 
     /**
      * Uploaders registered in a repeatable group.
-     *
-     * @var array
      */
     private array $repeatableUploaders = [];
 
     /**
      * Uploaders that have already been handled (events registered) for each field/column instance.
-     *
-     * @var array
      */
     private array $handledUploaders = [];
 
@@ -68,7 +62,6 @@ final class UploadersRepository
 
     /**
      * Register new uploaders or override existing ones.
-     * @return void
      */
     public function addUploaderClasses(array $uploaders, string $group): void
     {

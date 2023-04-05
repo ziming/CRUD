@@ -24,67 +24,17 @@ final class RegisterUploadEvents
         }
     }
 
-    /**
-     * From the given crud object and upload definition provide the event registry
-     * service so that uploads are stored and retrieved automatically.
-     *
-     * @param  CrudField|CrudColumn  $crudObject
-     * @param  array  $uploaderConfiguration
-     * @param  string  $macro
-     * @param  array|null  $subfield
-     * @return void
-     */
-    public static function handle($crudObject, $uploaderConfiguration, $macro, $subfield = null): void
+    public static function handle(CrudField|CrudColumn $crudObject, array $uploaderConfiguration, string $macro, ?array $subfield = null): void
     {
         $instance = new self($crudObject, $uploaderConfiguration, $macro);
 
         $instance->registerEvents($subfield);
     }
 
-    /**
-     * Register the saving, retrieved and deleting events on model to handle the various upload processes.
-     * In case of CrudColumn we only register the retrieved event.
-     *
-     * @param  string  $model
-     * @param  UploaderInterface  $uploader
-     * @return void
-     */
-    private function setupModelEvents(string $model, UploaderInterface $uploader): void
-    {
-        if (app('UploadersRepository')->isUploadHandled($uploader->getIdentifier())) {
-            return;
-        }
-
-        if ($this->crudObjectType === 'field') {
-            $model::saving(function ($entry) use ($uploader) {
-                $updatedCountKey = 'uploaded_'.($uploader->getRepeatableContainerName() ?? $uploader->getName()).'_count';
-
-                CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) ?? 0);
-
-                $entry = $uploader->storeUploadedFiles($entry);
-
-                CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
-            });
-        }
-
-        $model::retrieved(function ($entry) use ($uploader) {
-            $entry = $uploader->retrieveUploadedFiles($entry);
-        });
-
-        $model::deleting(function ($entry) use ($uploader) {
-            $uploader->deleteUploadedFiles($entry);
-        });
-
-        app('UploadersRepository')->markAsHandled($uploader->getIdentifier());
-    }
-
-    /**
-     * Function responsible for managing the event registering process.
-     *
-     * @param  array|null  $subfield
-     * @return void
-     */
-    public function registerEvents(array|null $subfield = [])
+    /*******************************
+     * Private methods - implementation
+     *******************************/
+    private function registerEvents(array|null $subfield = []): void
     {
         if (! empty($subfield)) {
             $this->registerSubfieldEvent($subfield);
@@ -100,14 +50,7 @@ final class RegisterUploadEvents
         $this->setupUploadConfigsInCrudObject($uploader);
     }
 
-    /**
-     * Register the events for subfields. This is a bit different than the main field because we need to
-     * register the events for the base field, that may contain multiple subfields with uploads.
-     *
-     * @param  array  $subfield
-     * @return void
-     */
-    public function registerSubfieldEvent(array $subfield)
+    private function registerSubfieldEvent(array $subfield): void
     {
         $uploader = $this->getUploader($subfield, $this->uploaderConfiguration);
         $crudObject = $this->crudObject->getAttributes();
@@ -153,20 +96,50 @@ final class RegisterUploadEvents
     }
 
     /**
+     * Register the saving, retrieved and deleting events on model to handle the various upload stages.
+     * In case of CrudColumn we don't register the saving event.
+     */
+    private function setupModelEvents(string $model, UploaderInterface $uploader): void
+    {
+        if (app('UploadersRepository')->isUploadHandled($uploader->getIdentifier())) {
+            return;
+        }
+
+        if ($this->crudObjectType === 'field') {
+            $model::saving(function ($entry) use ($uploader) {
+                $updatedCountKey = 'uploaded_'.($uploader->getRepeatableContainerName() ?? $uploader->getName()).'_count';
+
+                CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) ?? 0);
+
+                $entry = $uploader->storeUploadedFiles($entry);
+
+                CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
+            });
+        }
+
+        $model::retrieved(function ($entry) use ($uploader) {
+            $entry = $uploader->retrieveUploadedFiles($entry);
+        });
+
+        $model::deleting(function ($entry) use ($uploader) {
+            $uploader->deleteUploadedFiles($entry);
+        });
+
+        app('UploadersRepository')->markAsHandled($uploader->getIdentifier());
+    }
+
+    /**
      * Return the uploader for the object beeing configured.
      * We will give priority to any uploader provided by `uploader => App\SomeUploaderClass` on upload definition.
      *
      * If none provided, we will use the Backpack defaults for the given object type.
      *
      * Throws an exception in case no uploader for the given object type is found.
-     *
-     * @param  array  $crudObject
-     * @param  array  $uploaderConfiguration
-     * @return UploaderInterface
-     *
+     * 
      * @throws Exception
+     * 
      */
-    private function getUploader(array $crudObject, array $uploaderConfiguration)
+    private function getUploader(array $crudObject, array $uploaderConfiguration): UploaderInterface
     {
         $customUploader = isset($uploaderConfiguration['uploader']) && class_exists($uploaderConfiguration['uploader']);
 
@@ -184,12 +157,9 @@ final class RegisterUploadEvents
     }
 
     /**
-     * Set up the upload attributes in the field/column.
-     *
-     * @param  UploaderInterface  $uploader
-     * @return void
+     * Set up the upload attributes in the CrudObject.
      */
-    private function setupUploadConfigsInCrudObject(UploaderInterface $uploader)
+    private function setupUploadConfigsInCrudObject(UploaderInterface $uploader): void
     {
         $this->crudObject->upload(true)->disk($uploader->getDisk())->prefix($uploader->getPath());
     }

@@ -39,7 +39,6 @@ trait HandleRepeatableUploads
      *******************************/
     protected function uploadRepeatableFiles($values, $previousValues)
     {
-
     }
 
     private function handleRepeatableFiles(Model $entry): Model

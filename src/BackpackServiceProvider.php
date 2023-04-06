@@ -124,9 +124,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
-            __DIR__.'/resources/views/base/inc/sidebar_content.blade.php' => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php' => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_right_content.blade.php' => resource_path('views/vendor/backpack/base/inc/topbar_right_content.blade.php'),
+            __DIR__.'/resources/views/ui/inc/sidebar_content.blade.php' => resource_path('views/vendor/backpack/ui/inc/sidebar_content.blade.php'),
         ];
         $backpack_custom_routes_file = [__DIR__.$this->customRoutesFilePath => base_path($this->customRoutesFilePath)];
 
@@ -193,18 +191,18 @@ class BackpackServiceProvider extends ServiceProvider
 
     public function loadViewsWithFallbacks()
     {
-        $customBaseFolder = resource_path('views/vendor/backpack/base');
+        $customBaseFolder = resource_path('views/vendor/backpack/ui');
         $customCrudFolder = resource_path('views/vendor/backpack/crud');
 
         // - first the published/overwritten views (in case they have any changes)
         if (file_exists($customBaseFolder)) {
-            $this->loadViewsFrom($customBaseFolder, 'backpack');
+            $this->loadViewsFrom($customBaseFolder, 'backpack.ui');
         }
         if (file_exists($customCrudFolder)) {
             $this->loadViewsFrom($customCrudFolder, 'crud');
         }
         // - then the stock views that come with the package, in case a published view might be missing
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/base'), 'backpack');
+        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/ui'), 'backpack');
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
     }
 

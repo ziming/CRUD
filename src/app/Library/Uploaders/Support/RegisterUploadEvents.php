@@ -107,7 +107,6 @@ final class RegisterUploadEvents
 
         if ($this->crudObjectType === 'field') {
             $model::saving(function ($entry) use ($uploader) {
-               
                 $updatedCountKey = 'uploaded_'.($uploader->getRepeatableContainerName() ?? $uploader->getName()).'_count';
 
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) ?? 0);
@@ -119,9 +118,7 @@ final class RegisterUploadEvents
         }
 
         $model::retrieved(function ($entry) use ($uploader) {
-            
             $entry = $uploader->retrieveUploadedFiles($entry);
-            
         });
 
         $model::deleting(function ($entry) use ($uploader) {

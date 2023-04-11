@@ -36,7 +36,7 @@ class SingleBase64Image extends Uploader
         return $previousImage;
     }
 
-    public function uploadRepeatableFiles($values, $previousRepeatableValues)
+    public function uploadRepeatableFiles($values, $previousRepeatableValues, $entry = null)
     {
         foreach ($values as $row => $rowValue) {
             if ($rowValue) {

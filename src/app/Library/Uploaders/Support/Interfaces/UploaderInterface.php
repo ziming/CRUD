@@ -50,4 +50,6 @@ interface UploaderInterface
     public function getIdentifier(): string;
 
     public function shouldDeleteFiles(): bool;
+
+    public function canHandleMultipleFiles(): bool;
 }

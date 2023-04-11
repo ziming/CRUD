@@ -40,7 +40,7 @@ abstract class Uploader implements UploaderInterface
      */
     private bool $isRelationship = false;
 
-    final public function __construct(array $crudObject, array $configuration)
+    public function __construct(array $crudObject, array $configuration)
     {
         $this->name = $crudObject['name'];
         $this->disk = $configuration['disk'] ?? $crudObject['disk'] ?? $this->disk;
@@ -141,6 +141,11 @@ abstract class Uploader implements UploaderInterface
         return $this->name;
     }
 
+    public function canHandleMultipleFiles(): bool
+    {
+        return $this->handleMultipleFiles;
+    }
+
     /*******************************
      * Setters - fluently configure the uploader
      *******************************/
@@ -161,9 +166,8 @@ abstract class Uploader implements UploaderInterface
     /*******************************
      * Default implementation functions
      *******************************/
-    protected function uploadFiles(Model $entry, $values = null)
+    public function uploadFiles(Model $entry, $values = null)
     {
-
     }
 
     private function retrieveFiles(Model $entry): Model

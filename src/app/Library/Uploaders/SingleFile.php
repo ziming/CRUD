@@ -32,7 +32,7 @@ class SingleFile extends Uploader
         return $previousFile;
     }
 
-    public function uploadRepeatableFiles($values, $previousRepeatableValues)
+    public function uploadRepeatableFiles($values, $previousRepeatableValues, $entry = null)
     {
         $orderedFiles = $this->getFileOrderFromRequest();
 

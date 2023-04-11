@@ -37,11 +37,11 @@ trait HandleRepeatableUploads
     /*******************************
      * Default implementation methods
      *******************************/
-    protected function uploadRepeatableFiles($values, $previousValues)
+    protected function uploadRepeatableFiles($values, $previousValues, $entry = null)
     {
     }
 
-    private function handleRepeatableFiles(Model $entry): Model
+    protected function handleRepeatableFiles(Model $entry): Model
     {
         $values = collect(CRUD::getRequest()->get($this->getRepeatableContainerName()));
         $files = collect(CRUD::getRequest()->file($this->getRepeatableContainerName()));
@@ -70,7 +70,7 @@ trait HandleRepeatableUploads
         return $entry;
     }
 
-    private function processRepeatableUploads(Model $entry, Collection $values): Collection
+    protected function processRepeatableUploads(Model $entry, Collection $values): Collection
     {
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
             $uploadedValues = $uploader->uploadRepeatableFiles($values->pluck($uploader->getName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
@@ -117,6 +117,7 @@ trait HandleRepeatableUploads
                     foreach ($value as $subvalue) {
                         Storage::disk($upload->getDisk())->delete($upload->getPath().$subvalue);
                     }
+
                     continue;
                 }
 
@@ -131,7 +132,7 @@ trait HandleRepeatableUploads
     /**
      * Given two multidimensional arrays/collections, merge them recursively.
      */
-    private function mergeValuesRecursive(array|Collection $array1, array|Collection $array2): array|Collection
+    protected function mergeValuesRecursive(array|Collection $array1, array|Collection $array2): array|Collection
     {
         $merged = $array1;
         foreach ($array2 as $key => &$value) {

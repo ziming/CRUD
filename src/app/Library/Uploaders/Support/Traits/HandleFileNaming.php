@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\Uploaders\Support\Traits;
 
 use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\FileNameGeneratorInterface;
 use Illuminate\Http\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 trait HandleFileNaming
 {
@@ -11,7 +12,7 @@ trait HandleFileNaming
 
     public FileNameGeneratorInterface $fileNameGenerator;
 
-    public function getFileName(string|UploadedFile $file): string
+    public function getFileName(string|UploadedFile|File $file): string
     {
         if ($this->fileName) {
             return is_callable($this->fileName) ? ($this->fileName)($file, $this) : $this->fileName;

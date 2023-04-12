@@ -5,11 +5,16 @@ namespace Backpack\CRUD\app\Library\Uploaders\Support;
 use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\FileNameGeneratorInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\File\File;
 
 class FileNameGenerator implements FileNameGeneratorInterface
 {
-    public function getName(string|UploadedFile $file): string
+    public function getName(string|UploadedFile|File $file): string
     {
+        if (is_a($file, File::class, true)) {
+            return $file->getFileName();
+        }
+
         return $this->getFileName($file).'.'.$this->getExtensionFromFile($file);
     }
 

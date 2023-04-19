@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\app\Library\Uploaders\Validation;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
-use Illuminate\Support\Facades\Validator;
 use Closure;
+use Illuminate\Support\Facades\Validator;
 
 class ValidUploadMultiple extends ValidBackpackUpload
 {
@@ -18,11 +18,12 @@ class ValidUploadMultiple extends ValidBackpackUpload
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(!is_array($value)) {
+        if (! is_array($value)) {
             try {
                 $value = json_decode($value, true);
-            }catch(\Exception $e) {
+            } catch(\Exception $e) {
                 $fail('Unable to determine the value type');
+
                 return;
             }
         }
@@ -32,7 +33,7 @@ class ValidUploadMultiple extends ValidBackpackUpload
             $filesToClear = CrudPanelFacade::getRequest()->input('clear_'.$attribute) ?? [];
             $previousFiles = CrudPanelFacade::getCurrentEntry()->{$attribute} ?? [];
 
-            if(is_string($previousFiles) && !isset(CrudPanelFacade::getCurrentEntry()->getCasts()[$attribute])) {
+            if (is_string($previousFiles) && ! isset(CrudPanelFacade::getCurrentEntry()->getCasts()[$attribute])) {
                 $previousFiles = json_decode($previousFiles, true);
             }
 
@@ -47,24 +48,26 @@ class ValidUploadMultiple extends ValidBackpackUpload
                 if ($validator->fails()) {
                     $fail($validator->errors()->first($attribute));
                 }
+
                 return;
             }
 
-            // we are now going to check if the previous files - deleted files + new files still pass the validation 
+            // we are now going to check if the previous files - deleted files + new files still pass the validation
             $previousFilesWithoutClearedPlusNewFiles[$attribute] = array_merge($previousFilesWithoutCleared[$attribute], $value);
-            
+
             $validator = Validator::make($previousFilesWithoutClearedPlusNewFiles, [
-                    $attribute => $this->arrayRules,
-                ], $this->validator->customMessages, $this->validator->customAttributes);
+                $attribute => $this->arrayRules,
+            ], $this->validator->customMessages, $this->validator->customAttributes);
 
             if ($validator->fails()) {
                 $fail($validator->errors()->first($attribute));
+
                 return;
             }
         }
 
         // we are now going to perform the file validation on the actual files
-        foreach($value as $file) {
+        foreach ($value as $file) {
             $validator = Validator::make([$attribute => $file], [
                 $attribute => $this->fileRules,
             ], $this->validator->customMessages, $this->validator->customAttributes);

@@ -2,11 +2,11 @@
 
 namespace Backpack\CRUD\app\Library\Uploaders\Validation;
 
+use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Validation\Rules\File;
-use Illuminate\Contracts\Validation\ValidationRule;
-use Closure;
 
 class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwareRule
 {
@@ -36,7 +36,6 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-
     }
 
     public function arrayRules(string|array|File $rules): self
@@ -45,7 +44,7 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
             $rules = explode('|', $rules);
         }
 
-        if(!in_array('array', $rules)) {
+        if (! in_array('array', $rules)) {
             $rules[] = 'array';
         }
 
@@ -59,7 +58,7 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
         if (is_string($rules)) {
             $rules = explode('|', $rules);
         }
-        if(!is_array($rules)) {
+        if (! is_array($rules)) {
             $rules = [$rules];
         }
         $this->fileRules = $rules;

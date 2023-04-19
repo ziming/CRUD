@@ -174,8 +174,10 @@ abstract class Uploader implements UploaderInterface
     {
         $value = $entry->{$this->name};
 
-        if ($this->handleMultipleFiles && ! isset($entry->getCasts()[$this->name]) && is_string($value)) {
-            $entry->{$this->name} = json_decode($value, true);
+        if ($this->handleMultipleFiles) {
+            if (! isset($entry->getCasts()[$this->name]) && is_string($value)) {
+                $entry->{$this->name} = json_decode($value, true);
+            }
 
             return $entry;
         }

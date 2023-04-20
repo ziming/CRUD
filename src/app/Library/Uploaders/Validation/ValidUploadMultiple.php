@@ -33,7 +33,7 @@ class ValidUploadMultiple extends ValidBackpackUpload
             unset($this->data[$attribute]);
             $value = [];
         }
-                   
+
         $previousValues = $this->entry?->{$attribute} ?? [];
         if (is_string($previousValues)) {
             $previousValues = json_decode($previousValues, true);
@@ -42,16 +42,16 @@ class ValidUploadMultiple extends ValidBackpackUpload
         $value = array_merge($previousValues, $value);
 
         // if user uploaded something add it to the data beeing validated.
-        if(!empty($value)) {
+        if (! empty($value)) {
             $this->data[$attribute] = $value;
         }
-       
+
         if ($this->entry) {
             $filesDeleted = CrudPanelFacade::getRequest()->input('clear_'.$attribute) ?? [];
 
             $data = $this->data;
             $data[$attribute] = array_diff($value, $filesDeleted);
-            
+
             $this->validateArrayData($attribute, $fail, $data);
 
             $this->validateFiles($attribute, $value, $fail);
@@ -60,7 +60,7 @@ class ValidUploadMultiple extends ValidBackpackUpload
         }
 
         $this->validateArrayData($attribute, $fail);
-       
+
         $this->validateFiles($attribute, $value, $fail);
     }
 }

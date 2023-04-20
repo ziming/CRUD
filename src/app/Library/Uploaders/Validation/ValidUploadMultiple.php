@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Library\Uploaders\Validation;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
-use Illuminate\Support\Facades\Validator;
 
 class ValidUploadMultiple extends ValidBackpackUpload
 {
@@ -27,54 +26,41 @@ class ValidUploadMultiple extends ValidBackpackUpload
                 return;
             }
         }
-        // `upload_multiple` sends [[0 => null]] (null after `ConvertEmptyStringsToNull`) when nothing changes on the field
-        // for that reason we need to manually check what we are getting from the request
-        if (CrudPanelFacade::getCurrentEntry() !== false) {
-            $filesToClear = CrudPanelFacade::getRequest()->input('clear_'.$attribute) ?? [];
-            $previousFiles = CrudPanelFacade::getCurrentEntry()->{$attribute} ?? [];
 
-            if (is_string($previousFiles) && ! isset(CrudPanelFacade::getCurrentEntry()->getCasts()[$attribute])) {
-                $previousFiles = json_decode($previousFiles, true);
-            }
-
-            $previousFilesWithoutCleared[$attribute] = array_diff($previousFiles, $filesToClear);
-
-            // we are only going to check if the deleted files could break the validation rules
-            if (count($value) === 1 && empty($value[0])) {
-                $validator = Validator::make($previousFilesWithoutCleared, [
-                    $attribute => $this->arrayRules,
-                ], $this->validator->customMessages, $this->validator->customAttributes);
-
-                if ($validator->fails()) {
-                    $fail($validator->errors()->first($attribute));
-                }
-
-                return;
-            }
-
-            // we are now going to check if the previous files - deleted files + new files still pass the validation
-            $previousFilesWithoutClearedPlusNewFiles[$attribute] = array_merge($previousFilesWithoutCleared[$attribute], $value);
-
-            $validator = Validator::make($previousFilesWithoutClearedPlusNewFiles, [
-                $attribute => $this->arrayRules,
-            ], $this->validator->customMessages, $this->validator->customAttributes);
-
-            if ($validator->fails()) {
-                $fail($validator->errors()->first($attribute));
-
-                return;
-            }
+        // `upload_multiple` sends [[0 => null]] when user doesn't upload anything
+        // assume that nothing changed on field so nothing is sent on the request.
+        if (count($value) === 1 && empty($value[0])) {
+            unset($this->data[$attribute]);
+            $value = [];
+        }
+                   
+        $previousValues = $this->entry?->{$attribute} ?? [];
+        if (is_string($previousValues)) {
+            $previousValues = json_decode($previousValues, true);
         }
 
-        // we are now going to perform the file validation on the actual files
-        foreach ($value as $file) {
-            $validator = Validator::make([$attribute => $file], [
-                $attribute => $this->fileRules,
-            ], $this->validator->customMessages, $this->validator->customAttributes);
+        $value = array_merge($previousValues, $value);
 
-            if ($validator->fails()) {
-                $fail($validator->errors()->first($attribute));
-            }
+        // if user uploaded something add it to the data beeing validated.
+        if(!empty($value)) {
+            $this->data[$attribute] = $value;
         }
+       
+        if ($this->entry) {
+            $filesDeleted = CrudPanelFacade::getRequest()->input('clear_'.$attribute) ?? [];
+
+            $data = $this->data;
+            $data[$attribute] = array_diff($value, $filesDeleted);
+            
+            $this->validateArrayData($attribute, $fail, $data);
+
+            $this->validateFiles($attribute, $value, $fail);
+
+            return;
+        }
+
+        $this->validateArrayData($attribute, $fail);
+       
+        $this->validateFiles($attribute, $value, $fail);
     }
 }

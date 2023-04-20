@@ -2,15 +2,14 @@
 
 namespace Backpack\CRUD\app\Library\Uploaders\Validation;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
-use Closure;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
+use Illuminate\Validation\Rules\File;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 
 class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwareRule
 {
@@ -29,10 +28,9 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
 
     public static function make(): self
     {
-        $instance = new static();
+        $instance =  new static();
         $entry = CrudPanelFacade::getCurrentEntry();
         $instance->entry = $entry !== false ? $entry : null;
-
         return $instance;
     }
 
@@ -111,15 +109,15 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
     /**
      * Performs the validation on the array of files using the file validation array.
      *
-     * @param  string  $attribute
-     * @param  array  $files
-     * @param  Closure  $fail
+     * @param string $attribute
+     * @param array $files
+     * @param Closure $fail
      * @return void
      */
     protected function validateFiles($attribute, $files, $fail)
     {
         foreach ($files as $file) {
-            if (! is_file($file)) {
+            if(!is_file($file)) {
                 continue;
             }
             $validator = Validator::make([$attribute => $file], [
@@ -127,9 +125,9 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
             ], $this->validator->customMessages, $this->validator->customAttributes);
 
             if ($validator->fails()) {
-                foreach ($validator->errors()->messages()[$attribute] as $message) {
+                foreach($validator->errors()->messages()[$attribute] as $message) {
                     $fail($message);
-                }
+                };
             }
         }
     }
@@ -137,23 +135,25 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
     /**
      * Validate the given data or the array of data from the validator againts the array rules.
      *
-     * @param  string  $attribute
-     * @param  Closure  $fail
-     * @param  null|array  $data
+     * @param string $attribute
+     * @param Closure $fail
+     * @param null|array $data
+     * @param null|array $rules
      * @return void
      */
-    protected function validateArrayData($attribute, $fail, $data = null)
+    protected function validateArrayData($attribute, $fail, $data = null, $rules = null)
     {
         $data = $data ?? $this->data;
-
+        $rules = $rules ?? $this->arrayRules;
+        
         $validator = Validator::make($data, [
-            $attribute => $this->arrayRules,
+            $attribute => $rules,
         ], $this->validator->customMessages, $this->validator->customAttributes);
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->messages()[$attribute] as $message) {
+            foreach($validator->errors()->messages()[$attribute] as $message) {
                 $fail($message);
-            }
+            };
         }
     }
 }

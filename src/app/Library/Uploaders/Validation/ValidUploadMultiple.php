@@ -5,7 +5,7 @@ namespace Backpack\CRUD\app\Library\Uploaders\Validation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
 
-class ValidUploadMultiple extends ValidBackpackUpload
+class ValidUploadMultiple extends ValidArray
 {
     /**
      * Run the validation rule.
@@ -54,13 +54,13 @@ class ValidUploadMultiple extends ValidBackpackUpload
 
             $this->validateArrayData($attribute, $fail, $data);
 
-            $this->validateFiles($attribute, $value, $fail);
+            $this->validateItems($attribute, $value, $fail);
 
             return;
         }
 
         $this->validateArrayData($attribute, $fail);
 
-        $this->validateFiles($attribute, $value, $fail);
+        $this->validateItems($attribute, $value, $fail);
     }
 }

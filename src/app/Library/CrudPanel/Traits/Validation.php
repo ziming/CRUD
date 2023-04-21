@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Backpack\CRUD\app\Library\Uploaders\Validation\ValidBackpackUpload;
+use Backpack\CRUD\app\Library\Uploaders\Validation\ValidArray;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
@@ -185,7 +185,7 @@ trait Validation
                     $validationRules = explode('|', $validationRules);
                 }
                 foreach ($validationRules as $rule) {
-                    if (is_a($rule, ValidBackpackUpload::class, true)) {
+                    if (is_a($rule, ValidArray::class, true)) {
                         foreach ($rule->arrayRules as $arrayRule) {
                             $key = $this->checkIfRuleIsRequired($key, $arrayRule);
                             if ($key) {

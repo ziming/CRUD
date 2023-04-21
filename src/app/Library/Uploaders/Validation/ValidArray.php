@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 
-class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwareRule
+class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
 {
     /**
      * @var \Illuminate\Contracts\Validation\Validator
@@ -22,7 +22,7 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
 
     public array $arrayRules = [];
 
-    public array $fileRules = [];
+    public array $itemRules = [];
 
     public ?Model $entry;
 
@@ -45,6 +45,17 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if (! is_array($value)) {
+            try {
+                $value = json_decode($value, true);
+            } catch (\Exception $e) {
+                $fail('Unable to determine the value type.');
+
+                return;
+            }
+        }
+        $this->validateArrayData($attribute, $value, $fail);
+        $this->validateItemsAsArray($attribute, $value, $fail);
     }
 
     /**
@@ -92,9 +103,9 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
     }
 
     /**
-     * Set the rules that apply to the files beeing uploaded.
+     * Set the rules that apply to the items beeing sent in array.
      */
-    public function fileRules(string|array|File $rules): self
+    public function itemRules(string|array|File $rules): self
     {
         if (is_string($rules)) {
             $rules = explode('|', $rules);
@@ -102,33 +113,51 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
         if (! is_array($rules)) {
             $rules = [$rules];
         }
-        $this->fileRules = $rules;
+        $this->itemRules = $rules;
 
         return $this;
     }
 
     /**
-     * Performs the validation on the array of files using the file validation array.
+     * Performs the validation on the array of items, item by item, using the item validation array.
      *
      * @param  string  $attribute
      * @param  array  $files
      * @param  Closure  $fail
      * @return void
      */
-    protected function validateFiles($attribute, $files, $fail)
+    protected function validateItems($attribute, $items, $fail)
     {
-        foreach ($files as $file) {
-            if (! is_file($file)) {
-                continue;
-            }
-            $validator = Validator::make([$attribute => $file], [
-                $attribute => $this->fileRules,
+        foreach ($items as $item) {
+            $validator = Validator::make([$attribute => $item], [
+                $attribute => $this->itemRules,
             ], $this->validator->customMessages, $this->validator->customAttributes);
 
             if ($validator->fails()) {
                 foreach ($validator->errors()->messages()[$attribute] as $message) {
-                    $fail($message);
+                    $fail($message)->translate();
                 }
+            }
+        }
+    }
+
+    /**
+     * Performs the validation on the array of items, using the item validation array.
+     *
+     * @param  string  $attribute
+     * @param  array  $files
+     * @param  Closure  $fail
+     * @return void
+     */
+    protected function validateItemsAsArray($attribute, $items, $fail)
+    {
+        $validator = Validator::make([$attribute => $items], [
+            $attribute.'.*' => $this->itemRules,
+        ], $this->validator->customMessages, $this->validator->customAttributes);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->messages()[$attribute] as $message) {
+                $fail($message)->translate();
             }
         }
     }
@@ -153,7 +182,7 @@ class ValidBackpackUpload implements ValidationRule, DataAwareRule, ValidatorAwa
 
         if ($validator->fails()) {
             foreach ($validator->errors()->messages()[$attribute] as $message) {
-                $fail($message);
+                $fail($message)->translate();
             }
         }
     }

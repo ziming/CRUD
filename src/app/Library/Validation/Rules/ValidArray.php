@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\Uploaders\Validation;
+namespace Backpack\CRUD\app\Library\Validation\Rules;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
@@ -10,6 +10,7 @@ use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Support\Str;
 
 class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
 {
@@ -23,6 +24,8 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
     public array $arrayRules = [];
 
     public array $itemRules = [];
+
+    public array $namedItemRules = [];
 
     public ?Model $entry;
 
@@ -54,7 +57,8 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
                 return;
             }
         }
-        $this->validateArrayData($attribute, $value, $fail);
+        
+        $this->validateArrayData($attribute, $fail, $value);
         $this->validateItemsAsArray($attribute, $value, $fail);
     }
 
@@ -110,9 +114,11 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
         if (is_string($rules)) {
             $rules = explode('|', $rules);
         }
+
         if (! is_array($rules)) {
             $rules = [$rules];
         }
+
         $this->itemRules = $rules;
 
         return $this;
@@ -151,6 +157,10 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
      */
     protected function validateItemsAsArray($attribute, $items, $fail)
     {
+        if (! empty($this->namedItemRules)) {
+            $this->validateNamedItemRules($attribute, $items, $fail);
+        }
+
         $validator = Validator::make([$attribute => $items], [
             $attribute.'.*' => $this->itemRules,
         ], $this->validator->customMessages, $this->validator->customAttributes);
@@ -175,7 +185,7 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
     {
         $data = $data ?? $this->data;
         $rules = $rules ?? $this->arrayRules;
-
+       
         $validator = Validator::make($data, [
             $attribute => $rules,
         ], $this->validator->customMessages, $this->validator->customAttributes);
@@ -185,5 +195,53 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
                 $fail($message)->translate();
             }
         }
+    }
+
+    /**
+     * When developer provides named rules for the items, for example: 'repeatable' => [ValidArray::make()->ruleName('required')]
+     *
+     * @param stromg $attribute
+     * @param array $items
+     * @param Closure $fail
+     * @return void
+     */
+    private function validateNamedItemRules($attribute, $items, $fail)
+    {
+        $this->namedItemRules = array_combine(array_map(function($ruleKey) use ($attribute) {
+            return $attribute.'.*.'.$ruleKey;
+        }, array_keys($this->namedItemRules)), $this->namedItemRules);
+        
+        array_walk($this->namedItemRules, function(&$value, $key) {
+            if(is_array($value)) {
+                $rules = [];
+                foreach($value as $rule) {
+                    if (is_a($rule, get_class($this), true)) {
+                        $validArrayRules =  $rule->itemRules;
+                        if(is_array($validArrayRules)) {
+                            $rules = array_merge($rules, $validArrayRules);
+                            continue;
+                        }
+                        $rules[] = $validArrayRules;
+                        continue;
+                    }
+                    $rules[] = $rule;
+                }
+                $value = $rules;
+            }
+        });
+
+        $this->validateArrayData($attribute, $fail, $items, $this->namedItemRules);
+    }
+
+    public function __call($method, $arguments)
+    {
+        // if method starts with `rule` eg: ruleName, extract the input name and add it to the array of rules
+        if(Str::startsWith($method, 'rule')) {
+            $argument = Str::snake(Str::replaceFirst('rule', '', $method));
+            $this->namedItemRules[$argument] = $arguments[0];
+            return $this;
+        }
+
+        return $this->{$method}(...$arguments);
     }
 }

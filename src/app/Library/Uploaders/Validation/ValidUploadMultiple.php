@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\Uploaders\Validation;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
+use Backpack\CRUD\app\Library\Validation\Rules\ValidArray;
 
 class ValidUploadMultiple extends ValidArray
 {

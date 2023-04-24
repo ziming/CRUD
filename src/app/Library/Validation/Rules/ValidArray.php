@@ -9,8 +9,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\File;
 
 class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
 {
@@ -57,7 +57,7 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
                 return;
             }
         }
-        
+
         $this->validateArrayData($attribute, $fail, $value);
         $this->validateItemsAsArray($attribute, $value, $fail);
     }
@@ -185,7 +185,7 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
     {
         $data = $data ?? $this->data;
         $rules = $rules ?? $this->arrayRules;
-       
+
         $validator = Validator::make($data, [
             $attribute => $rules,
         ], $this->validator->customMessages, $this->validator->customAttributes);
@@ -198,28 +198,28 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
     }
 
     /**
-     * When developer provides named rules for the items, for example: 'repeatable' => [ValidArray::make()->ruleName('required')]
+     * When developer provides named rules for the items, for example: 'repeatable' => [ValidArray::make()->ruleName('required')].
      *
-     * @param stromg $attribute
-     * @param array $items
-     * @param Closure $fail
+     * @param  stromg  $attribute
+     * @param  array  $items
+     * @param  Closure  $fail
      * @return void
      */
     private function validateNamedItemRules($attribute, $items, $fail)
     {
-        $this->namedItemRules = array_combine(array_map(function($ruleKey) use ($attribute) {
+        $this->namedItemRules = array_combine(array_map(function ($ruleKey) use ($attribute) {
             return $attribute.'.*.'.$ruleKey;
         }, array_keys($this->namedItemRules)), $this->namedItemRules);
-        
-        array_walk($this->namedItemRules, function(&$value, $key) {
-            if(is_array($value)) {
+
+        array_walk($this->namedItemRules, function (&$value, $key) {
+            if (is_array($value)) {
                 $rules = [];
-                foreach($value as $rule) {
+                foreach ($value as $rule) {
                     if (is_a($rule, get_class($this), true)) {
-                        $validArrayRules =  $rule->itemRules;
-                        if(is_array($validArrayRules)) {
-                            foreach($validArrayRules as $validArrayRule) {
-                               // dd($validArrayRule);
+                        $validArrayRules = $rule->itemRules;
+                        if (is_array($validArrayRules)) {
+                            foreach ($validArrayRules as $validArrayRule) {
+                                // dd($validArrayRule);
                             }
                             $rules = array_merge($rules, $validArrayRules);
                             continue;
@@ -239,9 +239,10 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
     public function __call($method, $arguments)
     {
         // if method starts with `rule` eg: ruleName, extract the input name and add it to the array of rules
-        if(Str::startsWith($method, 'rule')) {
+        if (Str::startsWith($method, 'rule')) {
             $argument = Str::snake(Str::replaceFirst('rule', '', $method));
             $this->namedItemRules[$argument] = $arguments[0];
+
             return $this;
         }
 

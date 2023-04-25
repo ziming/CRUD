@@ -47,10 +47,8 @@ abstract class Uploader implements UploaderInterface
         $this->path = $this->getPathFromConfiguration($crudObject, $configuration);
         $this->useTemporaryUrl = $configuration['temporary'] ?? $this->useTemporaryUrl;
         $this->temporaryUrlExpirationTimeInMinutes = $configuration['expiration'] ?? $this->temporaryUrlExpirationTimeInMinutes;
-        $this->deleteWhenEntryIsDeleted = $configuration['whenDelete'] ?? $this->deleteWhenEntryIsDeleted;
-
-        $this->fileNameGenerator = $this->getFileNameGeneratorInstance($configuration['fileNameGenerator'] ?? null);
-        $this->fileName = $configuration['fileName'] ?? $this->fileName;
+        $this->deleteWhenEntryIsDeleted = $configuration['deleteWhenEntryIsDeleted'] ?? $this->deleteWhenEntryIsDeleted;
+        $this->fileNamer = is_callable($configuration['fileNamer'] ?? null) ? $configuration['fileNamer'] : $this->getFileNameGeneratorInstance($configuration['fileNamer'] ?? null);
     }
 
     /*******************************

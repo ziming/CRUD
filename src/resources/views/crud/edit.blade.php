@@ -44,7 +44,7 @@
 		    <div class="mb-2 text-right">
 		    	{{-- Single button --}}
 				<div class="btn-group">
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
@@ -62,7 +62,7 @@
 		      	@include('crud::form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
               @endif
               {{-- This makes sure that all field assets are loaded. --}}
-            <div class="d-none" id="parentLoadedAssets">{{ json_encode(Assets::loaded()) }}</div>
+            <div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
             @include('crud::inc.form_save_buttons')
 		  </form>
 	</div>

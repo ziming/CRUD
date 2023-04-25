@@ -6,12 +6,14 @@
  @endphp
 
   {{-- DATA TABLES SCRIPT --}}
-  <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
+  @basset('https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js')
+  @basset('https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
+
+  @basset(base_path('vendor/backpack/crud/src/resources/assets/img/spinner.svg'))
 
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
@@ -232,7 +234,7 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "<img src='{{ asset('packages/backpack/base/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
+              "processing":     "<img src='{{ asset('storage/bassets/vendor/backpack/crud/src/resources/assets/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search": "_INPUT_",
               "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
@@ -297,7 +299,7 @@
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
-        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
+        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1 ms-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
 
         $('#datatable_info_stack').append(crudTableResetButton);
 
@@ -358,25 +360,9 @@
          crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
             crud.executeFunctionByName(functionName);
          });
-          @if($crud->getOperationSetting('lineButtonsAsDropdown'))
-          // Get action column
-          const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
-          if (actionColumnIndex !== -1) {
-              $('#crudTable tr').each(function (i, tr) {
-                  const actionCell = $(tr).find('td').eq(actionColumnIndex);
-                  const actionButtons = $(actionCell).find('a.btn.btn-link');
-                  // Wrap the cell with the component needed for the dropdown
-                  actionCell.wrapInner('<div class="nav-item dropdown"></div>');
-                  actionCell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
-                  // Prepare buttons as dropdown items
-                  actionButtons.map((index, action) => {
-                      $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
-                      $(action).find('i').addClass('me-2 text-primary');
-                  });
-                  actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
-              });
-          }
-          @endif
+         if ($('#crudTable').data('has-line-buttons-as-dropdown')) {
+          formatActionColumnAsDropdown();
+         }
       }).dataTable();
 
       // when datatables-colvis (column visibility) is toggled
@@ -415,6 +401,26 @@
       @endif
 
     });
+
+    function formatActionColumnAsDropdown() {
+        // Get action column
+        const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
+        if (actionColumnIndex !== -1) {
+            $('#crudTable tr').each(function (i, tr) {
+                const actionCell = $(tr).find('td').eq(actionColumnIndex);
+                const actionButtons = $(actionCell).find('a.btn.btn-link');
+                // Wrap the cell with the component needed for the dropdown
+                actionCell.wrapInner('<div class="nav-item dropdown"></div>');
+                actionCell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
+                // Prepare buttons as dropdown items
+                actionButtons.map((index, action) => {
+                    $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
+                    $(action).find('i').addClass('me-2 text-primary');
+                });
+                actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
+            });
+        }
+    }
   </script>
 
   @include('crud::inc.details_row_logic')

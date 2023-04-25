@@ -72,7 +72,7 @@ class Install extends Command
 
         // Install Backpack Generators
         $this->progressBlock('Installing Backpack Generators');
-        $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
+        $process = new Process(['composer', 'require', '--dev', 'backpack/generators:v6.x-dev']);
         $process->setTimeout(300);
         $process->run();
         $this->closeProgressBlock();

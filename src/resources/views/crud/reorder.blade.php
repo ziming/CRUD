@@ -82,7 +82,9 @@
 
             </div>{{-- /.card --}}
 
-            <button id="toArray" class="btn btn-success" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
+            <button id="toArray" class="btn btn-success text-light" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
+            <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-secondary text-decoration-none"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+
         </div>
     </div>
 @endsection
@@ -221,8 +223,8 @@
 @endsection
 
 @section('after_scripts')
-    <script src="{{ asset('packages/jquery-ui-dist/jquery-ui.min.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('packages/nestedSortable/jquery.mjs.nestedSortable2.js') }}" type="text/javascript" ></script>
+    @basset('https://unpkg.com/jquery-ui@1.13.2/dist/jquery-ui.min.js')
+    @basset(base_path('vendor/backpack/crud/src/resources/assets/libs/jquery.mjs.nestedSortable2.js'))
 
     <script type="text/javascript">
         jQuery(document).ready(function($) {

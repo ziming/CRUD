@@ -4,7 +4,7 @@
     $column['escaped'] = $column['escaped'] ?? true;
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
-    $column['format'] = $column['format'] ?? config('backpack.base.default_date_format');
+    $column['format'] = $column['format'] ?? backpack_theme_config('default_date_format');
     $column['text'] = $column['default'] ?? '-';
 
     if($column['value'] instanceof \Closure) {

@@ -27,7 +27,7 @@
     {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 
-        <div class="row mb-0">
+        <div class="row mb-2">
           <div class="col-sm-6">
             @if ( $crud->buttons()->where('stack', 'top')->count() ||  $crud->exportButtons())
               <div class="d-print-none {{ $crud->hasAccess('create')?'with-border':'' }}">
@@ -49,10 +49,11 @@
 
         <table
           id="crudTable"
-          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
+          class="table table-striped table-hover nowrap rounded card-table table-vcenter card-table shadow-xs border-xs"
           data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
           data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
           data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
+          data-has-line-buttons-as-dropdown="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdown') }}"
           cellspacing="0">
             <thead>
               <tr>
@@ -138,10 +139,10 @@
           </table>
 
           @if ( $crud->buttons()->where('stack', 'bottom')->count() )
-          <div id="bottom_buttons" class="d-print-none text-center text-sm-left">
+          <div id="bottom_buttons" class="d-print-none text-sm-left">
             @include('crud::inc.button_stack', ['stack' => 'bottom'])
 
-            <div id="datatable_button_stack" class="float-right text-right hidden-xs"></div>
+            <div id="datatable_button_stack" class="float-right float-end text-right hidden-xs"></div>
           </div>
           @endif
 
@@ -153,9 +154,9 @@
 
 @section('after_styles')
   {{-- DATA TABLES --}}
-  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
+  @basset('https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
 
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')

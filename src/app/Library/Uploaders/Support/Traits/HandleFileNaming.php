@@ -8,17 +8,11 @@ use Symfony\Component\HttpFoundation\File\File;
 
 trait HandleFileNaming
 {
-    public ?string $fileName = null;
-
-    public FileNameGeneratorInterface $fileNameGenerator;
+    public mixed $fileNamer = null;
 
     public function getFileName(string|UploadedFile|File $file): string
     {
-        if ($this->fileName) {
-            return is_callable($this->fileName) ? ($this->fileName)($file, $this) : $this->fileName;
-        }
-
-        return $this->fileNameGenerator->getName($file);
+        return is_callable($this->fileNamer) ? ($this->fileNamer)($file, $this) : $this->fileNamer->getName($file);
     }
 
     private function getFileNameGeneratorInstance(?string $fileNameGenerator): FileNameGeneratorInterface

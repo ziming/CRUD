@@ -39,8 +39,7 @@ trait MacroableWithAttributes
 
         foreach (array_keys($macros) as $macro) {
             if (isset($attributes[$macro])) {
-                $this->{$macro}($attributes[$macro]);
-
+                is_array($attributes[$macro]) ? $this->{$macro}($attributes[$macro]) : $this->{$macro}([]);
                 continue;
             }
             if (isset($attributes['subfields'])) {

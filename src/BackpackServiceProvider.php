@@ -6,6 +6,7 @@ use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
+use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -83,6 +84,10 @@ class BackpackServiceProvider extends ServiceProvider
         // Bind the widgets collection object to Laravel's service container
         $this->app->singleton('widgets', function ($app) {
             return new Collection();
+        });
+
+        $this->app->scoped('UploadersRepository', function ($app) {
+            return new UploadersRepository();
         });
 
         // register the helper functions
@@ -288,6 +293,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository'];
     }
 }

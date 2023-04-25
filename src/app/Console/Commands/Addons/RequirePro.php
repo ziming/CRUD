@@ -68,7 +68,7 @@ class RequirePro extends Command
 
         // Require package
         try {
-            $this->composerRequire('backpack/pro');
+            $this->composerRequire('backpack/pro:v6.x-dev');
         } catch (\Throwable $e) {
             $this->errorProgressBlock();
             $this->line('  '.$e->getMessage(), 'fg=red');

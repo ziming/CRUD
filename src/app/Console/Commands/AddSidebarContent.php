@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AddSidebarContent extends Command
 {
@@ -41,7 +42,10 @@ class AddSidebarContent extends Command
      */
     public function handle()
     {
-        $path = 'resources/views/vendor/backpack/base/inc/sidebar_content.blade.php';
+        $theme_subdirectory = Str::of(config('backpack.ui.view_namespace'))
+                    ->replace('.', '/')
+                    ->replace('::', '');
+        $path = 'resources/views/vendor/'.$theme_subdirectory.'/inc/sidebar_content.blade.php';
         $disk_name = config('backpack.base.root_disk_name');
         $disk = Storage::disk($disk_name);
         $code = $this->argument('code');

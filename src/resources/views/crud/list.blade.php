@@ -53,6 +53,7 @@
           data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
           data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
           data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
+          data-has-line-buttons-as-dropdown="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdown') }}"
           cellspacing="0">
             <thead>
               <tr>
@@ -110,6 +111,7 @@
                   <th data-orderable="false"
                       data-priority="{{ $crud->getActionsColumnPriority() }}"
                       data-visible-in-export="false"
+                      data-action-column="true"
                       >{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>

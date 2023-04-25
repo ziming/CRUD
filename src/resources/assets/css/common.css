@@ -166,9 +166,9 @@ form .select2.select2-container {
 #crudTable_wrapper table.dataTable tr td:first-child {
     display: flex;
     align-items: center;
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-    padding-left: 0.6rem !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 0.6rem;
 }
 
 #crudTable_wrapper .dt-buttons .dt-button-collection,

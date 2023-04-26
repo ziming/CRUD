@@ -44,7 +44,7 @@ abstract class ValidArray extends BackpackCustomRule
     {
         $this->attributeRules = self::prepareRules($rules);
 
-        if(!in_array('array', $this->attributeRules)) {
+        if (! in_array('array', $this->attributeRules)) {
             $this->attributeRules[] = 'array';
         }
 

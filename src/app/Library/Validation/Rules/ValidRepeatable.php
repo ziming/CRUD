@@ -2,9 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
-use Backpack\CRUD\app\Library\Validation\Rules\ValidNestedArray;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class ValidRepeatable extends ValidNestedArray
 {

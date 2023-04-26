@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 class ValidUpload extends BackpackCustomRule
 {
     public array $fileRules = [];
+
     /**
      * Run the validation rule.
      *
@@ -18,13 +19,13 @@ class ValidUpload extends BackpackCustomRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(!array_key_exists($attribute, $this->data) && $this->entry) {
+        if (! array_key_exists($attribute, $this->data) && $this->entry) {
             return;
         }
 
         $this->validateAttributeRules($attribute, $value, $fail);
-        
-        if(!empty($value) && !empty($this->fileRules)) {
+
+        if (! empty($value) && ! empty($this->fileRules)) {
             $validator = Validator::make([$attribute => $value], [
                 $attribute => $this->fileRules,
             ], $this->validator->customMessages, $this->validator->customAttributes);
@@ -46,8 +47,10 @@ class ValidUpload extends BackpackCustomRule
         return $instance;
     }
 
-    public function itemRules($rules) {
+    public function itemRules($rules)
+    {
         $this->fileRules = self::prepareRules($rules);
+
         return $this;
     }
 }

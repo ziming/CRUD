@@ -1,11 +1,11 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
-use Closure;
 
+use Closure;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\Validator;
 
 class ValidNestedArray extends ValidArray
 {
@@ -31,7 +31,7 @@ class ValidNestedArray extends ValidArray
         }
 
         $this->validateArrayData($attribute, $fail, $value);
-       
+
         $this->validateNestedItemRules($attribute, $value, $fail);
     }
 
@@ -59,9 +59,9 @@ class ValidNestedArray extends ValidArray
                 $ruleValue = $rules;
             }
         });
-      
+
         $validator = Validator::make([$attribute => $items], $this->namedItemRules, $this->validator->customMessages, $this->validator->customAttributes);
-        
+
         if ($validator->fails()) {
             foreach ($validator->errors()->messages() as $key => $message) {
                 foreach ($message as $message) {
@@ -74,7 +74,7 @@ class ValidNestedArray extends ValidArray
     public function itemRules(string|array|ValidationRule|Rule $rules): self
     {
         $this->namedItemRules($rules);
-        
+
         return $this;
     }
 }

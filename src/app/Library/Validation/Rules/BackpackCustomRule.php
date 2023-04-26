@@ -37,7 +37,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     public static function make(): self
     {
         $instance = new static();
-    
+
         return $instance;
     }
 
@@ -105,10 +105,11 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
 
     public function getAttributeRules(): array
     {
-        return tap($this->attributeRules, function($rule) {
-            if(is_a($rule, BackpackCustomRule::class, true)) {
+        return tap($this->attributeRules, function ($rule) {
+            if (is_a($rule, BackpackCustomRule::class, true)) {
                 $rule = $rule->getAttributeRules();
             }
+
             return $rule;
         });
     }

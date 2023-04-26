@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ValidUpload extends BackpackCustomRule
 {
+    public array $fileRules = [];
     /**
      * Run the validation rule.
      *
@@ -17,24 +18,36 @@ class ValidUpload extends BackpackCustomRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_array($value)) {
-            try {
-                $value = json_decode($value, true);
-            } catch (\Exception $e) {
-                $fail('Unable to determine the value type.');
-
-                return;
-            }
+        if(!array_key_exists($attribute, $this->data) && $this->entry) {
+            return;
         }
 
-        $validator = Validator::make([$attribute => $value], [
-            $attribute => $this->itemRules,
-        ], $this->validator->customMessages, $this->validator->customAttributes);
+        $this->validateAttributeRules($attribute, $value, $fail);
+        
+        if(!empty($value) && !empty($this->fileRules)) {
+            $validator = Validator::make([$attribute => $value], [
+                $attribute => $this->fileRules,
+            ], $this->validator->customMessages, $this->validator->customAttributes);
 
-        if ($validator->fails()) {
-            foreach ($validator->errors()->messages()[$attribute] as $message) {
-                $fail($message)->translate();
+            if ($validator->fails()) {
+                foreach ($validator->errors()->messages()[$attribute] as $message) {
+                    $fail($message)->translate();
+                }
             }
         }
+    }
+
+    public static function fileRules($rules)
+    {
+        $instance = new static();
+
+        $instance->fileRules = self::prepareRules($rules);
+
+        return $instance;
+    }
+
+    public function itemRules($rules) {
+        $this->fileRules = self::prepareRules($rules);
+        return $this;
     }
 }

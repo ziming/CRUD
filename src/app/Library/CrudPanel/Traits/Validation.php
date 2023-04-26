@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
-use Backpack\CRUD\app\Library\Uploaders\Validation\ValidArray;
+use Backpack\CRUD\app\Library\Validation\Rules\BackpackCustomRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
@@ -184,10 +184,13 @@ trait Validation
                 if (is_string($validationRules)) {
                     $validationRules = explode('|', $validationRules);
                 }
+                if(!is_array($validationRules)) {
+                    $validationRules = [$validationRules];
+                }
                 foreach ($validationRules as $rule) {
-                    if (is_a($rule, ValidArray::class, true)) {
-                        foreach ($rule->arrayRules as $arrayRule) {
-                            $key = $this->checkIfRuleIsRequired($key, $arrayRule);
+                    if (is_a($rule, BackpackCustomRule::class, true)) {
+                        foreach ($rule->getAttributeRules() as $customValidatorRules) {
+                            $key = $this->checkIfRuleIsRequired($key, $customValidatorRules);
                             if ($key) {
                                 $requiredFields[] = $key;
                             }

@@ -3,14 +3,12 @@
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
 use Closure;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\File;
 
-class ValidArray extends BackpackCustomRule
+abstract class ValidArray extends BackpackCustomRule
 {
-    public array $arrayRules = [];
-
     public array $itemRules = [];
 
     public array $namedItemRules = [];
@@ -36,55 +34,39 @@ class ValidArray extends BackpackCustomRule
         }
 
         $this->validateArrayData($attribute, $fail, $value);
-        $this->validateItemsAsArray($attribute, $value, $fail);
-    }
-
-    /**
-     * Set the performing validator.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return $this
-     */
-    public function setValidator($validator)
-    {
-        $this->validator = $validator;
-
-        return $this;
-    }
-
-    /**
-     * Set the data under validation.
-     *
-     * @param  array  $data
-     * @return $this
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
+        $this->validateItems($attribute, $value, $fail);
     }
 
     /**
      * Set the rules that apply to the "array" aka the field, if it's required, min, max etc.
      */
-    public function arrayRules(string|array|File $rules): self
+    public function arrayRules(string|array|ValidationRule|Rule $rules): self
     {
-        if (is_string($rules)) {
-            $rules = explode('|', $rules);
+        $this->attributeRules = self::prepareRules($rules);
+
+        if(!in_array('array', $this->attributeRules)) {
+            $this->attributeRules[] = 'array';
         }
 
-        if (! in_array('array', $rules)) {
-            $rules[] = 'array';
-        }
+        return $this;
+    }
 
-        $this->arrayRules = $rules;
+    public function attributeRules(string|array|ValidationRule|Rule $rules): self
+    {
+        $this->arrayRules($rules);
+
+        return $this;
+    }
+
+    public function itemRules(string|array|ValidationRule|Rule $rules): self
+    {
+        $this->itemRules = self::prepareRules($rules);
 
         return $this;
     }
 
     /**
-     * Set the validation rules for the items, by name. Eg: 'author.name' => 'required'.
+     * Set the validation rules for each item in the array by name.
      */
     public function namedItemRules(array $rules): self
     {
@@ -104,43 +86,8 @@ class ValidArray extends BackpackCustomRule
         return $this;
     }
 
-    /**
-     * Performs the validation on the array of items, item by item, using the item validation array.
-     *
-     * @param  string  $attribute
-     * @param  array  $files
-     * @param  Closure  $fail
-     * @return void
-     */
-    protected function validateItems($attribute, $items, $fail)
+    protected function validateItems(string $attribute, array $items, Closure $fail): void
     {
-        foreach ($items as $item) {
-            $validator = Validator::make([$attribute => $item], [
-                $attribute => $this->itemRules,
-            ], $this->validator->customMessages, $this->validator->customAttributes);
-
-            if ($validator->fails()) {
-                foreach ($validator->errors()->messages()[$attribute] as $message) {
-                    $fail($message)->translate();
-                }
-            }
-        }
-    }
-
-    /**
-     * Performs the validation on the array of items, using the item validation array.
-     *
-     * @param  string  $attribute
-     * @param  array  $files
-     * @param  Closure  $fail
-     * @return void
-     */
-    protected function validateItemsAsArray($attribute, $items, $fail)
-    {
-        if (! empty($this->namedItemRules)) {
-            $this->validateNamedItemRules($attribute, $items, $fail);
-        }
-
         $validator = Validator::make([$attribute => $items], [
             $attribute.'.*' => $this->itemRules,
         ], $this->validator->customMessages, $this->validator->customAttributes);
@@ -152,19 +99,10 @@ class ValidArray extends BackpackCustomRule
         }
     }
 
-    /**
-     * Validate the given data or the array of data from the validator againts the array rules.
-     *
-     * @param  string  $attribute
-     * @param  Closure  $fail
-     * @param  null|array  $data
-     * @param  null|array  $rules
-     * @return void
-     */
-    protected function validateArrayData($attribute, $fail, $data = null, $rules = null)
+    protected function validateArrayData(string $attribute, Closure $fail, null|array $data = null, null|array $rules = null): void
     {
         $data = $data ?? $this->data;
-        $rules = $rules ?? $this->arrayRules;
+        $rules = $rules ?? $this->attributeRules;
 
         $validator = Validator::make($data, [
             $attribute => $rules,
@@ -175,57 +113,5 @@ class ValidArray extends BackpackCustomRule
                 $fail($message)->translate();
             }
         }
-    }
-
-    /**
-     * When developer provides named rules for the items, for example: 'repeatable' => [ValidArray::make()->ruleName('required')].
-     *
-     * @param  stromg  $attribute
-     * @param  array  $items
-     * @param  Closure  $fail
-     * @return void
-     */
-    private function validateNamedItemRules($attribute, $items, $fail)
-    {
-        $this->namedItemRules = array_combine(array_map(function ($ruleKey) use ($attribute) {
-            return $attribute.'.*.'.$ruleKey;
-        }, array_keys($this->namedItemRules)), $this->namedItemRules);
-
-        array_walk($this->namedItemRules, function (&$value, $key) {
-            if (is_array($value)) {
-                $rules = [];
-                foreach ($value as $rule) {
-                    if (is_a($rule, get_class($this), true)) {
-                        $validArrayRules = $rule->itemRules;
-                        if (is_array($validArrayRules)) {
-                            foreach ($validArrayRules as $validArrayRule) {
-                                // dd($validArrayRule);
-                            }
-                            $rules = array_merge($rules, $validArrayRules);
-                            continue;
-                        }
-                        $rules[] = $validArrayRules;
-                        continue;
-                    }
-                    $rules[] = $rule;
-                }
-                $value = $rules;
-            }
-        });
-        //dd($this->namedItemRules, $this->itemRules);
-        $this->validateArrayData($attribute, $fail, $items, $this->namedItemRules);
-    }
-
-    public function __call($method, $arguments)
-    {
-        // if method starts with `rule` eg: ruleName, extract the input name and add it to the array of rules
-        if (Str::startsWith($method, 'rule')) {
-            $argument = Str::snake(Str::replaceFirst('rule', '', $method));
-            $this->namedItemRules[$argument] = $arguments[0];
-
-            return $this;
-        }
-
-        return $this->{$method}(...$arguments);
     }
 }

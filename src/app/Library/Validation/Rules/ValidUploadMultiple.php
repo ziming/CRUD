@@ -1,12 +1,12 @@
 <?php
 
-namespace Backpack\CRUD\app\Library\Uploaders\Validation;
+namespace Backpack\CRUD\app\Library\Validation\Rules;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
-use Backpack\CRUD\app\Library\Validation\Rules\ValidArray;
+use Backpack\CRUD\app\Library\Validation\Rules\ValidFileArray;
 use Closure;
 
-class ValidUploadMultiple extends ValidArray
+class ValidUploadMultiple extends ValidFileArray
 {
     /**
      * Run the validation rule.

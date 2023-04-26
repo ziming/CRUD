@@ -98,6 +98,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     {
         if ($name === 'itemRules') {
             $instance = new static();
+
             return $instance->itemRules($arguments[0]);
         }
     }

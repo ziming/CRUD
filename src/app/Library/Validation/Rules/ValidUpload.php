@@ -22,6 +22,7 @@ class ValidUpload extends BackpackCustomRule
                 $value = json_decode($value, true);
             } catch (\Exception $e) {
                 $fail('Unable to determine the value type.');
+
                 return;
             }
         }

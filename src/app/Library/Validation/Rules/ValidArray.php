@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
@@ -84,14 +83,12 @@ class ValidArray extends BackpackCustomRule
         return $this;
     }
 
-    
-
     /**
      * Set the validation rules for the items, by name. Eg: 'author.name' => 'required'.
      */
     public function namedItemRules(array $rules): self
     {
-       $this->namedItemRules = tap($rules, function ($rules) {
+        $this->namedItemRules = tap($rules, function ($rules) {
             foreach ($rules as $key => $rule) {
                 if (is_string($rule)) {
                     $rules[$key] = explode('|', $rule);

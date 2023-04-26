@@ -2,41 +2,19 @@
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
-use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Contracts\Validation\ValidatorAwareRule;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 
-class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
+class ValidArray extends BackpackCustomRule
 {
-    /**
-     * @var \Illuminate\Contracts\Validation\Validator
-     */
-    protected $validator;
-
-    protected array $data;
-
     public array $arrayRules = [];
 
     public array $itemRules = [];
 
     public array $namedItemRules = [];
-
-    public ?Model $entry;
-
-    public static function make(): self
-    {
-        $instance = new static();
-        $entry = CrudPanelFacade::getCurrentEntry();
-        $instance->entry = $entry !== false ? $entry : null;
-
-        return $instance;
-    }
 
     /**
      * Run the validation rule.
@@ -106,20 +84,25 @@ class ValidArray implements ValidationRule, DataAwareRule, ValidatorAwareRule
         return $this;
     }
 
+    
+
     /**
-     * Set the rules that apply to the items beeing sent in array.
+     * Set the validation rules for the items, by name. Eg: 'author.name' => 'required'.
      */
-    public function itemRules(string|array|File $rules): self
+    public function namedItemRules(array $rules): self
     {
-        if (is_string($rules)) {
-            $rules = explode('|', $rules);
-        }
+       $this->namedItemRules = tap($rules, function ($rules) {
+            foreach ($rules as $key => $rule) {
+                if (is_string($rule)) {
+                    $rules[$key] = explode('|', $rule);
+                    continue;
+                }
 
-        if (! is_array($rules)) {
-            $rules = [$rules];
-        }
-
-        $this->itemRules = $rules;
+                if (! is_array($rules)) {
+                    $rules[$key] = [$rule];
+                }
+            }
+        });
 
         return $this;
     }

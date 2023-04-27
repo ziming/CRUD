@@ -184,7 +184,7 @@ trait Validation
                 if (is_string($validationRules)) {
                     $validationRules = explode('|', $validationRules);
                 }
-                if(!is_array($validationRules)) {
+                if (! is_array($validationRules)) {
                     $validationRules = [$validationRules];
                 }
                 foreach ($validationRules as $rule) {

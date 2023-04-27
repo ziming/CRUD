@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
-use Backpack\CRUD\app\Library\Validation\Rules\ValidFileArray;
 use Closure;
 
 class ValidUploadMultiple extends ValidFileArray

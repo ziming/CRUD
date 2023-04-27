@@ -84,7 +84,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     /**
      * Set the rules that apply to the item sent in request.
      */
-    public function attributeRules(string|array|ValidationRule|Rule $rules): self
+    public function attributeRules(string|array|ValidationRule|Rule $rules = []): self
     {
         $this->attributeRules = self::prepareRules($rules);
 
@@ -115,7 +115,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
         });
     }
 
-    public static function fieldRules(string|array|ValidationRule|Rule $rules)
+    public static function fieldRules(string|array|ValidationRule|Rule $rules = [])
     {
         $instance = new static();
         $instance->attributeRules($rules);

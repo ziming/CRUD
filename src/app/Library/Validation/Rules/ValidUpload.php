@@ -37,17 +37,10 @@ class ValidUpload extends BackpackCustomRule
         }
     }
 
-    public static function fileRules($rules)
+    public function fileRules($rules): self
     {
-        $instance = new static();
-
-        $instance->fileRules = self::prepareRules($rules);
-
-        return $instance;
-    }
-
-    public function itemRules($rules) {
         $this->fileRules = self::prepareRules($rules);
+
         return $this;
     }
 }

@@ -1,13 +1,14 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Rule;
 
 abstract class ValidFileArray extends ValidArray
 {   
-    public static function fileRules($rules): self
+    public function fileRules(string|array|ValidationRule|Rule $rules): self
     {   
-        $instance = new static();
-        $instance->itemRules($rules);
-        return $instance;
+        $this->itemRules($rules);
+        return $this;
     }
 }

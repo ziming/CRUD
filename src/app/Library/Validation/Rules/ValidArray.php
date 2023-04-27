@@ -37,6 +37,14 @@ abstract class ValidArray extends BackpackCustomRule
         $this->validateItems($attribute, $value, $fail);
     }
 
+    public static function fieldRules(string|array|ValidationRule|Rule $rules)
+    {
+        $instance = new static();
+        $instance->arrayRules($rules);
+
+        return $instance;
+    }
+
     /**
      * Set the rules that apply to the "array" aka the field, if it's required, min, max etc.
      */
@@ -44,7 +52,7 @@ abstract class ValidArray extends BackpackCustomRule
     {
         $this->attributeRules = self::prepareRules($rules);
 
-        if(!in_array('array', $this->attributeRules)) {
+        if (! in_array('array', $this->attributeRules)) {
             $this->attributeRules[] = 'array';
         }
 
@@ -74,6 +82,7 @@ abstract class ValidArray extends BackpackCustomRule
             foreach ($rules as $key => $rule) {
                 if (is_string($rule)) {
                     $rules[$key] = explode('|', $rule);
+
                     continue;
                 }
 

@@ -5,6 +5,7 @@ namespace Backpack\CRUD\app\Library\Validation\Rules;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     public static function make(): self
     {
         $instance = new static();
-    
+
         return $instance;
     }
 
@@ -83,7 +84,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     /**
      * Set the rules that apply to the item sent in request.
      */
-    public function attributeRules(string|array|ValidationRule $rules): self
+    public function attributeRules(string|array|ValidationRule|Rule $rules): self
     {
         $this->attributeRules = self::prepareRules($rules);
 
@@ -105,12 +106,21 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
 
     public function getAttributeRules(): array
     {
-        return tap($this->attributeRules, function($rule) {
-            if(is_a($rule, BackpackCustomRule::class, true)) {
+        return tap($this->attributeRules, function ($rule) {
+            if (is_a($rule, BackpackCustomRule::class, true)) {
                 $rule = $rule->getAttributeRules();
             }
+
             return $rule;
         });
+    }
+
+    public static function fieldRules(string|array|ValidationRule|Rule $rules)
+    {
+        $instance = new static();
+        $instance->attributeRules($rules);
+
+        return $instance;
     }
 
     protected static function prepareRules($rules)

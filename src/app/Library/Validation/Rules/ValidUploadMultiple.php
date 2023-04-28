@@ -17,8 +17,9 @@ class ValidUploadMultiple extends ValidFileArray
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(! $value = self::ensureValidValue($value)) {
+        if (! $value = self::ensureValidValue($value)) {
             $fail('Unable to determine the value type.');
+
             return;
         }
 

@@ -4,9 +4,9 @@ namespace Backpack\CRUD\app\Library\Validation\Rules;
 
 use Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles;
 use Closure;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Support\Facades\Validator;
 
 class ValidUpload extends BackpackCustomRule
 {

@@ -22,8 +22,9 @@ abstract class ValidFileArray extends BackpackCustomRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(! $value = self::ensureValidValue($value)) {
+        if (! $value = self::ensureValidValue($value)) {
             $fail('Unable to determine the value type.');
+
             return;
         }
 
@@ -81,6 +82,7 @@ abstract class ValidFileArray extends BackpackCustomRule
                 return false;
             }
         }
+
         return $value;
     }
 }

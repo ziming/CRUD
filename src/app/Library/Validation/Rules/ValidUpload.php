@@ -2,12 +2,15 @@
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
+use Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles;
 use Closure;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Rule;
 
 class ValidUpload extends BackpackCustomRule
 {
-    public array $fileRules = [];
+    use HasFiles;
 
     /**
      * Run the validation rule.
@@ -23,11 +26,11 @@ class ValidUpload extends BackpackCustomRule
             return;
         }
 
-        $this->validateAttributeRules($attribute, $value, $fail);
+        $this->validateFieldRules($attribute, $value, $fail);
 
-        if (! empty($value) && ! empty($this->fileRules)) {
+        if (! empty($value) && ! empty($this->getFileRules())) {
             $validator = Validator::make([$attribute => $value], [
-                $attribute => $this->fileRules,
+                $attribute => $this->getFileRules(),
             ], $this->validator->customMessages, $this->validator->customAttributes);
 
             if ($validator->fails()) {
@@ -38,10 +41,8 @@ class ValidUpload extends BackpackCustomRule
         }
     }
 
-    public function fileRules($rules): self
+    public static function field(string|array|ValidationRule|Rule $rules = []): self
     {
-        $this->fileRules = self::prepareRules($rules);
-
-        return $this;
+        return parent::field($rules);
     }
 }

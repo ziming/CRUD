@@ -23,7 +23,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
 
     protected array $data;
 
-    public array $attributeRules = [];
+    public array $fieldRules = [];
 
     public ?Model $entry;
 
@@ -35,9 +35,10 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
         $this->entry = $entry !== false ? $entry : null;
     }
 
-    public static function make(): self
+    public static function field(string|array|ValidationRule|Rule $rules = []): self
     {
         $instance = new static();
+        $instance->fieldRules = self::prepareRules($rules);
 
         return $instance;
     }
@@ -81,20 +82,21 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
         return $this;
     }
 
-    /**
-     * Set the rules that apply to the item sent in request.
-     */
-    public function attributeRules(string|array|ValidationRule|Rule $rules = []): self
+    public function getFieldRules(): array
     {
-        $this->attributeRules = self::prepareRules($rules);
+        return tap($this->fieldRules, function ($rule) {
+            if (is_a($rule, BackpackCustomRule::class, true)) {
+                $rule = $rule->getFieldRules();
+            }
 
-        return $this;
+            return $rule;
+        });
     }
 
-    public function validateAttributeRules(string $attribute, mixed $value, Closure $fail): void
+    public function validateFieldRules(string $attribute, mixed $value, Closure $fail): void
     {
         $validator = Validator::make([$attribute => $value], [
-            $attribute => $this->getAttributeRules(),
+            $attribute => $this->getFieldRules(),
         ], $this->validator->customMessages, $this->validator->customAttributes);
 
         if ($validator->fails()) {
@@ -102,25 +104,6 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
                 $fail($message)->translate();
             }
         }
-    }
-
-    public function getAttributeRules(): array
-    {
-        return tap($this->attributeRules, function ($rule) {
-            if (is_a($rule, BackpackCustomRule::class, true)) {
-                $rule = $rule->getAttributeRules();
-            }
-
-            return $rule;
-        });
-    }
-
-    public static function fieldRules(string|array|ValidationRule|Rule $rules = [])
-    {
-        $instance = new static();
-        $instance->attributeRules($rules);
-
-        return $instance;
     }
 
     protected static function prepareRules($rules)

@@ -189,7 +189,7 @@ trait Validation
                 }
                 foreach ($validationRules as $rule) {
                     if (is_a($rule, BackpackCustomRule::class, true)) {
-                        foreach ($rule->getAttributeRules() as $customValidatorRules) {
+                        foreach ($rule->getFieldRules() as $customValidatorRules) {
                             $key = $this->checkIfRuleIsRequired($key, $customValidatorRules);
                             if ($key) {
                                 $requiredFields[] = $key;

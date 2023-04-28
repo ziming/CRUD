@@ -17,14 +17,9 @@ class ValidUploadMultiple extends ValidFileArray
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_array($value)) {
-            try {
-                $value = json_decode($value, true);
-            } catch(\Exception $e) {
-                $fail('Unable to determine the value type');
-
-                return;
-            }
+        if(! $value = self::ensureValidValue($value)) {
+            $fail('Unable to determine the value type.');
+            return;
         }
 
         // `upload_multiple` sends [[0 => null]] when user doesn't upload anything

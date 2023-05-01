@@ -38,7 +38,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     public static function field(string|array|ValidationRule|Rule $rules = []): self
     {
         $instance = new static();
-        $instance->fieldRules = self::prepareRules($rules);
+        $instance->fieldRules = self::getRulesAsArray($rules);
 
         return $instance;
     }
@@ -93,6 +93,23 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
         });
     }
 
+    protected static function getRulesAsArray($rules)
+    {
+        if (is_string($rules)) {
+            $rules = explode('|', $rules);
+        }
+
+        if (! is_array($rules)) {
+            $rules = [$rules];
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Implementation
+     */
+
     public function validateFieldRules(string $attribute, mixed $value, Closure $fail): void
     {
         $validator = Validator::make([$attribute => $value], [
@@ -104,18 +121,5 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
                 $fail($message)->translate();
             }
         }
-    }
-
-    protected static function prepareRules($rules)
-    {
-        if (is_string($rules)) {
-            $rules = explode('|', $rules);
-        }
-
-        if (! is_array($rules)) {
-            $rules = [$rules];
-        }
-
-        return $rules;
     }
 }

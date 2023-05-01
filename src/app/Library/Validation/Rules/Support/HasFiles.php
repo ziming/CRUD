@@ -11,7 +11,7 @@ trait HasFiles
 
     public function file(string|array|ValidationRule|Rule $rules): self
     {
-        $this->fileRules = self::prepareRules($rules);
+        $this->fileRules = self::getRulesAsArray($rules);
 
         return $this;
     }

@@ -35,7 +35,7 @@ abstract class ValidFileArray extends BackpackCustomRule
     public static function field(string|array|ValidationRule|Rule $rules = []): self
     {
         $instance = new static();
-        $instance->fieldRules = self::prepareRules($rules);
+        $instance->fieldRules = self::getRulesAsArray($rules);
 
         if (! in_array('array', $instance->getFieldRules())) {
             $instance->fieldRules[] = 'array';

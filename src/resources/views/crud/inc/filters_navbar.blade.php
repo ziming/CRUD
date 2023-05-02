@@ -1,7 +1,15 @@
-<nav class="navbar navbar-expand-lg navbar-filters mb-0 pb-0 pt-0">
+<nav class="navbar navbar-expand-lg navbar-filters mb-0 py-0 shadow-none">
       {{-- Brand and toggle get grouped for better mobile display --}}
-      <a class="nav-item d-none d-lg-block"><span class="la la-filter"></span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bp-filters-navbar" aria-controls="bp-filters-navbar" aria-expanded="false" aria-label="{{ trans('backpack::crud.toggle_filters') }}">
+      <a class="nav-item d-none d-lg-block my-auto"><span class="la la-filter"></span></a>
+      <button class="navbar-toggler ms-3"
+              type="button"
+              data-toggle="collapse"  {{-- for Bootstrap v4 --}}
+              data-target="#bp-filters-navbar" {{-- for Bootstrap v4 --}}
+              data-bs-toggle="collapse"   {{-- for Bootstrap v5 --}}
+              data-bs-target="#bp-filters-navbar"   {{-- for Bootstrap v5 --}}
+              aria-controls="bp-filters-navbar"
+              aria-expanded="false"
+              aria-label="{{ trans('backpack::crud.toggle_filters') }}">
         <span class="la la-filter"></span> {{ trans('backpack::crud.filters') }}
       </button>
 
@@ -18,7 +26,7 @@
   </nav>
 
 @push('crud_list_scripts')
-	<script src="{{ asset('packages/URI.js/URI.min.js') }}" type="text/javascript"></script>
+    @basset('https://unpkg.com/urijs@1.19.11/src/URI.min.js')
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);

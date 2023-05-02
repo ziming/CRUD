@@ -18,7 +18,7 @@
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.add').' '.$crud->entity_name !!}.</small>
 
         @if ($crud->hasAccess('list'))
-          <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-{{ config('backpack.base.html_direction') == 'rtl' ? 'right' : 'left' }}"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+          <small class="fs-6"><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-{{ config('backpack.base.html_direction') == 'rtl' ? 'right' : 'left' }}"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
         @endif
 	  </h2>
 	</section>
@@ -46,7 +46,7 @@
 		      	@include('crud::form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
 		      @endif
                 {{-- This makes sure that all field assets are loaded. --}}
-                <div class="d-none" id="parentLoadedAssets">{{ json_encode(Assets::loaded()) }}</div>
+                <div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
 	          @include('crud::inc.form_save_buttons')
 		  </form>
 	</div>

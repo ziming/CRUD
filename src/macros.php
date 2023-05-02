@@ -1,5 +1,8 @@
 <?php
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
+use Backpack\CRUD\app\Library\CrudPanel\CrudField;
+use Backpack\CRUD\app\Library\Uploaders\Support\RegisterUploadEvents;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -29,6 +32,23 @@ if (! Str::hasMacro('dotsToSquareBrackets')) {
         }
 
         return $result;
+    });
+}
+if (! CrudColumn::hasMacro('withFiles')) {
+    CrudColumn::macro('withFiles', function ($uploadDefinition = [], $subfield = null) {
+        /** @var CrudField|CrudColumn $this */
+        RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield);
+
+        return $this;
+    });
+}
+
+if (! CrudField::hasMacro('withFiles')) {
+    CrudField::macro('withFiles', function ($uploadDefinition = [], $subfield = null) {
+        /** @var CrudField|CrudColumn $this */
+        RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield);
+
+        return $this;
     });
 }
 

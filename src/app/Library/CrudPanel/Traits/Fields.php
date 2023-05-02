@@ -109,6 +109,7 @@ trait Fields
 
         $this->enableTabsIfFieldUsesThem($field);
         $this->addFieldToOperationSettings($field);
+        (new CrudField($field['name']))->callRegisteredAttributeMacros();
 
         return $this;
     }
@@ -351,6 +352,15 @@ trait Fields
     {
         $fields = $this->getCleanStateFields();
         $upload_fields = Arr::where($fields, function ($value, $key) {
+            // check if any subfields have uploads
+            if (isset($value['subfields'])) {
+                foreach ($value['subfields'] as $subfield) {
+                    if (isset($subfield['upload']) && $subfield['upload'] === true) {
+                        return true;
+                    }
+                }
+            }
+
             return isset($value['upload']) && $value['upload'] == true;
         });
 

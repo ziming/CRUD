@@ -68,7 +68,7 @@ class RequireDevTools extends Command
 
         // Require package
         try {
-            $this->composerRequire('backpack/devtools', ['--dev', '--with-all-dependencies']);
+            $this->composerRequire('backpack/devtools:v6.x-dev', ['--dev', '--with-all-dependencies']);
         } catch (\Throwable $e) {
             $this->errorProgressBlock();
             $this->line('  '.$e->getMessage(), 'fg=red');

@@ -441,7 +441,7 @@ trait Validation
         if (is_array($rules) || is_a($rules, BackpackCustomRule::class, true)) {
             return $rules;
         }
-        
+
         return explode('|', $rules);
     }
 }

@@ -46,13 +46,17 @@ abstract class ValidFileArray extends BackpackCustomRule
 
     protected function validateItems(string $attribute, array $items, Closure $fail): void
     {
-        $validator = Validator::make([$attribute => $items], [
-            $attribute.'.*' => $this->getFileRules(),
-        ], $this->validator->customMessages, $this->validator->customAttributes);
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->messages()[$attribute] as $message) {
-                $fail($message)->translate();
+        foreach ($items as $file) {
+            $validator = Validator::make([$attribute => $file], [
+                $attribute => $this->getFileRules(),
+            ], $this->validator->customMessages, $this->validator->customAttributes);
+           
+            if ($validator->fails()) {
+                foreach ($validator->errors()->messages() ?? [] as $attr => $message) {
+                    foreach ($message as $messageText) {
+                        $fail($messageText)->translate();
+                    }
+                }
             }
         }
     }

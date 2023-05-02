@@ -367,12 +367,11 @@ trait Validation
     {
         $extendedRules = [];
         $requestRules = $this->getRequestRulesAsArray($request);
-        $rules = array_map(function ($ruleDefinition) {
-            return is_array($ruleDefinition) ? $ruleDefinition : explode('|', $ruleDefinition);
-        }, $rules);
+
+        $rules = $this->getRulesAsArray($rules);
 
         foreach ($requestRules as $ruleKey => $rule) {
-            $extendedRules[$ruleKey] = array_key_exists($ruleKey, $rules) ? array_merge($rule, $rules[$ruleKey]) : $rule;
+            $extendedRules[$ruleKey] = array_key_exists($ruleKey, $rules) ? array_merge($rule, $this->getRulesAsArray($rules[$ruleKey])) : $rule;
             unset($rules[$ruleKey]);
         }
 
@@ -389,7 +388,7 @@ trait Validation
     {
         $requestRules = [];
         foreach ($request->rules() as $ruleKey => $rule) {
-            $requestRules[$ruleKey] = is_array($rule) ? $rule : explode('|', $rule);
+            $requestRules[$ruleKey] = $this->getRulesAsArray($rule);
         }
 
         return $requestRules;
@@ -432,5 +431,21 @@ trait Validation
         }
 
         return false;
+    }
+
+    /**
+     * Prepare the rules as array
+     */
+    private function getRulesAsArray($rules)
+    {
+        if (is_array($rules)) {
+            return $rules;
+        }
+
+        if (is_a($rules, BackpackCustomRule::class, true)) {
+            return $rules->getFieldRules();
+        }
+
+        return explode('|', $rules);
     }
 }

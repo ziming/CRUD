@@ -10,7 +10,6 @@
 <h3 align="center">Quickly build an admin panel for your Eloquent models, then customize every little detail.</h3>
 
 
-
 <p align="center">
     <br>
     <a href="https://packagist.org/packages/backpack/crud" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square"></a>
@@ -24,10 +23,12 @@
     <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
 </p>
 
-<p align="center">
-    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
-</p>
 
+
+https://user-images.githubusercontent.com/33960976/228454020-91f42000-919e-413c-92c7-d406725f6dd2.mp4
+
+
+-----
 
 Among the FREE features of each admin interface:
 - [List](https://backpackforlaravel.com/docs/5.x/crud-operation-list-entries) operation
@@ -68,7 +69,9 @@ But professionals don't love Backpack just because it's feature-packed. They als
 
 ## Demo
 
-Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin).
+Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin). Here's a sneak peek:
+
+<a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
 
 ## Getting Started
 
@@ -80,7 +83,7 @@ Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/
 ## Install
 
 For the current version (recommended):
-- [Install Backpack v5 on Laravel 9 or 8](https://backpackforlaravel.com/docs/5.x/installation);
+- [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/5.x/installation);
 
 For the previous versions (not recommended):
 - [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - last feature update was 1st Jan 2021;
@@ -113,7 +116,7 @@ Starting with v5, Backpack has become open-core. Its features have been separate
 ## Versioning
 
 Starting with Backpack v5, all our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `5.0.1`) means for us:
-- `major` - breaking changes, major new features, complete rewrites; released **once a year**, in February; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
+- `major` - breaking changes, major new features, complete rewrites; released **once a year**, in the first quarter; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
 - `minor` - new features, released in backwards-compatible ways; **every few months**; update takes seconds;
 - `patch` - bug fixes & small non-breaking changes; historically **every week**; update takes seconds;
 

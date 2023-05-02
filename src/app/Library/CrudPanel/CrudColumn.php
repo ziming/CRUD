@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Illuminate\Support\Traits\Conditionable;
+
 /**
  * Adds fluent syntax to Backpack CRUD Columns.
  *
@@ -29,6 +31,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  */
 class CrudColumn
 {
+    use Conditionable;
+
     protected $attributes;
 
     public function __construct($name)
@@ -89,7 +93,7 @@ class CrudColumn
             $column['key'] = $key;
         }
         $this->attributes = $column;
-        $this->setOperationSetting('columns', array_merge($columns, [$key => $column]));
+        $this->crud()->setOperationSetting('columns', array_merge($columns, [$key => $column]));
 
         return $this;
     }

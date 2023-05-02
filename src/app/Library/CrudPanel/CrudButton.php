@@ -5,6 +5,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonPositionEnum;
 use Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonStackEnum;
 use Backpack\CRUD\ViewNamespaces;
+use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Contracts\Support\Arrayable;
 
 /**
@@ -21,6 +22,8 @@ use Illuminate\Contracts\Support\Arrayable;
  */
 class CrudButton implements Arrayable
 {
+    use Conditionable;
+
     public $stack;
 
     public $name;

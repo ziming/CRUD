@@ -2,14 +2,14 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Routing\Route;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelTitlesAndHeadingsTest extends BaseDBCrudPanelTest
+class CrudPanelTitlesAndHeadingsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
 {
     public function testItCanSetAndGetTheTitleFromTheAction()
     {

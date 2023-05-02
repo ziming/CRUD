@@ -2,13 +2,13 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Article;
 use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields
  */
-class CrudPanelFakeFieldsTest extends BaseDBCrudPanelTest
+class CrudPanelFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
 {
     private $fakeFieldsArray = [
         [

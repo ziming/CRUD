@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests81\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\CrudPanel\BaseDBCrudPanelTest;
+use \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Fields

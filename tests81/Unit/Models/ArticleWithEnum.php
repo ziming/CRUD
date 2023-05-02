@@ -28,6 +28,6 @@ class ArticleWithEnum extends Model
      */
     public function user()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\Unit\Models\User');
+        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\User');
     }
 }

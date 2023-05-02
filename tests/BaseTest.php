@@ -24,7 +24,7 @@ abstract class BaseTest extends TestCase
             'prefix'     => config('backpack.base.route_prefix', 'admin'),
         ],
             function () {
-                Route::crud('users', 'Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController');
+                Route::crud('users', 'Backpack\CRUD\Tests\config\Http\Controllers\UserCrudController');
             }
         );
     }

@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  */
-class CrudPanelUpdateTest extends BaseDBCrudPanelTest
+class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
 {
     private $userInputFields = [
         [

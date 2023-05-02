@@ -5,7 +5,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Autofocus
  */
-class CrudPanelAutofocusTest extends BaseCrudPanelTest
+class CrudPanelAutofocusTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanelTest
 {
     public function testItCanEnableAndDisableAutofocus()
     {

@@ -2,12 +2,12 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Article;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns
  */
-class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
+class CrudPanelFakeColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
 {
     private $emptyFakeColumnsArray = ['extras'];
 

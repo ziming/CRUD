@@ -10,6 +10,12 @@ use Illuminate\Http\UploadedFile;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Validation
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Read
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\BackpackCustomRule
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidUpload
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidUploadMultiple
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidFileArray
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles
  */
 class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
 {
@@ -197,7 +203,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setOperation('create');
         $this->assertFalse($this->crudPanel->isRequired('test'));
         $this->crudPanel->setValidation([
-            'email'     => 'required',
+            'email'           => 'required',
             'password.*.test' => 'required',
         ]);
 

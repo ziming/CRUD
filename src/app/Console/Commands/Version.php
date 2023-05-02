@@ -33,20 +33,10 @@ class Version extends Command
         $this->runConsoleCommand(['php', '-v']);
 
         $this->comment('### LARAVEL VERSION:');
-        $this->line(\PackageVersions\Versions::getVersion('laravel/framework'));
+        $this->line(\Composer\InstalledVersions::getVersion('laravel/framework'));
         $this->line('');
 
         $this->comment('### BACKPACK PACKAGE VERSIONS:');
-
-        if (class_exists(\Composer\InstalledVersions::class, false)) {
-            $this->getPackageVersionsFromComposer2();
-        } else {
-            $this->getPackageVersionsFromComposer1();
-        }
-    }
-
-    private function getPackageVersionsFromComposer2()
-    {
         $packages = \Composer\InstalledVersions::getInstalledPackages();
         foreach ($packages as $package) {
             if (substr($package, 0, 9) == 'backpack/') {
@@ -55,20 +45,10 @@ class Version extends Command
         }
     }
 
-    private function getPackageVersionsFromComposer1()
-    {
-        $packages = \PackageVersions\Versions::VERSIONS;
-        foreach ($packages as $package => $version) {
-            if (substr($package, 0, 9) == 'backpack/') {
-                $this->line($package.': '.strtok($version, '@'));
-            }
-        }
-    }
-
     /**
      * Run a shell command in a separate process.
      *
-     * @param  string  $command  Text to be executed.
+     * @param  array  $command  Text to be executed.
      * @return void
      */
     private function runConsoleCommand($command)

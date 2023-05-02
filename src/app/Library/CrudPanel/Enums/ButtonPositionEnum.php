@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Enums;
 
-enum ButtonPositionEnum : string
+enum ButtonPositionEnum: string
 {
     public const END = 'end';
     public const BEGINNING = 'beginning';

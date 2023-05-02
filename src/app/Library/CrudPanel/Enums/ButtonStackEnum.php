@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Enums;
 
-enum ButtonStackEnum : string
+enum ButtonStackEnum: string
 {
     public const TOP = 'top';
     public const LINE = 'line';

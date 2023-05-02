@@ -438,14 +438,10 @@ trait Validation
      */
     private function getRulesAsArray($rules)
     {
-        if (is_array($rules)) {
+        if (is_array($rules) || is_a($rules, BackpackCustomRule::class, true)) {
             return $rules;
         }
-
-        if (is_a($rules, BackpackCustomRule::class, true)) {
-            return $rules->getFieldRules();
-        }
-
+        
         return explode('|', $rules);
     }
 }

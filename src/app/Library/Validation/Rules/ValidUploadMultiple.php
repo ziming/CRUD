@@ -25,8 +25,12 @@ class ValidUploadMultiple extends ValidFileArray
 
         // `upload_multiple` sends [[0 => null]] when user doesn't upload anything
         // assume that nothing changed on field so nothing is sent on the request.
-        if (count($value) === 1 && empty($value[0])) {
-            unset($this->data[$attribute]);
+        if (count($value) === 1 && empty($value[0])) { 
+            if($this->entry) {
+                unset($this->data[$attribute]);
+            }else{
+                $this->data[$attribute] = [];
+            }
             $value = [];
         }
 
@@ -36,12 +40,7 @@ class ValidUploadMultiple extends ValidFileArray
         }
 
         $value = array_merge($previousValues, $value);
-
-        // if user uploaded something add it to the data beeing validated.
-        if (! empty($value)) {
-            $this->data[$attribute] = $value;
-        }
-
+        
         if ($this->entry) {
             $filesDeleted = CrudPanelFacade::getRequest()->input('clear_'.$attribute) ?? [];
 

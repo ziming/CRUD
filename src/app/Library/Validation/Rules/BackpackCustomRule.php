@@ -107,9 +107,8 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
     }
 
     /**
-     * Implementation
+     * Implementation.
      */
-
     public function validateFieldRules(string $attribute, mixed $value, Closure $fail): void
     {
         $validator = Validator::make([$attribute => $value], [

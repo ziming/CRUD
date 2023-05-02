@@ -434,7 +434,7 @@ trait Validation
     }
 
     /**
-     * Prepare the rules as array
+     * Prepare the rules as array.
      */
     private function getRulesAsArray($rules)
     {

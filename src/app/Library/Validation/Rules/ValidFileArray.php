@@ -50,7 +50,7 @@ abstract class ValidFileArray extends BackpackCustomRule
             $validator = Validator::make([$attribute => $file], [
                 $attribute => $this->getFileRules(),
             ], $this->validator->customMessages, $this->validator->customAttributes);
-           
+
             if ($validator->fails()) {
                 foreach ($validator->errors()->messages() ?? [] as $attr => $message) {
                     foreach ($message as $messageText) {

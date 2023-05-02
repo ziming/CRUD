@@ -213,6 +213,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->assertTrue($this->crudPanel->isRequired('password.test'));
         $this->assertTrue($this->crudPanel->isRequired('name'));
     }
+
     public function testItCanGetTheRequiredFieldsFromCustomRules()
     {
         $this->crudPanel->setModel(User::class);
@@ -259,7 +260,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
                 'name'            => 'email',
                 'validationRules' => ValidUpload::field('required')->file('file|mimes:jpg'),
             ],
-            
+
             [
                 'name' => 'name',
             ],
@@ -274,11 +275,9 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->assertEquals([
                 'password' => ['The password field must not be greater than 500 kilobytes.'],
-                'email' => ['The email field must be a file of type: jpg.']
+                'email' => ['The email field must be a file of type: jpg.'],
             ], $e->errors());
             throw $e;
         }
-
-        
     }
 }

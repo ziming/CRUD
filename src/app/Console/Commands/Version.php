@@ -43,7 +43,6 @@ class Version extends Command
                 $this->line($package.': '.\Composer\InstalledVersions::getPrettyVersion($package));
             }
         }
-        
     }
 
     /**

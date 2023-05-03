@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 use Backpack\CRUD\Tests\Config\Models\TestModel;
 use Illuminate\Database\Eloquent\Builder;
-use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel

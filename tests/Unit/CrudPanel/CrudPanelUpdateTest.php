@@ -170,7 +170,6 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertTrue($updateFields['style']['value']->color() === 'red');
     }
 
-
     private function addValuesToExpectedFields($id, $inputData)
     {
         foreach ($inputData as $key => $value) {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Backpack\CRUD\Tests81\Unit\Models;
+namespace Backpack\CRUD\Tests\config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Backpack\CRUD\Tests81\Unit\Models\Enums\StateEnum;
-use Backpack\CRUD\Tests81\Unit\Models\Enums\StatusEnum;
-use Backpack\CRUD\Tests81\Unit\Models\Enums\StyleEnum;
+use Backpack\CRUD\Tests\config\Models\Enums\StateEnum;
+use Backpack\CRUD\Tests\config\Models\Enums\StatusEnum;
+use Backpack\CRUD\Tests\config\Models\Enums\StyleEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class ArticleWithEnum extends Model

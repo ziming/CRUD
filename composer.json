@@ -55,8 +55,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Backpack\\CRUD\\Tests\\": "tests",
-            "Backpack\\CRUD\\Tests81\\": "tests81"
+            "Backpack\\CRUD\\Tests\\": "tests"
         },
         "files": ["src/helpers.php"],
         "exclude-from-classmap": [

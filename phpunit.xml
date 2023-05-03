@@ -3,8 +3,6 @@
   <testsuites>
     <testsuite name="Unit Tests">
       <directory suffix=".php">./tests/Unit/</directory>
-      <file phpVersion="8.1.0" phpVersionOperator="&gt;=">./tests81/Unit/CrudPanel/CrudPanelUpdateTest.php</file>
-      <file phpVersion="8.1.0" phpVersionOperator="&gt;=">./tests81/Unit/CrudPanel/CrudPanelFieldsTest.php</file>
     </testsuite>
   </testsuites>
   <coverage/>

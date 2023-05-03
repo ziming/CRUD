@@ -888,6 +888,16 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             $e
         );
     }
+
+    public function testCheckReturnTypesForWhenInferingRelation()
+    {
+        $this->crudPanel->setModel(\Backpack\CRUD\Tests\config\Models\UserWithReturnTypes::class);
+        $this->crudPanel->addField('isAnAttribute');
+        $this->crudPanel->addField('isARelation');
+
+        $this->assertEquals(false, $this->crudPanel->fields()['isAnAttribute']['entity']);
+        $this->assertEquals('isARelation', $this->crudPanel->fields()['isARelation']['entity']);
+    }
 }
 
 class Invokable

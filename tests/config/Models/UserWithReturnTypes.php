@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests81\Unit\Models;
+namespace Backpack\CRUD\Tests\config\Models;
 
 class UserWithReturnTypes extends \Backpack\CRUD\Tests\config\Models\User
 {

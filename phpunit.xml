@@ -5,7 +5,7 @@
   bootstrap="vendor/autoload.php" 
   colors="true" 
   processIsolation="false" 
-  stopOnFailure="false" 
+  stopOnFailure="false"
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd" 
   displayDetailsOnSkippedTests="true"
 	displayDetailsOnTestsThatTriggerDeprecations="true"

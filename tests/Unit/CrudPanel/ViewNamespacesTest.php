@@ -8,7 +8,7 @@ use Config;
 /**
  * @covers Backpack\CRUD\ViewNamespaces
  */
-class ViewNamespacesTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
+class ViewNamespacesTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseCrudPanel
 {
     public function testAddSingleViewNamespace()
     {

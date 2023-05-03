@@ -1,11 +1,11 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models;
+namespace Backpack\CRUD\Tests\Config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Backpack\CRUD\Tests\config\Models\Enums\StateEnum;
-use Backpack\CRUD\Tests\config\Models\Enums\StatusEnum;
-use Backpack\CRUD\Tests\config\Models\Enums\StyleEnum;
+use Backpack\CRUD\Tests\Config\Models\Enums\StateEnum;
+use Backpack\CRUD\Tests\Config\Models\Enums\StatusEnum;
+use Backpack\CRUD\Tests\Config\Models\Enums\StyleEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class ArticleWithEnum extends Model
@@ -28,6 +28,6 @@ class ArticleWithEnum extends Model
      */
     public function user()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\User');
+        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\User');
     }
 }

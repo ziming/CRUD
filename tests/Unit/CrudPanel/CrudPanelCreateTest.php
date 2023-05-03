@@ -2,14 +2,14 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\config\Models\Article;
-use Backpack\CRUD\Tests\config\Models\Bang;
-use Backpack\CRUD\Tests\config\Models\Comet;
-use Backpack\CRUD\Tests\config\Models\Planet;
-use Backpack\CRUD\Tests\config\Models\PlanetNonNullable;
-use Backpack\CRUD\Tests\config\Models\Star;
-use Backpack\CRUD\Tests\config\Models\Universe;
-use Backpack\CRUD\Tests\config\Models\User;
+use Backpack\CRUD\Tests\Config\Models\Article;
+use Backpack\CRUD\Tests\Config\Models\Bang;
+use Backpack\CRUD\Tests\Config\Models\Comet;
+use Backpack\CRUD\Tests\Config\Models\Planet;
+use Backpack\CRUD\Tests\Config\Models\PlanetNonNullable;
+use Backpack\CRUD\Tests\Config\Models\Star;
+use Backpack\CRUD\Tests\Config\Models\Universe;
+use Backpack\CRUD\Tests\Config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -22,7 +22,7 @@ use Illuminate\Support\Arr;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\MorphRelationships
  */
-class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
+class CrudPanelCreateTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
 {
     private $nonRelationshipField = [
         'name'  => 'field1',
@@ -611,7 +611,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             'name'                       => 'bang_relation_field',
             'fake'                       => true,
             'entity'                     => 'bang',
-            'model'                      => 'Backpack\CRUD\Tests\config\Models\Bang',
+            'model'                      => 'Backpack\CRUD\Tests\Config\Models\Bang',
             'attribute'                  => 'title',
             'group_by'                   => 'category', // the relationship to entity you want to use for grouping
             'group_by_attribute'         => 'name', // the attribute on related model, that you want shown
@@ -1411,7 +1411,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addField([
             'name'         => 'starable',
             'morphOptions' => [
-                ['Backpack\CRUD\Tests\config\Models\User', 'User'],
+                ['Backpack\CRUD\Tests\Config\Models\User', 'User'],
             ],
         ]);
 
@@ -1431,8 +1431,8 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addField([
             'name'         => 'starable',
             'morphOptions' => [
-                ['Backpack\CRUD\Tests\config\Models\User', 'User'],
-                ['Backpack\CRUD\Tests\config\Models\User', 'User'],
+                ['Backpack\CRUD\Tests\Config\Models\User', 'User'],
+                ['Backpack\CRUD\Tests\Config\Models\User', 'User'],
             ],
         ]);
     }
@@ -1455,7 +1455,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(Star::class);
 
         Relation::morphMap([
-            'user'    => 'Backpack\CRUD\Tests\config\Models\User',
+            'user'    => 'Backpack\CRUD\Tests\Config\Models\User',
         ]);
 
         $this->crudPanel->addField([
@@ -1466,7 +1466,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ]);
 
         [$morphTypeField, $morphIdField] = $this->crudPanel->fields()['starable']['subfields'];
-        $this->assertEquals(['user' => 'Backpack\CRUD\Tests\config\Models\User'], $morphTypeField['morphMap']);
+        $this->assertEquals(['user' => 'Backpack\CRUD\Tests\Config\Models\User'], $morphTypeField['morphMap']);
     }
 
     public function testItThrowsErrorIfDuplicateMorphMapName()
@@ -1475,7 +1475,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->expectException(\Exception::class);
 
         Relation::morphMap([
-            'user'    => 'Backpack\CRUD\Tests\config\Models\User',
+            'user'    => 'Backpack\CRUD\Tests\Config\Models\User',
         ]);
 
         $this->crudPanel->addField([

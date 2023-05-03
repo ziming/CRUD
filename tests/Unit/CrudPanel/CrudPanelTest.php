@@ -2,13 +2,13 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\config\Models\TestModel;
+use Backpack\CRUD\Tests\Config\Models\TestModel;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
+class CrudPanelTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseCrudPanel
 {
     public function testSetModelFromModelClass()
     {
@@ -21,7 +21,7 @@ class CrudPanelTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 
     public function testSetModelFromModelClassName()
     {
-        $modelClassName = '\Backpack\CRUD\Tests\config\Models\TestModel';
+        $modelClassName = '\Backpack\CRUD\Tests\Config\Models\TestModel';
 
         $this->crudPanel->setModel($modelClassName);
 
@@ -47,7 +47,7 @@ class CrudPanelTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
     public function testItThrowsExceptionIfModelIsNotUsingCrudTrait()
     {
         try {
-            $this->crudPanel->setModel('\Backpack\CRUD\Tests\config\Models\ModelWithoutCrudTrait');
+            $this->crudPanel->setModel('\Backpack\CRUD\Tests\Config\Models\ModelWithoutCrudTrait');
         } catch (\Throwable $e) {
         }
         $this->assertEquals(

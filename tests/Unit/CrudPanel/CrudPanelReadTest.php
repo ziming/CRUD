@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\config\Models\Article;
-use Backpack\CRUD\Tests\config\Models\Role;
-use Backpack\CRUD\Tests\config\Models\User;
+use Backpack\CRUD\Tests\Config\Models\Article;
+use Backpack\CRUD\Tests\Config\Models\Role;
+use Backpack\CRUD\Tests\Config\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Read
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelReadTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
+class CrudPanelReadTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
 {
     private $relationshipColumn = [
         'name'      => 'user_id',

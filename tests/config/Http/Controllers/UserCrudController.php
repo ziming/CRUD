@@ -1,9 +1,9 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Http\Controllers;
+namespace Backpack\CRUD\Tests\Config\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\Tests\config\Models\User;
+use Backpack\CRUD\Tests\Config\Models\User;
 
 class UserCrudController extends CrudController
 {

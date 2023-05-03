@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\CrudTrait;
+namespace Backpack\CRUD\Tests\Config\CrudTrait;
 
 use Backpack\CRUD\Tests\BaseTestClass;
 

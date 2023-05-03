@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Http\Requests;
+namespace Backpack\CRUD\Tests\Config\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

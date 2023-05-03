@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models\Enums;
+namespace Backpack\CRUD\Tests\Config\Models\Enums;
 
 enum StateEnum
 {

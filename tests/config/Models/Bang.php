@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models;
+namespace Backpack\CRUD\Tests\Config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +36,7 @@ class Bang extends Model
 
     public function accountDetails()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\AccountDetails');
+        return $this->belongsToMany('Backpack\CRUD\Tests\Config\Models\AccountDetails');
     }
 
     /*

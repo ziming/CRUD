@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models;
+namespace Backpack\CRUD\Tests\Config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +18,7 @@ class User extends Model
      */
     public function accountDetails()
     {
-        return $this->hasOne('Backpack\CRUD\Tests\config\Models\AccountDetails');
+        return $this->hasOne('Backpack\CRUD\Tests\Config\Models\AccountDetails');
     }
 
     /**
@@ -26,7 +26,7 @@ class User extends Model
      */
     public function articles()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Article');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Article');
     }
 
     /**
@@ -34,7 +34,7 @@ class User extends Model
      */
     public function roles()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Role', 'user_role');
+        return $this->belongsToMany('Backpack\CRUD\Tests\Config\Models\Role', 'user_role');
     }
 
     public function getNameComposedAttribute()
@@ -44,62 +44,62 @@ class User extends Model
 
     public function comment()
     {
-        return $this->morphOne('Backpack\CRUD\Tests\config\Models\Comment', 'commentable');
+        return $this->morphOne('Backpack\CRUD\Tests\Config\Models\Comment', 'commentable');
     }
 
     public function recommends()
     {
-        return $this->morphToMany('Backpack\CRUD\Tests\config\Models\Recommend', 'recommendable')->withPivot('text');
+        return $this->morphToMany('Backpack\CRUD\Tests\Config\Models\Recommend', 'recommendable')->withPivot('text');
     }
 
     public function bills()
     {
-        return $this->morphToMany('Backpack\CRUD\Tests\config\Models\Bill', 'billable');
+        return $this->morphToMany('Backpack\CRUD\Tests\Config\Models\Bill', 'billable');
     }
 
     public function stars()
     {
-        return $this->morphMany('Backpack\CRUD\Tests\config\Models\Star', 'starable');
+        return $this->morphMany('Backpack\CRUD\Tests\Config\Models\Star', 'starable');
     }
 
     public function superArticles()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Article', 'articles_user')->withPivot(['notes', 'start_date', 'end_date']);
+        return $this->belongsToMany('Backpack\CRUD\Tests\Config\Models\Article', 'articles_user')->withPivot(['notes', 'start_date', 'end_date']);
     }
 
     public function universes()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Universe');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Universe');
     }
 
     public function planets()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Planet');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Planet');
     }
 
     public function planetsNonNullable()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\PlanetNonNullable');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\PlanetNonNullable');
     }
 
     public function comets()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Comet');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Comet');
     }
 
     public function bang()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\Bang', 'bang_relation_field');
+        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\Bang', 'bang_relation_field');
     }
 
     public function incomes()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Transaction')->ofType('income');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Transaction')->ofType('income');
     }
 
     public function expenses()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Transaction')->ofType('expense');
+        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Transaction')->ofType('expense');
     }
 
     protected function isNotRelation()

@@ -5,7 +5,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Errors
  */
-class CrudPanelErrorsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
+class CrudPanelErrorsTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseCrudPanel
 {
     public function testItCanEnableAndDisableInlineErrors()
     {

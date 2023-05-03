@@ -7,7 +7,7 @@ use Backpack\CRUD\app\Exceptions\AccessDeniedException;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Access
  */
-class CrudPanelAccessTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
+class CrudPanelAccessTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseCrudPanel
 {
     private $unknownPermission = 'unknownPermission';
 

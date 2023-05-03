@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudTrait;
 
-use Backpack\CRUD\Tests\config\Models\FakeColumnsModel;
+use Backpack\CRUD\Tests\Config\Models\FakeColumnsModel;
 
 /**
  * Class CrudTraitFakeFieldsTest.
@@ -11,7 +11,7 @@ use Backpack\CRUD\Tests\config\Models\FakeColumnsModel;
  *
  * @covers Backpack\CRUD\app\Models\Traits\HasFakeFields
  */
-class CrudTraitFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudTrait\BaseCrudTrait
+class CrudTraitFakeFieldsTest extends \Backpack\CRUD\Tests\Config\CrudTrait\BaseCrudTrait
 {
     private $locale;
     /**

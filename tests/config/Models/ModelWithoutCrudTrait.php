@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models;
+namespace Backpack\CRUD\Tests\Config\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

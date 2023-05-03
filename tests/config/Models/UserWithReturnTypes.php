@@ -1,8 +1,8 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models;
+namespace Backpack\CRUD\Tests\Config\Models;
 
-class UserWithReturnTypes extends \Backpack\CRUD\Tests\config\Models\User
+class UserWithReturnTypes extends \Backpack\CRUD\Tests\Config\Models\User
 {
     public function isAnAttribute(): \Illuminate\Database\Eloquent\Casts\Attribute
     {

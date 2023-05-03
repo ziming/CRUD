@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\Models;
+namespace Backpack\CRUD\Tests\Config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -17,11 +17,11 @@ class Address extends Model
      */
     public function accountDetails()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\AccountDetails', 'account_details_id');
+        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\AccountDetails', 'account_details_id');
     }
 
     public function bang()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\Bang', 'city');
+        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\Bang', 'city');
     }
 }

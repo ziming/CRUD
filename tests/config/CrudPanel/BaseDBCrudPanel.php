@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\CRUD\Tests\config\CrudPanel;
+namespace Backpack\CRUD\Tests\Config\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Foundation\Testing\RefreshDatabase;

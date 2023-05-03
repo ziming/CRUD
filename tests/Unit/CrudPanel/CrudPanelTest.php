@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanelTest
+class CrudPanelTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
     public function testSetModelFromModelClass()
     {

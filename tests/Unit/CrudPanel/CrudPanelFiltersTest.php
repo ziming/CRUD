@@ -10,7 +10,7 @@ use Config;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Filters
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudFilter
  */
-class CrudPanelFiltersTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanelTest
+class CrudPanelFiltersTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
     protected $testFilter = [[
         'name'  => 'my_filter',

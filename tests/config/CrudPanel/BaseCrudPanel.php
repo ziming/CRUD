@@ -3,10 +3,10 @@
 namespace Backpack\CRUD\Tests\config\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Backpack\CRUD\Tests\BaseTest;
+use Backpack\CRUD\Tests\BaseTestClass;
 use Backpack\CRUD\Tests\config\Models\TestModel;
 
-abstract class BaseCrudPanelTest extends BaseTest
+abstract class BaseCrudPanel extends BaseTestClass
 {
     /**
      * @var CrudPanel

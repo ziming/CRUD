@@ -7,7 +7,7 @@ use Backpack\CRUD\BackpackServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTestClass extends TestCase
 {
     /**
      * Setup the test environment.

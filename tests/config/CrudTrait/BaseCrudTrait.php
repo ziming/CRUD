@@ -2,9 +2,10 @@
 
 namespace Backpack\CRUD\Tests\config\CrudTrait;
 
-use Backpack\CRUD\Tests\BaseTest;
 
-abstract class BaseCrudTraitTest extends BaseTest
+use Backpack\CRUD\Tests\BaseTestClass;
+
+abstract class BaseCrudTrait extends BaseTestClass
 {
     protected function getPackageAliases($app)
     {

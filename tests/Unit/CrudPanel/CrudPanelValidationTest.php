@@ -17,7 +17,7 @@ use Illuminate\Http\UploadedFile;
  * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidFileArray
  * @covers Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles
  */
-class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
+class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     public function testItThrowsValidationExceptions()
     {

@@ -4,9 +4,8 @@ namespace Backpack\CRUD\Tests\config\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 
-abstract class BasePrefixedDBCrudPanelTest extends BaseCrudPanelTest
+abstract class BaseDBCrudPanel extends BaseCrudPanel
 {
     use RefreshDatabase;
 
@@ -26,16 +25,16 @@ abstract class BasePrefixedDBCrudPanelTest extends BaseCrudPanelTest
     {
         parent::setUp();
 
-        DB::connection('testing')->getSchemaGrammar()->setTablePrefix('test_');
         // call migrations specific to our tests
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--path' => realpath(__DIR__.'/../../config/database/migrations'),
+            '--path'     => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
         $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersRolesTableSeeder']);
         $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersTableSeeder']);
         $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\ArticlesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\MorphableSeeders']);
     }
 
     /**
@@ -47,13 +46,6 @@ abstract class BasePrefixedDBCrudPanelTest extends BaseCrudPanelTest
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');
-        DB::connection('testing')->setTablePrefix('test_');
-    }
-
-    protected function defineDatabaseMigrations()
-    {
-        DB::connection('testing')->getSchemaGrammar()->setTablePrefix('test_');
-        $this->artisan('migrate', ['--database' => 'testing']);
     }
 
     /**

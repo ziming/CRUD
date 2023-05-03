@@ -22,7 +22,7 @@ use Illuminate\Support\Arr;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\MorphRelationships
  */
-class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
+class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $nonRelationshipField = [
         'name'  => 'field1',

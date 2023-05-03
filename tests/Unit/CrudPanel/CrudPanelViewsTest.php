@@ -7,7 +7,7 @@ use Config;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Views
  */
-class CrudPanelViewsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanelTest
+class CrudPanelViewsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
     private $customView = 'path/to/custom/view';
     private $customContentClass = 'col-md-12';

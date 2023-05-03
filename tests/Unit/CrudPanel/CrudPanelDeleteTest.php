@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Delete
  */
-class CrudPanelDeleteTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
+class CrudPanelDeleteTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     public function testDelete()
     {

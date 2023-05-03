@@ -9,7 +9,7 @@ use Illuminate\Routing\Route;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\HeadingsAndTitles
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelTitlesAndHeadingsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
+class CrudPanelTitlesAndHeadingsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     public function testItCanSetAndGetTheTitleFromTheAction()
     {

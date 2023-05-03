@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FakeFields
  */
-class CrudPanelFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanelTest
+class CrudPanelFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $fakeFieldsArray = [
         [

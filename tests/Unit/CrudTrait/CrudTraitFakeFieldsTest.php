@@ -11,7 +11,7 @@ use Backpack\CRUD\Tests\config\Models\FakeColumnsModel;
  *
  * @covers Backpack\CRUD\app\Models\Traits\HasFakeFields
  */
-class CrudTraitFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudTrait\BaseCrudTraitTest
+class CrudTraitFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudTrait\BaseCrudTrait
 {
     private $locale;
     /**

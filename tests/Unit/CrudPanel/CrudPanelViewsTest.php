@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Config;
 use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
+use Config;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Views

@@ -17,12 +17,12 @@ class AccountDetails extends Model
      */
     public function user()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\User');
+        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\User');
     }
 
     public function addresses()
     {
-        return $this->hasMany('Backpack\CRUD\Tests\Config\Models\Address');
+        return $this->hasMany('Backpack\CRUD\Tests\config\Models\Address');
     }
 
     public function getNicknameComposedAttribute()
@@ -32,16 +32,16 @@ class AccountDetails extends Model
 
     public function article()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\Article');
+        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\Article');
     }
 
     public function bangs()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\Config\Models\Bang');
+        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Bang');
     }
 
     public function bangsPivot()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\Config\Models\Bang', 'account_details_bangs_pivot')->withPivot('pivot_field');
+        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Bang', 'account_details_bangs_pivot')->withPivot('pivot_field');
     }
 }

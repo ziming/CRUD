@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Config\Models\User;
+use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -122,7 +122,7 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
     public function testGetUpdateFieldsWithEnum()
     {
-        $this->crudPanel->setModel(\Backpack\CRUD\Tests\Config\Models\ArticleWithEnum::class);
+        $this->crudPanel->setModel(\Backpack\CRUD\Tests\config\Models\ArticleWithEnum::class);
         $this->crudPanel->addFields([[
             'name' => 'id',
             'type' => 'hidden',

@@ -36,7 +36,7 @@ class PlanetNonNullable extends Model
 
     public function user()
     {
-        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\User');
+        return $this->belongsTo('Backpack\CRUD\Tests\config\Models\User');
     }
 
     /*

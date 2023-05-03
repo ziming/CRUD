@@ -31,10 +31,10 @@ abstract class BaseDBCrudPanel extends BaseCrudPanel
             '--path'     => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
-        $this->seed('Backpack\CRUD\Tests\Config\Database\Seeds\UsersRolesTableSeeder');
-        $this->seed('Backpack\CRUD\Tests\Config\Database\Seeds\UsersTableSeeder');
-        $this->seed('Backpack\CRUD\Tests\Config\Database\Seeds\ArticlesTableSeeder');
-        $this->seed('Backpack\CRUD\Tests\Config\Database\Seeds\MorphableSeeders');
+        $this->seed('Backpack\CRUD\Tests\config\Database\Seeds\UsersRolesTableSeeder');
+        $this->seed('Backpack\CRUD\Tests\config\Database\Seeds\UsersTableSeeder');
+        $this->seed('Backpack\CRUD\Tests\config\Database\Seeds\ArticlesTableSeeder');
+        $this->seed('Backpack\CRUD\Tests\config\Database\Seeds\MorphableSeeders');
     }
 
     /**

@@ -36,7 +36,7 @@ class Bang extends Model
 
     public function accountDetails()
     {
-        return $this->belongsToMany('Backpack\CRUD\Tests\Config\Models\AccountDetails');
+        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\AccountDetails');
     }
 
     /*

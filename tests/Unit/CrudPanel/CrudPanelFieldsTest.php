@@ -4,8 +4,8 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Arr;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
-use Backpack\CRUD\Tests\Config\Models\Star;
-use Backpack\CRUD\Tests\Config\Models\User;
+use Backpack\CRUD\Tests\config\Models\Star;
+use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Http\Request;
 
 /**
@@ -654,7 +654,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\Config\Models\TestModel</code> model.'),
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\config\Models\TestModel</code> model.'),
             $e
         );
     }
@@ -756,7 +756,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             'entity'             => 'bang',
             'relation_type'      => 'BelongsTo',
             'attribute'          => 'name',
-            'model'              => 'Backpack\CRUD\Tests\Config\Models\Bang',
+            'model'              => 'Backpack\CRUD\Tests\config\Models\Bang',
             'multiple'           => false,
             'pivot'              => false,
             'label'              => 'my_label',
@@ -844,7 +844,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     {
         $this->crudPanel->setModel(Star::class);
         $this->crudPanel->field('starable')
-                        ->addMorphOption('Backpack\CRUD\Tests\Config\Models\User', 'User')
+                        ->addMorphOption('Backpack\CRUD\Tests\config\Models\User', 'User')
                         ->morphTypeField(['attributes' => ['custom-attribute' => true]])
                         ->morphIdField(['attributes' => ['custom-attribute' => true]]);
 
@@ -891,7 +891,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
     public function testCheckReturnTypesForWhenInferingRelation()
     {
-        $this->crudPanel->setModel(\Backpack\CRUD\Tests\Config\Models\UserWithReturnTypes::class);
+        $this->crudPanel->setModel(\Backpack\CRUD\Tests\config\Models\UserWithReturnTypes::class);
         $this->crudPanel->addField('isAnAttribute');
         $this->crudPanel->addField('isARelation');
 

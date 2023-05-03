@@ -5,7 +5,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 use Backpack\CRUD\app\Library\Validation\Rules\ValidUpload;
 use Backpack\CRUD\app\Library\Validation\Rules\ValidUploadMultiple;
 use Backpack\CRUD\Tests\Config\Http\Requests\UserRequest;
-use Backpack\CRUD\Tests\Config\Models\User;
+use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -170,7 +170,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setOperation('create');
 
         try {
-            $this->crudPanel->setValidation('\Backpack\CRUD\Tests\Config\Models\User');
+            $this->crudPanel->setValidation('\Backpack\CRUD\Tests\config\Models\User');
         } catch (\Throwable $e) {
         }
         $this->assertEquals(

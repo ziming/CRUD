@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Config\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Article;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 

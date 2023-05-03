@@ -36,12 +36,12 @@ class Recommend extends Model
 
     public function users()
     {
-        return $this->morphedByMany('Backpack\CRUD\Tests\Config\Models\User', 'recommendable');
+        return $this->morphedByMany('Backpack\CRUD\Tests\config\Models\User', 'recommendable');
     }
 
     public function articles()
     {
-        return $this->morphedByMany('Backpack\CRUD\Tests\Config\Models\Article', 'recommendable');
+        return $this->morphedByMany('Backpack\CRUD\Tests\config\Models\Article', 'recommendable');
     }
 
     /*

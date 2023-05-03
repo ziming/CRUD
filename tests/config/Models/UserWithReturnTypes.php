@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Config\Models;
 
-class UserWithReturnTypes extends \Backpack\CRUD\Tests\Config\Models\User
+class UserWithReturnTypes extends \Backpack\CRUD\Tests\config\Models\User
 {
     public function isAnAttribute(): \Illuminate\Database\Eloquent\Casts\Attribute
     {

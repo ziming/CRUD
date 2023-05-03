@@ -28,13 +28,13 @@ abstract class BaseDBCrudPanelTest extends BaseCrudPanelTest
         // call migrations specific to our tests
         $this->loadMigrationsFrom([
             '--database' => 'testing',
-            '--path' => realpath(__DIR__.'/../../config/database/migrations'),
+            '--path'     => realpath(__DIR__.'/../../config/database/migrations'),
         ]);
 
-        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersRolesTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\UsersTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\ArticlesTableSeeder']);
-        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\Config\Database\Seeds\MorphableSeeders']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\config\Database\Seeds\UsersRolesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\config\Database\Seeds\UsersTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\config\Database\Seeds\ArticlesTableSeeder']);
+        $this->artisan('db:seed', ['--class' => 'Backpack\CRUD\Tests\config\Database\Seeds\MorphableSeeders']);
     }
 
     /**

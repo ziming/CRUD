@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Config\CrudPanel\BaseCrudPanel;
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Autofocus
  */

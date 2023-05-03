@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs
  */
-class CrudPanelTabsTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
+class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $horizontalTabsType = 'horizontal';
     private $verticalTabsType = 'vertical';

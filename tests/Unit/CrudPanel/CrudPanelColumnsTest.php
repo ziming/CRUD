@@ -11,7 +11,7 @@ use Backpack\CRUD\Tests\Config\Models\User;
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudColumn
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
+class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $oneColumnArray = [
         'name'  => 'column1',

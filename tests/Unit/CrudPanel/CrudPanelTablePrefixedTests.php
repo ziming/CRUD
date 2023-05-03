@@ -7,7 +7,7 @@ use Backpack\CRUD\Tests\Config\Models\User;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelTablePrefixedTests extends \Backpack\CRUD\Tests\Config\CrudPanel\BasePrefixedDBCrudPanel
+class CrudPanelTablePrefixedTests extends \Backpack\CRUD\Tests\config\CrudPanel\BasePrefixedDBCrudPanel
 {
     public function testGetColumnTypeFromColumnNameWithPrefixedDatabase()
     {

@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
  */
-class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
+class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $oneTextFieldArray = [
         'name'  => 'field1',

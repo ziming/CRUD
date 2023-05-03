@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  */
-class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
+class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $userInputFields = [
         [

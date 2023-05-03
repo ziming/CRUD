@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Read
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelReadTest extends \Backpack\CRUD\Tests\Config\CrudPanel\BaseDBCrudPanel
+class CrudPanelReadTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $relationshipColumn = [
         'name'      => 'user_id',

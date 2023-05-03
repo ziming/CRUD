@@ -3,7 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Illuminate\Http\Request;
-use Backpack\CRUD\Tests\Config\CrudPanel\BaseCrudPanel;
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 
 class HelpersTest extends BaseCrudPanel
 {

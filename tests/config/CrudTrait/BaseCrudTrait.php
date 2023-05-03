@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\Tests\config\CrudTrait;
 
-
 use Backpack\CRUD\Tests\BaseTestClass;
 
 abstract class BaseCrudTrait extends BaseTestClass

@@ -2,10 +2,12 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
+
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable
  */
-class CrudPanelMacroTest extends BaseCrudPanelTest
+class CrudPanelMacroTest extends BaseCrudPanel
 {
     public function testItCanRegisterMacro()
     {

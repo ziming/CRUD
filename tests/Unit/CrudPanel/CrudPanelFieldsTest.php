@@ -4,8 +4,8 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Arr;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
-use Backpack\CRUD\Tests\Unit\Models\Star;
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Models\Star;
+use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Http\Request;
 
 /**
@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
  */
-class CrudPanelFieldsTest extends BaseDBCrudPanelTest
+class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $oneTextFieldArray = [
         'name'  => 'field1',
@@ -654,7 +654,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\Unit\Models\TestModel</code> model.'),
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\Config\Models\TestModel</code> model.'),
             $e
         );
     }
@@ -756,7 +756,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             'entity'             => 'bang',
             'relation_type'      => 'BelongsTo',
             'attribute'          => 'name',
-            'model'              => 'Backpack\CRUD\Tests\Unit\Models\Bang',
+            'model'              => 'Backpack\CRUD\Tests\Config\Models\Bang',
             'multiple'           => false,
             'pivot'              => false,
             'label'              => 'my_label',
@@ -844,7 +844,7 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
     {
         $this->crudPanel->setModel(Star::class);
         $this->crudPanel->field('starable')
-                        ->addMorphOption('Backpack\CRUD\Tests\Unit\Models\User', 'User')
+                        ->addMorphOption('Backpack\CRUD\Tests\config\Models\User', 'User')
                         ->morphTypeField(['attributes' => ['custom-attribute' => true]])
                         ->morphIdField(['attributes' => ['custom-attribute' => true]]);
 
@@ -887,6 +887,16 @@ class CrudPanelFieldsTest extends BaseDBCrudPanelTest
             new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Field name can\'t be empty.'),
             $e
         );
+    }
+
+    public function testCheckReturnTypesForWhenInferingRelation()
+    {
+        $this->crudPanel->setModel(\Backpack\CRUD\Tests\config\Models\UserWithReturnTypes::class);
+        $this->crudPanel->addField('isAnAttribute');
+        $this->crudPanel->addField('isARelation');
+
+        $this->assertEquals(false, $this->crudPanel->fields()['isAnAttribute']['entity']);
+        $this->assertEquals('isARelation', $this->crudPanel->fields()['isARelation']['entity']);
     }
 }
 

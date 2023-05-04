@@ -4,8 +4,8 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\Validation\Rules\ValidUpload;
 use Backpack\CRUD\app\Library\Validation\Rules\ValidUploadMultiple;
-use Backpack\CRUD\Tests\Unit\Http\Requests\UserRequest;
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Http\Requests\UserRequest;
+use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Http\UploadedFile;
 
 /**
@@ -17,7 +17,7 @@ use Illuminate\Http\UploadedFile;
  * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidFileArray
  * @covers Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles
  */
-class CrudPanelValidationTest extends BaseDBCrudPanelTest
+class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     public function testItThrowsValidationExceptions()
     {
@@ -46,7 +46,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addFields([
@@ -86,7 +86,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addFields([
@@ -126,7 +126,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addField([
@@ -170,7 +170,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->crudPanel->setOperation('create');
 
         try {
-            $this->crudPanel->setValidation('\Backpack\CRUD\Tests\Unit\Models\User');
+            $this->crudPanel->setValidation('\Backpack\CRUD\Tests\config\Models\User');
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
@@ -248,7 +248,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addFields([

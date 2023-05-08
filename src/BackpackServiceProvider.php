@@ -197,8 +197,8 @@ class BackpackServiceProvider extends ServiceProvider
 
     public function loadViewsWithFallbacks($dir, $namespace = null)
     {
-        $customFolder = resource_path('views/vendor/backpack/' . $dir);
-        $vendorFolder = realpath(__DIR__ . '/resources/views/' . $dir);
+        $customFolder = resource_path('views/vendor/backpack/'.$dir);
+        $vendorFolder = realpath(__DIR__.'/resources/views/'.$dir);
         $namespace = $namespace ?? $dir;
 
         // first the published/overwritten views (in case they have any changes)

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
+
 if (! function_exists('backpack_url')) {
     /**
      * Appends the configured backpack prefix and returns
@@ -269,12 +271,22 @@ if (! function_exists('backpack_theme_config')) {
 
         // if not, fall back to a general the config in the fallback theme
         $namespacedKey = config('backpack.ui.view_namespace_fallback').$key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
 
         if (config()->has($namespacedKey)) {
             return config($namespacedKey);
         }
 
-        return config('backpack.ui.'.$key);
+        // if not, fall back to the config in ui
+        $namespacedKey = 'backpack.ui.' . $key;
+
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        Log::error('Could not find config key: ' . $key . '. Neither in the Backpack theme, nor in the fallback theme, nor in ui.');
+
+        return null;
     }
 }
 

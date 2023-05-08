@@ -236,9 +236,9 @@ if (! function_exists('backpack_view')) {
     function backpack_view($view)
     {
         $viewPaths = [
-            config('backpack.ui.view_namespace') . $view,
-            backpack_theme_config('view_namespace_fallback') . $view,
-            'backpack.ui::' . $view,
+            config('backpack.ui.view_namespace').$view,
+            backpack_theme_config('view_namespace_fallback').$view,
+            'backpack.ui::'.$view,
         ];
 
         foreach ($viewPaths as $view) {
@@ -278,13 +278,13 @@ if (! function_exists('backpack_theme_config')) {
         }
 
         // if not, fall back to the config in ui
-        $namespacedKey = 'backpack.ui.' . $key;
+        $namespacedKey = 'backpack.ui.'.$key;
 
         if (config()->has($namespacedKey)) {
             return config($namespacedKey);
         }
 
-        Log::error('Could not find config key: ' . $key . '. Neither in the Backpack theme, nor in the fallback theme, nor in ui.');
+        Log::error('Could not find config key: '.$key.'. Neither in the Backpack theme, nor in the fallback theme, nor in ui.');
 
         return null;
     }

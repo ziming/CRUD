@@ -46,7 +46,8 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadViewsWithFallbacks();
+        $this->loadViewsWithFallbacks('crud');
+        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -194,16 +195,18 @@ class BackpackServiceProvider extends ServiceProvider
         }
     }
 
-    public function loadViewsWithFallbacks()
+    public function loadViewsWithFallbacks($dir, $namespace = null)
     {
-        $customCrudFolder = resource_path('views/vendor/backpack/crud');
+        $customFolder = resource_path('views/vendor/backpack/' . $dir);
+        $vendorFolder = realpath(__DIR__ . '/resources/views/' . $dir);
+        $namespace = $namespace ?? $dir;
 
-        // - first the published/overwritten views (in case they have any changes)
-        if (file_exists($customCrudFolder)) {
-            $this->loadViewsFrom($customCrudFolder, 'crud');
+        // first the published/overwritten views (in case they have any changes)
+        if (file_exists($customFolder)) {
+            $this->loadViewsFrom($customFolder, $namespace);
         }
-        // - then the stock views that come with the package, in case a published view might be missing
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
+        // then the stock views that come with the package, in case a published view might be missing
+        $this->loadViewsFrom($vendorFolder, $namespace);
     }
 
     protected function mergeConfigsFromDirectory($dir)

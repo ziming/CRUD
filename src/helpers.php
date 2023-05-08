@@ -226,28 +226,28 @@ if (! function_exists('mb_ucfirst')) {
 
 if (! function_exists('backpack_view')) {
     /**
-     * Returns a new displayable view based on the configured backpack view namespace.
-     * If that view doesn't exist, it will load the one from the original theme.
+     * Returns a new displayable view path, based on the configured backpack view namespace.
+     * If that view doesn't exist, it falls back to the fallback namespace.
+     * If that view doesn't exist, it falls back to the one from the Backpack UI directory.
      *
      * @param string (see config/backpack/base.php)
      * @return string
      */
     function backpack_view($view)
     {
-        $theme = config('backpack.ui.view_namespace');
-        $fallbackTheme = backpack_theme_config('view_namespace_fallback');
+        $viewPaths = [
+            config('backpack.ui.view_namespace') . $view,
+            backpack_theme_config('view_namespace_fallback') . $view,
+            'backpack.ui::' . $view,
+        ];
 
-        if (is_null($theme)) {
-            $theme = $fallbackTheme;
+        foreach ($viewPaths as $view) {
+            if (view()->exists($view)) {
+                return $view;
+            }
         }
 
-        $returnView = $theme.$view;
-
-        if (! view()->exists($returnView)) {
-            $returnView = $fallbackTheme.$view;
-        }
-
-        return $returnView;
+        dd('Could not find Backpack view ['.$view.'] in theme namespace, fallback namespace nor UI namespace.');
     }
 }
 

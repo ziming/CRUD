@@ -17,7 +17,7 @@ class BackpackServiceProvider extends ServiceProvider
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
-        \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
+        \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
         \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
@@ -130,7 +130,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
-            __DIR__.'/resources/views/ui/inc/sidebar_content.blade.php' => resource_path('views/vendor/backpack/theme-tabler/inc/sidebar_content.blade.php'),
+            __DIR__.'/resources/views/ui/inc/menu_items.blade.php' => resource_path('views/vendor/backpack/ui/inc/menu_items.blade.php'),
         ];
         $backpack_custom_routes_file = [__DIR__.$this->customRoutesFilePath => base_path($this->customRoutesFilePath)];
 

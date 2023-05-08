@@ -4,9 +4,8 @@ namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
-class AddSidebarContent extends Command
+class AddMenuContent extends Command
 {
     use \Backpack\CRUD\app\Console\Commands\Traits\PrettyCommandOutput;
 
@@ -15,15 +14,15 @@ class AddSidebarContent extends Command
      *
      * @var string
      */
-    protected $signature = 'backpack:add-sidebar-content
-                                {code : HTML/PHP code that shows the sidebar item. Use either single quotes or double quotes. Never both. }';
+    protected $signature = 'backpack:add-menu-content
+                                {code : HTML/PHP code that shows menu items. Use either single quotes or double quotes. Never both. }';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add HTML/PHP code to the Backpack sidebar_content file';
+    protected $description = 'Add HTML/PHP code to the Backpack menu_items file';
 
     /**
      * Create a new command instance.
@@ -42,20 +41,17 @@ class AddSidebarContent extends Command
      */
     public function handle()
     {
-        $theme_subdirectory = Str::of(config('backpack.ui.view_namespace'))
-                    ->replace('.', '/')
-                    ->replace('::', '');
-        $path = 'resources/views/vendor/'.$theme_subdirectory.'/inc/sidebar_content.blade.php';
+        $path = 'resources/views/vendor/backpack/ui/inc/menu_items.blade.php';
         $disk_name = config('backpack.base.root_disk_name');
         $disk = Storage::disk($disk_name);
         $code = $this->argument('code');
 
-        $this->progressBlock("Adding sidebar entry to <fg=blue>$path</>");
+        $this->progressBlock("Adding menu entry to <fg=blue>$path</>");
 
         // Validate file exists
         if (! $disk->exists($path)) {
             $this->errorProgressBlock();
-            $this->note('The sidebar_content file does not exist. Make sure Backpack is properly installed.', 'red');
+            $this->note('The menu_items file does not exist. Make sure Backpack is properly installed.', 'red');
 
             return;
         }
@@ -72,7 +68,7 @@ class AddSidebarContent extends Command
 
         if (! $disk->put($path, $contents.PHP_EOL.$code)) {
             $this->errorProgressBlock();
-            $this->note('Could not write to sidebar_content file.', 'red');
+            $this->note('Could not write to menu_items file.', 'red');
 
             return;
         }

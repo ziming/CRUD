@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;

@@ -67,7 +67,7 @@
             <div class="card p-4">
                 <p>{{ trans('backpack::crud.reorder_text') }}</p>
 
-                <ol class="sortable mt-0">
+                <ol class="sortable mt-0 mb-0">
                     <?php
                     $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
     $root_entries = $all_entries->filter(function ($item) {
@@ -81,8 +81,10 @@
 
             </div>{{-- /.card --}}
 
-            <button id="toArray" class="btn btn-success text-light" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
-            <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-secondary text-decoration-none"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+            <div class="mt-3">
+                <button id="toArray" class="btn btn-success text-light" data-style="zoom-in"><i class="la la-save"></i> {{ trans('backpack::crud.save') }}</button>
+                <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-secondary text-decoration-none"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+            </div>
 
         </div>
     </div>

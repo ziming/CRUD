@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Validator;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 
 class ValidUpload extends BackpackCustomRule
 {
@@ -22,7 +23,9 @@ class ValidUpload extends BackpackCustomRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! array_key_exists($attribute, $this->data) && $this->entry) {
+        $entry = CrudPanelFacade::getCurrentEntry();
+
+        if (! array_key_exists($attribute, $this->data) && $entry) {
             return;
         }
 

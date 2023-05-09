@@ -12,12 +12,10 @@
 @endphp
 
 @section('header')
-  <div class="container-fluid">
-    <h2>
-      <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
-    </h2>
-  </div>
+    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-end d-print-none">
+        <h3 class="text-capitalize mb-0" style="line-height: 30px;">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h3>
+        <p class="ms-2 ml-2 mb-0" id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</p>
+    </section>
 @endsection
 
 @section('content')

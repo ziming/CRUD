@@ -12,16 +12,15 @@
 @endphp
 
 @section('header')
-    <div class="container-fluid">
-        <h2>
-            <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-            <small>{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}.</small>
-
-            @if ($crud->hasAccess('list'))
+    <section class="header-operation container-fluid animated fadeIn d-flex align-items-end d-print-none">
+        <h3 class="text-capitalize mb-0" style="line-height: 30px;">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h3>
+        <p class="ms-2 ml-2 mb-0">{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}</p>
+        @if ($crud->hasAccess('list'))
+            <p class="ms-2 ml-2 mb-0">
                 <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
-            @endif
-        </h2>
-    </div>
+            </p>
+        @endif
+    </section>
 @endsection
 
 @section('content')

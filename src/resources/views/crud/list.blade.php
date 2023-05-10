@@ -159,13 +159,6 @@
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
   @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
 
-  <style>
-      /* Use whole table width for td when displaying empty content message */
-      td.dataTables_empty {
-          display: table-cell !important;
-      }
-  </style>
-
   {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')
 @endsection

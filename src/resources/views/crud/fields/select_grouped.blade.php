@@ -55,7 +55,7 @@
                     @endif
                 @endif
         </select>
-        @if(isset($field['suffix'])) <div class="input-group-append"><span class="input-group-text">{!! $field['suffix'] !!}</span></div> @endif
+        @if(isset($field['suffix'])) <span class="input-group-text">{!! $field['suffix'] !!}</span> @endif
     @if(isset($field['prefix']) || isset($field['suffix'])) </div> @endif
 
     {{-- HINT --}}

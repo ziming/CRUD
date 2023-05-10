@@ -6,6 +6,7 @@
         type="range"
         name="{{ $field['name'] }}"
         value="{{ old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '' }}"
+        class="form-range w-100"
         @include('crud::fields.inc.attributes')
         >
 

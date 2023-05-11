@@ -13,11 +13,12 @@ trait Validation
      *
      * @param  array  $requiredFields
      */
-    public function setValidationFromArray(array $rules, array $messages = [])
+    public function setValidationFromArray(array $rules, array $messages = [], array $attributes = [])
     {
         $this->setRequiredFields($rules);
         $this->setOperationSetting('validationRules', array_merge($this->getOperationSetting('validationRules') ?? [], $rules));
         $this->setOperationSetting('validationMessages', array_merge($this->getOperationSetting('validationMessages') ?? [], $messages));
+        $this->setOperationSetting('validationAttributes', array_merge($this->getOperationSetting('validationAttributes') ?? [], $attributes));
     }
 
     /**
@@ -36,7 +37,11 @@ trait Validation
         // (eg. ['title.required' => 'You gotta write smth man.'])
         $messages = $this->getValidationMessagesFromFieldsAndSubfields($fields);
 
-        $this->setValidationFromArray($rules, $messages);
+        // construct the validation attributes array
+        // (eg. ['user_id' => 'username'])
+        $attributes = $this->getValidationAttributesFromFieldsAndSubfields($fields);
+
+        $this->setValidationFromArray($rules, $messages, $attributes);
     }
 
     /**
@@ -57,13 +62,14 @@ trait Validation
      *
      * @param  string|array  $classOrRulesArray  Class that extends FormRequest or array of validation rules
      * @param  array  $messages  Array of validation messages.
+     * @param  array  $attributes  Array of validation attributes
      */
-    public function setValidation($classOrRulesArray = false, $messages = [])
+    public function setValidation($classOrRulesArray = false, $messages = [], $attributes = [])
     {
         if (! $classOrRulesArray) {
             $this->setValidationFromFields();
         } elseif (is_array($classOrRulesArray)) {
-            $this->setValidationFromArray($classOrRulesArray, $messages);
+            $this->setValidationFromArray($classOrRulesArray, $messages, $attributes);
         } elseif (is_string($classOrRulesArray) && class_exists($classOrRulesArray) && is_a($classOrRulesArray, FormRequest::class, true)) {
             $this->setValidationFromRequest($classOrRulesArray);
         } else {
@@ -79,6 +85,7 @@ trait Validation
         $this->setOperationSetting('formRequest', false);
         $this->setOperationSetting('validationRules', []);
         $this->setOperationSetting('validationMessages', []);
+        $this->setOperationSetting('validationAttributes', []);
         $this->setOperationSetting('requiredFields', []);
     }
 
@@ -126,6 +133,7 @@ trait Validation
 
         $rules = $this->getOperationSetting('validationRules') ?? [];
         $messages = $this->getOperationSetting('validationMessages') ?? [];
+        $attributes = $this->getOperationSetting('validationAttributes') ?? [];
 
         if ($formRequest) {
             // when there is no validation in the fields, just validate the form request.
@@ -133,13 +141,13 @@ trait Validation
                 return app($formRequest);
             }
 
-            [$formRequest, $extendedRules, $extendedMessages] = $this->mergeRequestAndFieldRules($formRequest, $rules, $messages);
+            [$formRequest, $extendedRules, $extendedMessages, $extendedAttributes] = $this->mergeRequestAndFieldRules($formRequest, $rules, $messages, $attributes);
 
             // validate the complete request with FormRequest + controller validation + field validation (our anonymous class)
-            return $this->checkRequestValidity($extendedRules, $extendedMessages, $formRequest);
+            return $this->checkRequestValidity($extendedRules, $extendedMessages, $extendedAttributes, $formRequest);
         }
 
-        return ! empty($rules) ? $this->checkRequestValidity($rules, $messages) : $this->getRequest();
+        return ! empty($rules) ? $this->checkRequestValidity($rules, $messages, $attributes) : $this->getRequest();
     }
 
     /**
@@ -148,18 +156,21 @@ trait Validation
      * @param  FormRequest  $request
      * @param  array|null  $rules
      * @param  array|null  $messages
+     * @param  array|null  $attributes
      * @return array
      */
-    public function mergeRequestAndFieldRules($request, $rules = null, $messages = null)
+    public function mergeRequestAndFieldRules($request, $rules = null, $messages = null, $attributes = null)
     {
         $rules = $rules ?? $this->getOperationSetting('validationRules') ?? [];
         $messages = $messages ?? $this->getOperationSetting('validationMessages') ?? [];
+        $attributes = $messages ?? $this->getOperationSetting('validationAttributes') ?? [];
 
         $request = (new $request)->createFrom($this->getRequest());
         $extendedRules = $this->mergeRules($request, $rules);
         $extendedMessages = array_merge($messages, $request->messages());
+        $extendedAttributes = array_merge($attributes, $request->attributes());
 
-        return [$request, $extendedRules, $extendedMessages];
+        return [$request, $extendedRules, $extendedMessages, $extendedAttributes];
     }
 
     /**
@@ -246,10 +257,10 @@ trait Validation
      */
     private function setupFieldValidation($field, $parent = false)
     {
-        [$rules, $messages] = $this->getValidationRulesAndMessagesFromField($field, $parent);
+        [$rules, $messages, $attributes] = $this->getValidationDataFromField($field, $parent);
 
         if (! empty($rules)) {
-            $this->setValidation($rules, $messages);
+            $this->setValidation($rules, $messages, $attributes);
         }
     }
 
@@ -287,6 +298,38 @@ trait Validation
             })->toArray();
 
         return $messages;
+    }
+
+    /**
+     * Return the attributes for the fields and subfields in the current crud panel.
+     *
+     * @param  array  $fields
+     * @return array
+     */
+    private function getValidationAttributesFromFieldsAndSubfields($fields)
+    {
+        $attributes = [];
+        collect($fields)
+            ->filter(function ($value, $key) {
+                // only keep fields where 'validationAttribute' exists OR there are subfields
+                return array_key_exists('validationAttribute', $value) || array_key_exists('subfields', $value);
+            })->each(function ($item, $key) use (&$attributes) {
+                if (isset($item['validationAttribute'])) {
+                    $attributes[$key] = $item['validationAttribute']; 
+                }
+                // add attributes from subfields
+                if (array_key_exists('subfields', $item)) {
+                    $subfieldsWithValidationAttribute = array_filter($item['subfields'], function ($subfield) {
+                        return array_key_exists('validationAttribute', $subfield);
+                    });
+
+                    foreach ($subfieldsWithValidationAttribute as $subfield) {
+                        $attributes[$item['name'].'.*.'.$subfield['name']] = $subfield['validationAttribute'];
+                    }
+                }
+            })->toArray();
+
+        return $attributes;
     }
 
     /**
@@ -331,10 +374,11 @@ trait Validation
      * @param  array  $field  - the field we want to get the rules and messages from.
      * @param  bool|string  $parent  - the parent name when setting up validation for subfields.
      */
-    private function getValidationRulesAndMessagesFromField($field, $parent = false)
+    private function getValidationDataFromField($field, $parent = false)
     {
         $rules = [];
         $messages = [];
+        $attributes = [];
 
         foreach ((array) $field['name'] as $fieldName) {
             if ($parent) {
@@ -346,13 +390,15 @@ trait Validation
             }
             if (isset($field['validationMessages'])) {
                 foreach ($field['validationMessages'] as $validator => $message) {
-                    $fieldValidationName = $fieldName.'.'.$validator;
-                    $messages[$fieldValidationName] = $message;
+                    $messages[$fieldName.'.'.$validator] = $message;
                 }
+            }
+            if (isset($field['validationAttribute'])) {
+                $attributes[$fieldName] = $field['validationAttribute'];
             }
         }
 
-        return [$rules, $messages];
+        return [$rules, $messages, $attributes];
     }
 
     /**
@@ -402,10 +448,10 @@ trait Validation
      * @param  \Illuminate\Http\Request|null  $request
      * @return \Illuminate\Http\Request
      */
-    private function checkRequestValidity($rules, $messages, $request = null)
+    private function checkRequestValidity($rules, $messages, $attributes, $request = null)
     {
         $request = $request ?? $this->getRequest();
-        $request->validate($rules, $messages);
+        $request->validate($rules, $messages, $attributes);
 
         return $request;
     }

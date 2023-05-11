@@ -315,7 +315,7 @@ trait Validation
                 return array_key_exists('validationAttribute', $value) || array_key_exists('subfields', $value);
             })->each(function ($item, $key) use (&$attributes) {
                 if (isset($item['validationAttribute'])) {
-                    $attributes[$key] = $item['validationAttribute']; 
+                    $attributes[$key] = $item['validationAttribute'];
                 }
                 // add attributes from subfields
                 if (array_key_exists('subfields', $item)) {

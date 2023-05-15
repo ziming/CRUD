@@ -1,14 +1,14 @@
 @extends(backpack_view('blank'))
 
 @php
-  $defaultBreadcrumbs = [
-    trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
-    $crud->entity_name_plural => url($crud->route),
-    trans('backpack::crud.preview') => false,
-  ];
+    $defaultBreadcrumbs = [
+      trans('backpack::crud.admin') => url(config('backpack.base.route_prefix'), 'dashboard'),
+      $crud->entity_name_plural => url($crud->route),
+      trans('backpack::crud.preview') => false,
+    ];
 
-  // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
-  $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
+    // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
+    $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 @endphp
 
 @section('header')
@@ -25,8 +25,8 @@
 @endsection
 
 @section('content')
-<div class="row">
-	<div class="{{ $crud->getShowContentClass() }}">
+    <div class="row">
+        <div class="{{ $crud->getShowContentClass() }}">
 
 	{{-- Default box --}}
 	  <div class="">
@@ -63,29 +63,15 @@
                         			return $item.'.'.$column['type'];
                         		}, \Backpack\CRUD\ViewNamespaces::getFor('columns'));
 
-                        		// but always fall back to the stock 'text' column
-                        		// if a view doesn't exist
-                        		if (!in_array('crud::columns.text', $columnPaths)) {
-                        			$columnPaths[] = 'crud::columns.text';
-                        		}
-                        	@endphp
-													@includeFirst($columnPaths)
-                        </td>
-		            </tr>
-		        @endforeach
-				@if ($crud->buttons()->where('stack', 'line')->count())
-					<tr>
-						<td><strong>{{ trans('backpack::crud.actions') }}</strong></td>
-						<td>
-							@include('crud::inc.button_stack', ['stack' => 'line'])
-						</td>
-					</tr>
-				@endif
-		        </tbody>
-			</table>
-	    </div>{{-- /.box-body --}}
-	  </div>{{-- /.box --}}
+                @if($crud->tabsEnabled() && count($crud->getUniqueTabNames('columns')))
+                    @include('crud::inc.show_tabbed_table')
+                @else
+                    <div class="card no-padding no-border mb-0">
+                        @include('crud::inc.show_table', ['columns' => $crud->columns()])
+                    </div>
+                @endif
+            </div>
 
-	</div>
-</div>
+        </div>
+    </div>
 @endsection

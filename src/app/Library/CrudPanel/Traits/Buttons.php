@@ -77,7 +77,7 @@ trait Buttons
         return new CrudButton($name, $stack, $type, $content, $position);
     }
 
-    public function addCrudButton($crudButton)
+    public function addCrudButton(CrudButton $crudButton)
     {
         $this->setOperationSetting('buttons', $this->buttons()->push($crudButton));
     }
@@ -117,7 +117,7 @@ trait Buttons
         $button = $this->buttons()->firstWhere('name', $name);
 
         if (! $button) {
-            abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
+            abort(500, 'CRUD Button "'.$name.'" not found. Please ensure the button exists before you modify it.');
         }
 
         if (is_array($modifications)) {
@@ -249,7 +249,6 @@ trait Buttons
         $array = $this->buttons()->toArray();
 
         foreach ($array as $key => $value) {
-            //dd($value);
             if ((is_object($value) ? $value->name : $value['name']) == $name) {
                 return $key;
             }

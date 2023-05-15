@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
+use Illuminate\Support\Traits\Conditionable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
@@ -38,6 +39,7 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 class CrudField
 {
     use MacroableWithAttributes;
+    use Conditionable;
 
     protected $attributes;
 

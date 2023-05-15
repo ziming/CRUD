@@ -17,7 +17,7 @@ class BackpackServiceProvider extends ServiceProvider
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
-        \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
+        \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
         \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
@@ -46,7 +46,8 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadViewsWithFallbacks();
+        $this->loadViewsWithFallbacks('crud');
+        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -129,7 +130,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
-            __DIR__.'/resources/views/ui/inc/sidebar_content.blade.php' => resource_path('views/vendor/backpack/theme-tabler/inc/sidebar_content.blade.php'),
+            __DIR__.'/resources/views/ui/inc/menu_items.blade.php' => resource_path('views/vendor/backpack/ui/inc/menu_items.blade.php'),
         ];
         $backpack_custom_routes_file = [__DIR__.$this->customRoutesFilePath => base_path($this->customRoutesFilePath)];
 
@@ -194,16 +195,18 @@ class BackpackServiceProvider extends ServiceProvider
         }
     }
 
-    public function loadViewsWithFallbacks()
+    public function loadViewsWithFallbacks($dir, $namespace = null)
     {
-        $customCrudFolder = resource_path('views/vendor/backpack/crud');
+        $customFolder = resource_path('views/vendor/backpack/'.$dir);
+        $vendorFolder = realpath(__DIR__.'/resources/views/'.$dir);
+        $namespace = $namespace ?? $dir;
 
-        // - first the published/overwritten views (in case they have any changes)
-        if (file_exists($customCrudFolder)) {
-            $this->loadViewsFrom($customCrudFolder, 'crud');
+        // first the published/overwritten views (in case they have any changes)
+        if (file_exists($customFolder)) {
+            $this->loadViewsFrom($customFolder, $namespace);
         }
-        // - then the stock views that come with the package, in case a published view might be missing
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
+        // then the stock views that come with the package, in case a published view might be missing
+        $this->loadViewsFrom($vendorFolder, $namespace);
     }
 
     protected function mergeConfigsFromDirectory($dir)

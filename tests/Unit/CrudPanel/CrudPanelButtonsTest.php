@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons
@@ -10,7 +11,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudButton;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonStackEnum
  * @covers Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonPositionEnum
  */
-class CrudPanelButtonsTest extends BaseCrudPanelTest
+class CrudPanelButtonsTest extends BaseCrudPanel
 {
     private $defaultButtonNames = [];
 

@@ -3,7 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
@@ -11,7 +11,7 @@ use Backpack\CRUD\Tests\Unit\Models\User;
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudColumn
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelColumnsTest extends BaseDBCrudPanelTest
+class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $oneColumnArray = [
         'name'  => 'column1',
@@ -130,7 +130,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'orderable'     => false,
             'searchLogic'   => false,
             'entity'        => 'accountDetails',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
             'relation_type' => 'HasOne',
             'attribute'     => 'nickname',
         ],
@@ -146,7 +146,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic'   => false,
             'relation_type' => 'HasOne',
             'entity'        => 'accountDetails.nickname',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
         ],
         'accountDetails__user' => [
             'name'          => 'accountDetails.user',
@@ -159,7 +159,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic'   => false,
             'relation_type' => 'BelongsTo',
             'entity'        => 'accountDetails.user',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\User',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\User',
             'attribute'     => 'name',
         ],
     ];
@@ -175,7 +175,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'orderable'     => false,
             'searchLogic'   => false,
             'entity'        => 'accountDetails',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
             'relation_type' => 'HasOne',
             'attribute'     => 'nickname',
         ],
@@ -191,7 +191,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic'   => false,
             'relation_type' => 'HasOne',
             'entity'        => 'accountDetails.nickname',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
         ],
         'accountDetails__user' => [
             'name'          => 'accountDetails.user',
@@ -204,7 +204,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'searchLogic'   => false,
             'relation_type' => 'BelongsTo',
             'entity'        => 'accountDetails.user',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\User',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\User',
             'attribute'     => 'name',
         ],
     ];
@@ -223,7 +223,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'entity'        => 'accountDetails',
             'attribute'     => 'nickname',
             'label'         => 'Nickname',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\AccountDetails',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
             'key'           => 'nickname',
             'tableColumn'   => false,
             'orderable'     => false,
@@ -249,7 +249,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'type'          => 'relationship',
             'entity'        => 'accountDetails.article',
             'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\Article',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
             'key'           => 'accountDetails__article',
             'tableColumn'   => false,
             'orderable'     => false,
@@ -263,7 +263,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'type'          => 'relationship',
             'entity'        => 'accountDetails.article',
             'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\Article',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
             'key'           => 'ac_article_content',
             'tableColumn'   => false,
             'orderable'     => false,
@@ -280,7 +280,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'type'          => 'select',
             'entity'        => 'accountDetails.article',
             'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\Article',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
             'key'           => 'accountDetails__article',
             'tableColumn'   => false,
             'orderable'     => false,
@@ -294,7 +294,7 @@ class CrudPanelColumnsTest extends BaseDBCrudPanelTest
             'type'          => 'select',
             'entity'        => 'accountDetails.article',
             'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Unit\Models\Article',
+            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
             'key'           => 'ac_article_content',
             'tableColumn'   => false,
             'orderable'     => false,

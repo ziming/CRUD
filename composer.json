@@ -1,13 +1,16 @@
 {
     "name": "backpack/crud",
     "type": "library",
-    "description": "Quickly build an admin interfaces using Laravel, CoreUI, Bootstrap and jQuery.",
+    "description": "Quickly build admin interfaces using Laravel, Bootstrap and JavaScript.",
     "keywords": [
         "backpack",
         "base",
         "admin panel for laravel",
         "coreui for laravel",
-        "bootstrap 4 admin panel laravel",
+        "tabler for laravel",
+        "dashboard for laravel",
+        "admin template for laravel",
+        "bootstrap 5 admin panel laravel",
         "laravel admin",
         "CRUD",
         "BREAD",
@@ -34,7 +37,6 @@
     "require": {
         "laravel/framework": "^10.0",
         "prologue/alerts": "^1.0",
-        "backpack/theme-tabler": "dev-main as 1.0.0",
         "backpack/basset": "^0.15.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^3.0",
@@ -53,8 +55,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Backpack\\CRUD\\Tests\\": "tests",
-            "Backpack\\CRUD\\Tests81\\": "tests81"
+            "Backpack\\CRUD\\Tests\\": "tests"
         },
         "files": ["src/helpers.php"],
         "exclude-from-classmap": [

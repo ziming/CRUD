@@ -7,7 +7,7 @@
 
 @include('crud::fields.inc.wrapper_start')
     @include('crud::fields.inc.translatable_icon')
-      <div class="form-check">
+      <div class="form-check d-flex mb-0 align-items-center">
         <input type="hidden" name="{{ $field['name'] }}" value="{{ $field['value'] }}">
     	  <input type="checkbox"
           data-init-function="bpFieldInitCheckbox"
@@ -22,11 +22,11 @@
         	  @endforeach
           @endif
           >
-    	  <label class="font-weight-normal mb-0">{!! $field['label'] !!}</label>
+    	  <label class="font-weight-normal fw-normal mb-0 ml-2 ms-2">{!! $field['label'] !!}</label>
 
         {{-- HINT --}}
         @if (isset($field['hint']))
-            <p class="help-block">{!! $field['hint'] !!}</p>
+            <p class="help-block ml-2 ms-2">{!! $field['hint'] !!}</p>
         @endif
       </div>
 @include('crud::fields.inc.wrapper_end')

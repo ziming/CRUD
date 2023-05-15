@@ -35,7 +35,7 @@
                         value="{{$value}}"
                         @include('crud::fields.inc.attributes')
                         >
-                <label class="{{ isset($field['inline']) && $field['inline'] ? 'radio-inline' : '' }} form-check-label font-weight-normal">{!! $label !!}</label>
+                <label class="{{ isset($field['inline']) && $field['inline'] ? 'radio-inline' : '' }} form-check-label font-weight-normal p-0">{!! $label !!}</label>
             </div>
 
         @endforeach

@@ -38,8 +38,8 @@ use Illuminate\Support\Traits\Conditionable;
  */
 class CrudField
 {
-    use Conditionable;
     use MacroableWithAttributes;
+    use Conditionable;
 
     protected $attributes;
 

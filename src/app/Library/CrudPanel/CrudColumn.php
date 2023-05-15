@@ -33,8 +33,8 @@ use Illuminate\Support\Traits\Conditionable;
  */
 class CrudColumn
 {
-    use MacroableWithAttributes;
     use Conditionable;
+    use MacroableWithAttributes;
 
     protected $attributes;
 

@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Illuminate\Support\Traits\Conditionable;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
+use Illuminate\Support\Traits\Conditionable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Columns.

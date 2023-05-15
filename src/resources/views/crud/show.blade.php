@@ -25,53 +25,36 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="{{ $crud->getShowContentClass() }}">
+<div class="row">
+    <div class="{{ $crud->getShowContentClass() }}">
 
 	{{-- Default box --}}
-	  <div class="">
-	  	@if ($crud->model->translationEnabled())
-			<div class="row">
-				<div class="col-md-12 mb-2">
-					{{-- Change translation button group --}}
-					<div class="btn-group float-right">
-					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu">
-						@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-							<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?_locale={{ $key }}">{{ $locale }}</a>
-						@endforeach
-					</ul>
-					</div>
+	<div class="">
+	@if ($crud->model->translationEnabled())
+		<div class="row">
+			<div class="col-md-12 mb-2">
+				{{-- Change translation button group --}}
+				<div class="btn-group float-right">
+				<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					@foreach ($crud->model->getAvailableLocales() as $key => $locale)
+						<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}?_locale={{ $key }}">{{ $locale }}</a>
+					@endforeach
+				</ul>
 				</div>
 			</div>
-	    @endif
-	    <div class="card no-padding no-border">
-			<table class="table table-striped mb-0">
-		        <tbody>
-		        @foreach ($crud->columns() as $column)
-		            <tr>
-		                <td>
-		                    <strong>{!! $column['label'] !!}:</strong>
-		                </td>
-                        <td>
-                        	@php
-                        		// create a list of paths to column blade views
-                        		// including the configured view_namespaces
-                        		$columnPaths = array_map(function($item) use ($column) {
-                        			return $item.'.'.$column['type'];
-                        		}, \Backpack\CRUD\ViewNamespaces::getFor('columns'));
-
-                @if($crud->tabsEnabled() && count($crud->getUniqueTabNames('columns')))
-                    @include('crud::inc.show_tabbed_table')
-                @else
-                    <div class="card no-padding no-border mb-0">
-                        @include('crud::inc.show_table', ['columns' => $crud->columns()])
-                    </div>
-                @endif
-            </div>
-
-        </div>
-    </div>
+		</div>
+	@endif
+		@if($crud->tabsEnabled() && count($crud->getUniqueTabNames('columns')))
+			@include('crud::inc.show_tabbed_table')
+		@else
+			<div class="card no-padding no-border mb-0">
+				@include('crud::inc.show_table', ['columns' => $crud->columns()])
+			</div>
+		@endif
+	</div>
+	</div>
+</div>
 @endsection

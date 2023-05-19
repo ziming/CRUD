@@ -9,13 +9,6 @@
 
 @basset(base_path('vendor/backpack/crud/src/resources/assets/css/common.css'))
 
-<link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-      rel="stylesheet">
-{{-- TODO: We should use Basset for Google Fonts too, but it doesn't quite work yet: --}}
-{{-- @basset('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap',
-true, [], 'style') --}}
-
 @if (backpack_theme_config('styles') && count(backpack_theme_config('styles')))
     @foreach (backpack_theme_config('styles') as $path)
         @if(is_array($path))

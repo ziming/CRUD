@@ -346,7 +346,7 @@ trait FieldsProtectedMethods
     /**
      * Get the string that should be used as an array key, for the attributive array
      * where the fields are stored for the current operation.
-     * 
+     *
      * @deprecated v6
      */
     protected function getFieldKey(array $field): string

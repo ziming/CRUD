@@ -53,7 +53,7 @@ class CrudField
             $this->crud()->addField($nameOrDefinition);
             $nameOrDefinition = $nameOrDefinition['name'];
         }
-
+        
         $field = $this->crud()->firstFieldWhere('name', $nameOrDefinition);
 
         // if field exists

@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait Fields
 {
@@ -233,10 +234,9 @@ trait Fields
     {
         $fieldsArray = $this->getCleanStateFields();
         $field = $this->firstFieldWhere('name', $fieldName);
-        $fieldKey = $this->getFieldKey($field);
 
         foreach ($modifications as $attributeName => $attributeValue) {
-            $fieldsArray[$fieldKey][$attributeName] = $attributeValue;
+            $fieldsArray[$field['name']][$attributeName] = $attributeValue;
         }
 
         $this->enableTabsIfFieldUsesThem($modifications);
@@ -532,6 +532,15 @@ trait Fields
         return Arr::first($this->getCleanStateFields(), function ($field, $fieldKey) use ($attribute, $value) {
             return isset($field[$attribute]) && $field[$attribute] == $value;
         });
+    }
+
+    /**
+     * The field hold multiple inputs (one field represent multiple model attributes / relations)
+     * eg: date range or checklist dependency.
+     */
+    public function holdMultipleInputs(string $fieldName): bool
+    {
+        return Str::contains($fieldName, ',');
     }
 
     /**

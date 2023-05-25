@@ -8,6 +8,10 @@ use Illuminate\Routing\Controller;
 
 class LoginController extends Controller
 {
+    protected ?string $loginPath = null;
+    protected ?string $redirectTo = null;
+    protected ?string $redirectAfterLogout = null;
+
     protected $data = []; // the information we send to the view
 
     /*
@@ -40,16 +44,13 @@ class LoginController extends Controller
         // ----------------------------------
 
         // If not logged in redirect here.
-        $this->loginPath = property_exists($this, 'loginPath') ? $this->loginPath
-            : backpack_url('login');
+        $this->loginPath = !empty($this->loginPath) ? $this->loginPath : backpack_url('login');
 
         // Redirect here after successful login.
-        $this->redirectTo = property_exists($this, 'redirectTo') ? $this->redirectTo
-            : backpack_url('dashboard');
+        $this->redirectTo = !empty($this->redirectTo) ? $this->redirectTo : backpack_url('dashboard');
 
         // Redirect here after logout.
-        $this->redirectAfterLogout = property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout
-            : backpack_url('login');
+        $this->redirectAfterLogout = !empty($this->redirectAfterLogout) ? $this->redirectAfterLogout : backpack_url('login');
     }
 
     /**

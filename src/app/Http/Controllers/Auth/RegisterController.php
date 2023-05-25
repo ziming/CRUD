@@ -10,6 +10,8 @@ use Validator;
 
 class RegisterController extends Controller
 {
+    protected ?string $redirectTo = null;
+
     protected $data = []; // the information we send to the view
 
     /*
@@ -36,8 +38,7 @@ class RegisterController extends Controller
         $this->middleware("guest:$guard");
 
         // Where to redirect users after login / registration.
-        $this->redirectTo = property_exists($this, 'redirectTo') ? $this->redirectTo
-            : config('backpack.base.route_prefix', 'dashboard');
+        $this->redirectTo = !empty($this->redirectTo) ? $this->redirectTo : config('backpack.base.route_prefix', 'dashboard');
     }
 
     /**

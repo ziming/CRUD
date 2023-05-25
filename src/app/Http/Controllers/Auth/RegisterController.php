@@ -38,7 +38,7 @@ class RegisterController extends Controller
         $this->middleware("guest:$guard");
 
         // Where to redirect users after login / registration.
-        $this->redirectTo = !empty($this->redirectTo) ? $this->redirectTo : config('backpack.base.route_prefix', 'dashboard');
+        $this->redirectTo = ! empty($this->redirectTo) ? $this->redirectTo : config('backpack.base.route_prefix', 'dashboard');
     }
 
     /**

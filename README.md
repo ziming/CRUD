@@ -10,24 +10,24 @@
 <h3 align="center">Quickly build an admin panel for your Eloquent models, then customize every little detail.</h3>
 
 
-
 <p align="center">
     <br>
     <a href="https://packagist.org/packages/backpack/crud" title="Latest Version on Packagist"><img src="https://img.shields.io/packagist/v/backpack/crud.svg?style=flat-square"></a>
     <a href="https://packagist.org/packages/backpack/crud" title="Total Downloads"><img src="https://img.shields.io/packagist/dt/backpack/crud.svg?style=flat-square"></a>
     <a href="https://github.com/Laravel-Backpack/CRUD/commits/master" title="Last commit"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/laravel-backpack/crud"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud" title="Quality Score"><img src="https://img.shields.io/scrutinizer/g/laravel-backpack/crud.svg?style=flat-square"></a>
-    <a href="https://travis-ci.org/Laravel-Backpack/CRUD" title="Build Status"><img src="https://img.shields.io/travis/Laravel-Backpack/CRUD/master.svg?style=flat-square"></a>
     <a href="https://styleci.io/repos/53581270" title="Style CI"><img src="https://styleci.io/repos/53581270/shield"></a>
     <a href="https://scrutinizer-ci.com/g/laravel-backpack/crud/code-structure" title="Coverage Status"><img src="https://raw.githubusercontent.com/laravel-backpack/CRUD/coverage-badge-dont-delete/test-coverage.svg"></a>
     <a href="LICENSE.md" title="Software License"><img src="https://img.shields.io/github/license/laravel-backpack/crud?style=flat-square"></a>
     <a href="https://github.com/the-whole-fruit/manifesto"><img src="https://img.shields.io/badge/writing%20standard-the%20whole%20fruit-brightgreen?style=flat-square" title="We believe writing good code is not only about writing good code. It’s also about the words around it. We aims to deliver both: code and words."></a>
 </p>
 
-<p align="center">
-    <a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
-</p>
 
+
+https://user-images.githubusercontent.com/33960976/228454020-91f42000-919e-413c-92c7-d406725f6dd2.mp4
+
+
+-----
 
 Among the FREE features of each admin interface:
 - [List](https://backpackforlaravel.com/docs/5.x/crud-operation-list-entries) operation
@@ -68,7 +68,9 @@ But professionals don't love Backpack just because it's feature-packed. They als
 
 ## Demo
 
-Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin).
+Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/admin). Here's a sneak peek:
+
+<a href="https://backpackforlaravel.com/" title="Backpack Screenshots Spread"><img src="https://user-images.githubusercontent.com/1032474/86720524-c5a1d480-c02d-11ea-87ed-d03b0197eb25.gif"></a>
 
 ## Getting Started
 

@@ -474,7 +474,21 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return Arr::flatten(Arr::pluck($this->getCleanStateFields(), 'name'));
+        $fieldNamesArray = array_column($this->getCleanStateFields(), 'name');
+
+        return array_reduce($fieldNamesArray, function ($names, $item) {
+            if (strpos($item, ',') === false) {
+                $names[] = $item;
+
+                return $names;
+            }
+
+            foreach (explode(',', $item) as $fieldName) {
+                $names[] = $fieldName;
+            }
+
+            return $names;
+        });
     }
 
     /**

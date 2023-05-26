@@ -1261,7 +1261,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertCount(0, $planets);
     }
 
-    public function testCreateHasManyRelationWithArrayedNameSubfields()
+    public function testCreateHasManyRelationWithDelimitedNameSubfields()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
@@ -1272,7 +1272,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                     'name' => 'title',
                 ],
                 [
-                    'name' => ['start_date', 'end_date'],
+                    'name' => 'start_date,end_date',
                     'type' => 'date_range',
                 ],
             ],
@@ -1309,7 +1309,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals($inputData['universes'][1]['start_date'], $entry->universes()->find(2)->start_date);
     }
 
-    public function testCreateHasOneRelationWithArrayedNameSubfields()
+    public function testCreateHasOneRelationWithDelimitedNameSubfields()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
@@ -1322,7 +1322,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                         'name' => 'nickname',
                     ],
                     [
-                        'name' => ['start_date', 'end_date'],
+                        'name' => 'start_date,end_date',
                     ],
                     [
                         'name' => 'profile_picture',
@@ -1355,7 +1355,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals($account_details->end_date, '2091-01-26');
     }
 
-    public function testBelongsToManyWithArrayedNameSubfields()
+    public function testBelongsToManyWithDelimitedNameSubfields()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
@@ -1366,7 +1366,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                     'name' => 'notes',
                 ],
                 [
-                    'name' => ['start_date', 'end_date'],
+                    'name' => 'start_date,end_date',
                 ],
             ],
         ]);

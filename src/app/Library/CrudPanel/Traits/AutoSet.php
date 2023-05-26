@@ -109,7 +109,7 @@ trait AutoSet
             return 'email';
         }
 
-        if ($this->holdMultipleInputs($fieldName)) {
+        if ($this->holdsMultipleInputs($fieldName)) {
             return 'text'; // not because it's right, but because we don't know what it is
         }
 

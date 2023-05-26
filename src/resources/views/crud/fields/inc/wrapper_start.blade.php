@@ -10,7 +10,7 @@
 	// we add an astherisc for it. Case it's a subfield, that check is done upstream in repeatable_row. 
 	// the reason for that is that here the field name is already the repeatable name: parent[row][fieldName]
 	if(!isset($field['parentFieldName']) || !$field['parentFieldName']) {
-		$fieldName = $crud->holdMultipleInputs($field['name']) ? explode(',', $field['name']) : [$field['name']];
+		$fieldName = $crud->holdsMultipleInputs($field['name']) ? explode(',', $field['name']) : [$field['name']];
 		foreach($fieldName as $inputName) {
 			$required = (isset($action) && $crud->isRequired($inputName)) ? ' required' : '';
 			// if any of the hold inputs is required, the whole field is required

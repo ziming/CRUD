@@ -538,7 +538,7 @@ trait Fields
      * The field hold multiple inputs (one field represent multiple model attributes / relations)
      * eg: date range or checklist dependency.
      */
-    public function holdMultipleInputs(string $fieldName): bool
+    public function holdsMultipleInputs(string $fieldName): bool
     {
         return Str::contains($fieldName, ',');
     }

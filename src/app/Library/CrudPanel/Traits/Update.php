@@ -76,7 +76,7 @@ trait Update
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
 
-        if ($this->holdMultipleInputs($field['name'])) {
+        if ($this->holdsMultipleInputs($field['name'])) {
             $result = array_map(function ($item) use ($model) {
                 return $model->{$item};
             }, explode(',', $field['name']));

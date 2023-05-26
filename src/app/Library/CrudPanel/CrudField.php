@@ -43,18 +43,20 @@ class CrudField
 
     protected $attributes;
 
-    public function __construct($nameOrDefinition)
+    public function __construct($nameOrDefinitionArray)
     {
-        if (empty($nameOrDefinition)) {
+        if (empty($nameOrDefinitionArray)) {
             abort(500, 'Field name can\'t be empty.');
         }
 
-        if (is_array($nameOrDefinition)) {
-            $this->crud()->addField($nameOrDefinition);
-            $nameOrDefinition = $nameOrDefinition['name'];
+        if (is_array($nameOrDefinitionArray)) {
+            $this->crud()->addField($nameOrDefinitionArray);
+            $name = $nameOrDefinitionArray['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
         }
 
-        $field = $this->crud()->firstFieldWhere('name', $nameOrDefinition);
+        $field = $this->crud()->firstFieldWhere('name', $name);
 
         // if field exists
         if ((bool) $field) {
@@ -63,7 +65,7 @@ class CrudField
         } else {
             // it means we're creating the field now,
             // so at the very least set the name attribute
-            $this->setAttributeValue('name', $nameOrDefinition);
+            $this->setAttributeValue('name', $name);
         }
 
         $this->save();

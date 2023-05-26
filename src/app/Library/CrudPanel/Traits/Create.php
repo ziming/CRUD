@@ -60,7 +60,7 @@ trait Create
             // then take those fields into account (check if they have relationships);
             // this is done in particular for the checklist_dependency field,
             // but other fields could use it too, in the future;
-            if ($this->holdMultipleInputs($field['name']) &&
+            if ($this->holdsMultipleInputs($field['name']) &&
                 isset($field['subfields']) &&
                 is_array($field['subfields'])) {
                 foreach ($field['subfields'] as $subfield) {

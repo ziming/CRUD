@@ -226,9 +226,12 @@ class CrudField
      */
     public function subfields($subfields)
     {
+        $callAttributeMacro = ! isset($this->attributes['subfields']);
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
-        $this->callRegisteredAttributeMacros();
+        if ($callAttributeMacro) {
+            $this->callRegisteredAttributeMacros();
+        }
 
         return $this->save();
     }

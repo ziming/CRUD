@@ -99,7 +99,7 @@ final class RegisterUploadEvents
      * Register the saving, retrieved and deleting events on model to handle the various upload stages.
      * In case of CrudColumn we don't register the saving event.
      */
-    private function setupModelEvents(string $model, UploaderInterface $uploader): void
+    private function setupModelEvents(string $model, UploaderInterface $uploader, $isLastUploaderInGroup = true): void
     {
         if (app('UploadersRepository')->isUploadHandled($uploader->getIdentifier())) {
             return;
@@ -119,7 +119,7 @@ final class RegisterUploadEvents
         // if the entry is already retrieved from database, don't register the event
         // just process the uploader on the crud entry we already got.
         if (app('crud')->entry) {
-            app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
+            app('crud')->setEntry($uploader->retrieveUploadedFiles(app('crud')->entry));
         } else {
             $model::retrieved(function ($entry) use ($uploader) {
                 $entry = $uploader->retrieveUploadedFiles($entry);

@@ -228,6 +228,11 @@ class CrudPanel
         return $this->route;
     }
 
+    public function setEntry($entry)
+    {
+        $this->entry = $entry;
+    }
+
     /**
      * Set the entity name in singular and plural.
      * Used all over the CRUD interface (header, add button, reorder button, breadcrumbs).

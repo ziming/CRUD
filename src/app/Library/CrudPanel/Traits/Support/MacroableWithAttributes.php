@@ -44,14 +44,14 @@ trait MacroableWithAttributes
             }
             if (isset($attributes['subfields'])) {
                 $subfieldsWithMacros = collect($attributes['subfields'])
-                                        ->filter(fn($item) => isset($item[$macro]));
+                                        ->filter(fn ($item) => isset($item[$macro]));
 
                 $subfieldsWithMacros->each(
-                    function($item) use ($subfieldsWithMacros, $macro) {
+                    function ($item) use ($subfieldsWithMacros, $macro) {
                         $config = ! is_array($item[$macro]) ? [] : $item[$macro];
-                        if($subfieldsWithMacros->last() === $item) {
+                        if ($subfieldsWithMacros->last() === $item) {
                             $this->{$macro}($config, $item);
-                        }else{
+                        } else {
                             $this->{$macro}($config, $item, false);
                         }
                     }

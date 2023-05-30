@@ -116,10 +116,15 @@ final class RegisterUploadEvents
                 CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
             });
         }
-
-        $model::retrieved(function ($entry) use ($uploader) {
-            $entry = $uploader->retrieveUploadedFiles($entry);
-        });
+        // if the entry is already retrieved from database, don't register the event
+        // just process the uploader on the crud entry we already got.
+        if (app('crud')->entry) {
+            app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
+        } else {
+            $model::retrieved(function ($entry) use ($uploader) {
+                $entry = $uploader->retrieveUploadedFiles($entry);
+            });
+        }
 
         $model::deleting(function ($entry) use ($uploader) {
             $uploader->deleteUploadedFiles($entry);

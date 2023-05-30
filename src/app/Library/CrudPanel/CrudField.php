@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
+use Illuminate\Support\Traits\Conditionable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
@@ -38,13 +39,21 @@ use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 class CrudField
 {
     use MacroableWithAttributes;
+    use Conditionable;
 
     protected $attributes;
 
-    public function __construct($name)
+    public function __construct($nameOrDefinitionArray)
     {
-        if (empty($name)) {
+        if (empty($nameOrDefinitionArray)) {
             abort(500, 'Field name can\'t be empty.');
+        }
+
+        if (is_array($nameOrDefinitionArray)) {
+            $this->crud()->addField($nameOrDefinitionArray);
+            $name = $nameOrDefinitionArray['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
         }
 
         $field = $this->crud()->firstFieldWhere('name', $name);

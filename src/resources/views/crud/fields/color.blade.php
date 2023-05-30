@@ -9,7 +9,7 @@ $value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['de
     @include('crud::fields.inc.translatable_icon')
 
     <div class="input-group">
-        @if(isset($field['prefix'])) <div class="input-group-prepend"><span class="input-group-text">{!! $field['prefix'] !!}</span></div> @endif
+        @if(isset($field['prefix'])) <span class="input-group-text">{!! $field['prefix'] !!}</span> @endif
         <input
             type="text"
             name="{{ $field['name'] }}"
@@ -19,15 +19,13 @@ $value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['de
             data-init-function="bpFieldInitColorElement"
             @include('crud::fields.inc.attributes')
         />
-        <div class="input-group-append">
-            <span class="input-group-text">
-                <input
-                    type="color"
-                    value="{{ $value }}"
-                />
-            </span>
-        </div>
-        @if(isset($field['suffix'])) <div class="input-group-append"><span class="input-group-text">{!! $field['suffix'] !!}</span></div> @endif
+        <span class="input-group-text">
+            <input
+                type="color"
+                value="{{ $value }}"
+            />
+        </span>
+        @if(isset($field['suffix'])) <span class="input-group-text">{!! $field['suffix'] !!}</span> @endif
     </div>
 
     {{-- HINT --}}

@@ -118,7 +118,7 @@ final class RegisterUploadEvents
         }
         // if the entry is already retrieved from database, don't register the event
         // just process the uploader on the crud entry we already got.
-        if (app('crud')->entry) { 
+        if (app('crud')->entry) {
             app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
         } else {
             $model::retrieved(function ($entry) use ($uploader) {

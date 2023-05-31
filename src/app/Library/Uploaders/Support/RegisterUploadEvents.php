@@ -24,20 +24,20 @@ final class RegisterUploadEvents
         }
     }
 
-    public static function handle(CrudField|CrudColumn $crudObject, array $uploaderConfiguration, string $macro, ?array $subfield = null): void
+    public static function handle(CrudField|CrudColumn $crudObject, array $uploaderConfiguration, string $macro, ?array $subfield = null, ?bool $isLastUploaderInGroup = true): void
     {
         $instance = new self($crudObject, $uploaderConfiguration, $macro);
 
-        $instance->registerEvents($subfield);
+        $instance->registerEvents($subfield, $isLastUploaderInGroup);
     }
 
     /*******************************
      * Private methods - implementation
      *******************************/
-    private function registerEvents(array|null $subfield = []): void
+    private function registerEvents(array|null $subfield = [], ?bool $isLastUploaderInGroup = true): void
     {
         if (! empty($subfield)) {
-            $this->registerSubfieldEvent($subfield);
+            $this->registerSubfieldEvent($subfield, $isLastUploaderInGroup);
 
             return;
         }
@@ -50,7 +50,7 @@ final class RegisterUploadEvents
         $this->setupUploadConfigsInCrudObject($uploader);
     }
 
-    private function registerSubfieldEvent(array $subfield): void
+    private function registerSubfieldEvent(array $subfield, bool $isLastUploaderInGroup = true): void
     {
         $uploader = $this->getUploader($subfield, $this->uploaderConfiguration);
         $crudObject = $this->crudObject->getAttributes();
@@ -71,7 +71,7 @@ final class RegisterUploadEvents
 
         // for subfields, we only register one event so that we have access to the repeatable container name.
         // all the uploaders for a given container are stored in the UploadersRepository.
-        if (! app('UploadersRepository')->hasRepeatableUploadersFor($uploader->getRepeatableContainerName())) {
+        if ($isLastUploaderInGroup) {
             $this->setupModelEvents($model, $uploader);
         }
 
@@ -99,7 +99,7 @@ final class RegisterUploadEvents
      * Register the saving, retrieved and deleting events on model to handle the various upload stages.
      * In case of CrudColumn we don't register the saving event.
      */
-    private function setupModelEvents(string $model, UploaderInterface $uploader, $isLastUploaderInGroup = true): void
+    private function setupModelEvents(string $model, UploaderInterface $uploader): void
     {
         if (app('UploadersRepository')->isUploadHandled($uploader->getIdentifier())) {
             return;
@@ -118,8 +118,8 @@ final class RegisterUploadEvents
         }
         // if the entry is already retrieved from database, don't register the event
         // just process the uploader on the crud entry we already got.
-        if (app('crud')->entry) {
-            app('crud')->setEntry($uploader->retrieveUploadedFiles(app('crud')->entry));
+        if (app('crud')->entry) { 
+            app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
         } else {
             $model::retrieved(function ($entry) use ($uploader) {
                 $entry = $uploader->retrieveUploadedFiles($entry);

@@ -101,7 +101,8 @@
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
             } else {
-                this.$input.trigger('change');
+                let event = new Event('change');
+                this.input.dispatchEvent(event);
             }
 
             return this;
@@ -109,7 +110,8 @@
 
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
-            this.$input.trigger(`CrudField:${value ? 'show' : 'hide'}`);
+            let event = new Event(`CrudField:${value ? 'show' : 'hide'}`);
+            this.input.dispatchEvent(event);
             return this;
         }
 
@@ -119,7 +121,8 @@
 
         enable(value = true) {
             this.$input.attr('disabled', !value && 'disabled');
-            this.$input.trigger(`CrudField:${value ? 'enable' : 'disable'}`);
+            let event = new Event(`CrudField:${value ? 'enable' : 'disable'}`);
+            this.input.dispatchEvent(event);
             return this;
         }
 
@@ -129,7 +132,8 @@
 
         require(value = true) {
             this.wrapper.toggleClass('required', value);
-            this.$input.trigger(`CrudField:${value ? 'require' : 'unrequire'}`);
+            let event = new Event(`CrudField:${value ? 'require' : 'unrequire'}`);
+            this.input.dispatchEvent(event);
             return this;
         }
 

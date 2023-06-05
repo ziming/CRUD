@@ -1,10 +1,10 @@
 <?php
 
 return [
-    
+
     // IMPORTANT NOTE: The configurations here get overriden by theme config files.
     //
-    // Eg. If you're using theme-tabler and config/backpack/theme-tabler.php 
+    // Eg. If you're using theme-tabler and config/backpack/theme-tabler.php
     // has "breadcrumbs" set as false, then THAT value will be used instead
     // of the value in this file.
 

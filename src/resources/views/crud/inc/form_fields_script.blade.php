@@ -102,7 +102,7 @@
                 window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
             } else {
                 let event = new Event('change');
-                this.input.dispatchEvent(event);
+                this.input?.dispatchEvent(event);
             }
 
             return this;
@@ -111,7 +111,7 @@
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
             let event = new Event(`CrudField:${value ? 'show' : 'hide'}`);
-            this.input.dispatchEvent(event);
+            this.input?.dispatchEvent(event);
             return this;
         }
 
@@ -122,7 +122,7 @@
         enable(value = true) {
             this.$input.attr('disabled', !value && 'disabled');
             let event = new Event(`CrudField:${value ? 'enable' : 'disable'}`);
-            this.input.dispatchEvent(event);
+            this.input?.dispatchEvent(event);
             return this;
         }
 
@@ -133,7 +133,7 @@
         require(value = true) {
             this.wrapper.toggleClass('required', value);
             let event = new Event(`CrudField:${value ? 'require' : 'unrequire'}`);
-            this.input.dispatchEvent(event);
+            this.input?.dispatchEvent(event);
             return this;
         }
 

@@ -258,13 +258,15 @@ class BackpackServiceProvider extends ServiceProvider
         // add the backpack_users password broker to the configuration
         $laravelAuthPasswordBrokers = app()->config['auth.passwords'];
 
-        $backpackPasswordBrokerTable = app()->version() < 10 ? 'password_resets' : current($laravelAuthPasswordBrokers)['table'];
+        $backpackPasswordBrokerTable = config('backpack.base.password_resets_table') ??
+                                        config('auth.passwords.users.table') ??
+                                        current($laravelAuthPasswordBrokers)['table'];
 
         app()->config['auth.passwords'] = $laravelAuthPasswordBrokers +
         [
             'backpack' => [
                 'provider'  => 'backpack',
-                'table'     => config('backpack.base.password_resets_table') ?? $backpackPasswordBrokerTable,
+                'table'     => $backpackPasswordBrokerTable,
                 'expire'    => config('backpack.base.password_recovery_token_expiration', 60),
                 'throttle'  => config('backpack.base.password_recovery_throttle_notifications'),
             ],

@@ -27,120 +27,101 @@ class CrudPanelButtonsTest extends BaseCrudPanel
 
         $this->crudPanel->setOperation('list');
 
-        $this->topViewButton = new CrudButton('topViewButton', 'top', 'view', 'crud::buttons.show');
-        $this->lineViewButton = new CrudButton('lineViewButton', 'line', 'view', 'crud::buttons.update');
-        $this->bottomViewButton = new CrudButton('bottomViewButton', 'bottom', 'view', 'crud::buttons.revisions');
-
-        $this->topModelFunctionButton = new CrudButton('topModelFunctionButton', 'top', 'someModelFunctionName', 'crud::buttons.show');
+        $this->topViewButton = [
+            'name'    => 'topViewButton',
+            'stack'   => 'top',
+            'type'    => 'view',
+            'content' => 'crud::buttons.show',
+        ];
+        $this->lineViewButton = [
+            'name'     => 'lineViewButton',
+            'stack'    => 'line',
+            'type'     => 'view',
+            'content'  => 'crud::buttons.show',
+            'position' => null,
+        ];
+        $this->bottomViewButton = [
+            'name'     => 'bottomViewButton',
+            'stack'    => 'bottom',
+            'type'     => 'view',
+            'content'  => 'crud::buttons.show',
+            'position' => null,
+        ];
+        $this->topModelFunctionButton = [
+            'name'     => 'topModelFunctionButton',
+            'stack'    => 'top',
+            'type'     => 'model_function',
+            'content'  => 'crud::buttons.show',
+            'position' => null,
+        ];
     }
 
-    public function testDefaultButtons()
+    public function testItCanAddMultipleButtons()
     {
-        $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
+        $this->addDefaultButtons();
 
-        foreach ($this->crudPanel->buttons() as $button) {
-            $this->assertTrue(in_array($button->name, $this->defaultButtonNames));
-        }
+        $this->assertcount(4, $this->crudPanel->buttons());
     }
 
-    public function testAddTopButtonTop()
+    public function testCanAddButtonToSpecificStack()
     {
+        $this->addDefaultButtons();
         $expectedButton = $this->topViewButton;
+        $expectedButton['name'] = 'topViewButtonCustomName';
+        $expectedButton['stack'] = 'top';
+        $expectedButton['position'] = null;
 
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
+        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content']);
 
-        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last());
-    }
-
-    public function testAddButtonLine()
-    {
-        $expectedButton = $this->lineViewButton;
-
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
-
-        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->first());
-    }
-
-    public function testAddButtonBottom()
-    {
-        $expectedButton = $this->bottomViewButton;
-
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
-
-        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last());
-    }
-
-    public function testAddButtonBottomUnknownStackName()
-    {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        $this->expectException(\Exception::class);
-
-        $expectedButton = $this->topViewButton;
-
-        // TODO: this should throw an error.
-        $this->crudPanel->addButton('unknownStackName', $expectedButton->name, $expectedButton->type, $expectedButton->content);
+        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last()->toArray());
+        $this->assertCount(3, $this->crudPanel->getButtonsForStack($expectedButton['stack']));
     }
 
     public function testAddButtonsWithSameName()
     {
         $expectedButton = $this->topViewButton;
 
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
+        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content']);
+        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content']);
 
-        $this->assertEquals(count($this->defaultButtonNames) + 1, count($this->crudPanel->buttons()));
-    }
+        $this->assertCount(1, $this->crudPanel->buttons());
 
-    public function testAddButtonsWithSameNameWithoutReplacing()
-    {
-        $this->markTestIncomplete('This no longer makes sense in Backpack 4.1. Button names are unique now.');
+        $expectedButton2 = $this->bottomViewButton;
+        CrudButton::name($expectedButton2);
+        CrudButton::name($expectedButton2);
 
-        $expectedButton = $this->topViewButton;
-
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, false, false);
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, false, false);
-
-        $this->assertEquals(count($this->defaultButtonNames) + 2, count($this->crudPanel->buttons()));
+        $this->assertCount(2, $this->crudPanel->buttons());
     }
 
     public function testAddButtonBeginning()
     {
-        $expectedButton = $this->topViewButton;
+        $this->addTestButton('topViewButton');
 
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, 'beginning');
+        $expectedButton = $this->bottomViewButton;
 
-        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->first());
+        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content'], 'beginning');
+
+        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->first()->toArray());
     }
 
     public function testAddButtonEnd()
     {
-        $expectedButton = $this->lineViewButton;
-
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, 'end');
-
-        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last());
-    }
-
-    public function testAddButtonUnknownPosition()
-    {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        $this->expectException(\Exception::class);
+        $this->addTestButton('lineViewButton');
 
         $expectedButton = $this->lineViewButton;
 
-        // TODO: this should throw an error.
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content, 'unknownPosition');
+        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content'], 'end');
+
+        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last()->toArray());
     }
 
     public function testAddButtonFromModelFunction()
     {
         $expectedButton = $this->topModelFunctionButton;
 
-        $this->crudPanel->addButton($expectedButton->stack, $expectedButton->name, $expectedButton->type, $expectedButton->content);
+        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content']);
 
-        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last());
+        $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last()->toArray());
     }
 
     public function testAddButtonFromView()
@@ -148,15 +129,14 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $expectedButton = $this->topViewButton;
         $viewName = 'someViewName';
 
-        $this->crudPanel->addButtonFromView($expectedButton->stack, $expectedButton->name, $viewName, $expectedButton->content);
+        $this->crudPanel->addButtonFromView($expectedButton['stack'], $expectedButton['name'], $viewName);
 
         $backpackButtonViewPackage = 'crud::buttons.';
         $actualButton = $this->crudPanel->buttons()->last();
 
-        $this->assertEquals($expectedButton->stack, $actualButton->stack);
-        $this->assertEquals($expectedButton->name, $actualButton->name);
+        $this->assertEquals($expectedButton['stack'], $actualButton->stack);
+        $this->assertEquals($expectedButton['name'], $actualButton->name);
         $this->assertEquals($backpackButtonViewPackage.$viewName, $actualButton->content);
-        $this->assertEquals($expectedButton->stack, $actualButton->stack);
     }
 
     public function testRemoveButton()
@@ -164,7 +144,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->crudPanel->addButton('line', 'update', 'view', 'crud::buttons.update', 'end');
         $this->crudPanel->removeButton('update');
 
-        $this->assertEquals(0, count($this->crudPanel->buttons()));
+        $this->assertCount(0, $this->crudPanel->buttons());
         $this->assertNull($this->getButtonByName('update'));
     }
 
@@ -174,7 +154,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->crudPanel->addButton('line', 'show', 'view', 'crud::buttons.show', 'end');
         $this->crudPanel->removeButtons(['show', 'update']);
 
-        $this->assertEquals(0, count($this->crudPanel->buttons()));
+        $this->assertCount(0, $this->crudPanel->buttons());
         $this->assertNull($this->getButtonByName('show'));
         $this->assertNull($this->getButtonByName('update'));
     }
@@ -186,22 +166,24 @@ class CrudPanelButtonsTest extends BaseCrudPanel
             'someOtherButtonName',
         ];
 
+        $this->addDefaultButtons();
         $this->crudPanel->removeButtons($buttonNames);
 
-        $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
+        $this->assertCount(4, $this->crudPanel->buttons());
     }
 
     public function testRemoveUnknownButton()
     {
-        $buttonName = 'someButtonName';
+        $this->addTestButton('topViewButton');
 
-        $this->crudPanel->removeButton($buttonName);
+        $this->crudPanel->removeButton('someButtonName');
 
-        $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
+        $this->assertCount(1, $this->crudPanel->buttons());
     }
 
     public function testRemoveAllButtons()
     {
+        $this->addDefaultButtons();
         $this->crudPanel->removeAllButtons();
 
         $this->assertEmpty($this->crudPanel->buttons());
@@ -215,15 +197,16 @@ class CrudPanelButtonsTest extends BaseCrudPanel
 
         $this->crudPanel->removeButtonFromStack($button->name, $button->stack);
 
-        $this->assertEquals(0, count($this->crudPanel->buttons()));
+        $this->assertCount(0, $this->crudPanel->buttons());
         $this->assertNull($this->getButtonByName($button->name));
     }
 
     public function testRemoveUnknownButtonFromStack()
     {
+        $this->addTestButton('lineViewButton');
         $this->crudPanel->removeButtonFromStack('someButtonName', 'line');
 
-        $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
+        $this->assertCount(1, $this->crudPanel->buttons());
     }
 
     public function testRemoveButtonFromUnknownStack()
@@ -235,7 +218,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
 
         $this->crudPanel->removeButtonFromStack($button->name, 'someStackName');
 
-        $this->assertEquals(2, count($this->crudPanel->buttons()));
+        $this->assertCount(2, $this->crudPanel->buttons());
     }
 
     public function testRemoveAllButtonsFromStack()
@@ -245,14 +228,16 @@ class CrudPanelButtonsTest extends BaseCrudPanel
 
         $this->crudPanel->removeAllButtonsFromStack('line');
 
-        $this->assertEquals(0, count($this->crudPanel->buttons()));
+        $this->assertCount(0, $this->crudPanel->buttons());
     }
 
     public function testRemoveAllButtonsFromUnknownStack()
     {
+        $this->addTestButton('lineViewButton');
+
         $this->crudPanel->removeAllButtonsFromStack('someStackName');
 
-        $this->assertEquals(count($this->defaultButtonNames), count($this->crudPanel->buttons()));
+        $this->assertCount(1, $this->crudPanel->buttons());
     }
 
     public function testOrderButtons()
@@ -266,10 +251,34 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->assertEquals(['show', 'test', 'update'], $this->crudPanel->buttons()->pluck('name')->toArray());
     }
 
+    public function testAddButtonFluently()
+    {
+        $button1 = CrudButton::name('lineTest')->to('line')->view('crud::buttons.test')->type('view');
+        $button2 = CrudButton::add('modelFunction')->model_function(function () {
+            return 'test';
+        })->section('top')->makeFirst();
+        $this->assertEquals($button1->toArray(), $this->crudPanel->buttons()->last()->toArray());
+        $button1->makeLast();
+        $this->assertEquals($button2->toArray(), $this->crudPanel->buttons()->first()->toArray());
+    }
+
     private function getButtonByName($name)
     {
         return $this->crudPanel->buttons()->first(function ($value) use ($name) {
             return $value->name == $name;
         });
+    }
+
+    private function addDefaultButtons()
+    {
+        CrudButton::name($this->topViewButton);
+        CrudButton::name($this->lineViewButton);
+        CrudButton::name($this->bottomViewButton);
+        CrudButton::name($this->topModelFunctionButton);
+    }
+
+    private function addTestButton($buttonName)
+    {
+        CrudButton::name(array_values($this->{$buttonName}));
     }
 }

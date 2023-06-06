@@ -43,12 +43,19 @@ trait MacroableWithAttributes
                 continue;
             }
             if (isset($attributes['subfields'])) {
-                foreach ($attributes['subfields'] as $subfield) {
-                    if (isset($subfield[$macro])) {
-                        $config = ! is_array($subfield[$macro]) ? [] : $subfield[$macro];
-                        $this->{$macro}($config, $subfield);
+                $subfieldsWithMacros = collect($attributes['subfields'])
+                                        ->filter(fn ($item) => isset($item[$macro]));
+
+                $subfieldsWithMacros->each(
+                    function ($item) use ($subfieldsWithMacros, $macro) {
+                        $config = ! is_array($item[$macro]) ? [] : $item[$macro];
+                        if ($subfieldsWithMacros->last() === $item) {
+                            $this->{$macro}($config, $item);
+                        } else {
+                            $this->{$macro}($config, $item, false);
+                        }
                     }
-                }
+                );
             }
         }
     }

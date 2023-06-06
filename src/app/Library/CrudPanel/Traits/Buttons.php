@@ -257,23 +257,17 @@ trait Buttons
 
     /**
      * Return the buttons for a given stack.
-     *
-     * @param  string  $stack
-     * @return \Illuminate\Support\Collection
      */
-    public function getButtonsForStack(string $stack)
+    public function getButtonsForStack(string $stack): Collection
     {
         return $this->buttons()->where('stack', $stack);
     }
 
     /**
      * Add a new button to the current CRUD operation.
-     *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
-     * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton
      */
-    public function button(string|array $name)
+    public function button(string|array $nameOrAttributes): CrudButton
     {
-        return new CrudButton('name');
+        return new CrudButton($nameOrAttributes);
     }
 }

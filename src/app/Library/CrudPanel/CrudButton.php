@@ -32,12 +32,12 @@ class CrudButton implements Arrayable
 
     public $position;
 
-    public function __construct($name, $stack = null, $type = null, $content = null, $position = null)
+    public function __construct($nameOrAttributes, $stack = null, $type = null, $content = null, $position = null)
     {
         // in case an array was passed as name
         // assume it's an array that includes [$name, $stack, $type, $content]
-        if (is_array($name)) {
-            extract($name);
+        if (is_array($nameOrAttributes)) {
+            extract($nameOrAttributes);
         }
 
         $this->name = $name ?? 'button_'.rand(1, 999999999);
@@ -60,21 +60,21 @@ class CrudButton implements Arrayable
     /**
      * Add a new button to the default stack.
      *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
+     * @param  string|array  $nameOrAttributes  Button name or array that contains name, stack, type and content.
      */
-    public static function name($attributes = null)
+    public static function name($nameOrAttributes)
     {
-        return new static($attributes);
+        return new static($nameOrAttributes);
     }
 
     /**
      * Add a new button to the default stack.
      *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
+     * @param  string|array  $nameOrAttributes  Button name or array that contains name, stack, type and content.
      */
-    public static function add($attributes = null)
+    public static function add($nameOrAttributes)
     {
-        return new static($attributes);
+        return new static($nameOrAttributes);
     }
 
     /**
@@ -88,12 +88,12 @@ class CrudButton implements Arrayable
      * div button. But they don't want them added to the before_content of after_content
      * stacks. So what they do is basically add them to a 'hidden' stack, that nobody will ever see.
      *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
+     * @param  string|array  $nameOrAttributes  Button name or array that contains name, stack, type and content.
      * @return CrudButton
      */
-    public static function make($attributes = null)
+    public static function make($nameOrAttributes)
     {
-        $button = static::add($attributes);
+        $button = static::add($nameOrAttributes);
         $button->stack('hidden');
 
         return $button;

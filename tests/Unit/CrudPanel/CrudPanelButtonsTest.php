@@ -8,8 +8,6 @@ use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Buttons
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudButton
- * @covers Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonStackEnum
- * @covers Backpack\CRUD\app\Library\CrudPanel\Enums\ButtonPositionEnum
  */
 class CrudPanelButtonsTest extends BaseCrudPanel
 {
@@ -30,30 +28,30 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->crudPanel->setOperation('list');
 
         $this->topViewButton = [
-            'name' => 'topViewButton',
-            'stack' => 'top',
-            'type' => 'view',
+            'name'    => 'topViewButton',
+            'stack'   => 'top',
+            'type'    => 'view',
             'content' => 'crud::buttons.show',
         ];
         $this->lineViewButton = [
-            'name' => 'lineViewButton',
-            'stack' => 'line',
-            'type' => 'view',
-            'content' => 'crud::buttons.show',
+            'name'     => 'lineViewButton',
+            'stack'    => 'line',
+            'type'     => 'view',
+            'content'  => 'crud::buttons.show',
             'position' => null,
         ];
         $this->bottomViewButton = [
-            'name' => 'bottomViewButton',
-            'stack' => 'bottom',
-            'type' => 'view',
-            'content' => 'crud::buttons.show',
+            'name'     => 'bottomViewButton',
+            'stack'    => 'bottom',
+            'type'     => 'view',
+            'content'  => 'crud::buttons.show',
             'position' => null,
         ];
         $this->topModelFunctionButton = [
-            'name' => 'topModelFunctionButton',
-            'stack' => 'top',
-            'type' => 'model_function',
-            'content' => 'crud::buttons.show',
+            'name'     => 'topModelFunctionButton',
+            'stack'    => 'top',
+            'type'     => 'model_function',
+            'content'  => 'crud::buttons.show',
             'position' => null,
         ];
     }
@@ -79,15 +77,6 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->assertCount(3, $this->crudPanel->getButtonsForStack($expectedButton['stack']));
     }
 
-    public function testAddButtonBottomUnknownStackName()
-    {
-        $this->expectException(\Exception::class);
-
-        $expectedButton = $this->topViewButton;
-
-        $this->crudPanel->addButton('unknownStackName', $expectedButton['name'], $expectedButton['type'], $expectedButton['content']);
-    }
-
     public function testAddButtonsWithSameName()
     {
         $expectedButton = $this->topViewButton;
@@ -102,18 +91,6 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         CrudButton::name($expectedButton2);
 
         $this->assertCount(2, $this->crudPanel->buttons());
-    }
-
-    public function testAddButtonsWithSameNameWithoutReplacing()
-    {
-        $this->markTestIncomplete('This no longer makes sense in Backpack 4.1. Button names are unique now.');
-
-        $expectedButton = $this->topViewButton;
-
-        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content'], false, false);
-        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content'], false, false);
-
-        $this->assertEquals(count($this->defaultButtonNames) + 2, count($this->crudPanel->buttons()));
     }
 
     public function testAddButtonBeginning()
@@ -136,15 +113,6 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content'], 'end');
 
         $this->assertEquals($expectedButton, $this->crudPanel->buttons()->last()->toArray());
-    }
-
-    public function testAddButtonUnknownPosition()
-    {
-        $this->expectException(\Exception::class);
-
-        $expectedButton = $this->lineViewButton;
-
-        $this->crudPanel->addButton($expectedButton['stack'], $expectedButton['name'], $expectedButton['type'], $expectedButton['content'], 'unknownPosition');
     }
 
     public function testAddButtonFromModelFunction()

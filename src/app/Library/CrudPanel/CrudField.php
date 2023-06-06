@@ -43,10 +43,17 @@ class CrudField
 
     protected $attributes;
 
-    public function __construct($name)
+    public function __construct($nameOrDefinitionArray)
     {
-        if (empty($name)) {
+        if (empty($nameOrDefinitionArray)) {
             abort(500, 'Field name can\'t be empty.');
+        }
+
+        if (is_array($nameOrDefinitionArray)) {
+            $this->crud()->addField($nameOrDefinitionArray);
+            $name = $nameOrDefinitionArray['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
         }
 
         $field = $this->crud()->firstFieldWhere('name', $name);
@@ -219,9 +226,12 @@ class CrudField
      */
     public function subfields($subfields)
     {
+        $callAttributeMacro = ! isset($this->attributes['subfields']);
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
-        $this->callRegisteredAttributeMacros();
+        if ($callAttributeMacro) {
+            $this->callRegisteredAttributeMacros();
+        }
 
         return $this->save();
     }

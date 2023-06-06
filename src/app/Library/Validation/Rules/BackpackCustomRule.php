@@ -2,13 +2,11 @@
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\ValidatorAwareRule;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -25,15 +23,7 @@ abstract class BackpackCustomRule implements ValidationRule, DataAwareRule, Vali
 
     public array $fieldRules = [];
 
-    public ?Model $entry;
-
     public bool $implicit = true;
-
-    public function __construct()
-    {
-        $entry = CrudPanelFacade::getCurrentEntry();
-        $this->entry = $entry !== false ? $entry : null;
-    }
 
     public static function field(string|array|ValidationRule|Rule $rules = []): self
     {

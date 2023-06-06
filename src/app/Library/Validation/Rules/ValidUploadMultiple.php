@@ -23,10 +23,12 @@ class ValidUploadMultiple extends ValidFileArray
             return;
         }
 
+        $entry = CrudPanelFacade::getCurrentEntry() !== false ? CrudPanelFacade::getCurrentEntry() : null;
+
         // `upload_multiple` sends [[0 => null]] when user doesn't upload anything
         // assume that nothing changed on field so nothing is sent on the request.
         if (count($value) === 1 && empty($value[0])) {
-            if ($this->entry) {
+            if ($entry) {
                 unset($this->data[$attribute]);
             } else {
                 $this->data[$attribute] = [];
@@ -34,14 +36,14 @@ class ValidUploadMultiple extends ValidFileArray
             $value = [];
         }
 
-        $previousValues = $this->entry?->{$attribute} ?? [];
+        $previousValues = $entry?->{$attribute} ?? [];
         if (is_string($previousValues)) {
             $previousValues = json_decode($previousValues, true) ?? [];
         }
 
         $value = array_merge($previousValues, $value);
 
-        if ($this->entry) {
+        if ($entry) {
             $filesDeleted = CrudPanelFacade::getRequest()->input('clear_'.$attribute) ?? [];
 
             $data = $this->data;

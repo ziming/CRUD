@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\Validation\Rules;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade;
 use Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles;
 use Closure;
 use Illuminate\Contracts\Validation\Rule;
@@ -22,7 +23,9 @@ class ValidUpload extends BackpackCustomRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! array_key_exists($attribute, $this->data) && $this->entry) {
+        $entry = CrudPanelFacade::getCurrentEntry();
+
+        if (! array_key_exists($attribute, $this->data) && $entry) {
             return;
         }
 

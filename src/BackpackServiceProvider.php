@@ -48,6 +48,7 @@ class BackpackServiceProvider extends ServiceProvider
     {
         $this->loadViewsWithFallbacks('crud');
         $this->loadViewsWithFallbacks('ui', 'backpack.ui');
+        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -193,6 +194,11 @@ class BackpackServiceProvider extends ServiceProvider
         if (file_exists(base_path().$this->customRoutesFilePath)) {
             $this->loadRoutesFrom(base_path().$this->customRoutesFilePath);
         }
+    }
+
+    public function loadViewNamespace($domain, $namespace)
+    {
+        ViewNamespaces::addFor($domain, $namespace);
     }
 
     public function loadViewsWithFallbacks($dir, $namespace = null)

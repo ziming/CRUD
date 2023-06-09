@@ -52,7 +52,7 @@ abstract class ValidFileArray extends BackpackCustomRule
             $validator = Validator::make([$cleanAttribute => $file], [
                 $cleanAttribute => $this->getFileRules(),
             ], $this->validator->customMessages, $this->validator->customAttributes);
-           
+
             if ($validator->fails()) {
                 foreach ($validator->errors()->messages() ?? [] as $attr => $message) {
                     foreach ($message as $messageText) {
@@ -92,11 +92,10 @@ abstract class ValidFileArray extends BackpackCustomRule
         return $value;
     }
 
-    private function getValidationAttributeString($attribute) 
-    {  
+    private function getValidationAttributeString($attribute)
+    {
         return Str::substrCount($attribute, '.') > 1 ?
                 Str::before($attribute, '.').'.*.'.Str::afterLast($attribute, '.') :
                 $attribute;
-    
     }
 }

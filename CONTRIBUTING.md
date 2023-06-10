@@ -28,7 +28,7 @@ PR Rules:
 If you have a solution for it and want to help, you can submit a Pull Request. Tell us you are willing to do that. It takes a little more time from you, but:
 - your fix is guaranteed to be merged a lot faster;
 - you'll become one of the Backpack contributors; [welcome to the party! :-)](https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif);
-- you'll not just be helping yourself and the maintainers of Backpack, you'd be helping thousantds of Backpack developers;
+- you'll not just be helping yourself and the maintainers of Backpack, you'd be helping thousands of Backpack developers;
 
 If you've never submitted a PR before, don't worry, it's not that difficult. Read [this tutorial](https://mattstauffer.com/blog/how-to-contribute-to-an-open-source-github-project-using-your-own-fork) and the rules above. I promise, you'll enjoy sending PRs after a while :-)
 

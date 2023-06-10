@@ -4,8 +4,6 @@
 @basset('https://unpkg.com/pace-js@1.2.4/pace.min.js')
 @basset('https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js')
 
-@basset(base_path('vendor/backpack/crud/src/resources/assets/js/common.js'))
-
 @if (backpack_theme_config('scripts') && count(backpack_theme_config('scripts')))
     @foreach (backpack_theme_config('scripts') as $path)
         @if(is_array($path))
@@ -31,3 +29,5 @@
 @if(config('app.debug'))
     @include('crud::inc.ajax_error_frame')
 @endif
+
+@basset(base_path('vendor/backpack/crud/src/resources/assets/js/common.js'))

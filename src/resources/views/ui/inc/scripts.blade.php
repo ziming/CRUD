@@ -30,4 +30,6 @@
     @include('crud::inc.ajax_error_frame')
 @endif
 
-@basset(base_path('vendor/backpack/crud/src/resources/assets/js/common.js'))
+@push('after_scripts')
+    @basset(base_path('vendor/backpack/crud/src/resources/assets/js/common.js'))
+@endpush

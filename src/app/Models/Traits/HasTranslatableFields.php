@@ -2,8 +2,6 @@
 
 namespace Backpack\CRUD\app\Models\Traits;
 
-use Illuminate\Database\Eloquent\Model;
-
 /*
 |--------------------------------------------------------------------------
 | Methods for working with translatable models.

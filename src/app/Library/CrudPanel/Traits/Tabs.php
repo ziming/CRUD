@@ -97,7 +97,7 @@ trait Tabs
     }
 
     /**
-     * @param $label
+     * @param  $label
      * @return bool
      */
     public function isLastTab($label)

@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 abstract class ValidFileArray extends BackpackCustomRule
 {
@@ -46,9 +47,10 @@ abstract class ValidFileArray extends BackpackCustomRule
 
     protected function validateItems(string $attribute, array $items, Closure $fail): void
     {
+        $cleanAttribute = Str::afterLast($attribute, '.');
         foreach ($items as $file) {
-            $validator = Validator::make([$attribute => $file], [
-                $attribute => $this->getFileRules(),
+            $validator = Validator::make([$cleanAttribute => $file], [
+                $cleanAttribute => $this->getFileRules(),
             ], $this->validator->customMessages, $this->validator->customAttributes);
 
             if ($validator->fails()) {
@@ -65,9 +67,9 @@ abstract class ValidFileArray extends BackpackCustomRule
     {
         $data = $data ?? $this->data;
         $rules = $rules ?? $this->getFieldRules();
-
+        $validationRuleAttribute = $this->getValidationAttributeString($attribute);
         $validator = Validator::make($data, [
-            $attribute => $rules,
+            $validationRuleAttribute => $rules,
         ], $this->validator->customMessages, $this->validator->customAttributes);
 
         if ($validator->fails()) {
@@ -88,5 +90,12 @@ abstract class ValidFileArray extends BackpackCustomRule
         }
 
         return $value;
+    }
+
+    private function getValidationAttributeString($attribute)
+    {
+        return Str::substrCount($attribute, '.') > 1 ?
+                Str::before($attribute, '.').'.*.'.Str::afterLast($attribute, '.') :
+                $attribute;
     }
 }

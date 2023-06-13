@@ -32,7 +32,9 @@ class CrudButton implements Arrayable
 
     public $position;
 
-    public function __construct($nameOrAttributes, $stack = null, $type = null, $content = null, $position = null)
+    public $parameters = [];
+
+    public function __construct($nameOrAttributes, $stack = null, $type = null, $content = null, $position = null, $parameters = [])
     {
         // in case an array was passed as name
         // assume it's an array that includes [$name, $stack, $type, $content]
@@ -44,6 +46,7 @@ class CrudButton implements Arrayable
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
         $this->content = $content;
+        $this->parameters = $parameters;
 
         // if no position was passed, the defaults are:
         // - 'beginning' for the 'line' stack
@@ -160,6 +163,19 @@ class CrudButton implements Arrayable
     }
 
     /**
+     * Sets the parameters that will be sent to the view.
+     *
+     * @param  array  $value  Path to view file.
+     * @return CrudButton
+     */
+    public function parameters($value)
+    {
+        $this->parameters = $value;
+
+        return $this->save();
+    }
+
+    /**
      * Sets the name of the method on the model that contains the HTML for this button.
      * Sets the button type as 'model_function'.
      *
@@ -257,6 +273,7 @@ class CrudButton implements Arrayable
     {
         $button = $this;
         $crud = $this->crud();
+        $parameters = $this->parameters;
 
         if ($this->type == 'model_function') {
             if (is_null($entry)) {
@@ -267,7 +284,7 @@ class CrudButton implements Arrayable
         }
 
         if ($this->type == 'view') {
-            return view($button->getFinalViewPath(), compact('button', 'crud', 'entry'));
+            return view($button->getFinalViewPath(), compact('button', 'crud', 'entry', 'parameters'));
         }
 
         abort(500, 'Unknown button type');

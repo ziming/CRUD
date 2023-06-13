@@ -2,8 +2,8 @@
 
 namespace Backpack\CRUD\app\Http\Controllers\Operations\Concerns;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 trait HasForm
 {
@@ -11,20 +11,20 @@ trait HasForm
     {
         $secondSegment = $routesHaveIdSegment ? '/{id}/' : '/';
 
-        Route::get($segment . $secondSegment . Str::of($operationName)->kebab(), [
-            'as'        => $routeName . '.get' . $operationName . 'Form',
-            'uses'      => $controller . '@get' . $operationName . 'Form',
+        Route::get($segment.$secondSegment.Str::of($operationName)->kebab(), [
+            'as'        => $routeName.'.get'.$operationName.'Form',
+            'uses'      => $controller.'@get'.$operationName.'Form',
             'operation' => $operationName,
         ]);
-        Route::post($segment . $secondSegment . Str::of($operationName)->kebab(), [
-            'as'        => $routeName . '.post' . $operationName . 'Form',
-            'uses'      => $controller . '@post' . $operationName . 'Form',
+        Route::post($segment.$secondSegment.Str::of($operationName)->kebab(), [
+            'as'        => $routeName.'.post'.$operationName.'Form',
+            'uses'      => $controller.'@post'.$operationName.'Form',
             'operation' => $operationName,
         ]);
     }
 
     /**
-     * Method to handle the GET request and display the View with a Backpack form
+     * Method to handle the GET request and display the View with a Backpack form.
      *
      * @param  int  $id
      * @return \Illuminate\Contracts\View\View
@@ -47,6 +47,6 @@ trait HasForm
         $this->data['formAction'] = $this->crud->getOperationSetting('form_action');
         $this->data['formMethod'] = $this->crud->getOperationSetting('form_method');
 
-        return view($this->crud->getOperationSetting('view') ?? "crud::inc.form_page", $this->data);
+        return view($this->crud->getOperationSetting('view') ?? 'crud::inc.form_page', $this->data);
     }
 }

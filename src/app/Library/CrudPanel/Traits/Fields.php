@@ -344,8 +344,6 @@ trait Fields
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      *
-     * @param  string  $form  create/update/both - defaults to 'both'
-     * @param  bool|int  $id  id of the entity - defaults to false
      * @return bool
      */
     public function hasUploadFields()

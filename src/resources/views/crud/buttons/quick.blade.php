@@ -9,7 +9,7 @@
     $wrapper['class'] = $wrapper['class'] ?? ($button->stack == 'top' ? 'btn btn-outline-primary' : 'btn btn-sm btn-link');
 @endphp
 
-@if ($parameters['access'] == true || $crud->hasAccess($access))
+@if ($access == true || $crud->hasAccess($access))
     <{{ $wrapper['element'] }}
         @foreach ($wrapper as $attribute => $value)
             @if (is_string($attribute))

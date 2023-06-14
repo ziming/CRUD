@@ -1,14 +1,22 @@
 @php
-    $id = (isset($entry) && $entry != null) ? $entry->getKey() : false;
     $access = $parameters['access'] ?? Str::of($button->name)->studly();
-    $url = $parameters['url'] ?? url($crud->route. ($id ? '/'.$id.'/' : '/'). Str::of($button->name)->kebab());
-    $classes = $parameters['classes'] ?? ($button->stack == 'top' ? 'btn btn-outline-primary' : 'btn btn-sm btn-link');
     $icon = $parameters['icon'] ?? '';
-    $text = $parameters['text'] ?? Str::of($button->name)->headline();
+    $label = $parameters['label'] ?? Str::of($button->name)->headline();
+
+    $wrapper = $parameters['wrapper'] ?? [];
+    $wrapper['element'] = $wrapper['element'] ?? 'a';
+    $wrapper['href'] = $wrapper['href'] ?? url($crud->route. ($entry?->getKey() ? '/'.$entry?->getKey().'/' : '/') . Str::of($button->name)->kebab());
+    $wrapper['class'] = $wrapper['class'] ?? ($button->stack == 'top' ? 'btn btn-outline-primary' : 'btn btn-sm btn-link');
 @endphp
 
-@if ($crud->hasAccess($access))
-    <a href="{{ $url }}" class="{{ $classes }}">
-        <i class="{{ $icon }}"></i> {{ $text }}
-    </a>
+@if ($parameters['access'] == true || $crud->hasAccess($access))
+    <{{ $wrapper['element'] }}
+        @foreach ($wrapper as $attribute => $value)
+            @if (is_string($attribute))
+            {{ $attribute }}="{{ $value }}"
+            @endif
+        @endforeach
+        >
+        <i class="{{ $icon }}"></i> {{ $label }}
+    </{{ $wrapper['element'] }}>
 @endif

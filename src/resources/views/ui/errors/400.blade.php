@@ -1,11 +1,11 @@
-@extends('errors.layout')
+@extends(backpack_view('errors.layout'))
 
 @php
-  $error_number = 404;
+  $error_number = 400;
 @endphp
 
 @section('title')
-  Page not found.
+  Bad request.
 @endsection
 
 @section('description')

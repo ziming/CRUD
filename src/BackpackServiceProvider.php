@@ -10,6 +10,9 @@ use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Application;
+use Backpack\CRUD\app\Library\Support\BackpackExceptionHandler;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -46,9 +49,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadViewsWithFallbacks('crud');
-        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
-        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -69,6 +69,10 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // load the macros
         include_once __DIR__.'/macros.php';
+
+        $this->loadViewsWithFallbacks('crud');
+        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
+        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
 
         // Bind the CrudPanel object to Laravel's service container
         $this->app->scoped('crud', function ($app) {
@@ -91,6 +95,13 @@ class BackpackServiceProvider extends ServiceProvider
         $this->app->scoped('UploadersRepository', function ($app) {
             return new UploadersRepository();
         });
+
+        // allow us to check if the request is inside backpack panel, if it is we will display 
+        // a nice error page for the user using the selected theme.
+        $this->app->bind(
+            ExceptionHandlerContract::class,
+            fn (Application $app) => $app->make(BackpackExceptionHandler::class)
+        );
 
         // register the helper functions
         $this->loadHelpers();

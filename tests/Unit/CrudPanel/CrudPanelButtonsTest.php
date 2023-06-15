@@ -32,7 +32,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
             'stack'   => 'top',
             'type'    => 'view',
             'content' => 'crud::buttons.show',
-            'parameters' => [],
+            'meta' => [],
         ];
         $this->lineViewButton = [
             'name'     => 'lineViewButton',
@@ -40,7 +40,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
             'type'     => 'view',
             'content'  => 'crud::buttons.show',
             'position' => null,
-            'parameters' => [],
+            'meta' => [],
         ];
         $this->bottomViewButton = [
             'name'     => 'bottomViewButton',
@@ -48,7 +48,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
             'type'     => 'view',
             'content'  => 'crud::buttons.show',
             'position' => null,
-            'parameters' => [],
+            'meta' => [],
         ];
         $this->topModelFunctionButton = [
             'name'     => 'topModelFunctionButton',
@@ -56,7 +56,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
             'type'     => 'model_function',
             'content'  => 'crud::buttons.show',
             'position' => null,
-            'parameters' => [],
+            'meta' => [],
         ];
     }
 

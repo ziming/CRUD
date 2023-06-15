@@ -32,7 +32,9 @@ class CrudButton implements Arrayable
 
     public $position;
 
-    public function __construct($nameOrAttributes, $stack = null, $type = null, $content = null, $position = null)
+    public $meta = [];
+
+    public function __construct($nameOrAttributes, $stack = null, $type = null, $content = null, $position = null, $meta = [])
     {
         // in case an array was passed as name
         // assume it's an array that includes [$name, $stack, $type, $content]
@@ -44,6 +46,7 @@ class CrudButton implements Arrayable
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
         $this->content = $content;
+        $this->meta = $meta;
 
         // if no position was passed, the defaults are:
         // - 'beginning' for the 'line' stack
@@ -155,6 +158,19 @@ class CrudButton implements Arrayable
     {
         $this->content = $value;
         $this->type = 'view';
+
+        return $this->save();
+    }
+
+    /**
+     * Sets the meta that will be available in the view.
+     *
+     * @param  array  $value  Array of metadata that will be available in the view.
+     * @return CrudButton
+     */
+    public function meta($value)
+    {
+        $this->meta = $value;
 
         return $this->save();
     }

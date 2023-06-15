@@ -10,9 +10,9 @@ use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Request;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -53,7 +53,7 @@ class BackpackServiceProvider extends ServiceProvider
         // a nice error page for the user using the selected theme.
         $this->app->afterResolving(
             ExceptionHandlerContract::class,
-            function() {
+            function () {
                 if (backpack_user() && Str::startsWith(Request::path(), config('backpack.base.route_prefix'))) {
                     $themeNamespace = substr(config('backpack.ui.view_namespace'), 0, -2);
                     $themeFallbackNamespace = substr(config('backpack.ui.view_namespace_fallback'), 0, -2);
@@ -64,9 +64,9 @@ class BackpackServiceProvider extends ServiceProvider
                         array_merge($viewFinderHints[$themeFallbackNamespace] ?? [], $themeErrorPaths);
                     $uiErrorPaths = [base_path('vendor/backpack/crud/src/resources/views/ui')];
                     $themeErrorPaths = array_merge($themeErrorPaths, $uiErrorPaths);
-                    
+
                     app('config')->set('view.paths', array_merge($themeErrorPaths, config('view.paths', [])));
-                }   
+                }
             }
         );
 
@@ -116,8 +116,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->app->scoped('UploadersRepository', function ($app) {
             return new UploadersRepository();
         });
-
-        
 
         // register the helper functions
         $this->loadHelpers();

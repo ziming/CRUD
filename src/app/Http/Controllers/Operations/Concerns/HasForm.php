@@ -10,19 +10,19 @@ trait HasForm
     /**
      * Set up a GET and POST route, for an operation that contains a form.
      *
-     * @param string $operationName
-     * @param boolean $routesHaveIdSegment
-     * @param string $segment
-     * @param string $routeName
-     * @param string $controller
+     * @param  string  $operationName
+     * @param  bool  $routesHaveIdSegment
+     * @param  string  $segment
+     * @param  string  $routeName
+     * @param  string  $controller
      * @return void
      */
     protected function formRoutes(string $operationName, bool $routesHaveIdSegment, string $segment, string $routeName, string $controller): void
     {
         $secondSegment = $routesHaveIdSegment ? '/{id}/' : '/';
         $thirdSegment = Str::of($operationName)->kebab();
-        $getFormMethod = 'get' . $operationName . 'Form';
-        $postFormMethod = 'post' . $operationName . 'Form';
+        $getFormMethod = 'get'.$operationName.'Form';
+        $postFormMethod = 'post'.$operationName.'Form';
 
         Route::get($segment.$secondSegment.$thirdSegment, [
             'as'        => $routeName.'.'.$getFormMethod,
@@ -40,9 +40,9 @@ trait HasForm
      * Set up the default configurations, save actions and buttons
      * for a standard operation that contains a form.
      *
-     * @param string $operationName
-     * @param string $buttonStack line/top/bottom
-     * @param array $buttonMeta
+     * @param  string  $operationName
+     * @param  string  $buttonStack  line/top/bottom
+     * @param  array  $buttonMeta
      * @return void
      */
     protected function formDefaults(string $operationName, $buttonStack = 'line', $buttonMeta = [])
@@ -66,7 +66,7 @@ trait HasForm
                 'visible' => function ($crud) use ($operationName) {
                     return $crud->hasAccess($operationName);
                 },
-                'redirect' => function ($crud, $request, $itemId = null) use ($operationName) {
+                'redirect' => function ($crud, $request, $itemId = null) {
                     return $request->request->has('_http_referrer') ? $request->request->get('_http_referrer') : $crud->route;
                 },
                 'button_text' => trans('backpack::crud.save_action_save_and_back'),
@@ -114,8 +114,8 @@ trait HasForm
      * It performs the validation, authorization and redirect according to the save action.
      * But it does NOT save the data. That should be done in the given $formLogic callback.
      *
-     * @param integer $id
-     * @param callable $formLogic
+     * @param  int  $id
+     * @param  callable  $formLogic
      * @return array|\Illuminate\Http\RedirectResponse
      */
     public function formAction($id = null, callable $formLogic)

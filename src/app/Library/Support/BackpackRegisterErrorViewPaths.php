@@ -19,13 +19,13 @@ class BackpackRegisterErrorViewPaths
         $viewFinderHints = app('view')->getFinder()->getHints();
 
         $themeErrorPaths = $viewFinderHints[$themeNamespace] ?? [];
-        $themeErrorPaths = $themeNamespace === $themeFallbackNamespace ? $themeErrorPaths : 
-            array_merge(($viewFinderHints[$themeFallbackNamespace] ?? []), $themeErrorPaths);
+        $themeErrorPaths = $themeNamespace === $themeFallbackNamespace ? $themeErrorPaths :
+            array_merge($viewFinderHints[$themeFallbackNamespace] ?? [], $themeErrorPaths);
 
         $appErrorPaths = $viewFinderHints['errors'];
 
         $themeErrorPaths = array_merge($themeErrorPaths, $appErrorPaths);
-        
+
         View::replaceNamespace('errors', collect($themeErrorPaths)->map(function ($path) {
             return Str::of($path)->finish('/')->value().'errors';
         })->all());

@@ -6,13 +6,13 @@ use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
+use Backpack\CRUD\app\Library\Support\BackpackExceptionHandler;
 use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use Illuminate\Foundation\Application;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Application;
-use Backpack\CRUD\app\Library\Support\BackpackExceptionHandler;
-use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -96,7 +96,7 @@ class BackpackServiceProvider extends ServiceProvider
             return new UploadersRepository();
         });
 
-        // allow us to check if the request is inside backpack panel, if it is we will display 
+        // allow us to check if the request is inside backpack panel, if it is we will display
         // a nice error page for the user using the selected theme.
         $this->app->bind(
             ExceptionHandlerContract::class,

@@ -3,16 +3,14 @@
 namespace Backpack\CRUD;
 
 use Backpack\Basset\Facades\Basset;
+use Backpack\CRUD\app\Http\Middleware\BackpackErrorViews;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
-use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Request;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -47,32 +45,11 @@ class BackpackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot(Router $router, \Illuminate\Contracts\Http\Kernel $kernel)
     {
-        // allow us to check if the request is inside backpack panel, if it is we will display
-        // a nice error page for the user using the selected theme.
-        $this->app->afterResolving(
-            ExceptionHandlerContract::class,
-            function() {
-                if (backpack_user() && Str::startsWith(Request::path(), config('backpack.base.route_prefix'))) {
-                    $themeNamespace = substr(config('backpack.ui.view_namespace'), 0, -2);
-                    $themeFallbackNamespace = substr(config('backpack.ui.view_namespace_fallback'), 0, -2);
-                    $viewFinderHints = app('view')->getFinder()->getHints();
-
-                    $themeErrorPaths = $viewFinderHints[$themeNamespace] ?? [];
-                    $themeErrorPaths = $themeNamespace === $themeFallbackNamespace ? $themeErrorPaths :
-                        array_merge($viewFinderHints[$themeFallbackNamespace] ?? [], $themeErrorPaths);
-                    $uiErrorPaths = [base_path('vendor/backpack/crud/src/resources/views/ui')];
-                    $themeErrorPaths = array_merge($themeErrorPaths, $uiErrorPaths);
-                    
-                    app('config')->set('view.paths', array_merge($themeErrorPaths, config('view.paths', [])));
-                }   
-            }
-        );
-
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
-        $this->registerMiddlewareGroup($this->app->router);
+        $this->registerMiddlewareGroup($this->app->router, $kernel);
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
@@ -126,10 +103,13 @@ class BackpackServiceProvider extends ServiceProvider
         $this->commands($this->commands);
     }
 
-    public function registerMiddlewareGroup(Router $router)
+    public function registerMiddlewareGroup(Router $router, \Illuminate\Contracts\Http\Kernel $kernel)
     {
         $middleware_key = config('backpack.base.middleware_key');
         $middleware_class = config('backpack.base.middleware_class');
+
+        // register the backpack error views
+        $kernel->pushMiddleware(BackpackErrorViews::class);
 
         if (! is_array($middleware_class)) {
             $router->pushMiddlewareToGroup($middleware_key, $middleware_class);
@@ -286,7 +266,7 @@ class BackpackServiceProvider extends ServiceProvider
             [
                 'backpack' => [
                     'driver' => 'eloquent',
-                    'model' => config('backpack.base.user_model_fqn'),
+                    'model'  => config('backpack.base.user_model_fqn'),
                 ],
             ];
 
@@ -311,7 +291,7 @@ class BackpackServiceProvider extends ServiceProvider
         app()->config['auth.guards'] = app()->config['auth.guards'] +
             [
                 'backpack' => [
-                    'driver' => 'session',
+                    'driver'   => 'session',
                     'provider' => 'backpack',
                 ],
             ];

@@ -1,40 +1,10 @@
-@extends(backpack_view('layouts.'.backpack_theme_config('layout')))
+@extends(backpack_user() ? backpack_view('layouts.'.backpack_theme_config('layout')) : backpack_view('errors.blank'))
 {{-- show error using sidebar layout if looged in AND on an admin page; otherwise use a blank page --}}
 
 @php
+  // Set the page title
   $title = 'Error '.$error_number;
 @endphp
-
-@section('after_styles')
-  <style>
-    .error_number {
-      font-size: 156px;
-      font-weight: 600;
-      line-height: 100px;
-    }
-    .error_number small {
-      font-size: 56px;
-      font-weight: 700;
-    }
-
-    .error_number hr {
-      margin-top: 60px;
-      margin-bottom: 0;
-      width: 50px;
-    }
-
-    .error_title {
-      margin-top: 40px;
-      font-size: 36px;
-      font-weight: 400;
-    }
-
-    .error_description {
-      font-size: 24px;
-      font-weight: 400;
-    }
-  </style>
-@endsection
 
 @section('content')
 <div class="row">

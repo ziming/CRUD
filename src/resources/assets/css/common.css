@@ -491,3 +491,40 @@ form .select2.select2-container {
 .navbar-filters, .dropdown-menu {
     --tblr-dropdown-divider-margin-y: .4rem !important;
 }
+
+/* ERRORS */
+
+.error_number {
+    font-size: 156px;
+    font-weight: 600;
+    line-height: 100px;
+  }
+  .error_number small {
+    font-size: 56px;
+    font-weight: 700;
+  }
+
+  .error_number hr {
+    margin-top: 60px;
+    margin-bottom: 0;
+    width: 50px;
+  }
+
+  .error_title {
+    margin-top: 40px;
+    font-size: 36px;
+    font-weight: 400;
+  }
+
+  .error_description {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .align-content-center{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

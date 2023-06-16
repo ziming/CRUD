@@ -94,8 +94,6 @@ class BackpackServiceProvider extends ServiceProvider
             return new UploadersRepository();
         });
 
-        
-
         // register the helper functions
         $this->loadHelpers();
 

@@ -45,11 +45,11 @@ class BackpackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router, \Illuminate\Contracts\Http\Kernel $kernel)
+    public function boot(Router $router)
     {
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
-        $this->registerMiddlewareGroup($this->app->router, $kernel);
+        $this->registerMiddlewareGroup($this->app->router);
         $this->setupRoutes($this->app->router);
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
@@ -101,13 +101,13 @@ class BackpackServiceProvider extends ServiceProvider
         $this->commands($this->commands);
     }
 
-    public function registerMiddlewareGroup(Router $router, \Illuminate\Contracts\Http\Kernel $kernel)
+    public function registerMiddlewareGroup(Router $router)
     {
         $middleware_key = config('backpack.base.middleware_key');
         $middleware_class = config('backpack.base.middleware_class');
 
         // register the backpack error views
-        $kernel->pushMiddleware(BackpackErrorViews::class);
+        $router->pushMiddlewareToGroup($middleware_key, BackpackErrorViews::class);
 
         if (! is_array($middleware_class)) {
             $router->pushMiddlewareToGroup($middleware_key, $middleware_class);

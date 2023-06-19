@@ -10,12 +10,6 @@ trait HasForm
     /**
      * Set up a GET and POST route, for an operation that contains a form.
      *
-     * @param  string  $operationName
-     * @param  bool  $routesHaveIdSegment
-     * @param  string  $segment
-     * @param  string  $routeName
-     * @param  string  $controller
-     * @return void
      */
     protected function formRoutes(string $operationName, bool $routesHaveIdSegment, string $segment, string $routeName, string $controller): void
     {
@@ -40,12 +34,8 @@ trait HasForm
      * Set up the default configurations, save actions and buttons
      * for a standard operation that contains a form.
      *
-     * @param  string  $operationName
-     * @param  string  $buttonStack  line/top/bottom
-     * @param  array  $buttonMeta
-     * @return void
      */
-    protected function formDefaults(string $operationName, $buttonStack = 'line', $buttonMeta = [])
+    protected function formDefaults(string $operationName, string $buttonStack = 'line', array $buttonMeta = []) : void
     {
         // Access
         $this->crud->allowAccess($operationName);
@@ -54,7 +44,7 @@ trait HasForm
         $this->crud->operation($operationName, function () use ($operationName) {
             // if the backpack.operations.{operationName} config exists, use that one
             // otherwise, use the generic backpack.operations.form config
-            if (config('backpack.operations.'.$operationName) != null) {
+            if (config()->has('backpack.operations.'.$operationName)) {
                 $this->crud->loadDefaultOperationSettingsFromConfig();
             } else {
                 $this->crud->loadDefaultOperationSettingsFromConfig('backpack.operations.form');
@@ -82,10 +72,8 @@ trait HasForm
     /**
      * Method to handle the GET request and display the View with a Backpack form.
      *
-     * @param  int  $id
-     * @return \Illuminate\Contracts\View\View
      */
-    public function formView($id = null)
+    public function formView(?int $id = null) : \Illuminate\Contracts\View\View
     {
         if ($id) {
             // Get entry ID from Request (makes sure its the last ID for nested resources)
@@ -114,11 +102,9 @@ trait HasForm
      * It performs the validation, authorization and redirect according to the save action.
      * But it does NOT save the data. That should be done in the given $formLogic callback.
      *
-     * @param  int  $id
-     * @param  callable  $formLogic
      * @return array|\Illuminate\Http\RedirectResponse
      */
-    public function formAction($id = null, callable $formLogic)
+    public function formAction(?int $id = null, callable $formLogic)
     {
         if ($id) {
             // Get entry ID from Request (makes sure its the last ID for nested resources)

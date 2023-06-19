@@ -9,7 +9,6 @@ trait HasForm
 {
     /**
      * Set up a GET and POST route, for an operation that contains a form.
-     *
      */
     protected function formRoutes(string $operationName, bool $routesHaveIdSegment, string $segment, string $routeName, string $controller): void
     {
@@ -33,9 +32,8 @@ trait HasForm
     /**
      * Set up the default configurations, save actions and buttons
      * for a standard operation that contains a form.
-     *
      */
-    protected function formDefaults(string $operationName, string $buttonStack = 'line', array $buttonMeta = []) : void
+    protected function formDefaults(string $operationName, string $buttonStack = 'line', array $buttonMeta = []): void
     {
         // Access
         $this->crud->allowAccess($operationName);
@@ -71,9 +69,8 @@ trait HasForm
 
     /**
      * Method to handle the GET request and display the View with a Backpack form.
-     *
      */
-    public function formView(?int $id = null) : \Illuminate\Contracts\View\View
+    public function formView(?int $id = null): \Illuminate\Contracts\View\View
     {
         if ($id) {
             // Get entry ID from Request (makes sure its the last ID for nested resources)

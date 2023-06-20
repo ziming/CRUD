@@ -82,7 +82,7 @@ trait UpdateOperation
     /**
      * Update the specified resource in the database.
      *
-     * @return array|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function update()
     {

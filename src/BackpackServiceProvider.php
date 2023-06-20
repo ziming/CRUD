@@ -313,7 +313,8 @@ class BackpackServiceProvider extends ServiceProvider
         return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository'];
     }
 
-    private function registerBackpackErrorViews() {
+    private function registerBackpackErrorViews()
+    {
         // register the backpack error when the exception handler is resolved from the container
         $this->callAfterResolving(ExceptionHandler::class, function ($handler) {
             if (! Str::startsWith(request()->path(), config('backpack.base.route_prefix'))) {
@@ -321,14 +322,13 @@ class BackpackServiceProvider extends ServiceProvider
             }
 
             // parse the namespaces set in config
-            [$themeNamespace, $themeFallbackNamespace] = (function() {
-
+            [$themeNamespace, $themeFallbackNamespace] = (function () {
                 $themeNamespace = config('backpack.ui.view_namespace');
                 $themeFallbackNamespace = config('backpack.ui.view_namespace_fallback');
 
                 return [
                     Str::endsWith($themeNamespace, '::') ? substr($themeNamespace, 0, -2) : substr($themeNamespace, 0, -1),
-                    Str::endsWith($themeFallbackNamespace, '::') ? substr($themeFallbackNamespace, 0, -2) : substr($themeFallbackNamespace, 0, -1)
+                    Str::endsWith($themeFallbackNamespace, '::') ? substr($themeFallbackNamespace, 0, -2) : substr($themeFallbackNamespace, 0, -1),
                 ];
             })();
 
@@ -347,6 +347,5 @@ class BackpackServiceProvider extends ServiceProvider
             // merge the paths array with the view.paths defined in the application
             app('config')->set('view.paths', array_merge($themeErrorPaths, config('view.paths', [])));
         });
-
     }
 }

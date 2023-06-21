@@ -2,15 +2,15 @@
 
 namespace Backpack\CRUD;
 
-use Illuminate\Routing\Router;
-use Illuminate\Support\Collection;
 use Backpack\Basset\Facades\Basset;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
+use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
-use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class BackpackServiceProvider extends ServiceProvider
 {

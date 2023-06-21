@@ -2,14 +2,15 @@
 
 namespace Backpack\CRUD;
 
-use Backpack\Basset\Facades\Basset;
-use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
-use Backpack\CRUD\app\Library\Database\DatabaseSchema;
-use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Backpack\Basset\Facades\Basset;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Backpack\CRUD\app\Library\Database\DatabaseSchema;
+use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
+use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,7 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsWithFallbacks('crud');
         $this->loadViewsWithFallbacks('ui', 'backpack.ui');
         $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
+        $this->loadViewComponents();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -291,6 +293,11 @@ class BackpackServiceProvider extends ServiceProvider
                     'provider' => 'backpack',
                 ],
             ];
+    }
+
+    public function loadViewComponents()
+    {
+        Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
     }
 
     /**

@@ -12,9 +12,9 @@
     {{-- Translatable icon --}}
     @include('crud::fields.inc.translatable_icon')
 
-    <div class="d-inline-flex">
+    <div class="d-inline-flex align-items-center">
         {{-- Switch --}}
-        <label class="switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
+        <label class="form-switch switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
@@ -23,7 +23,7 @@
                 type="checkbox"
                 data-init-function="bpFieldInitSwitch"
                 {{ (bool) $field['value'] ? 'checked' : '' }}
-                class="switch-input" />
+                class="switch-input form-check-input" />
             <span
                 class="switch-slider"
                 data-checked="{{ $field['onLabel'] ?? '' }}"

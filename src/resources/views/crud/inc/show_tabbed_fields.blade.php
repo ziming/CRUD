@@ -34,21 +34,23 @@
                     <a href="#tab_{{ Str::slug($tab) }}"
                         aria-controls="tab_{{ Str::slug($tab) }}"
                         role="tab"
-                        tab_name="{{ Str::slug($tab) }}"
-                        data-toggle="tab"
-                        class="nav-link {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
+                        data-toggle="tab" {{-- tab indicator for Bootstrap v4 --}}
+                        tab_name="{{ Str::slug($tab) }}" {{-- tab name for Bootstrap v4 --}}
+                        data-name="{{ Str::slug($tab) }}" {{-- tab name for Bootstrap v5 --}}
+                        data-bs-toggle="tab" {{-- tab name for Bootstrap v5 --}}
+                        class="nav-link text-decoration-none {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
                         >{{ $tab }}</a>
                 </li>
             @endforeach
         </ul>
 
-        <div class="tab-content p-0 {{$horizontalTabs ? '' : 'col-md-9'}}">
+        <div class="tab-content {{$horizontalTabs ? '' : 'col-md-9'}}">
 
-            @foreach ($crud->getTabs() as $k => $tab)
-            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
+            @foreach ($crud->getTabs() as $k => $tabLabel)
+            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tabLabel == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tabLabel) }}">
 
                 <div class="row">
-                @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
+                    @include('crud::inc.show_fields', ['fields' => $crud->getTabItems($tabLabel, 'fields')])
                 </div>
             </div>
             @endforeach

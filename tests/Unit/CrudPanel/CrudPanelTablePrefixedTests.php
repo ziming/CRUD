@@ -2,12 +2,12 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelTablePrefixedTests extends BasePrefixedDBCrudPanelTest
+class CrudPanelTablePrefixedTests extends \Backpack\CRUD\Tests\config\CrudPanel\BasePrefixedDBCrudPanel
 {
     public function testGetColumnTypeFromColumnNameWithPrefixedDatabase()
     {

@@ -2,9 +2,11 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
+use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -15,7 +17,7 @@ class BackpackServiceProvider extends ServiceProvider
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
-        \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
+        \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
         \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
@@ -44,7 +46,9 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadViewsWithFallbacks();
+        $this->loadViewsWithFallbacks('crud');
+        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
+        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -52,6 +56,8 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
         $this->sendUsageStats();
+
+        Basset::addViewPath(realpath(__DIR__.'/resources/views'));
     }
 
     /**
@@ -80,6 +86,10 @@ class BackpackServiceProvider extends ServiceProvider
         // Bind the widgets collection object to Laravel's service container
         $this->app->singleton('widgets', function ($app) {
             return new Collection();
+        });
+
+        $this->app->scoped('UploadersRepository', function ($app) {
+            return new UploadersRepository();
         });
 
         // register the helper functions
@@ -121,9 +131,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
-            __DIR__.'/resources/views/base/inc/sidebar_content.blade.php'      => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php'  => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_right_content.blade.php' => resource_path('views/vendor/backpack/base/inc/topbar_right_content.blade.php'),
+            __DIR__.'/resources/views/ui/inc/menu_items.blade.php' => resource_path('views/vendor/backpack/ui/inc/menu_items.blade.php'),
         ];
         $backpack_custom_routes_file = [__DIR__.$this->customRoutesFilePath => base_path($this->customRoutesFilePath)];
 
@@ -188,21 +196,23 @@ class BackpackServiceProvider extends ServiceProvider
         }
     }
 
-    public function loadViewsWithFallbacks()
+    public function loadViewNamespace($domain, $namespace)
     {
-        $customBaseFolder = resource_path('views/vendor/backpack/base');
-        $customCrudFolder = resource_path('views/vendor/backpack/crud');
+        ViewNamespaces::addFor($domain, $namespace);
+    }
 
-        // - first the published/overwritten views (in case they have any changes)
-        if (file_exists($customBaseFolder)) {
-            $this->loadViewsFrom($customBaseFolder, 'backpack');
+    public function loadViewsWithFallbacks($dir, $namespace = null)
+    {
+        $customFolder = resource_path('views/vendor/backpack/'.$dir);
+        $vendorFolder = realpath(__DIR__.'/resources/views/'.$dir);
+        $namespace = $namespace ?? $dir;
+
+        // first the published/overwritten views (in case they have any changes)
+        if (file_exists($customFolder)) {
+            $this->loadViewsFrom($customFolder, $namespace);
         }
-        if (file_exists($customCrudFolder)) {
-            $this->loadViewsFrom($customCrudFolder, 'crud');
-        }
-        // - then the stock views that come with the package, in case a published view might be missing
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/base'), 'backpack');
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
+        // then the stock views that come with the package, in case a published view might be missing
+        $this->loadViewsFrom($vendorFolder, $namespace);
     }
 
     protected function mergeConfigsFromDirectory($dir)
@@ -227,6 +237,7 @@ class BackpackServiceProvider extends ServiceProvider
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
+        $this->mergeConfigFrom(__DIR__.'/config/backpack/ui.php', 'backpack.ui');
         $this->mergeConfigsFromDirectory('operations');
 
         // add the root disk to filesystem configuration
@@ -248,19 +259,25 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users authentication provider to the configuration
         app()->config['auth.providers'] = app()->config['auth.providers'] +
-        [
-            'backpack' => [
-                'driver'  => 'eloquent',
-                'model'   => config('backpack.base.user_model_fqn'),
-            ],
-        ];
+            [
+                'backpack' => [
+                    'driver' => 'eloquent',
+                    'model' => config('backpack.base.user_model_fqn'),
+                ],
+            ];
 
         // add the backpack_users password broker to the configuration
-        app()->config['auth.passwords'] = app()->config['auth.passwords'] +
+        $laravelAuthPasswordBrokers = app()->config['auth.passwords'];
+
+        $backpackPasswordBrokerTable = config('backpack.base.password_resets_table') ??
+                                        config('auth.passwords.users.table') ??
+                                        current($laravelAuthPasswordBrokers)['table'];
+
+        app()->config['auth.passwords'] = $laravelAuthPasswordBrokers +
         [
             'backpack' => [
                 'provider'  => 'backpack',
-                'table'     => 'password_resets',
+                'table'     => $backpackPasswordBrokerTable,
                 'expire'    => config('backpack.base.password_recovery_token_expiration', 60),
                 'throttle'  => config('backpack.base.password_recovery_throttle_notifications'),
             ],
@@ -268,12 +285,12 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users guard to the configuration
         app()->config['auth.guards'] = app()->config['auth.guards'] +
-        [
-            'backpack' => [
-                'driver'   => 'session',
-                'provider' => 'backpack',
-            ],
-        ];
+            [
+                'backpack' => [
+                    'driver' => 'session',
+                    'provider' => 'backpack',
+                ],
+            ];
     }
 
     /**
@@ -291,6 +308,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository'];
     }
 }

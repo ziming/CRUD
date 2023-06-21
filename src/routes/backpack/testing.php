@@ -16,6 +16,6 @@ Route::group([
     'prefix'     => config('backpack.base.route_prefix', 'admin'),
 ],
     function () {
-        Route::crud('users', 'Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController');
+        Route::crud('users', 'Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController');
     }
 );

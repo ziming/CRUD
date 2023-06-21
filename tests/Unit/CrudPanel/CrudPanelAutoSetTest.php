@@ -2,7 +2,7 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\ColumnType;
+use Backpack\CRUD\Tests\config\Models\ColumnType;
 use Exception;
 
 class MyColumnTypeWithOtherConnection extends ColumnType
@@ -14,7 +14,7 @@ class MyColumnTypeWithOtherConnection extends ColumnType
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Autoset
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelAutoSetTest extends BaseDBCrudPanelTest
+class CrudPanelAutoSetTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $expectedUnknownFieldType = 'text';
 

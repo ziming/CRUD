@@ -1,16 +1,17 @@
-@extends('errors.layout')
+@extends(backpack_view('errors.layout'))
 
 @php
-  $error_number = 401;
+  $error_number = 408;
 @endphp
 
 @section('title')
-  Unauthorized action.
+  Request timeout.
 @endsection
 
 @section('description')
   @php
-    $default_error_message = "Please <a href='javascript:history.back()''>go back</a> or return to <a href='".url('')."'>our homepage</a>.";
+    $default_error_message = "Please <a href='javascript:history.back()''>go back</a>, refresh the page and try again.";
+
   @endphp
   {!! isset($exception)? ($exception->getMessage()?e($exception->getMessage()):$default_error_message): $default_error_message !!}
 @endsection

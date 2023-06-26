@@ -1,11 +1,11 @@
-@extends('errors.layout')
+@extends(backpack_view('errors.layout'))
 
 @php
-  $error_number = 400;
+  $error_number = 405;
 @endphp
 
 @section('title')
-  Bad request.
+  Method not allowed.
 @endsection
 
 @section('description')

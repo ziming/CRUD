@@ -79,7 +79,7 @@ class Install extends Command
 
         // Install Backpack Basset
         $this->progressBlock('Installing Basset');
-        $this->executeArtisanProcess('basset:install');
+        $this->executeArtisanProcess('basset:install --no-interaction');
         $this->closeProgressBlock();
 
         // Install Backpack Tabler Theme

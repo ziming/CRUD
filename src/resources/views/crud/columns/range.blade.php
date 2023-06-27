@@ -21,7 +21,7 @@
         role="progressbar" 
         style="width: {{ ($column['value']/$maxValue)*100 }}%" 
         aria-valuenow="{{ $column['value'] }}" 
-        aria-valuemin="{{$minValue}}" 
+        aria-valuemin="{{ $minValue }}" 
         aria-valuemax="{{ $maxValue }}"
         >
         @if($column['showValue']){{ $column['value'] }}&nbsp; @if($column['showMaxValue']) / {{$maxValue}} @endif

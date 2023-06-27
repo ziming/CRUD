@@ -1,33 +1,31 @@
 @if(isset($saveAction['active']) && !is_null($saveAction['active']['value']))
-    <div id="saveActions" class="form-group">
-
+    <div id="saveActions" class="form-group my-3">
         <input type="hidden" name="_save_action" value="{{ $saveAction['active']['value'] }}">
-        @if(!empty($saveAction['options']))
+
+        @if(empty($saveAction['options']))
+            <button type="submit" class="btn btn-success">
+                <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
+                <span data-value="{{ $saveAction['active']['value'] }}">{{ $saveAction['active']['label'] }}</span>
+            </button>
+        @else
             <div class="btn-group" role="group">
-        @endif
-
-        <button type="submit" class="btn btn-success">
-            <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
-            <span data-value="{{ $saveAction['active']['value'] }}">{{ $saveAction['active']['label'] }}</span>
-        </button>
-
-        <div class="btn-group" role="group">
-            @if(!empty($saveAction['options']))
-                <button id="bpSaveButtonsGroup" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">&#x25BC;</span></button>
-                <div class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
-                @foreach( $saveAction['options'] as $value => $label)
-                    <button type="button" class="dropdown-item" data-value="{{ $value }}">{{$label}}</button>
-                @endforeach
-                </div>
-            @endif
-        </div>
-
-        @if(!empty($saveAction['options']))
+                <button type="submit" class="btn btn-success text-white">
+                    <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
+                    <span data-value="{{ $saveAction['active']['value'] }}">{{ $saveAction['active']['label'] }}</span>
+                </button>
+                <button id="bpSaveButtonsGroup" type="button" class="btn btn-success text-white dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="d-none visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="bpSaveButtonsGroup">
+                    @foreach( $saveAction['options'] as $value => $label)
+                        <li><button class="dropdown-item" type="button" data-value="{{ $value }}">{{ $label }}</button></li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
         @if(!$crud->hasOperationSetting('showCancelButton') || $crud->getOperationSetting('showCancelButton') == true)
-            <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-default"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+            <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-secondary text-decoration-none"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
         @endif
 
     </div>
@@ -36,7 +34,7 @@
 @push('after_scripts')
 <script>
 
-    // this function checks if form is valid. 
+    // this function checks if form is valid.
     function checkFormValidity(form) {
         // the condition checks if `checkValidity` is defined in the form (browser compatibility)
         if (form[0].checkValidity) {
@@ -87,7 +85,7 @@
                 saveActionField.val( $saveAction.attr('data-value') );
                 form[0].requestSubmit();
             }else{
-                // navigate to the tab where the first error happens 
+                // navigate to the tab where the first error happens
                 changeTabIfNeededAndDisplayErrors(form);
             }
         });
@@ -102,13 +100,12 @@
                     saveActionField.val( saveAction );
                     form[0].requestSubmit();
                 }else{
-                    // navigate to the tab where the first error happens 
+                    // navigate to the tab where the first error happens
                     changeTabIfNeededAndDisplayErrors(form);
                 }
                 e.stopPropagation();
             });
         });
     });
-
-    </script>
+</script>
 @endpush

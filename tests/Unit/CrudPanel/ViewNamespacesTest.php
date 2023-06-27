@@ -2,13 +2,14 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 use Backpack\CRUD\ViewNamespaces;
 use Config;
 
 /**
  * @covers Backpack\CRUD\ViewNamespaces
  */
-class ViewNamespacesTest extends BaseCrudPanelTest
+class ViewNamespacesTest extends BaseCrudPanel
 {
     public function testAddSingleViewNamespace()
     {

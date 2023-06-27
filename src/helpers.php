@@ -1,11 +1,13 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
+
 if (! function_exists('backpack_url')) {
     /**
      * Appends the configured backpack prefix and returns
      * the URL using the standard Laravel helpers.
      *
-     * @param $path
+     * @param  $path
      * @return string
      */
     function backpack_url($path = null, $parameters = [], $secure = null)
@@ -65,6 +67,13 @@ if (! function_exists('backpack_form_input')) {
                 continue;
             }
 
+            $isMultiple = substr($row['name'], -2, 2) === '[]';
+
+            if ($isMultiple && substr_count($row['name'], '[') === 1) {
+                $result[substr($row['name'], 0, -2)][] = $row['value'];
+                continue;
+            }
+
             // dot notation fields
             if (substr_count($row['name'], '[') === 1) {
                 // start in the first occurence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
@@ -87,11 +96,20 @@ if (! function_exists('backpack_form_input')) {
             $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
 
             if (isset($repeatableRowKey)) {
+                if ($isMultiple) {
+                    $result[$parentInputName][$repeatableRowKey][$inputName][] = $row['value'];
+                    continue;
+                }
+
                 $result[$parentInputName][$repeatableRowKey][$inputName] = $row['value'];
 
                 continue;
             }
 
+            if ($isMultiple) {
+                $result[$parentInputName][$inputName][] = $row['value'];
+                continue;
+            }
             $result[$parentInputName][$inputName] = $row['value'];
         }
 
@@ -118,7 +136,7 @@ if (! function_exists('backpack_avatar_url')) {
     /**
      * Returns the avatar URL of a user.
      *
-     * @param $user
+     * @param  $user
      * @return string
      */
     function backpack_avatar_url($user)
@@ -141,7 +159,7 @@ if (! function_exists('backpack_middleware')) {
      * Return the key of the middleware used across Backpack.
      * That middleware checks if the visitor is an admin.
      *
-     * @param $path
+     * @param  $path
      * @return string
      */
     function backpack_middleware()
@@ -208,28 +226,67 @@ if (! function_exists('mb_ucfirst')) {
 
 if (! function_exists('backpack_view')) {
     /**
-     * Returns a new displayable view based on the configured backpack view namespace.
-     * If that view doesn't exist, it will load the one from the original theme.
+     * Returns a new displayable view path, based on the configured backpack view namespace.
+     * If that view doesn't exist, it falls back to the fallback namespace.
+     * If that view doesn't exist, it falls back to the one from the Backpack UI directory.
      *
      * @param string (see config/backpack/base.php)
      * @return string
      */
     function backpack_view($view)
     {
-        $originalTheme = 'backpack::';
-        $theme = config('backpack.base.view_namespace');
+        $viewPaths = [
+            config('backpack.ui.view_namespace').$view,
+            backpack_theme_config('view_namespace_fallback').$view,
+            'backpack.ui::'.$view,
+        ];
 
-        if (is_null($theme)) {
-            $theme = $originalTheme;
+        foreach ($viewPaths as $view) {
+            if (view()->exists($view)) {
+                return $view;
+            }
         }
 
-        $returnView = $theme.$view;
+        dd('Could not find Backpack view ['.$view.'] in theme namespace, fallback namespace nor UI namespace.');
+    }
+}
 
-        if (! view()->exists($returnView)) {
-            $returnView = $originalTheme.$view;
+if (! function_exists('backpack_theme_config')) {
+    /**
+     * Returns a config value from the current theme's config file.
+     * It assumes the theme's config namespace is the same as the view namespace.
+     *
+     * @param string
+     * @return string
+     */
+    function backpack_theme_config($key)
+    {
+        $namespacedKey = config('backpack.ui.view_namespace').$key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
+
+        // if the config exists in the theme config file, use it
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
         }
 
-        return $returnView;
+        // if not, fall back to a general the config in the fallback theme
+        $namespacedKey = config('backpack.ui.view_namespace_fallback').$key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
+
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        // if not, fall back to the config in ui
+        $namespacedKey = 'backpack.ui.'.$key;
+
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        Log::error('Could not find config key: '.$key.'. Neither in the Backpack theme, nor in the fallback theme, nor in ui.');
+
+        return null;
     }
 }
 
@@ -238,7 +295,7 @@ if (! function_exists('square_brackets_to_dots')) {
      * Turns a string from bracket-type array to dot-notation array.
      * Ex: array[0][property] turns into array.0.property.
      *
-     * @param $path
+     * @param  $path
      * @return string
      */
     function square_brackets_to_dots($string)
@@ -315,6 +372,6 @@ if (! function_exists('backpack_pro')) {
             return false;
         }
 
-        return \PackageVersions\Versions::getVersion('backpack/pro');
+        return \Composer\InstalledVersions::getVersion('backpack/pro');
     }
 }

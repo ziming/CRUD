@@ -2,9 +2,10 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 use Illuminate\Http\Request;
 
-class HelpersTest extends BaseCrudPanelTest
+class HelpersTest extends BaseCrudPanel
 {
     public function testBackpackFormInputParsesRepeatableFieldsFunction()
     {

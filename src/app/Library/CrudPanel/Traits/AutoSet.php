@@ -109,7 +109,7 @@ trait AutoSet
             return 'email';
         }
 
-        if (is_array($fieldName)) {
+        if ($this->holdsMultipleInputs($fieldName)) {
             return 'text'; // not because it's right, but because we don't know what it is
         }
 
@@ -132,9 +132,9 @@ trait AutoSet
             case 'set':
                 return 'text';
 
-            // case 'enum':
+                // case 'enum':
             //     return 'enum';
-            // break;
+                // break;
 
             case 'boolean':
                 return 'boolean';

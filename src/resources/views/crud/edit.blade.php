@@ -12,16 +12,15 @@
 @endphp
 
 @section('header')
-	<section class="container-fluid">
-	  <h2>
-        <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-        <small>{!! $crud->getSubheading() ?? trans('backpack::crud.edit').' '.$crud->entity_name !!}.</small>
-
+    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-end d-print-none" bp-section="page-header">
+        <h3 class="text-capitalize mb-0" bp-section="page-heading">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h3>
+        <p class="ms-2 ml-2 mb-0" bp-section="page-subheading">{!! $crud->getSubheading() ?? trans('backpack::crud.edit').' '.$crud->entity_name !!}.</p>
         @if ($crud->hasAccess('list'))
-          <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-{{ config('backpack.base.html_direction') == 'rtl' ? 'right' : 'left' }}"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+            <p class="mb-0 ms-2 ml-2" bp-section="page-subheading-back-button">
+                <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-{{ config('backpack.base.html_direction') == 'rtl' ? 'right' : 'left' }}"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
+            </p>
         @endif
-	  </h2>
-	</section>
+    </section>
 @endsection
 
 @section('content')
@@ -44,7 +43,7 @@
 		    <div class="mb-2 text-right">
 		    	{{-- Single button --}}
 				<div class="btn-group">
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
@@ -62,7 +61,7 @@
 		      	@include('crud::form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
               @endif
               {{-- This makes sure that all field assets are loaded. --}}
-            <div class="d-none" id="parentLoadedAssets">{{ json_encode(Assets::loaded()) }}</div>
+            <div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
             @include('crud::inc.form_save_buttons')
 		  </form>
 	</div>

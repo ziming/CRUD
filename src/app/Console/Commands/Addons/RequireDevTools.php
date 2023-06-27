@@ -30,11 +30,11 @@ class RequireDevTools extends Command
      * @var array
      */
     public static $addon = [
-        'name' => 'DevTools',
+        'name'        => 'DevTools',
         'description' => [
             'Helps generate models, migrations, operations and CRUDs',
         ],
-        'path' => 'vendor/backpack/devtools',
+        'path'    => 'vendor/backpack/devtools',
         'command' => 'backpack:require:devtools',
     ];
 
@@ -68,7 +68,7 @@ class RequireDevTools extends Command
 
         // Require package
         try {
-            $this->composerRequire('backpack/devtools', ['--dev', '--with-all-dependencies']);
+            $this->composerRequire('backpack/devtools:v6.x-dev', ['--dev', '--with-all-dependencies']);
         } catch (\Throwable $e) {
             $this->errorProgressBlock();
             $this->line('  '.$e->getMessage(), 'fg=red');

@@ -2,10 +2,12 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
+
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Macroable
  */
-class CrudPanelMacroTest extends BaseCrudPanelTest
+class CrudPanelMacroTest extends BaseCrudPanel
 {
     public function testItCanRegisterMacro()
     {
@@ -25,8 +27,8 @@ class CrudPanelMacroTest extends BaseCrudPanelTest
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-          new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Cannot register \'setModel\' macro. \'setModel()\' already exists on Backpack\CRUD\app\Library\CrudPanel\CrudPanel'),
-          $e
-      );
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Cannot register \'setModel\' macro. \'setModel()\' already exists on Backpack\CRUD\app\Library\CrudPanel\CrudPanel'),
+            $e
+        );
     }
 }

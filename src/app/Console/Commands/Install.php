@@ -72,7 +72,19 @@ class Install extends Command
 
         // Install Backpack Generators
         $this->progressBlock('Installing Backpack Generators');
-        $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
+        $process = new Process(['composer', 'require', '--dev', 'backpack/generators:v6.x-dev']);
+        $process->setTimeout(300);
+        $process->run();
+        $this->closeProgressBlock();
+
+        // Install Backpack Basset
+        $this->progressBlock('Installing Basset');
+        $this->executeArtisanProcess('basset:install --no-interaction');
+        $this->closeProgressBlock();
+
+        // Install Backpack Tabler Theme
+        $this->progressBlock('Installing Tabler Theme');
+        $process = new Process(['composer', 'require', 'backpack/theme-tabler:dev-main']);
         $process->setTimeout(300);
         $process->run();
         $this->closeProgressBlock();

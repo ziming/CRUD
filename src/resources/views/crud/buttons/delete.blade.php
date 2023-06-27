@@ -5,8 +5,8 @@
 {{-- Button Javascript --}}
 {{-- - used right away in AJAX operations (ex: List) --}}
 {{-- - pushed to the end of the page, after jQuery is loaded, for non-AJAX operations (ex: Show) --}}
-@loadOnce('delete_button_script')
 @push('after_scripts') @if (request()->ajax()) @endpush @endif
+@bassetBlock('backpack/crud/buttons/delete-button-'.app()->getLocale().'.js')
 <script>
 
 	if (typeof deleteEntry != 'function') {
@@ -93,5 +93,5 @@
 	// make it so that the function above is run after each DataTable draw event
 	// crud.addFunctionToDataTablesDrawEventQueue('deleteEntry');
 </script>
+@endBassetBlock
 @if (!request()->ajax()) @endpush @endif
-@endLoadOnce

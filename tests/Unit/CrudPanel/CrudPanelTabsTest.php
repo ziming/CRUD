@@ -2,14 +2,14 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Article;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs
  */
-class CrudPanelTabsTest extends BaseDBCrudPanelTest
+class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $horizontalTabsType = 'horizontal';
     private $verticalTabsType = 'vertical';

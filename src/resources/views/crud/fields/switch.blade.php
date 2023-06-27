@@ -12,9 +12,9 @@
     {{-- Translatable icon --}}
     @include('crud::fields.inc.translatable_icon')
 
-    <div class="d-inline-flex">
+    <div class="d-inline-flex align-items-center">
         {{-- Switch --}}
-        <label class="switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
+        <label class="form-switch switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
@@ -23,7 +23,7 @@
                 type="checkbox"
                 data-init-function="bpFieldInitSwitch"
                 {{ (bool) $field['value'] ? 'checked' : '' }}
-                class="switch-input" />
+                class="switch-input form-check-input" />
             <span
                 class="switch-slider"
                 data-checked="{{ $field['onLabel'] ?? '' }}"
@@ -50,7 +50,7 @@
 
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
-    @loadOnce('bpFieldInitSwitchScript')
+    @bassetBlock('backpack/crud/fields/switch-field.js')
     <script>
         function bpFieldInitSwitch($element) {
             let element = $element[0];
@@ -79,17 +79,17 @@
             });
         }
     </script>
-    @endLoadOnce
+    @endBassetBlock
 @endpush
 
 @push('crud_fields_styles')
-    @loadOnce('bpFieldInitSwitchStyle')
+    @bassetBlock('backpack/crud/fields/switch-field.css')
     <style>
         .switch-input:checked+.switch-slider {
             background-color: var(--bg-color);
         }
     </style>
-    @endLoadOnce
+    @endBassetBlock
 @endpush
 
 {{-- End of Extra CSS and JS --}}

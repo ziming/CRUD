@@ -253,7 +253,6 @@ trait SaveActions
      */
     public function getCurrentSaveAction($saveOptions)
     {
-
         //get save action from session if exists, or get the developer defined order
         $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getFallBackSaveAction());
         if (isset($saveOptions[$saveAction])) {
@@ -322,7 +321,7 @@ trait SaveActions
      * Redirect to the correct URL, depending on which save action has been selected.
      *
      * @param  string  $itemId
-     * @return array|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function performSaveAction($itemId = null)
     {
@@ -346,12 +345,12 @@ trait SaveActions
 
         // if the request is AJAX, return a JSON response
         if ($this->getRequest()->ajax()) {
-            return [
+            return response()->json([
                 'success'      => true,
                 'data'         => $this->entry,
                 'redirect_url' => $redirectUrl,
                 'referrer_url' => $referrer_url ?? false,
-            ];
+            ]);
         }
 
         if (isset($referrer_url)) {

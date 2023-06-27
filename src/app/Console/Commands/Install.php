@@ -88,7 +88,11 @@ class Install extends Command
         $process->setTimeout(300);
         $process->run();
         $this->closeProgressBlock();
-
+        $this->progressBlock('Publishing theme config file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--tag' => 'tabler-config',
+        ]);
+        $this->closeProgressBlock();
         // Optional commands
         if (! $this->option('no-interaction')) {
             // Create users

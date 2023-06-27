@@ -90,7 +90,7 @@ class Install extends Command
         $this->closeProgressBlock();
         $this->progressBlock('Publishing theme config file');
         $this->executeArtisanProcess('vendor:publish', [
-            '--tag' => 'tabler-config'
+            '--tag' => 'tabler-config',
         ]);
         $this->closeProgressBlock();
         // Optional commands

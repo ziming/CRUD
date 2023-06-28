@@ -77,13 +77,22 @@ class Install extends Command
         $process->run();
         $this->closeProgressBlock();
 
+        // Install Backpack Basset
+        $this->progressBlock('Installing Basset');
+        $this->executeArtisanProcess('basset:install --no-interaction');
+        $this->closeProgressBlock();
+
         // Install Backpack Tabler Theme
         $this->progressBlock('Installing Tabler Theme');
         $process = new Process(['composer', 'require', 'backpack/theme-tabler:dev-main']);
         $process->setTimeout(300);
         $process->run();
         $this->closeProgressBlock();
-
+        $this->progressBlock('Publishing theme config file');
+        $this->executeArtisanProcess('vendor:publish', [
+            '--tag' => 'tabler-config',
+        ]);
+        $this->closeProgressBlock();
         // Optional commands
         if (! $this->option('no-interaction')) {
             // Create users

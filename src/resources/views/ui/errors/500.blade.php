@@ -1,4 +1,4 @@
-@extends('errors.layout')
+@extends(backpack_view('errors.layout'))
 
 @php
 	$error_number = 500;

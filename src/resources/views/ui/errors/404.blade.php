@@ -1,11 +1,11 @@
-@extends('errors.layout')
+@extends(backpack_view('errors.layout'))
 
 @php
-  $error_number = 403;
+  $error_number = 404;
 @endphp
 
 @section('title')
-  Forbidden.
+  Page not found.
 @endsection
 
 @section('description')

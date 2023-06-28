@@ -10,6 +10,7 @@ use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -72,6 +73,7 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsWithFallbacks('crud');
         $this->loadViewsWithFallbacks('ui', 'backpack.ui');
         $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
+        $this->loadViewComponents();
 
         $this->registerBackpackErrorViews();
 
@@ -293,6 +295,11 @@ class BackpackServiceProvider extends ServiceProvider
                     'provider' => 'backpack',
                 ],
             ];
+    }
+
+    public function loadViewComponents()
+    {
+        Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
     }
 
     /**

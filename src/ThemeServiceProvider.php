@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD;
 
-use Backpack\CRUD\ViewNamespaces;
 use Backpack\Basset\Facades\Basset;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,11 +16,11 @@ class ThemeServiceProvider extends ServiceProvider
     /**
      * -------------------------
      * SERVICE PROVIDER DEFAULTS
-     * -------------------------
+     * -------------------------.
      */
 
     /**
-     * Boot method may be overrided by AddonServiceProvider
+     * Boot method may be overrided by AddonServiceProvider.
      *
      * @return void
      */
@@ -82,7 +81,7 @@ class ThemeServiceProvider extends ServiceProvider
         // Add default ViewNamespaces
         foreach (['buttons', 'columns', 'fields', 'filters', 'widgets'] as $viewNamespace) {
             if ($this->packageDirectoryExistsAndIsNotEmpty("resources/views/$viewNamespace")) {
-                ViewNamespaces::addFor($viewNamespace, $this->vendorNameDotPackageName() . "::{$viewNamespace}");
+                ViewNamespaces::addFor($viewNamespace, $this->vendorNameDotPackageName()."::{$viewNamespace}");
             }
         }
 
@@ -149,9 +148,8 @@ class ThemeServiceProvider extends ServiceProvider
     /**
      * -------------------
      * CONVENIENCE METHODS
-     * -------------------
+     * -------------------.
      */
-
     protected function vendorNameDotPackageName()
     {
         return $this->vendorName.'.'.$this->packageName;
@@ -253,7 +251,7 @@ class ThemeServiceProvider extends ServiceProvider
 
     public function packageIsActiveTheme()
     {
-        $viewNamespace = $this->vendorNameDotPackageName() . '::';
+        $viewNamespace = $this->vendorNameDotPackageName().'::';
 
         return config('backpack.ui.view_namespace') === $viewNamespace ||
             config('backpack.ui.view_namespace_fallback') === $viewNamespace;

@@ -1,5 +1,7 @@
 <?php
 
+use Backpack\Basset\Facades\Basset;
+use Creativeorange\Gravatar\Facades\Gravatar;
 use Illuminate\Support\Facades\Log;
 
 if (! function_exists('backpack_url')) {
@@ -144,7 +146,14 @@ if (! function_exists('backpack_avatar_url')) {
         switch (config('backpack.base.avatar_type')) {
             case 'gravatar':
                 if (backpack_users_have_email() && ! empty($user->email)) {
-                    return Gravatar::fallback(config('backpack.base.gravatar_fallback'))->get($user->email);
+                    $avatarLink = Gravatar::fallback(config('backpack.base.gravatar_fallback'))->get($user->email, ['size' => 80]);
+
+                    // if we can save it locally, for safer loading, let's do it
+                    if (in_array(Basset::basset($avatarLink, false)->name, ['INTERNALIZED', 'IN_CACHE', 'LOADED'])) {
+                        return Basset::getUrl($avatarLink);
+                    }
+
+                    return $avatarLink;
                 }
                 break;
             default:

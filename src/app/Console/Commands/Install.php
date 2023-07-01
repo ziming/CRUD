@@ -143,6 +143,13 @@ class Install extends Command
         $currentUsers = $userModel->count();
         $this->note(sprintf('Currently there %s in the <fg=blue>%s</> table.', trans_choice("{0} are <fg=blue>no users</>|{1} is <fg=blue>1 user</>|[2,*] are <fg=blue>$currentUsers users</>", $currentUsers), $userModel->getTable()));
 
+        if ($currentUsers) {
+            $this->note('Skipping creating an admin user.');
+            $this->newLine();
+
+            return;
+        }
+
         $total = 0;
         while ($this->confirm(' Add '.($total ? 'another' : 'an').' admin user?')) {
             $name = $this->ask(' Name');

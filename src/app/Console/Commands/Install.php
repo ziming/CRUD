@@ -53,7 +53,7 @@ class Install extends Command
         $this->infoBlock('Installing Backpack CRUD:', 'Step 1');
 
         // Publish files
-        $this->progressBlock('Publishing configs, views, js and css files');
+        $this->progressBlock('Publishing configs, views, routes and assets');
         $this->executeArtisanProcess('vendor:publish', [
             '--provider' => BackpackServiceProvider::class,
             '--tag' => 'minimum',
@@ -71,10 +71,13 @@ class Install extends Command
         $this->closeProgressBlock();
 
         // Install Backpack Generators
-        $this->progressBlock('Installing Backpack Generators');
-        $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
-        $process->setTimeout(300);
-        $process->run();
+        $this->progressBlock('Installing Generators');
+        if (!file_exists('vendor/backpack/generators/composer.json')) {
+            // only do this if Generators aren't already required
+            $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
+            $process->setTimeout(300);
+            $process->run();
+        }
         $this->closeProgressBlock();
 
         // Install Backpack Basset
@@ -224,7 +227,7 @@ class Install extends Command
 
         $total = 0;
         while (! $this->isEveryAddonInstalled()) {
-            $input = (int) $this->listChoice('Would you like to install a premium Backpack add-on? <fg=gray>(enter option number)</>', $this->addons->toArray());
+            $input = (int) $this->listChoice('Would you like to install a premium Backpack add-on? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->addons->toArray());
 
             if ($input < 1 || $input > $this->addons->count()) {
                 $this->deleteLines(3);

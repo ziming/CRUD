@@ -44,6 +44,17 @@ class Install extends Command
     ];
 
     /**
+     * Themes variable.
+     *
+     * @var array
+     */
+    protected $themes = [
+        Themes\RequireThemeTabler::class,
+        Themes\RequireThemeCoreuiv4::class,
+        Themes\RequireThemeCoreuiv2::class,
+    ];
+
+    /**
      * Execute the console command.
      *
      * @return mixed Command-line output
@@ -85,19 +96,16 @@ class Install extends Command
         $this->executeArtisanProcess('basset:install --no-interaction');
         $this->closeProgressBlock();
 
-        // Install Backpack Tabler Theme
-        $this->progressBlock('Installing Tabler Theme');
-        $process = new Process(['composer', 'require', 'backpack/theme-tabler:dev-main']);
-        $process->setTimeout(300);
-        $process->run();
+        // Install default theme
+        $this->progressBlock('Installing default theme');
+        $this->executeArtisanProcess('backpack:require:theme-coreuiv2');
         $this->closeProgressBlock();
-        $this->progressBlock('Publishing theme config file');
-        $this->executeArtisanProcess('vendor:publish', [
-            '--tag' => 'theme-tabler-config',
-        ]);
-        $this->closeProgressBlock();
+
         // Optional commands
         if (! $this->option('no-interaction')) {
+            // Themes
+            // $this->installThemes();
+
             // Create users
             $this->createUsers();
 
@@ -248,6 +256,85 @@ class Install extends Command
 
                 // refresh list
                 $this->updateAddonsStatus();
+
+                $total++;
+            } catch (\Throwable $e) {
+                $this->errorBlock($e->getMessage());
+            }
+
+            $this->line('  ──────────', 'fg=gray');
+            $this->newLine();
+        }
+    }
+
+    private function isEveryThemeInstalled()
+    {
+        return collect($this->themes)->every(function ($theme) {
+            return file_exists($theme->path);
+        });
+    }
+
+    private function updateThemeStatus()
+    {
+        $this->themes = $this->themes->each(function (&$theme) {
+            $isInstalled = file_exists($theme->path);
+            $theme->status = $isInstalled ? 'installed' : 'not installed';
+            $theme->statusColor = $isInstalled ? 'green' : 'yellow';
+        });
+    }
+
+    private function installThemes()
+    {
+        // map the themes
+        $this->themes = collect($this->themes)
+            ->map(function ($class) {
+                return (object) $class::$addon;
+            });
+
+        // set themes current status (installed / not installed)
+        $this->updateThemeStatus();
+
+        // if all themes are installed do nothing
+        if ($this->isEveryThemeInstalled()) {
+            return;
+        }
+
+        $this->infoBlock('Installing Backpack Themes:', 'Step 2');
+        $this->note('Use a different admin UI, depending on your project and preferences.');
+        $this->newLine();
+
+        // Calculate the printed line count
+        $printedLines = $this->themes
+            ->map(function ($e) {
+                return count($e->description);
+            })
+            ->reduce(function ($sum, $item) {
+                return $sum + $item + 2;
+            }, 0);
+
+        $total = 0;
+        while (!$this->isEveryThemeInstalled()) {
+            $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes->toArray());
+
+            if ($input < 1 || $input > $this->themes->count()) {
+                $this->deleteLines(3);
+                break;
+            }
+
+            // Clear list
+            $this->deleteLines($printedLines + 4 + ($total ? 2 : 0));
+
+            try {
+                $addon = $this->themes[$input - 1];
+
+                // Install addon (low verbose level)
+                $currentVerbosity = $this->output->getVerbosity();
+                $this->output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
+                $this->call($addon->command);
+                $this->output->setVerbosity($currentVerbosity);
+
+                // refresh list
+                $this->updateThemeStatus();
 
                 $total++;
             } catch (\Throwable $e) {

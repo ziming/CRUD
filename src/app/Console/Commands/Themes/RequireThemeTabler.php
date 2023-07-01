@@ -1,0 +1,53 @@
+<?php
+
+namespace Backpack\CRUD\app\Console\Commands\Themes;
+
+use Illuminate\Console\Command;
+use Backpack\CRUD\app\Console\Commands\Themes\InstallsTheme;
+
+class RequireThemeTabler extends Command
+{
+    use InstallsTheme;
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'backpack:require:theme-tabler
+                                {--debug} : Show process output or not. Useful for debugging.';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Install Backpack\'s Tabler Theme';
+
+    /**
+     * Backpack addons install attribute.
+     *
+     * @var array
+     */
+    public static $addon = [
+        'name'        => 'Tabler',
+        'description' => [
+            'UI provided by Tabler, a Boostrap 5 template.',
+            '<fg=blue>https://github.com/laravel-backpack/theme-tabler/</>',
+        ],
+        'repo'    => 'backpack/theme-tabler',
+        'path'    => 'vendor/backpack/theme-tabler',
+        'command' => 'backpack:require:theme-tabler',
+        'publish-tag' => 'theme-tabler-config',
+    ];
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed Command-line output
+     */
+    public function handle()
+    {
+        $this->installTheme();
+    }
+}

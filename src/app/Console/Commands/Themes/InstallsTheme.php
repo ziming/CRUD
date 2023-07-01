@@ -27,15 +27,15 @@ trait InstallsTheme
      * @var array
      */
     // public static $addon = [
-        // 'name'        => 'CoreUIv2',
-        // 'description' => [
+    // 'name'        => 'CoreUIv2',
+    // 'description' => [
         //     'UI provided by CoreUIv2, a Boostrap 4 template.',
         //     '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv2/</>',
-        // ],
-        // 'repo'    => 'backpack/theme-coreuiv2',
-        // 'path'    => 'vendor/backpack/theme-coreuiv2',
-        // 'command' => 'backpack:require:theme-coreuiv2',
-        // 'publish-tag' => 'theme-coreuiv2-config',
+    // ],
+    // 'repo'    => 'backpack/theme-coreuiv2',
+    // 'path'    => 'vendor/backpack/theme-coreuiv2',
+    // 'command' => 'backpack:require:theme-coreuiv2',
+    // 'publish-tag' => 'theme-coreuiv2-config',
     // ];
 
     /**

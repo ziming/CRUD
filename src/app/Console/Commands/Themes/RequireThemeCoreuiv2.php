@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Console\Commands\Themes;
 
 use Illuminate\Console\Command;
-use Backpack\CRUD\app\Console\Commands\Themes\InstallsTheme;
 
 class RequireThemeCoreuiv2 extends Command
 {

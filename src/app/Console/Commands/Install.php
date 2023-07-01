@@ -83,7 +83,7 @@ class Install extends Command
 
         // Install Backpack Generators
         $this->progressBlock('Installing Generators');
-        if (!file_exists('vendor/backpack/generators/composer.json')) {
+        if (! file_exists('vendor/backpack/generators/composer.json')) {
             // only do this if Generators aren't already required
             $process = new Process(['composer', 'require', '--dev', 'backpack/generators']);
             $process->setTimeout(300);
@@ -320,7 +320,7 @@ class Install extends Command
             }, 0);
 
         $total = 0;
-        while (!$this->isEveryThemeInstalled()) {
+        while (! $this->isEveryThemeInstalled()) {
             $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes->toArray());
 
             if ($input < 1 || $input > $this->themes->count()) {

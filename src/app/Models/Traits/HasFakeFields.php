@@ -62,7 +62,7 @@ trait HasFakeFields
     /**
      * Determine if this fake column should be json_decoded.
      *
-     * @param $column string fake column name
+     * @param  $column  string fake column name
      * @return bool
      */
     public function shouldDecodeFake($column)
@@ -73,7 +73,7 @@ trait HasFakeFields
     /**
      * Determine if this fake column should get json_encoded or not.
      *
-     * @param $column string fake column name
+     * @param  $column  string fake column name
      * @return bool
      */
     public function shouldEncodeFake($column)

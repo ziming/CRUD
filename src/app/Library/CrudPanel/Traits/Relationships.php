@@ -322,8 +322,8 @@ trait Relationships
      * DEV NOTE: In future versions we will return `false` when no return type is set and make the return type mandatory for relationships.
      *           This function should be refactored to only check if $returnType is a subclass of Illuminate\Database\Eloquent\Relations\Relation.
      *
-     * @param $model
-     * @param $method
+     * @param  $model
+     * @param  $method
      * @return bool|string
      */
     private function modelMethodIsRelationship($model, $method)

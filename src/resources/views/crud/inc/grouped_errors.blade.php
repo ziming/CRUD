@@ -1,6 +1,6 @@
 {{-- Show the errors, if any --}}
 @if ($crud->groupedErrorsEnabled() && session()->get('errors'))
-    <div class="alert alert-danger pb-0">
+    <div class="alert alert-danger">
         <ul class="list-unstyled">
             @foreach(session()->get('errors')->getBags() as $bag => $errorMessages)
                 @foreach($errorMessages->getMessages() as $errorMessageForInput)

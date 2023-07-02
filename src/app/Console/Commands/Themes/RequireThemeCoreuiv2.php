@@ -37,7 +37,8 @@ class RequireThemeCoreuiv2 extends Command
         'repo'    => 'backpack/theme-coreuiv2',
         'path'    => 'vendor/backpack/theme-coreuiv2',
         'command' => 'backpack:require:theme-coreuiv2',
-        'publish-tag' => 'theme-coreuiv2-config',
+        'view_namespace' => 'backpack.theme-coreuiv2::',
+        'publish_tag' => 'theme-coreuiv2-config',
     ];
 
     /**

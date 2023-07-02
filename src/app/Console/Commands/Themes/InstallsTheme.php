@@ -35,7 +35,7 @@ trait InstallsTheme
     // 'repo'    => 'backpack/theme-coreuiv2',
     // 'path'    => 'vendor/backpack/theme-coreuiv2',
     // 'command' => 'backpack:require:theme-coreuiv2',
-    // 'publish-tag' => 'theme-coreuiv2-config',
+    // 'publish_tag' => 'theme-coreuiv2-config',
     // ];
 
     /**
@@ -82,10 +82,13 @@ trait InstallsTheme
         // Publish the theme config file
         $this->progressBlock('Publish theme config file');
         $this->executeArtisanProcess('vendor:publish', [
-            '--tag' => self::$addon['publish-tag'],
+            '--tag' => self::$addon['publish_tag'],
         ]);
+        $this->closeProgressBlock();
 
-        // Finish
+        // add this theme's view namespace to the ui config file
+        $this->progressBlock('Use theme as view namespace in <fg=blue>config/backpack/ui.php</>');
+        $this->useViewNamespaceInConfigFile();
         $this->closeProgressBlock();
         $this->newLine();
     }
@@ -93,5 +96,15 @@ trait InstallsTheme
     public function isInstalled()
     {
         return file_exists(self::$addon['path'].'/composer.json');
+    }
+
+    public function useViewNamespaceInConfigFile()
+    {
+        $config_file = config_path('backpack/ui.php');
+        $config_contents = file_get_contents($config_file);
+        $config_contents = preg_replace("/'view_namespace' => '.*'/", "'view_namespace' => '".self::$addon['view_namespace']."'", $config_contents);
+        $config_contents = preg_replace("/'view_namespace_fallback' => '.*'/", "'view_namespace_fallback' => '".self::$addon['view_namespace']."'", $config_contents);
+
+        file_put_contents($config_file, $config_contents);
     }
 }

@@ -37,7 +37,8 @@ class RequireThemeTabler extends Command
         'repo'    => 'backpack/theme-tabler',
         'path'    => 'vendor/backpack/theme-tabler',
         'command' => 'backpack:require:theme-tabler',
-        'publish-tag' => 'theme-tabler-config',
+        'view_namespace' => 'backpack.theme-tabler::',
+        'publish_tag' => 'theme-tabler-config',
     ];
 
     /**

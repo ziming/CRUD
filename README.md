@@ -30,7 +30,7 @@ https://user-images.githubusercontent.com/33960976/228454020-91f42000-919e-413c-
 -----
 
 Among the FREE features of each admin interface:
-- [List](https://backpackforlaravel.com/docs/5.x/crud-operation-list-entries) operation
+- [List](https://backpackforlaravel.com/docs/crud-operation-list-entries) operation
    - 24 column types
    - 1-1, 1-n and n-n relationships
    - table view with search, pagination
@@ -39,19 +39,19 @@ Among the FREE features of each admin interface:
    - details row
    - easily create new column types
    - easily override an existing column type
-- [Create](https://backpackforlaravel.com/docs/5.x/crud-operation-create) / [Update](https://backpackforlaravel.com/docs/5.x/crud-operation-update) operations
+- [Create](https://backpackforlaravel.com/docs/crud-operation-create) / [Update](https://backpackforlaravel.com/docs/crud-operation-update) operations
    - 29 field types
    - back-end validation using Laravel Form Requests
    - translatable models (multi-language)
    - have multiple fields per line
    - split fields into tabs
-- [Delete](https://backpackforlaravel.com/docs/5.x/crud-operation-delete) operation
-- [Reorder](https://backpackforlaravel.com/docs/5.x/crud-operation-reorder) operation
-- [Revise](https://backpackforlaravel.com/docs/5.x/crud-operation-revisions) operation (aka. audit log)
+- [Delete](https://backpackforlaravel.com/docs/crud-operation-delete) operation
+- [Reorder](https://backpackforlaravel.com/docs/crud-operation-reorder) operation
+- [Revise](https://backpackforlaravel.com/docs/crud-operation-revisions) operation (aka. audit log)
 
 But professionals don't love Backpack just because it's feature-packed. They also love it because it's **ridiculously easy to override a functionality**. Generally, you just need to create a function (or blade file) with the right name. Yes, it can be _that_ easy.
 
-> Need more complex features? Purchase [Backpack PRO](https://backpackforlaravel.com/pricing), our closed-source paid add-on. It will add **5 more operations, 10 filters, 28 more fields, 6 more columns and 1 more widget**. For more info, see our [FREE vs PRO comparison table](https://backpackforlaravel.com/docs/5.x/features-free-vs-paid). We believe it's everything you need to build admin panels of _any_ complexity.
+> Need more complex features? Purchase [Backpack PRO](https://backpackforlaravel.com/pricing), our closed-source paid add-on. It will add **5 more operations, 10 filters, 28 more fields, 6 more columns and 1 more widget**. For more info, see our [FREE vs PRO comparison table](https://backpackforlaravel.com/docs/features-free-vs-paid). We believe it's everything you need to build admin panels of _any_ complexity.
 
 ## Links
 
@@ -74,15 +74,15 @@ Please see [demo.backpackforlaravel.com](https://demo.backpackforlaravel.com/adm
 
 ## Getting Started
 
-Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/docs/5.x/introduction) in our docs. It will explain what you can do with Backpack, and let you choose a guide, depending on how you like to learn:
-- a 31-minute ["Getting Started" video course](https://backpackforlaravel.com/docs/5.x/getting-started-videos);
-- a 20-minute ["Getting Started" text course](https://backpackforlaravel.com/docs/5.x/getting-started-basics);
+Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/docs/introduction) in our docs. It will explain what you can do with Backpack, and let you choose a guide, depending on how you like to learn:
+- a 31-minute ["Getting Started" video course](https://backpackforlaravel.com/docs/getting-started-videos);
+- a 20-minute ["Getting Started" text course](https://backpackforlaravel.com/docs/getting-started-basics);
 - a 4-day, 5min/day ["Getting Started" drip email course](https://sendy.digitallyhappy.com/subscription?f=jlldf83763papd2Ifee0838Xs65TkXSvi17yEAuEnJiNj9ct53p5tikGHM4OkvpCeFUCbwcEYRt763ZSTILFXRWWEQ);
 
 ## Install
 
 For the current version (recommended):
-- [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/5.x/installation);
+- [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/installation);
 
 For the previous versions (not recommended):
 - [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - last feature update was 1st Jan 2021;
@@ -106,8 +106,8 @@ If you discover any security related issues, please email hello@backpackforlarav
 ## License
 
 Starting with v5, Backpack has become open-core. Its features have been separated into two packages:
-- **Backpack CRUD is licensed under the [MIT License](LICENSE.md)** (open-source free software); it is perfect if you're building a simple admin panel - it's packed with features! it's also perfect if you're building an open-source project, the permissive license allows you to do whatever you want;
-- **Backpack PRO is licensed under our [EULA](https://backpackforlaravel.com/eula)**; it is a closed-source, paid add-on; [PRO](https://backpackforlaravel.com/products/pro) will be useful when your admin panel needs grow, because it adds adds A LOT of features for complex use cases (see our [FREE vs PRO comparison](https://backpackforlaravel.com/docs/5.x/features-free-vs-paid));
+- **Backpack CRUD is licensed under the [MIT License](LICENSE.md)** (open-source free software); it is perfect if you're building a simple admin panel - it's packed with features! It's also perfect if you're building an open-source project, the permissive license allows you to do whatever you want;
+- **Backpack PRO is licensed under our [EULA](https://backpackforlaravel.com/eula)**; it is a closed-source, paid add-on; [PRO](https://backpackforlaravel.com/products/pro) will be useful when your admin panel needs grow, because it adds A LOT of features for complex use cases (see our [FREE vs PRO comparison](https://backpackforlaravel.com/docs/features-free-vs-paid));
 
 [Our documentation](https://backpackforlaravel.com/docs) covers both CRUD and PRO, with all the PRO features clearly labeled <span class="badge badge-pill badge-info">PRO</span>.
 
@@ -143,7 +143,7 @@ Special thanks go to:
 
 ## Hire us
 
-We've spend more than 10.000 hours creating, polishing and maintaining administration panels on Laravel. We've developed e-Commerce, e-Learning, ERPs, social networks, payment gateways and much more. We've worked on admin panels _so much_, that we've created one of the most popular packages for Laravel - just from making public what was repetitive in our projects.
+We've spent more than 10,000 hours creating, polishing and maintaining administration panels on Laravel. We've developed e-Commerce, e-Learning, ERPs, social networks, payment gateways and much more. We've worked on admin panels _so much_, that we've created one of the most popular packages for Laravel - just from making public what was repetitive in our projects.
 
 If you are looking for a developer/team to help you build an admin panel on Laravel, look no further. You'll have a difficult time finding someone with more experience & enthusiasm for admin panels. This is _what we do_. [Contact us](https://backpackforlaravel.com/need-freelancer-or-development-team).
 

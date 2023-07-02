@@ -80,7 +80,6 @@ trait InstallsTheme
         }
 
         // Publish the theme config file
-        $this->newLine();
         $this->progressBlock('Publish theme config file');
         $this->executeArtisanProcess('vendor:publish', [
             '--tag' => self::$addon['publish-tag'],

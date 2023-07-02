@@ -21,7 +21,7 @@ class RequireThemeTabler extends Command
      *
      * @var string
      */
-    protected $description = 'Install Backpack\'s Tabler Theme';
+    protected $description = 'Install the Tabler theme';
 
     /**
      * Backpack addons install attribute.
@@ -29,7 +29,7 @@ class RequireThemeTabler extends Command
      * @var array
      */
     public static $addon = [
-        'name'        => 'Tabler',
+        'name'        => 'Tabler <fg=yellow>(public beta)</>',
         'description' => [
             'UI provided by Tabler, a Boostrap 5 template.',
             '<fg=blue>https://github.com/laravel-backpack/theme-tabler/</>',

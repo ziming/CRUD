@@ -49,9 +49,9 @@ class Install extends Command
      * @var array
      */
     protected $themes = [
-        Themes\RequireThemeTabler::class,
-        Themes\RequireThemeCoreuiv4::class,
         Themes\RequireThemeCoreuiv2::class,
+        Themes\RequireThemeCoreuiv4::class,
+        Themes\RequireThemeTabler::class,
     ];
 
     /**
@@ -61,7 +61,7 @@ class Install extends Command
      */
     public function handle()
     {
-        $this->infoBlock('Installing Backpack CRUD:', 'Step 1');
+        $this->infoBlock('Installing Backpack CRUD.', 'Step 1');
 
         // Publish files
         $this->progressBlock('Publishing configs, views, routes and assets');
@@ -96,21 +96,21 @@ class Install extends Command
         $this->executeArtisanProcess('basset:install --no-interaction');
         $this->closeProgressBlock();
 
-        // Install default theme
-        $this->progressBlock('Installing default theme');
-        $this->executeArtisanProcess('backpack:require:theme-coreuiv2');
-        $this->closeProgressBlock();
-
         // Optional commands
         if (! $this->option('no-interaction')) {
             // Themes
-            // $this->installThemes();
+            $this->installTheme();
 
             // Create users
             $this->createUsers();
 
             // Addons
             $this->installAddons();
+        } elseif (!$this->isAnyThemeInstalled()) {
+            // Install default theme
+            $this->progressBlock('Installing default theme');
+            $this->executeArtisanProcess('backpack:require:theme-coreuiv2');
+            $this->closeProgressBlock();
         }
 
         // Done
@@ -127,7 +127,7 @@ class Install extends Command
         $userModel = new $userClass();
 
         $this->newLine();
-        $this->infoBlock('Creating an admin:', 'Step 2');
+        $this->infoBlock('Creating an admin.', 'Step 3');
         $this->note('Quickly jump in your admin panel, using the email & password you choose here.');
 
         // Test User Model DB Connection
@@ -226,7 +226,7 @@ class Install extends Command
             return;
         }
 
-        $this->infoBlock('Installing premium Backpack add-ons:', 'Step 3');
+        $this->infoBlock('Installing premium Backpack add-ons:', 'Step 4');
         $this->note('Add tons of features and functionality to your admin panel, using our paid add-ons.');
         $this->note('For more information, payment and access please visit <fg=blue>https://backpackforlaravel.com/pricing</>');
         $this->newLine();
@@ -276,42 +276,31 @@ class Install extends Command
 
     private function isEveryThemeInstalled()
     {
-        return collect($this->themes)->every(function ($theme) {
-            return file_exists($theme->path);
+        return $this->themes()->every(function ($theme) {
+            return $theme->status == 'installed';
         });
     }
 
-    private function updateThemeStatus()
+    private function isAnyThemeInstalled()
     {
-        $this->themes = $this->themes->each(function (&$theme) {
-            $isInstalled = file_exists($theme->path);
-            $theme->status = $isInstalled ? 'installed' : 'not installed';
-            $theme->statusColor = $isInstalled ? 'green' : 'yellow';
-        });
+        return $this->themes()->filter(function ($theme) {
+            return $theme->status == 'installed';
+        })->count() > 0;
     }
 
-    private function installThemes()
+    private function installTheme()
     {
-        // map the themes
-        $this->themes = collect($this->themes)
-            ->map(function ($class) {
-                return (object) $class::$addon;
-            });
-
-        // set themes current status (installed / not installed)
-        $this->updateThemeStatus();
-
         // if all themes are installed do nothing
         if ($this->isEveryThemeInstalled()) {
             return;
         }
 
-        $this->infoBlock('Installing Backpack Themes:', 'Step 2');
-        $this->note('Use a different admin UI, depending on your project and preferences.');
+        $this->infoBlock('Installing a Theme.', 'Step 2');
+        $this->note('Choose your admin UI, depending on your project and preferences.');
         $this->newLine();
 
         // Calculate the printed line count
-        $printedLines = $this->themes
+        $printedLines = $this->themes()
             ->map(function ($e) {
                 return count($e->description);
             })
@@ -320,36 +309,43 @@ class Install extends Command
             }, 0);
 
         $total = 0;
-        while (! $this->isEveryThemeInstalled()) {
-            $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes->toArray());
+        $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes()->toArray());
 
-            if ($input < 1 || $input > $this->themes->count()) {
-                $this->deleteLines(3);
-                break;
-            }
-
-            // Clear list
-            $this->deleteLines($printedLines + 4 + ($total ? 2 : 0));
-
-            try {
-                $addon = $this->themes[$input - 1];
-
-                // Install addon (low verbose level)
-                $currentVerbosity = $this->output->getVerbosity();
-                $this->output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
-                $this->call($addon->command);
-                $this->output->setVerbosity($currentVerbosity);
-
-                // refresh list
-                $this->updateThemeStatus();
-
-                $total++;
-            } catch (\Throwable $e) {
-                $this->errorBlock($e->getMessage());
-            }
-
-            $this->line('  ──────────', 'fg=gray');
+        if ($input < 1 || $input > $this->themes()->count()) {
+            $this->deleteLines(3);
+            $this->note('Skipping installing a theme.');
             $this->newLine();
+            return;
         }
+
+        // Clear list
+        $this->deleteLines($printedLines + 4 + ($total ? 2 : 0));
+
+        try {
+            $addon = $this->themes()[$input - 1];
+
+            // Install addon (low verbose level)
+            $currentVerbosity = $this->output->getVerbosity();
+            $this->output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
+            $this->call($addon->command);
+            $this->output->setVerbosity($currentVerbosity);
+
+            $total++;
+        } catch (\Throwable $e) {
+            $this->errorBlock($e->getMessage());
+        }
+
+    }
+
+    public function themes()
+    {
+        return collect($this->themes)
+            ->map(function ($class) {
+                return (object) $class::$addon;
+            })->each(function (&$theme) {
+                $isInstalled = file_exists($theme->path);
+                $theme->status = $isInstalled ? 'installed' : 'not installed';
+                $theme->statusColor = $isInstalled ? 'green' : 'yellow';
+            });
     }
 }

@@ -21,7 +21,7 @@ class RequireThemeCoreuiv2 extends Command
      *
      * @var string
      */
-    protected $description = 'Install Backpack\'s CoreUIv2 Theme';
+    protected $description = 'Install the CoreUIv2 theme';
 
     /**
      * Backpack addons install attribute.
@@ -29,7 +29,7 @@ class RequireThemeCoreuiv2 extends Command
      * @var array
      */
     public static $addon = [
-        'name'        => 'CoreUIv2',
+        'name'        => 'CoreUIv2 <fg=green>(default)</>',
         'description' => [
             'UI provided by CoreUIv2, a Boostrap 4 template.',
             '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv2/</>',

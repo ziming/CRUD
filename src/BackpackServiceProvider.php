@@ -30,6 +30,9 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
         \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
         \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeTabler::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv2::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv4::class,
         \Backpack\CRUD\app\Console\Commands\Fix::class,
     ];
 

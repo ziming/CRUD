@@ -106,7 +106,7 @@ class Install extends Command
 
             // Addons
             $this->installAddons();
-        } elseif (!$this->isAnyThemeInstalled()) {
+        } elseif (! $this->isAnyThemeInstalled()) {
             // Install default theme
             $this->progressBlock('Installing default theme');
             $this->executeArtisanProcess('backpack:require:theme-coreuiv2');
@@ -315,6 +315,7 @@ class Install extends Command
             $this->deleteLines(3);
             $this->note('Skipping installing a theme.');
             $this->newLine();
+
             return;
         }
 
@@ -334,7 +335,6 @@ class Install extends Command
         } catch (\Throwable $e) {
             $this->errorBlock($e->getMessage());
         }
-
     }
 
     public function themes()

@@ -2,13 +2,22 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Http\Requests\UserRequest;
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\app\Library\Validation\Rules\ValidUpload;
+use Backpack\CRUD\app\Library\Validation\Rules\ValidUploadMultiple;
+use Backpack\CRUD\Tests\config\Http\Requests\UserRequest;
+use Backpack\CRUD\Tests\config\Models\User;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Validation
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Read
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\BackpackCustomRule
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidUpload
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidUploadMultiple
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\ValidFileArray
+ * @covers Backpack\CRUD\app\Library\Validation\Rules\Support\HasFiles
  */
-class CrudPanelValidationTest extends BaseDBCrudPanelTest
+class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     public function testItThrowsValidationExceptions()
     {
@@ -37,7 +46,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addFields([
@@ -77,7 +86,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addFields([
@@ -117,7 +126,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         ]);
 
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Unit\Http\Controllers\UserCrudController', 'create']))->bind($request);
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
         });
 
         $this->crudPanel->addField([
@@ -161,7 +170,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->crudPanel->setOperation('create');
 
         try {
-            $this->crudPanel->setValidation('\Backpack\CRUD\Tests\Unit\Models\User');
+            $this->crudPanel->setValidation('\Backpack\CRUD\Tests\config\Models\User');
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
@@ -194,7 +203,7 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->crudPanel->setOperation('create');
         $this->assertFalse($this->crudPanel->isRequired('test'));
         $this->crudPanel->setValidation([
-            'email'     => 'required',
+            'email'           => 'required',
             'password.*.test' => 'required',
         ]);
 
@@ -203,5 +212,72 @@ class CrudPanelValidationTest extends BaseDBCrudPanelTest
         $this->assertTrue($this->crudPanel->isRequired('email'));
         $this->assertTrue($this->crudPanel->isRequired('password.test'));
         $this->assertTrue($this->crudPanel->isRequired('name'));
+    }
+
+    public function testItCanGetTheRequiredFieldsFromCustomRules()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->entry = User::first();
+
+        $this->assertFalse($this->crudPanel->isRequired('test'));
+        $this->crudPanel->setValidation([
+            'email'     => ValidUpload::field('required'),
+            'password'  => ValidUploadMultiple::field('required'),
+        ]);
+
+        $this->crudPanel->setValidation(UserRequest::class);
+        $this->assertEquals(['email', 'password', 'name'], array_values($this->crudPanel->getOperationSetting('requiredFields')));
+        $this->assertTrue($this->crudPanel->isRequired('email'));
+        $this->assertTrue($this->crudPanel->isRequired('password'));
+        $this->assertTrue($this->crudPanel->isRequired('name'));
+    }
+
+    public function testItCanValidateCustomRules()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setValidation(UserRequest::class);
+        $this->crudPanel->entry = User::first();
+
+        $pdf1 = UploadedFile::fake()->create('test1.pdf', 1000);
+        $pdf2 = UploadedFile::fake()->create('test2.pdf', 1000);
+
+        $request = request()->create('users/', 'POST', [
+            'email'       => $pdf1,
+            'password'    => [$pdf1, $pdf2],
+            'name'        => 'test',
+        ]);
+
+        $request->setRouteResolver(function () use ($request) {
+            return (new Route('POST', 'users', ['Backpack\CRUD\Tests\Config\Http\Controllers\UserCrudController', 'create']))->bind($request);
+        });
+
+        $this->crudPanel->addFields([
+            [
+                'name'            => 'password',
+                'validationRules' => ValidUploadMultiple::field('required')->file('file|mimes:pdf|max:500'),
+            ],
+            [
+                'name'            => 'email',
+                'validationRules' => ValidUpload::field('required')->file('file|mimes:jpg'),
+            ],
+
+            [
+                'name' => 'name',
+            ],
+        ]);
+
+        $this->crudPanel->setRequest($request);
+
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+
+        try {
+            $this->crudPanel->validateRequest();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->assertEquals([
+                'password' => ['The password field must not be greater than 500 kilobytes.'],
+                'email' => ['The email field must be a file of type: jpg.'],
+            ], $e->errors());
+            throw $e;
+        }
     }
 }

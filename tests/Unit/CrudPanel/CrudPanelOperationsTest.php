@@ -2,10 +2,12 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
+
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Operations
  */
-class CrudPanelOperationsTest extends BaseCrudPanelTest
+class CrudPanelOperationsTest extends BaseCrudPanel
 {
     public function testItCanSetAndGetTheCurrentOperation()
     {

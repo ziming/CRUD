@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 use Illuminate\Support\Traits\Conditionable;
 
 /**
@@ -28,12 +29,21 @@ use Illuminate\Support\Traits\Conditionable;
  * @method self visibleInShow(bool $value)
  * @method self priority(int $value)
  * @method self key(string $value)
+ * @method self upload(bool $value)
  */
 class CrudColumn
 {
     use Conditionable;
+    use MacroableWithAttributes;
 
     protected $attributes;
+
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
+
+        return $this->save();
+    }
 
     public function __construct($name)
     {
@@ -210,6 +220,11 @@ class CrudColumn
         return $this;
     }
 
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------
@@ -271,6 +286,10 @@ class CrudColumn
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         $this->setAttributeValue($method, $parameters[0]);
 
         return $this->save();

@@ -69,7 +69,7 @@ trait FieldsProtectedMethods
      */
     public function overwriteFieldNameFromDotNotationToArray($field)
     {
-        if (! is_array($field['name']) && strpos($field['name'], '.') !== false) {
+        if (strpos($field['name'], '.') !== false) {
             $entity_array = explode('.', $field['name']);
             $name_string = '';
 
@@ -141,11 +141,6 @@ trait FieldsProtectedMethods
         // by default, entity is false if we cannot link it with guessing functions to a relation
         $field['entity'] = false;
 
-        // if the name is an array it's definitely not a relationship
-        if (is_array($field['name'])) {
-            return $field;
-        }
-
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
             $possibleMethodName = Str::of($field['name'])->before('.');
@@ -181,7 +176,7 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasAttribute($field)
     {
-        if ($field['entity']) {
+        if (isset($field['entity']) && $field['entity']) {
             // if the user setup the attribute in relation string, we are not going to infer that attribute from model
             // instead we get the defined attribute by the user.
             if ($this->isAttributeInRelationString($field)) {
@@ -209,7 +204,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasLabel($field)
     {
         if (! isset($field['label'])) {
-            $name = is_array($field['name']) ? $field['name'][0] : $field['name'];
+            $name = str_replace(',', ' ', $field['name']);
             $name = str_replace('_id', '', $name);
             $field['label'] = mb_ucfirst(str_replace('_', ' ', $name));
         }
@@ -264,8 +259,8 @@ trait FieldsProtectedMethods
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
-            if (empty($field)) {
-                abort(500, 'Field name can\'t be empty');
+            if (empty($subfield) || ! isset($subfield['name'])) {
+                abort(500, 'Subfield name can\'t be empty');
             }
 
             // make sure the field definition is an array
@@ -273,7 +268,7 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
-            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
+            $subfield['parentFieldName'] = $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
@@ -342,10 +337,8 @@ trait FieldsProtectedMethods
      */
     protected function addFieldToOperationSettings($field)
     {
-        $fieldKey = $this->getFieldKey($field);
-
         $allFields = $this->getOperationSetting('fields');
-        $allFields = array_merge($this->getCleanStateFields(), [$fieldKey => $field]);
+        $allFields = array_merge($this->getCleanStateFields(), [$field['name'] => $field]);
 
         $this->setOperationSetting('fields', $allFields);
     }
@@ -354,19 +347,10 @@ trait FieldsProtectedMethods
      * Get the string that should be used as an array key, for the attributive array
      * where the fields are stored for the current operation.
      *
-     * The array key for the field should be:
-     * - name (if the name is a string)
-     * - name1_name2_name3 (if the name is an array)
-     *
-     * @param  array  $field  Field definition array.
-     * @return string The string that should be used as array key.
+     * @deprecated v6
      */
-    protected function getFieldKey($field)
+    protected function getFieldKey(array $field): string
     {
-        if (is_array($field['name'])) {
-            return implode('_', $field['name']);
-        }
-
         return $field['name'];
     }
 }

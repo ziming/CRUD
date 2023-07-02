@@ -114,14 +114,12 @@ Starting with v5, Backpack has become open-core. Its features have been separate
 <a name="versioning"></a>
 ## Versioning
 
-Starting with Backpack v5, all our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `5.0.1`) means for us:
+Our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `6.0.1`) means for us:
 - `major` - breaking changes, major new features, complete rewrites; released **once a year**, in the first quarter; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
 - `minor` - new features, released in backwards-compatible ways; **every few months**; update takes seconds;
 - `patch` - bug fixes & small non-breaking changes; historically **every week**; update takes seconds;
 
-When we release a new Backpack\CRUD version, all paid addons receive support for it the same day. 
-
-When you buy a premium Backpack addon, you get access to not only _updates_, but also _upgrades_ (for 12mo), that means that... **any time you buy a Backpack addon, it is very likely that you're not only buying the _current_ version** (`v5` at the moment), **but also the upgrade to the _next version_** (`v6` for example).
+When we release a new Backpack\CRUD version, all premium addons receive support for it the same day. When you buy a premium Backpack addon, you get access to not only _updates_, but also _upgrades_ (for 12mo), that means that... **any time you buy a Backpack addon, it is very likely that you're not only buying the _current_ version** (`v6` at the moment), **but also the upgrade to the _next version_** (`v7` for example).
 
 ## Contributing Guidelines
 

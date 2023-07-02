@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 use Illuminate\Support\Traits\Conditionable;
 
 /**
@@ -33,17 +34,26 @@ use Illuminate\Support\Traits\Conditionable;
  * @method self addMorphOption(string $key, string $label, array $options)
  * @method self morphTypeField(array $value)
  * @method self morphIdField(array $value)
+ * @method self upload(bool $value)
  */
 class CrudField
 {
+    use MacroableWithAttributes;
     use Conditionable;
 
     protected $attributes;
 
-    public function __construct($name)
+    public function __construct($nameOrDefinitionArray)
     {
-        if (empty($name)) {
+        if (empty($nameOrDefinitionArray)) {
             abort(500, 'Field name can\'t be empty.');
+        }
+
+        if (is_array($nameOrDefinitionArray)) {
+            $this->crud()->addField($nameOrDefinitionArray);
+            $name = $nameOrDefinitionArray['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
         }
 
         $field = $this->crud()->firstFieldWhere('name', $name);
@@ -216,8 +226,25 @@ class CrudField
      */
     public function subfields($subfields)
     {
+        $callAttributeMacro = ! isset($this->attributes['subfields']);
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
+        if ($callAttributeMacro) {
+            $this->callRegisteredAttributeMacros();
+        }
+
+        return $this->save();
+    }
+
+    /**
+     * Mark the field has having upload functionality, so that the form would become multipart.
+     *
+     * @param  bool  $upload
+     * @return self
+     */
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
 
         return $this->save();
     }
@@ -434,6 +461,10 @@ class CrudField
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         $this->setAttributeValue($method, $parameters[0]);
 
         return $this->save();

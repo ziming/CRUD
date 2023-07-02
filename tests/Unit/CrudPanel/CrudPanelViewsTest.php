@@ -2,12 +2,13 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 use Config;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Views
  */
-class CrudPanelViewsTest extends BaseCrudPanelTest
+class CrudPanelViewsTest extends BaseCrudPanel
 {
     private $customView = 'path/to/custom/view';
     private $customContentClass = 'col-md-12';

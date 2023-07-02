@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait Fields
 {
@@ -109,6 +110,7 @@ trait Fields
 
         $this->enableTabsIfFieldUsesThem($field);
         $this->addFieldToOperationSettings($field);
+        (new CrudField($field['name']))->callRegisteredAttributeMacros();
 
         return $this;
     }
@@ -232,10 +234,9 @@ trait Fields
     {
         $fieldsArray = $this->getCleanStateFields();
         $field = $this->firstFieldWhere('name', $fieldName);
-        $fieldKey = $this->getFieldKey($field);
 
         foreach ($modifications as $attributeName => $attributeValue) {
-            $fieldsArray[$fieldKey][$attributeName] = $attributeValue;
+            $fieldsArray[$field['name']][$attributeName] = $attributeValue;
         }
 
         $this->enableTabsIfFieldUsesThem($modifications);
@@ -343,14 +344,21 @@ trait Fields
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      *
-     * @param  string  $form  create/update/both - defaults to 'both'
-     * @param  bool|int  $id  id of the entity - defaults to false
      * @return bool
      */
     public function hasUploadFields()
     {
         $fields = $this->getCleanStateFields();
         $upload_fields = Arr::where($fields, function ($value, $key) {
+            // check if any subfields have uploads
+            if (isset($value['subfields'])) {
+                foreach ($value['subfields'] as $subfield) {
+                    if (isset($subfield['upload']) && $subfield['upload'] === true) {
+                        return true;
+                    }
+                }
+            }
+
             return isset($value['upload']) && $value['upload'] == true;
         });
 
@@ -464,7 +472,21 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return Arr::flatten(Arr::pluck($this->getCleanStateFields(), 'name'));
+        $fieldNamesArray = array_column($this->getCleanStateFields(), 'name');
+
+        return array_reduce($fieldNamesArray, function ($names, $item) {
+            if (strpos($item, ',') === false) {
+                $names[] = $item;
+
+                return $names;
+            }
+
+            foreach (explode(',', $item) as $fieldName) {
+                $names[] = $fieldName;
+            }
+
+            return $names;
+        });
     }
 
     /**
@@ -522,6 +544,15 @@ trait Fields
         return Arr::first($this->getCleanStateFields(), function ($field, $fieldKey) use ($attribute, $value) {
             return isset($field[$attribute]) && $field[$attribute] == $value;
         });
+    }
+
+    /**
+     * The field hold multiple inputs (one field represent multiple model attributes / relations)
+     * eg: date range or checklist dependency.
+     */
+    public function holdsMultipleInputs(string $fieldName): bool
+    {
+        return Str::contains($fieldName, ',');
     }
 
     /**

@@ -2,12 +2,17 @@
 
 namespace Backpack\CRUD;
 
+use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
+use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -15,7 +20,7 @@ class BackpackServiceProvider extends ServiceProvider
 
     protected $commands = [
         \Backpack\CRUD\app\Console\Commands\Install::class,
-        \Backpack\CRUD\app\Console\Commands\AddSidebarContent::class,
+        \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
         \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
@@ -25,6 +30,9 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
         \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
         \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeTabler::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv2::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv4::class,
         \Backpack\CRUD\app\Console\Commands\Fix::class,
     ];
 
@@ -44,7 +52,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadViewsWithFallbacks();
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -52,6 +59,8 @@ class BackpackServiceProvider extends ServiceProvider
         $this->setupCustomRoutes($this->app->router);
         $this->publishFiles();
         $this->sendUsageStats();
+
+        Basset::addViewPath(realpath(__DIR__.'/resources/views'));
     }
 
     /**
@@ -63,6 +72,13 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // load the macros
         include_once __DIR__.'/macros.php';
+
+        $this->loadViewsWithFallbacks('crud');
+        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
+        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
+        $this->loadViewComponents();
+
+        $this->registerBackpackErrorViews();
 
         // Bind the CrudPanel object to Laravel's service container
         $this->app->scoped('crud', function ($app) {
@@ -80,6 +96,10 @@ class BackpackServiceProvider extends ServiceProvider
         // Bind the widgets collection object to Laravel's service container
         $this->app->singleton('widgets', function ($app) {
             return new Collection();
+        });
+
+        $this->app->scoped('UploadersRepository', function ($app) {
+            return new UploadersRepository();
         });
 
         // register the helper functions
@@ -113,7 +133,6 @@ class BackpackServiceProvider extends ServiceProvider
 
     public function publishFiles()
     {
-        $error_views = [__DIR__.'/resources/error_views' => resource_path('views/errors')];
         $backpack_views = [__DIR__.'/resources/views' => resource_path('views/vendor/backpack')];
         $backpack_public_assets = [__DIR__.'/public' => public_path()];
         $backpack_lang_files = [__DIR__.'/resources/lang' => app()->langPath().'/vendor/backpack'];
@@ -121,9 +140,7 @@ class BackpackServiceProvider extends ServiceProvider
 
         // sidebar content views, which are the only views most people need to overwrite
         $backpack_menu_contents_view = [
-            __DIR__.'/resources/views/base/inc/sidebar_content.blade.php'      => resource_path('views/vendor/backpack/base/inc/sidebar_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_left_content.blade.php'  => resource_path('views/vendor/backpack/base/inc/topbar_left_content.blade.php'),
-            __DIR__.'/resources/views/base/inc/topbar_right_content.blade.php' => resource_path('views/vendor/backpack/base/inc/topbar_right_content.blade.php'),
+            __DIR__.'/resources/views/ui/inc/menu_items.blade.php' => resource_path('views/vendor/backpack/ui/inc/menu_items.blade.php'),
         ];
         $backpack_custom_routes_file = [__DIR__.$this->customRoutesFilePath => base_path($this->customRoutesFilePath)];
 
@@ -135,7 +152,6 @@ class BackpackServiceProvider extends ServiceProvider
         $minimum = array_merge(
             // $backpack_views,
             // $backpack_lang_files,
-            $error_views,
             $backpack_public_assets,
             $backpack_config_files,
             $backpack_menu_contents_view,
@@ -148,7 +164,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->publishes($backpack_lang_files, 'lang');
         $this->publishes($backpack_views, 'views');
         $this->publishes($backpack_menu_contents_view, 'menu_contents');
-        $this->publishes($error_views, 'errors');
         $this->publishes($backpack_public_assets, 'public');
         $this->publishes($backpack_custom_routes_file, 'custom_routes');
         $this->publishes($gravatar_assets, 'gravatar');
@@ -188,36 +203,38 @@ class BackpackServiceProvider extends ServiceProvider
         }
     }
 
-    public function loadViewsWithFallbacks()
+    public function loadViewNamespace($domain, $namespace)
     {
-        $customBaseFolder = resource_path('views/vendor/backpack/base');
-        $customCrudFolder = resource_path('views/vendor/backpack/crud');
-
-        // - first the published/overwritten views (in case they have any changes)
-        if (file_exists($customBaseFolder)) {
-            $this->loadViewsFrom($customBaseFolder, 'backpack');
-        }
-        if (file_exists($customCrudFolder)) {
-            $this->loadViewsFrom($customCrudFolder, 'crud');
-        }
-        // - then the stock views that come with the package, in case a published view might be missing
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/base'), 'backpack');
-        $this->loadViewsFrom(realpath(__DIR__.'/resources/views/crud'), 'crud');
+        ViewNamespaces::addFor($domain, $namespace);
     }
 
-    protected function mergeConfigFromOperationsDirectory()
+    public function loadViewsWithFallbacks($dir, $namespace = null)
     {
-        $operationConfigs = scandir(__DIR__.'/config/backpack/operations/');
-        $operationConfigs = array_diff($operationConfigs, ['.', '..']);
+        $customFolder = resource_path('views/vendor/backpack/'.$dir);
+        $vendorFolder = realpath(__DIR__.'/resources/views/'.$dir);
+        $namespace = $namespace ?? $dir;
 
-        if (! count($operationConfigs)) {
+        // first the published/overwritten views (in case they have any changes)
+        if (file_exists($customFolder)) {
+            $this->loadViewsFrom($customFolder, $namespace);
+        }
+        // then the stock views that come with the package, in case a published view might be missing
+        $this->loadViewsFrom($vendorFolder, $namespace);
+    }
+
+    protected function mergeConfigsFromDirectory($dir)
+    {
+        $configs = scandir(__DIR__."/config/backpack/$dir/");
+        $configs = array_diff($configs, ['.', '..']);
+
+        if (! count($configs)) {
             return;
         }
 
-        foreach ($operationConfigs as $configFile) {
+        foreach ($configs as $configFile) {
             $this->mergeConfigFrom(
-                __DIR__.'/config/backpack/operations/'.$configFile,
-                'backpack.operations.'.substr($configFile, 0, strrpos($configFile, '.'))
+                __DIR__."/config/backpack/$dir/$configFile",
+                "backpack.$dir.".substr($configFile, 0, strrpos($configFile, '.'))
             );
         }
     }
@@ -227,7 +244,8 @@ class BackpackServiceProvider extends ServiceProvider
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(__DIR__.'/config/backpack/crud.php', 'backpack.crud');
         $this->mergeConfigFrom(__DIR__.'/config/backpack/base.php', 'backpack.base');
-        $this->mergeConfigFromOperationsDirectory();
+        $this->mergeConfigFrom(__DIR__.'/config/backpack/ui.php', 'backpack.ui');
+        $this->mergeConfigsFromDirectory('operations');
 
         // add the root disk to filesystem configuration
         app()->config['filesystems.disks.'.config('backpack.base.root_disk_name')] = [
@@ -248,12 +266,12 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users authentication provider to the configuration
         app()->config['auth.providers'] = app()->config['auth.providers'] +
-        [
-            'backpack' => [
-                'driver'  => 'eloquent',
-                'model'   => config('backpack.base.user_model_fqn'),
-            ],
-        ];
+            [
+                'backpack' => [
+                    'driver' => 'eloquent',
+                    'model'  => config('backpack.base.user_model_fqn'),
+                ],
+            ];
 
         // add the backpack_users password broker to the configuration
         $laravelAuthPasswordBrokers = app()->config['auth.passwords'];
@@ -274,12 +292,17 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users guard to the configuration
         app()->config['auth.guards'] = app()->config['auth.guards'] +
-        [
-            'backpack' => [
-                'driver'   => 'session',
-                'provider' => 'backpack',
-            ],
-        ];
+            [
+                'backpack' => [
+                    'driver'   => 'session',
+                    'provider' => 'backpack',
+                ],
+            ];
+    }
+
+    public function loadViewComponents()
+    {
+        Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
     }
 
     /**
@@ -297,6 +320,42 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema'];
+        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository'];
+    }
+
+    private function registerBackpackErrorViews()
+    {
+        // register the backpack error when the exception handler is resolved from the container
+        $this->callAfterResolving(ExceptionHandler::class, function ($handler) {
+            if (! Str::startsWith(request()->path(), config('backpack.base.route_prefix'))) {
+                return;
+            }
+
+            // parse the namespaces set in config
+            [$themeNamespace, $themeFallbackNamespace] = (function () {
+                $themeNamespace = config('backpack.ui.view_namespace');
+                $themeFallbackNamespace = config('backpack.ui.view_namespace_fallback');
+
+                return [
+                    Str::endsWith($themeNamespace, '::') ? substr($themeNamespace, 0, -2) : substr($themeNamespace, 0, -1),
+                    Str::endsWith($themeFallbackNamespace, '::') ? substr($themeFallbackNamespace, 0, -2) : substr($themeFallbackNamespace, 0, -1),
+                ];
+            })();
+
+            $viewFinderHints = app('view')->getFinder()->getHints();
+
+            // here we are going to generate the paths array containing:
+            // - theme paths
+            // - fallback theme paths
+            // - ui path
+            $themeErrorPaths = $viewFinderHints[$themeNamespace] ?? [];
+            $themeErrorPaths = $themeNamespace === $themeFallbackNamespace ? $themeErrorPaths :
+                array_merge($viewFinderHints[$themeFallbackNamespace] ?? [], $themeErrorPaths);
+            $uiErrorPaths = [base_path('vendor/backpack/crud/src/resources/views/ui')];
+            $themeErrorPaths = array_merge($themeErrorPaths, $uiErrorPaths);
+
+            // merge the paths array with the view.paths defined in the application
+            app('config')->set('view.paths', array_merge($themeErrorPaths, config('view.paths', [])));
+        });
     }
 }

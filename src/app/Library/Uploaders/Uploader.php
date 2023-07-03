@@ -71,14 +71,15 @@ abstract class Uploader implements UploaderInterface
             return $this->handleRepeatableFiles($entry);
         }
 
-        if($this->attachedToFakeField) {
+        if ($this->attachedToFakeField) {
             $fakeFieldValue = $entry->{$this->attachedToFakeField};
-            $fakeFieldValue = is_string($fakeFieldValue) ? json_decode($fakeFieldValue, true) : (array)$fakeFieldValue;
+            $fakeFieldValue = is_string($fakeFieldValue) ? json_decode($fakeFieldValue, true) : (array) $fakeFieldValue;
             $fakeFieldValue[$this->getName()] = $this->uploadFiles($entry);
             $entry->{$this->attachedToFakeField} = json_encode($fakeFieldValue);
+
             return $entry;
         }
-        
+
         $entry->{$this->getName()} = $this->uploadFiles($entry);
 
         return $entry;

@@ -15,6 +15,7 @@ class MenuDropdown extends Component
         public ?string $title = null,
         public ?string $icon = null,
         public ?string $link = null,
+        public bool $open = false,
         public array $items = [],
     ) {
     }

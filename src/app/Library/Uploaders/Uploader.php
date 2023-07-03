@@ -25,6 +25,8 @@ abstract class Uploader implements UploaderInterface
 
     private bool $deleteWhenEntryIsDeleted = true;
 
+    private bool|string $attachedToFakeField = false;
+
     /**
      * Cloud disks have the ability to generate temporary URLs to files, should we do it?
      */
@@ -45,6 +47,7 @@ abstract class Uploader implements UploaderInterface
         $this->name = $crudObject['name'];
         $this->disk = $configuration['disk'] ?? $crudObject['disk'] ?? $this->disk;
         $this->path = $this->getPathFromConfiguration($crudObject, $configuration);
+        $this->attachedToFakeField = $crudObject['fake'] ? ($crudObject['store_in'] ?? 'extras') : ($crudObject['store_in'] ?? false);
         $this->useTemporaryUrl = $configuration['temporaryUrl'] ?? $this->useTemporaryUrl;
         $this->temporaryUrlExpirationTimeInMinutes = $configuration['temporaryUrlExpirationTime'] ?? $this->temporaryUrlExpirationTimeInMinutes;
         $this->deleteWhenEntryIsDeleted = $configuration['deleteWhenEntryIsDeleted'] ?? $this->deleteWhenEntryIsDeleted;
@@ -68,7 +71,15 @@ abstract class Uploader implements UploaderInterface
             return $this->handleRepeatableFiles($entry);
         }
 
-        $entry->{$this->name} = $this->uploadFiles($entry);
+        if($this->attachedToFakeField) {
+            $fakeFieldValue = $entry->{$this->attachedToFakeField};
+            $fakeFieldValue = is_string($fakeFieldValue) ? json_decode($fakeFieldValue, true) : (array)$fakeFieldValue;
+            $fakeFieldValue[$this->getName()] = $this->uploadFiles($entry);
+            $entry->{$this->attachedToFakeField} = json_encode($fakeFieldValue);
+            return $entry;
+        }
+        
+        $entry->{$this->getName()} = $this->uploadFiles($entry);
 
         return $entry;
     }

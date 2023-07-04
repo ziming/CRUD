@@ -204,6 +204,14 @@ abstract class Uploader implements UploaderInterface
             return $entry;
         }
 
+        if($this->attachedToFakeField) {
+            $values = $entry->{$this->attachedToFakeField};
+            $values = is_string($values) ? json_decode($values, true) : (array)$values;
+            $values[$this->name] = Str::after($values[$this->name], $this->path);
+            $entry->{$this->attachedToFakeField} = json_encode($values);
+            return $entry;
+        }
+
         $entry->{$this->name} = Str::after($value, $this->path);
 
         return $entry;

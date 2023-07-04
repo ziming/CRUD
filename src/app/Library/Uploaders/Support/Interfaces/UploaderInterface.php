@@ -52,4 +52,6 @@ interface UploaderInterface
     public function shouldDeleteFiles(): bool;
 
     public function canHandleMultipleFiles(): bool;
+
+    public function getPreviousFiles(Model $entry): mixed;
 }

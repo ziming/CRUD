@@ -156,6 +156,18 @@ abstract class Uploader implements UploaderInterface
         return $this->handleMultipleFiles;
     }
 
+    public function getPreviousFiles(Model $entry): mixed {
+
+        if(! $this->attachedToFakeField) {
+            return $entry->getOriginal($this->getName()); 
+        }
+
+        $value = $entry->getOriginal($this->attachedToFakeField);
+        $value = is_string($value) ? json_decode($value, true) : (array)$value;
+
+        return $value[$this->getName()] ?? null;      
+    }
+
     /*******************************
      * Setters - fluently configure the uploader
      *******************************/

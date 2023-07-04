@@ -1,4 +1,4 @@
-@extends(backpack_user() ? backpack_view('layouts.'.backpack_theme_config('layout')) : backpack_view('errors.blank'))
+@extends(backpack_user() ? (backpack_theme_config('layout') ? backpack_view('layouts.'.backpack_theme_config('layout')) : backpack_view('errors.blank')) : backpack_view('errors.blank'))
 {{-- show error using sidebar layout if looged in AND on an admin page; otherwise use a blank page --}}
 
 @php

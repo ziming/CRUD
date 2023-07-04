@@ -47,7 +47,7 @@ abstract class Uploader implements UploaderInterface
         $this->name = $crudObject['name'];
         $this->disk = $configuration['disk'] ?? $crudObject['disk'] ?? $this->disk;
         $this->path = $this->getPathFromConfiguration($crudObject, $configuration);
-        $this->attachedToFakeField = $crudObject['fake'] ? ($crudObject['store_in'] ?? 'extras') : ($crudObject['store_in'] ?? false);
+        $this->attachedToFakeField = isset($crudObject['fake']) && $crudObject['fake'] ? ($crudObject['store_in'] ?? 'extras') : ($crudObject['store_in'] ?? false);
         $this->useTemporaryUrl = $configuration['temporaryUrl'] ?? $this->useTemporaryUrl;
         $this->temporaryUrlExpirationTimeInMinutes = $configuration['temporaryUrlExpirationTime'] ?? $this->temporaryUrlExpirationTimeInMinutes;
         $this->deleteWhenEntryIsDeleted = $configuration['deleteWhenEntryIsDeleted'] ?? $this->deleteWhenEntryIsDeleted;

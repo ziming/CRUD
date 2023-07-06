@@ -75,7 +75,8 @@ abstract class Uploader implements UploaderInterface
             $fakeFieldValue = $entry->{$this->attachedToFakeField};
             $fakeFieldValue = is_string($fakeFieldValue) ? json_decode($fakeFieldValue, true) : (array) $fakeFieldValue;
             $fakeFieldValue[$this->getName()] = $this->uploadFiles($entry);
-            $entry->{$this->attachedToFakeField} = json_encode($fakeFieldValue);
+
+            $entry->{$this->attachedToFakeField} = isset($entry->getCasts()[$this->attachedToFakeField]) ? $fakeFieldValue : json_encode($fakeFieldValue);
 
             return $entry;
         }

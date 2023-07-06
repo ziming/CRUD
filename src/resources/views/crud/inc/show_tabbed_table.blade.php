@@ -19,11 +19,13 @@
             @foreach ($columnsWithTabs as $k => $tabLabel)
                 <li role="presentation" class="nav-item">
                     <a href="#tab_{{ Str::slug($tabLabel) }}"
-                       aria-controls="tab_{{ Str::slug($tabLabel) }}"
-                       role="tab"
-                       tab_name="{{ Str::slug($tabLabel) }}"
-                       data-toggle="tab"
-                       class="nav-link {{ $k === 0 ? 'active' : '' }}"
+                        aria-controls="tab_{{ Str::slug($tabLabel) }}"
+                        role="tab"
+                        data-toggle="tab" {{-- tab indicator for Bootstrap v4 --}}
+                        tab_name="{{ Str::slug($tabLabel) }}" {{-- tab name for Bootstrap v4 --}}
+                        data-name="{{ Str::slug($tabLabel) }}" {{-- tab name for Bootstrap v5 --}}
+                        data-bs-toggle="tab" {{-- tab name for Bootstrap v5 --}}
+                        class="nav-link {{ $k === 0 ? 'active' : '' }}"
                     >{{ $tabLabel }}</a>
                 </li>
             @endforeach

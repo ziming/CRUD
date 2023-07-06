@@ -51,7 +51,6 @@ trait InstallsTheme
             $this->newLine();
             $this->line(sprintf('  %s was already installed', self::$addon['name']), 'fg=red');
             $this->newLine();
-
             return;
         }
 
@@ -82,6 +81,13 @@ trait InstallsTheme
 
         // Publish the theme config file
         $this->progressBlock('Publish theme config file');
+
+        // manually include the provider in the run-time
+        if(! class_exists(self::$addon['provider'])) {
+            include(self::$addon['provider_path'] ?? self::$addon['path'].'/src/AddonServiceProvider.php');
+            app()->register(self::$addon['provider']);
+        }
+        
         $this->executeArtisanProcess('vendor:publish', [
             '--tag' => self::$addon['publish_tag'],
         ]);

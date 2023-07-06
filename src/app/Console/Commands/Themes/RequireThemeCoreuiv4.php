@@ -39,7 +39,7 @@ class RequireThemeCoreuiv4 extends Command
         'command' => 'backpack:require:theme-coreuiv4',
         'view_namespace' => 'backpack.theme-coreuiv4::',
         'publish_tag' => 'theme-coreuiv4-config',
-        'provider' => '\Backpack\ThemeCoreuiv4\AddonServiceProvider'
+        'provider' => '\Backpack\ThemeCoreuiv4\AddonServiceProvider',
     ];
 
     /**

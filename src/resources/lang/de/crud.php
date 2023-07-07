@@ -79,7 +79,7 @@ return [
     // Ajax errors
     'ajax_error_title' => 'Fehler',
     'ajax_error_text'  => 'Fehler beim Laden der Seite. Bitte aktualisieren Sie die Seite.',
-    
+
     // DataTables translation
     'emptyTable'     => 'Keine Einträge vorhanden',
     'info'           => 'Zeigt _START_ bis _END_ von _TOTAL_ Einträgen',
@@ -147,7 +147,7 @@ return [
     'last_month' => 'Letzter Monat',
     'custom_range' => 'Eigene Auswahl',
     'weekLabel' => 'W',
-    
+
     // Fields
     'browse_uploads'            => 'Uploads durchsuchen',
     'select_all'                => 'Alle auswählen',
@@ -168,10 +168,10 @@ return [
     //Table field
     'table_cant_add'    => 'Kann :entity nicht hinzufügen',
     'table_max_reached' => 'Maximale Anzahl von :max erreicht',
-    
+
     // google_map
     'google_map_locate' => 'Meinen Standort ermitteln',
-    
+
     // File manager
     'file_manager' => 'Datei-Manager',
 

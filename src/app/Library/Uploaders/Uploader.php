@@ -211,7 +211,7 @@ abstract class Uploader implements UploaderInterface
 
             $values[$this->name] = isset($values[$this->name]) ? Str::after($values[$this->name], $this->path) : null;
             $entry->{$this->attachedToFakeField} = json_encode($values);
-            
+
             return $entry;
         }
 

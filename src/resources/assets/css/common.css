@@ -160,10 +160,10 @@ form .select2.select2-container {
     margin: 0 0.6rem 0 0.45rem;
 }
 
-#crudTable_wrapper #crudTable tr th:first-child,
-#crudTable_wrapper #crudTable tr td:first-child,
-#crudTable_wrapper table.dataTable tr th:first-child,
-#crudTable_wrapper table.dataTable tr td:first-child {
+#crudTable tr th:first-child,
+#crudTable tr td:first-child,
+#crudTable table.dataTable tr th:first-child,
+#crudTable table.dataTable tr td:first-child {
     display: flex;
     align-items: center;
     padding-top: 1rem;

@@ -295,6 +295,9 @@
       // remove btn-secondary from export and column visibility buttons
       $("#crudTable_wrapper .table-footer .btn-secondary").removeClass('btn-secondary');
 
+      // remove forced overflow on load
+      $(".navbar.navbar-filters + div").css('overflow','initial');
+
       // move "showing x out of y" info to header
       @if($crud->getSubheading())
       $('#crudTable_info').hide();

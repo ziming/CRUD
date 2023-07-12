@@ -19,6 +19,8 @@ class MyAccountController extends Controller
 
     /**
      * Show the user a form to change their personal information & password.
+     *
+     * @return \Illuminate\Contracts\View\View
      */
     public function getAccountInfoForm()
     {

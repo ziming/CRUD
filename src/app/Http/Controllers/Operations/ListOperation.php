@@ -49,7 +49,7 @@ trait ListOperation
     /**
      * Display all rows in the database for this entity.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
@@ -114,7 +114,7 @@ trait ListOperation
      * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
      * It defaults to showing some dummy text.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
     public function showDetailsRow($id)
     {

@@ -264,7 +264,7 @@ if (! function_exists('backpack_view')) {
         $functionLine = $functionCaller['line'] ?? 'N/A';
         $functionFile = $functionCaller['file'] ?? 'N/A';
 
-        abort(500, 'The view: ['.$view.'] was not found in any of the following view paths: '.implode(' || ', $viewPaths).' - called on: '.$functionFile.' on line: '.$functionLine);
+        abort(500, 'The view: ['.$view.'] was not found in any of the following view paths: ['.implode(' ], [ ', $viewPaths).'] - called on: '.$functionFile.' on line: '.$functionLine);
     }
 }
 

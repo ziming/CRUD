@@ -259,12 +259,12 @@ if (! function_exists('backpack_view')) {
         // we only run the back trace in case we couldn't find the view
         // and help developer understand where is the error
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-    
+
         $functionCaller = $backtrace[0] ?? [];
         $functionLine = $functionCaller['line'] ?? '';
         $functionFile = $functionCaller['file'] ?? '';
 
-        abort(500, 'The view: ['.$view.'] was not found in any of the following view paths: ' . implode(' || ', $viewPaths) . ' - called on: ' . $functionFile . ' on line: ' . $functionLine);
+        abort(500, 'The view: ['.$view.'] was not found in any of the following view paths: '.implode(' || ', $viewPaths).' - called on: '.$functionFile.' on line: '.$functionLine);
     }
 }
 

@@ -259,7 +259,7 @@ if (! function_exists('backpack_view')) {
         // we only run the back trace in case we couldn't find the view
         // and help developer understand where is the error
         $backtrace = env('APP_ENV') !== 'production' && env('APP_DEBUG') ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1) : [];
-    
+
         $functionCaller = $backtrace[0] ?? [];
         $functionLine = $functionCaller['line'] ?? 'N/A';
         $functionFile = $functionCaller['file'] ?? 'N/A';

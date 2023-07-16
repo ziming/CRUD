@@ -29,7 +29,7 @@ class RequireThemeTabler extends Command
      * @var array
      */
     public static $addon = [
-        'name'        => 'Tabler <fg=yellow>(public beta)</>',
+        'name'        => 'Tabler',
         'description' => [
             'UI provided by Tabler, a Boostrap 5 template.',
             '<fg=blue>https://github.com/laravel-backpack/theme-tabler/</>',

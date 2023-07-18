@@ -259,8 +259,8 @@ if (! function_exists('backpack_view')) {
 
         $errorMessage = 'The view: ['.$view.'] was not found in any of the following view paths: ['.implode(' ], [ ', $viewPaths).']';
 
-        $errorDetails = (function() {
-            if (env('APP_ENV') === 'production' || !env('APP_DEBUG')) {
+        $errorDetails = (function () {
+            if (env('APP_ENV') === 'production' || ! env('APP_DEBUG')) {
                 return '';
             }
 
@@ -271,8 +271,7 @@ if (! function_exists('backpack_view')) {
 
             return '- Called in: '.Str::after($functionFile, base_path()).' on line: '.$functionLine;
         })();
-        
-        
+
         abort(500, $errorMessage.$errorDetails);
     }
 }

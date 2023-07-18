@@ -19,7 +19,7 @@ class MultipleFiles extends Uploader
     {
         $filesToDelete = CRUD::getRequest()->get('clear_'.$this->getName());
         $value = $value ?? CRUD::getRequest()->file($this->getName());
-        $previousFiles = $this->getPreviousFiles() ?? [];
+        $previousFiles = $this->getPreviousFiles($entry) ?? [];
 
         if (! is_array($previousFiles) && is_string($previousFiles)) {
             $previousFiles = json_decode($previousFiles, true);

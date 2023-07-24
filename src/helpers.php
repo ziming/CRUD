@@ -3,6 +3,7 @@
 use Backpack\Basset\Facades\Basset;
 use Creativeorange\Gravatar\Facades\Gravatar;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 if (! function_exists('backpack_url')) {
     /**
@@ -256,7 +257,22 @@ if (! function_exists('backpack_view')) {
             }
         }
 
-        dd('Could not find Backpack view ['.$view.'] in theme namespace, fallback namespace nor UI namespace.');
+        $errorMessage = 'The view: ['.$view.'] was not found in any of the following view paths: ['.implode(' ], [ ', $viewPaths).']';
+
+        $errorDetails = (function () {
+            if (env('APP_ENV') === 'production' || ! env('APP_DEBUG')) {
+                return '';
+            }
+
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2) ?? [];
+            $functionCaller = $backtrace[1] ?? [];
+            $functionLine = $functionCaller['line'] ?? 'N/A';
+            $functionFile = $functionCaller['file'] ?? 'N/A';
+
+            return '- Called in: '.Str::after($functionFile, base_path()).' on line: '.$functionLine;
+        })();
+
+        abort(500, $errorMessage.$errorDetails);
     }
 }
 

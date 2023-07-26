@@ -188,13 +188,15 @@ trait HandleRepeatableUploads
         return $previousValues ?? [];
     }
 
-    private function getValuesWithPathStripped(array|string|null $item, UploaderInterface $upload) {
+    private function getValuesWithPathStripped(array|string|null $item, UploaderInterface $upload)
+    {
         $uploadedValues = $item[$upload->getName()] ?? null;
-        if(is_array($uploadedValues)) {
-            return array_map(function($value) use ($upload) {
+        if (is_array($uploadedValues)) {
+            return array_map(function ($value) use ($upload) {
                 return Str::after($value, $upload->getPath());
-            },$uploadedValues);
-        }    
+            }, $uploadedValues);
+        }
+
         return isset($uploadedValues) ? Str::after($uploadedValues, $upload->getPath()) : null;
     }
 }

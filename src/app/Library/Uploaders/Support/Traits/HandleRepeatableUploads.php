@@ -94,15 +94,16 @@ trait HandleRepeatableUploads
         $values = $entry->{$this->getRepeatableContainerName()};
         $values = is_string($values) ? json_decode($values, true) : $values;
         $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
-        $values = array_map(function($item) use ($repeatableUploaders) {
+        $values = array_map(function ($item) use ($repeatableUploaders) {
             foreach ($repeatableUploaders as $upload) {
                 $item[$upload->getName()] = isset($item[$upload->getName()]) ? Str::after($item[$upload->getName()], $upload->getPath()) : null;
             }
+
             return $item;
-            
         }, $values);
-        
+
         $entry->{$this->getRepeatableContainerName()} = $values;
+
         return $entry;
     }
 

@@ -7,6 +7,7 @@ use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait HandleRepeatableUploads
 {
@@ -90,7 +91,18 @@ trait HandleRepeatableUploads
         if ($this->isRelationship) {
             return $this->retrieveFiles($entry);
         }
-
+        $values = $entry->{$this->getRepeatableContainerName()};
+        $values = is_string($values) ? json_decode($values, true) : $values;
+        $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
+        $values = array_map(function($item) use ($repeatableUploaders) {
+            foreach ($repeatableUploaders as $upload) {
+                $item[$upload->getName()] = isset($item[$upload->getName()]) ? Str::after($item[$upload->getName()], $upload->getPath()) : null;
+            }
+            return $item;
+            
+        }, $values);
+        
+        $entry->{$this->getRepeatableContainerName()} = $values;
         return $entry;
     }
 

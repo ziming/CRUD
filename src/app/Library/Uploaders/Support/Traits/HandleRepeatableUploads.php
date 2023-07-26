@@ -91,12 +91,14 @@ trait HandleRepeatableUploads
         if ($this->isRelationship) {
             return $this->retrieveFiles($entry);
         }
+
+        $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
+
         $values = $entry->{$this->getRepeatableContainerName()};
         $values = is_string($values) ? json_decode($values, true) : $values;
-        $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
         $values = array_map(function ($item) use ($repeatableUploaders) {
             foreach ($repeatableUploaders as $upload) {
-                $item[$upload->getName()] = isset($item[$upload->getName()]) ? Str::after($item[$upload->getName()], $upload->getPath()) : null;
+                $item[$upload->getName()] = $this->getValuesWithPathStripped($item, $upload);
             }
 
             return $item;
@@ -184,5 +186,15 @@ trait HandleRepeatableUploads
         }
 
         return $previousValues ?? [];
+    }
+
+    private function getValuesWithPathStripped(array|string|null $item, UploaderInterface $upload) {
+        $uploadedValues = $item[$upload->getName()] ?? null;
+        if(is_array($uploadedValues)) {
+            return array_map(function($value) use ($upload) {
+                return Str::after($value, $upload->getPath());
+            },$uploadedValues);
+        }    
+        return isset($uploadedValues) ? Str::after($uploadedValues, $upload->getPath()) : null;
     }
 }

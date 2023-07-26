@@ -7,6 +7,7 @@ use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait HandleRepeatableUploads
 {
@@ -91,6 +92,20 @@ trait HandleRepeatableUploads
             return $this->retrieveFiles($entry);
         }
 
+        $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
+
+        $values = $entry->{$this->getRepeatableContainerName()};
+        $values = is_string($values) ? json_decode($values, true) : $values;
+        $values = array_map(function ($item) use ($repeatableUploaders) {
+            foreach ($repeatableUploaders as $upload) {
+                $item[$upload->getName()] = $this->getValuesWithPathStripped($item, $upload);
+            }
+
+            return $item;
+        }, $values);
+
+        $entry->{$this->getRepeatableContainerName()} = $values;
+
         return $entry;
     }
 
@@ -171,5 +186,17 @@ trait HandleRepeatableUploads
         }
 
         return $previousValues ?? [];
+    }
+
+    private function getValuesWithPathStripped(array|string|null $item, UploaderInterface $upload)
+    {
+        $uploadedValues = $item[$upload->getName()] ?? null;
+        if (is_array($uploadedValues)) {
+            return array_map(function ($value) use ($upload) {
+                return Str::after($value, $upload->getPath());
+            }, $uploadedValues);
+        }
+
+        return isset($uploadedValues) ? Str::after($uploadedValues, $upload->getPath()) : null;
     }
 }

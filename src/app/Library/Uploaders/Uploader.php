@@ -160,10 +160,10 @@ abstract class Uploader implements UploaderInterface
     public function getPreviousFiles(Model $entry): mixed
     {
         if (! $this->attachedToFakeField) {
-            return $entry->getOriginal($this->getName());
+            return $this->getOriginalValue($entry);
         }
 
-        $value = $entry->getOriginal($this->attachedToFakeField);
+        $value = $this->getOriginalValue($entry, $this->attachedToFakeField);
         $value = is_string($value) ? json_decode($value, true) : (array) $value;
 
         return $value[$this->getName()] ?? null;
@@ -259,5 +259,20 @@ abstract class Uploader implements UploaderInterface
         $this->path = $configuration['path'] ?? $crudObject['prefix'] ?? $this->path;
 
         return empty($this->path) ? $this->path : Str::of($this->path)->finish('/')->value();
+    }
+
+    private function getOriginalValue(Model $entry, $field = null)
+    {
+        $previousValue = $entry->getOriginal($field ?? $this->getName());
+
+        if (! $previousValue) {
+            return $previousValue;
+        }
+
+        if($entry->translationEnabled()) {
+            return $previousValue[$entry->getLocale()] ?? null;  
+        }
+
+        return $previousValue;
     }
 }

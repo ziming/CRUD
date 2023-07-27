@@ -121,7 +121,7 @@ final class RegisterUploadEvents
             app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
         } else {
             $model::retrieved(function ($entry) use ($uploader) {
-                if($entry->translationEnabled()) {
+                if ($entry->translationEnabled()) {
                     $locale = request('_locale', \App::getLocale());
                     if (in_array($locale, array_keys($entry->getAvailableLocales()))) {
                         $entry->setLocale($locale);

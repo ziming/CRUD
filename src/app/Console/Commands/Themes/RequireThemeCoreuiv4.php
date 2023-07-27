@@ -29,7 +29,7 @@ class RequireThemeCoreuiv4 extends Command
      * @var array
      */
     public static $addon = [
-        'name'        => 'CoreUIv4 <fg=yellow>(public beta)</>',
+        'name'        => 'CoreUIv4',
         'description' => [
             'UI provided by CoreUIv4, a Boostrap 5 template.',
             '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv4/</>',

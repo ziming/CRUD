@@ -49,9 +49,9 @@ class Install extends Command
      * @var array
      */
     protected $themes = [
-        Themes\RequireThemeCoreuiv2::class,
-        Themes\RequireThemeCoreuiv4::class,
         Themes\RequireThemeTabler::class,
+        Themes\RequireThemeCoreuiv4::class,
+        Themes\RequireThemeCoreuiv2::class,
     ];
 
     /**
@@ -109,7 +109,7 @@ class Install extends Command
         } elseif (! $this->isAnyThemeInstalled()) {
             // Install default theme
             $this->progressBlock('Installing default theme');
-            $this->executeArtisanProcess('backpack:require:theme-coreuiv2');
+            $this->executeArtisanProcess('backpack:require:theme-tabler');
             $this->closeProgressBlock();
         }
 

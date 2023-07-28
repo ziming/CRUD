@@ -53,5 +53,6 @@ interface UploaderInterface
 
     public function canHandleMultipleFiles(): bool;
 
+    public function isRelationship(): bool;
     public function getPreviousFiles(Model $entry): mixed;
 }

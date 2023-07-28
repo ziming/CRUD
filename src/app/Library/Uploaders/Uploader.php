@@ -157,6 +157,11 @@ abstract class Uploader implements UploaderInterface
         return $this->handleMultipleFiles;
     }
 
+    public function isRelationship(): bool
+    {
+        return $this->isRelationship;
+    }
+
     public function getPreviousFiles(Model $entry): mixed
     {
         if (! $this->attachedToFakeField) {
@@ -242,7 +247,7 @@ abstract class Uploader implements UploaderInterface
 
     private function performFileDeletion(Model $entry)
     {
-        if ($this->isRelationship || ! $this->handleRepeatableFiles) {
+        if (! $this->handleRepeatableFiles) {
             $this->deleteFiles($entry);
 
             return;

@@ -142,6 +142,7 @@ trait Create
                     }
 
                     $item->{$relationMethod}()->sync($relationValues);
+                    $item->{$relationMethod}()->syncWithPivotValues(array_keys($relationValues), array_values($relationValues));
                     break;
             }
         }

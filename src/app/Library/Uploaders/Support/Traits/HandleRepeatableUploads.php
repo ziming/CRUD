@@ -88,8 +88,9 @@ trait HandleRepeatableUploads
 
     private function retrieveRepeatableFiles(Model $entry): Model
     {
+        
         if ($this->isRelationship) {
-            return $this->retrieveFiles($entry);
+            return $this->retrieveRepeatableRelationFiles($entry);
         }
 
         $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
@@ -109,9 +110,48 @@ trait HandleRepeatableUploads
         return $entry;
     }
 
+    private function retrieveRepeatableRelationFiles(Model $entry) {
+        switch($this->getRepeatableRelationType()) {
+            case 'BelongsToMany':
+                $pivotClass = app('crud')->getModel()->{$this->getUploaderSubfield()['baseEntity']}()->getPivotClass();
+                $pivotFieldName = 'pivot_'.$this->getName();
+                $connectedEntry =  new $pivotClass([$this->getName() => $entry->$pivotFieldName]);
+                $entry->{$pivotFieldName} = $this->retrieveFiles($connectedEntry)->{$this->getName()};
+                
+                break;
+        }
+        return $entry;
+    }
+
+    private function getRepeatableRelationType()
+    {
+        return $this->getUploaderField()->getAttributes()['relation_type'];
+    }
+
+    private function getUploaderField()
+    {
+        return app('crud')->field($this->getRepeatableContainerName());
+    }
+
+    private function getUploaderSubfield()
+    {
+        return collect($this->getUploaderFieldSubfields())->where('name', '===', $this->getName())->first();
+    }
+
+    private function getUploaderFieldSubfields()
+    {
+        return $this->getUploaderField()->getAttributes()['subfields'];
+    }
+
     private function deleteRepeatableFiles(Model $entry): void
     {
         if ($this->isRelationship) {
+            switch($this->getRepeatableRelationType()) {
+                case 'BelongsToMany':
+                    // handle belongs to many deletion
+                    return;
+            }
+
             $this->deleteFiles($entry);
 
             return;

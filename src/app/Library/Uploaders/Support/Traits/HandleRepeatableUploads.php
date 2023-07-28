@@ -88,7 +88,6 @@ trait HandleRepeatableUploads
 
     private function retrieveRepeatableFiles(Model $entry): Model
     {
-        
         if ($this->isRelationship) {
             return $this->retrieveRepeatableRelationFiles($entry);
         }
@@ -110,16 +109,18 @@ trait HandleRepeatableUploads
         return $entry;
     }
 
-    private function retrieveRepeatableRelationFiles(Model $entry) {
+    private function retrieveRepeatableRelationFiles(Model $entry)
+    {
         switch($this->getRepeatableRelationType()) {
             case 'BelongsToMany':
                 $pivotClass = app('crud')->getModel()->{$this->getUploaderSubfield()['baseEntity']}()->getPivotClass();
                 $pivotFieldName = 'pivot_'.$this->getName();
-                $connectedEntry =  new $pivotClass([$this->getName() => $entry->$pivotFieldName]);
+                $connectedEntry = new $pivotClass([$this->getName() => $entry->$pivotFieldName]);
                 $entry->{$pivotFieldName} = $this->retrieveFiles($connectedEntry)->{$this->getName()};
-                
+
                 break;
         }
+
         return $entry;
     }
 

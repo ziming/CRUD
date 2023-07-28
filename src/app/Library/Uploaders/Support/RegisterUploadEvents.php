@@ -125,8 +125,8 @@ final class RegisterUploadEvents
             // the retrieve model may differ from the deleting and saving models because retrieved event
             // is not called in pivot models when eager loading the relations.
             $retrieveModel = $this->getRetrieveModel($model, $uploader);
-            
-            $retrieveModel::retrieved(function ($entry) use ($uploader) { 
+
+            $retrieveModel::retrieved(function ($entry) use ($uploader) {
                 if ($entry->translationEnabled()) {
                     $locale = request('_locale', \App::getLocale());
                     if (in_array($locale, array_keys($entry->getAvailableLocales()))) {
@@ -179,20 +179,21 @@ final class RegisterUploadEvents
         $this->crudObject->upload(true)->disk($uploader->getDisk())->prefix($uploader->getPath());
     }
 
-    private function getSubfieldModel(array $subfield, UploaderInterface $uploader) {
+    private function getSubfieldModel(array $subfield, UploaderInterface $uploader)
+    {
         if (! $uploader->isRelationship()) {
             return $subfield['baseModel'] ?? get_class(app('crud')->getModel());
         }
-        
+
         switch($subfield['relation_type']) {
-            case 'BelongsToMany': 
+            case 'BelongsToMany':
                 return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
         }
     }
 
     private function getRetrieveModel(string $model, UploaderInterface $uploader)
     {
-        if(! $uploader->isRelationship()) {
+        if (! $uploader->isRelationship()) {
             return $model;
         }
 

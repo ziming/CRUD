@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -302,7 +303,10 @@ class BackpackServiceProvider extends ServiceProvider
 
     public function loadViewComponents()
     {
-        Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
+        $this->app->afterResolving(BladeCompiler::class, function () {
+            Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
+        });
+        
     }
 
     /**

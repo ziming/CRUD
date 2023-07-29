@@ -306,7 +306,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->app->afterResolving(BladeCompiler::class, function () {
             Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
         });
-        
     }
 
     /**

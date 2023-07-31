@@ -140,9 +140,8 @@ trait Create
                     if (empty($relationValues)) {
                         $relationValues = array_values($values);
                     }
-
+                    
                     $item->{$relationMethod}()->sync($relationValues);
-                    $item->{$relationMethod}()->syncWithPivotValues(array_keys($relationValues), array_values($relationValues));
                     break;
             }
         }

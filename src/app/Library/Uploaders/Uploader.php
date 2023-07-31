@@ -274,7 +274,7 @@ abstract class Uploader implements UploaderInterface
             return $previousValue;
         }
 
-        if ($entry->translationEnabled()) {
+        if (method_exists($entry, 'translationEnabled') && $entry->translationEnabled()) {
             return $previousValue[$entry->getLocale()] ?? null;
         }
 

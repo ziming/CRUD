@@ -140,7 +140,7 @@ trait Create
                     if (empty($relationValues)) {
                         $relationValues = array_values($values);
                     }
-                    
+
                     $item->{$relationMethod}()->sync($relationValues);
                     break;
             }

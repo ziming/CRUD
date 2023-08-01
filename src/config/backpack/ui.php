@@ -134,12 +134,12 @@ return [
     'classes' => [
         /**
          * Use this as fallback config for themes to pass classes to the table displayed in List Operation
-         * It defaults to: "table table-striped table-hover nowrap rounded card-table table-vcenter card-table shadow-xs border-xs"
+         * It defaults to: "table table-striped table-hover nowrap rounded card-table table-vcenter card-table shadow-xs border-xs".
          */
         'table' => null,
 
         /**
-         * Use this as fallback config for themes to pass classes to the table wrapper component displayed in List Operation
+         * Use this as fallback config for themes to pass classes to the table wrapper component displayed in List Operation.
          */
         'tableWrapper' => null,
     ],

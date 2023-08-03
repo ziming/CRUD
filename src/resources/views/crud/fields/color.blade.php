@@ -38,13 +38,13 @@ $value = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['de
 @push('crud_fields_styles')
     @bassetBlock('backpack/crud/fields/color.css')
     <style>
-        [bp-field-name="color"] input[type="color"] {
+        [bp-field-type="color"] input[type="color"] {
             background-color: unset;
             border: 0;
             width: 1.8rem;
             height: 1.8rem;
         }
-        [bp-field-name="color"] .input-group-text {
+        [bp-field-type="color"] .input-group-text {
             padding: 0 0.4rem;
         }
     </style>

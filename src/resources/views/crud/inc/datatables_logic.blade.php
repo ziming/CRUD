@@ -348,16 +348,6 @@
             localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
         });
 
-        // make sure AJAX requests include XSRF token
-        $.ajaxPrefilter(function(options, originalOptions, xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-            }
-        });
-
-
         $('#crudTable').on( 'page.dt', function () {
             localStorage.setItem('page_changed', true);
         });

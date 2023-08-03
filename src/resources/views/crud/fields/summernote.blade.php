@@ -31,7 +31,7 @@
 {{-- FIELD CSS - will be loaded in the after_styles section --}}
 @push('crud_fields_styles')
     {{-- include summernote css --}}
-    @basset('https://unpkg.com/summernote@0.8.20/dist/summernote-bs4.min.css')
+    @basset('https://unpkg.com/summernote@0.8.20/dist/summernote-lite.min.css')
     @basset('https://unpkg.com/summernote@0.8.20/dist/font/summernote.woff2', false)
     @bassetBlock('backpack/crud/fields/checklist-field.css')
     <style type="text/css">
@@ -45,7 +45,7 @@
 {{-- FIELD JS - will be loaded in the after_scripts section --}}
 @push('crud_fields_scripts')
     {{-- include summernote js --}}
-    @basset('https://unpkg.com/summernote@0.8.20/dist/summernote.min.js')
+    @basset('https://unpkg.com/summernote@0.8.20/dist/summernote-lite.min.js')
     @bassetBlock('backpack/crud/fields/summernote-field.js')
     <script>
         function bpFieldInitSummernoteElement(element) {

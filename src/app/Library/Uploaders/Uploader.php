@@ -176,7 +176,7 @@ abstract class Uploader implements UploaderInterface
         $value = $this->getOriginalValue($entry, $this->attachedToFakeField);
         $value = is_string($value) ? json_decode($value, true) : (array) $value;
 
-        return $value[$this->getName()] ?? null;
+        return $value[$this->getAttributeName()] ?? null;
     }
 
     /*******************************
@@ -273,7 +273,7 @@ abstract class Uploader implements UploaderInterface
 
     private function getOriginalValue(Model $entry, $field = null)
     {
-        $previousValue = $entry->getOriginal($field ?? $this->getName());
+        $previousValue = $entry->getOriginal($field ?? $this->getAttributeName());
 
         if (! $previousValue) {
             return $previousValue;

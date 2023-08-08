@@ -93,7 +93,7 @@ class Install extends Command
 
         // Install Backpack Basset
         $this->progressBlock('Installing Basset');
-        $this->executeArtisanProcess('basset:install --no-interaction');
+        $this->executeArtisanProcess('basset:install --no-check --no-interaction');
         $this->closeProgressBlock();
 
         // Optional commands
@@ -113,6 +113,8 @@ class Install extends Command
             $this->closeProgressBlock();
         }
 
+        //execute basset checks
+        $this->call('basset:check');
         // Done
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
         $this->infoBlock('Backpack installation complete.', 'done');

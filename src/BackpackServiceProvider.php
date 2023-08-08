@@ -23,7 +23,6 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
-        \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
@@ -276,10 +275,13 @@ class BackpackServiceProvider extends ServiceProvider
 
         // add the backpack_users password broker to the configuration
         $laravelAuthPasswordBrokers = app()->config['auth.passwords'];
+        $laravelFirstPasswordBroker = is_array($laravelAuthPasswordBrokers) && current($laravelAuthPasswordBrokers) ?
+                                        current($laravelAuthPasswordBrokers)['table'] :
+                                        '';
 
         $backpackPasswordBrokerTable = config('backpack.base.password_resets_table') ??
                                         config('auth.passwords.users.table') ??
-                                        current($laravelAuthPasswordBrokers)['table'];
+                                        $laravelFirstPasswordBroker;
 
         app()->config['auth.passwords'] = $laravelAuthPasswordBrokers +
         [

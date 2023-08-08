@@ -519,3 +519,8 @@ form .select2.select2-container {
     align-items: center;
     text-align: center;
 }
+
+/* Summernote */
+.note-editor.note-frame.fullscreen {
+    background-color: white;
+}

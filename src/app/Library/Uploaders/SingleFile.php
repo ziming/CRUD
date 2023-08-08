@@ -22,7 +22,7 @@ class SingleFile extends Uploader
 
             return $this->getPath().$fileName;
         }
-       
+
         if (! $value && CrudPanelFacade::getRequest()->has($this->getRepeatableContainerName() ?? $this->getName()) && $previousFile) {
             Storage::disk($this->getDisk())->delete($previousFile);
 

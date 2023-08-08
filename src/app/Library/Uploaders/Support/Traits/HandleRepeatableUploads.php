@@ -63,8 +63,8 @@ trait HandleRepeatableUploads
         $value = $value->slice($modelCount, 1)->toArray();
 
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
-            if (array_key_exists($modelCount, $value) && isset($value[$modelCount][$uploader->getName()])) {
-                $entry->{$uploader->getName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getName()]);
+            if (array_key_exists($modelCount, $value) && array_key_exists($uploader->getAttributeName(), $value[$modelCount])) {
+                $entry->{$uploader->getAttributeName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getAttributeName()]);
             }
         }
 
@@ -74,10 +74,10 @@ trait HandleRepeatableUploads
     protected function processRepeatableUploads(Model $entry, Collection $values): Collection
     {
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
-            $uploadedValues = $uploader->uploadRepeatableFiles($values->pluck($uploader->getName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
+            $uploadedValues = $uploader->uploadRepeatableFiles($values->pluck($uploader->getAttributeName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
 
             $values = $values->map(function ($item, $key) use ($uploadedValues, $uploader) {
-                $item[$uploader->getName()] = $uploadedValues[$key] ?? null;
+                $item[$uploader->getAttributeName()] = $uploadedValues[$key] ?? null;
 
                 return $item;
             });
@@ -98,7 +98,7 @@ trait HandleRepeatableUploads
         $values = is_string($values) ? json_decode($values, true) : $values;
         $values = array_map(function ($item) use ($repeatableUploaders) {
             foreach ($repeatableUploaders as $upload) {
-                $item[$upload->getName()] = $this->getValuesWithPathStripped($item, $upload);
+                $item[$upload->getAttributeName()] = $this->getValuesWithPathStripped($item, $upload);
             }
 
             return $item;
@@ -114,9 +114,9 @@ trait HandleRepeatableUploads
         switch($this->getRepeatableRelationType()) {
             case 'BelongsToMany':
                 $pivotClass = app('crud')->getModel()->{$this->getUploaderSubfield()['baseEntity']}()->getPivotClass();
-                $pivotFieldName = 'pivot_'.$this->getName();
-                $connectedEntry = new $pivotClass([$this->getName() => $entry->$pivotFieldName]);
-                $entry->{$pivotFieldName} = $this->retrieveFiles($connectedEntry)->{$this->getName()};
+                $pivotFieldName = 'pivot_'.$this->getAttributeName();
+                $connectedEntry = new $pivotClass([$this->getAttributeName() => $entry->$pivotFieldName]);
+                $entry->{$pivotFieldName} = $this->retrieveFiles($connectedEntry)->{$this->getAttributeName()};
 
                 break;
             default:
@@ -162,7 +162,7 @@ trait HandleRepeatableUploads
                         return;
                     }
 
-                    $files = $connectedPivot->getOriginal()['pivot_'.$this->getName()];
+                    $files = $connectedPivot->getOriginal()['pivot_'.$this->getAttributeName()];
 
                     if (! $files) {
                         return;

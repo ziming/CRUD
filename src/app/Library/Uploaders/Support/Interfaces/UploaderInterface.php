@@ -35,6 +35,8 @@ interface UploaderInterface
      */
     public function getName(): string;
 
+    public function getAttributeName(): string;
+
     public function getDisk(): string;
 
     public function getPath(): string;

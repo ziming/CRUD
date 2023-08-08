@@ -74,14 +74,14 @@ abstract class Uploader implements UploaderInterface
         if ($this->attachedToFakeField) {
             $fakeFieldValue = $entry->{$this->attachedToFakeField};
             $fakeFieldValue = is_string($fakeFieldValue) ? json_decode($fakeFieldValue, true) : (array) $fakeFieldValue;
-            $fakeFieldValue[$this->getName()] = $this->uploadFiles($entry);
+            $fakeFieldValue[$this->getAttributeName()] = $this->uploadFiles($entry);
 
             $entry->{$this->attachedToFakeField} = isset($entry->getCasts()[$this->attachedToFakeField]) ? $fakeFieldValue : json_encode($fakeFieldValue);
 
             return $entry;
         }
 
-        $entry->{$this->getName()} = $this->uploadFiles($entry);
+        $entry->{$this->getAttributeName()} = $this->uploadFiles($entry);
 
         return $entry;
     }
@@ -116,6 +116,11 @@ abstract class Uploader implements UploaderInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getAttributeName(): string
+    {
+        return Str::afterLast($this->name, '.');
     }
 
     public function getDisk(): string
@@ -200,11 +205,11 @@ abstract class Uploader implements UploaderInterface
 
     private function retrieveFiles(Model $entry): Model
     {
-        $value = $entry->{$this->name};
+        $value = $entry->{$this->getAttributeName()};
 
         if ($this->handleMultipleFiles) {
-            if (! isset($entry->getCasts()[$this->name]) && is_string($value)) {
-                $entry->{$this->name} = json_decode($value, true);
+            if (! isset($entry->getCasts()[$this->getName()]) && is_string($value)) {
+                $entry->{$this->getAttributeName()} = json_decode($value, true);
             }
 
             return $entry;
@@ -214,13 +219,13 @@ abstract class Uploader implements UploaderInterface
             $values = $entry->{$this->attachedToFakeField};
             $values = is_string($values) ? json_decode($values, true) : (array) $values;
 
-            $values[$this->name] = isset($values[$this->name]) ? Str::after($values[$this->name], $this->path) : null;
+            $values[$this->getAttributeName()] = isset($values[$this->getAttributeName()]) ? Str::after($values[$this->getAttributeName()], $this->path) : null;
             $entry->{$this->attachedToFakeField} = json_encode($values);
 
             return $entry;
         }
 
-        $entry->{$this->name} = Str::after($value, $this->path);
+        $entry->{$this->getAttributeName()} = Str::after($value, $this->path);
 
         return $entry;
     }

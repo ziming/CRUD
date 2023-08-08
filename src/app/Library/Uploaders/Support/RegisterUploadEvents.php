@@ -46,6 +46,10 @@ final class RegisterUploadEvents
         $attributes = $this->crudObject->getAttributes();
         $model = $attributes['model'] ?? get_class($this->crudObject->crud()->getModel());
         $uploader = $this->getUploader($attributes, $this->uploaderConfiguration);
+       
+        if (isset($attributes['relation_type']) && $attributes['entity'] !== false) {
+            $uploader = $uploader->relationship(true);
+        }
 
         $this->setupModelEvents($model, $uploader);
         $this->setupUploadConfigsInCrudObject($uploader);

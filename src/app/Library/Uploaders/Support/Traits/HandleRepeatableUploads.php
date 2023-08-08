@@ -119,7 +119,7 @@ trait HandleRepeatableUploads
                 $entry->{$pivotFieldName} = $this->retrieveFiles($connectedEntry)->{$this->getName()};
 
                 break;
-            default: 
+            default:
                 $entry = $this->retrieveFiles($entry);
         }
 
@@ -152,21 +152,19 @@ trait HandleRepeatableUploads
             switch($this->getRepeatableRelationType()) {
                 case 'BelongsToMany':
                     $pivotAttributes = $entry->getAttributes();
-                    $connectedPivot = $entry->pivotParent->{$this->getRepeatableContainerName()}->where(function($item) use ($pivotAttributes) {
-                       
+                    $connectedPivot = $entry->pivotParent->{$this->getRepeatableContainerName()}->where(function ($item) use ($pivotAttributes) {
                         $itemPivotAttributes = $item->pivot->only(array_keys($pivotAttributes));
-                        
+
                         return $itemPivotAttributes === $pivotAttributes;
-                       
                     })->first();
-                    
-                    if(!$connectedPivot) {
+
+                    if (! $connectedPivot) {
                         return;
                     }
 
                     $files = $connectedPivot->getOriginal()['pivot_'.$this->getName()];
-                   
-                    if(!$files) {
+
+                    if (! $files) {
                         return;
                     }
 
@@ -175,13 +173,13 @@ trait HandleRepeatableUploads
                             $value = Str::start($value, $this->getPath());
                             Storage::disk($this->getDisk())->delete($value);
                         }
-    
+
                         return;
                     }
 
                     $value = Str::start($files, $this->getPath());
                     Storage::disk($this->getDisk())->delete($value);
-                  
+
                     return;
             }
 

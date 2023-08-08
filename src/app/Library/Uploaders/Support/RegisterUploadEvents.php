@@ -189,6 +189,8 @@ final class RegisterUploadEvents
             case 'BelongsToMany':
                 return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
         }
+
+        return $subfield['baseModel'];
     }
 
     private function getRetrieveModel(string $model, UploaderInterface $uploader)

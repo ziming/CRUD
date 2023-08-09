@@ -66,26 +66,17 @@ trait Columns
      */
     public function addColumn($column)
     {
-        $column = $this->makeSureColumnHasNeededAttributes($column);
-        $this->addColumnToOperationSettings($column);
-
-        (new CrudColumn($column['name']))->callRegisteredAttributeMacros();
+        $this->prepareAttributesAndAddColumn($column);
 
         return $this;
     }
 
     /**
-     * Add a column at the end of to the CRUD object's "columns" array and return it.
-     *
-     * @param  array|string  $column
-     * @return self
+     * Add a column at the end of the CRUD object's "columns" array and return it
      */
-    public function addAndReturnColumn($column)
+    public function addAndReturnColumn(array|string $column): CrudColumn
     {
-        $column = $this->makeSureColumnHasNeededAttributes($column);
-        $this->addColumnToOperationSettings($column);
-
-        $column = (new CrudColumn($column['name']))->callRegisteredAttributeMacros();
+        $column = $this->prepareAttributesAndAddColumn($column);
 
         return $column;
     }

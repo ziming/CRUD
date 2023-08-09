@@ -72,7 +72,7 @@ trait Columns
     }
 
     /**
-     * Add a column at the end of the CRUD object's "columns" array and return it
+     * Add a column at the end of the CRUD object's "columns" array and return it.
      */
     public function addAndReturnColumn(array|string $column): CrudColumn
     {

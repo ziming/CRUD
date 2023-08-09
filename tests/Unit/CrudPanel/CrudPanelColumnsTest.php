@@ -621,11 +621,13 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         CrudColumn::name('test');
         $this->assertCount(1, $this->crudPanel->columns());
     }
+
     public function testItCanAddAFluentColumnUsingArray()
     {
         $this->crudPanel->column($this->oneColumnArray);
         $this->assertCount(1, $this->crudPanel->columns());
     }
+
     public function testItCanAddAFluentColumnUsingArrayWithoutName()
     {
         $this->crudPanel->column(['type' => 'text']);

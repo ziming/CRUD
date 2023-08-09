@@ -328,7 +328,7 @@ trait ColumnsProtectedMethods
     }
 
     /**
-     * Prepare the column attributes and add it to operation settings
+     * Prepare the column attributes and add it to operation settings.
      */
     private function prepareAttributesAndAddColumn(array|string $column): CrudColumn
     {

@@ -29,10 +29,8 @@ trait MacroableWithAttributes
 
     /**
      * Call the macros registered for the given macroable attributes.
-     *
-     * @return void
      */
-    public function callRegisteredAttributeMacros()
+    public function callRegisteredAttributeMacros(): self
     {
         $macros = $this->getMacros();
         $attributes = $this->getAttributes();
@@ -58,5 +56,7 @@ trait MacroableWithAttributes
                 );
             }
         }
+
+        return $this;
     }
 }

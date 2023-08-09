@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -324,5 +325,18 @@ trait ColumnsProtectedMethods
         }
 
         return in_array($name, $columns);
+    }
+
+    /**
+     * Prepare the column attributes and add it to operation settings.
+     */
+    private function prepareAttributesAndAddColumn(array|string $column): CrudColumn
+    {
+        $column = $this->makeSureColumnHasNeededAttributes($column);
+        $this->addColumnToOperationSettings($column);
+
+        $column = (new CrudColumn($column['name']))->callRegisteredAttributeMacros();
+
+        return $column;
     }
 }

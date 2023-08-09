@@ -113,6 +113,7 @@ trait HandleRepeatableUploads
     {
         switch($this->getRepeatableRelationType()) {
             case 'BelongsToMany':
+            case 'MorphToMany':
                 $pivotClass = app('crud')->getModel()->{$this->getUploaderSubfield()['baseEntity']}()->getPivotClass();
                 $pivotFieldName = 'pivot_'.$this->getAttributeName();
                 $connectedEntry = new $pivotClass([$this->getAttributeName() => $entry->$pivotFieldName]);
@@ -151,6 +152,7 @@ trait HandleRepeatableUploads
         if ($this->isRelationship) {
             switch($this->getRepeatableRelationType()) {
                 case 'BelongsToMany':
+                case 'MorphToMany':
                     $pivotAttributes = $entry->getAttributes();
                     $connectedPivot = $entry->pivotParent->{$this->getRepeatableContainerName()}->where(function ($item) use ($pivotAttributes) {
                         $itemPivotAttributes = $item->pivot->only(array_keys($pivotAttributes));

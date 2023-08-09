@@ -191,6 +191,7 @@ final class RegisterUploadEvents
 
         switch($subfield['relation_type']) {
             case 'BelongsToMany':
+            case 'MorphToMany':
                 return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
         }
 

@@ -75,6 +75,22 @@ trait Columns
     }
 
     /**
+     * Add a column at the end of to the CRUD object's "columns" array and return it
+     *
+     * @param  array|string  $column
+     * @return self
+     */
+    public function addAndReturnColumn($column)
+    {
+        $column = $this->makeSureColumnHasNeededAttributes($column);
+        $this->addColumnToOperationSettings($column);
+
+        $column = (new CrudColumn($column['name']))->callRegisteredAttributeMacros();
+
+        return $column;
+    }
+
+    /**
      * Add multiple columns at the end of the CRUD object's "columns" array.
      *
      * @param  array  $columns
@@ -405,15 +421,16 @@ trait Columns
      * in addition to the existing options:
      * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
      * - CRUD::column('price')->type('number');
+     * - CRUD::column(['name' => 'price', 'type' => 'number']);
      *
      * And if the developer uses the CrudColumn object as Column in their CrudController:
      * - Column::name('price')->type('number');
      *
-     * @param  string  $name  The name of the column in the db, or model attribute.
+     * @param  string|array  $name  The name of the column in the db, or model attribute.
      * @return CrudColumn
      */
-    public function column($name)
+    public function column($nameOrDefinition)
     {
-        return new CrudColumn($name);
+        return new CrudColumn($nameOrDefinition);
     }
 }

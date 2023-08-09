@@ -562,15 +562,16 @@ trait Fields
      * in addition to the existing options:
      * - CRUD::addField(['name' => 'price', 'type' => 'number']);
      * - CRUD::field('price')->type('number');
+     * - CRUD::field(['name' => 'price', 'type' => 'number']);
      *
      * And if the developer uses the CrudField object as Field in their CrudController:
      * - Field::name('price')->type('number');
      *
-     * @param  string  $name  The name of the column in the db, or model attribute.
+     * @param  string|array  $nameOrDefinition  The name of the column in the db, or model attribute.
      * @return CrudField
      */
-    public function field($name)
+    public function field($nameOrDefinition)
     {
-        return new CrudField($name);
+        return new CrudField($nameOrDefinition);
     }
 }

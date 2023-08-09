@@ -75,7 +75,7 @@ trait Columns
     }
 
     /**
-     * Add a column at the end of to the CRUD object's "columns" array and return it
+     * Add a column at the end of to the CRUD object's "columns" array and return it.
      *
      * @param  array|string  $column
      * @return self

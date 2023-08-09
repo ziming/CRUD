@@ -56,6 +56,7 @@ trait MacroableWithAttributes
                 );
             }
         }
+
         return $this;
     }
 }

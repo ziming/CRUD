@@ -127,8 +127,8 @@ final class RegisterUploadEvents
             app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
         } else {
             // the retrieve model may differ from the deleting and saving models because retrieved event
-            // is not called in pivot models when eager loading the relations.
-            $retrieveModel = $this->getRetrieveModel($model, $uploader);
+            // is not called in pivot models when loading the relations.
+            $retrieveModel = $this->getModelForRetrieveEvent($model, $uploader);
 
             $retrieveModel::retrieved(function ($entry) use ($uploader) {
                 if ($entry->translationEnabled()) {
@@ -189,16 +189,14 @@ final class RegisterUploadEvents
             return $subfield['baseModel'] ?? get_class(app('crud')->getModel());
         }
 
-        switch($subfield['relation_type']) {
-            case 'BelongsToMany':
-            case 'MorphToMany':
-                return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
+        if(in_array($subfield['relation_type'], ['BelongsToMany', 'MorphToMany'])) {
+            return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
         }
 
         return $subfield['baseModel'];
     }
 
-    private function getRetrieveModel(string $model, UploaderInterface $uploader)
+    private function getModelForRetrieveEvent(string $model, UploaderInterface $uploader)
     {
         if (! $uploader->isRelationship()) {
             return $model;

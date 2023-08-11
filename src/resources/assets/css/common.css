@@ -154,7 +154,6 @@ form .select2.select2-container {
 #crudTable tr td:first-child,
 #crudTable table.dataTable tr th:first-child,
 #crudTable table.dataTable tr td:first-child {
-
     align-items: center;
     padding-top: 1rem;
     padding-bottom: 1rem;

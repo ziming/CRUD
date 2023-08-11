@@ -147,7 +147,6 @@ form .select2.select2-container {
 
 #crudTable_wrapper #crudTable .crud_bulk_actions_checkbox,
 #crudTable_wrapper table.dataTable .crud_bulk_actions_checkbox {
-    display: flex;
     margin: 0 0.6rem 0 0.45rem;
 }
 
@@ -155,7 +154,6 @@ form .select2.select2-container {
 #crudTable tr td:first-child,
 #crudTable table.dataTable tr th:first-child,
 #crudTable table.dataTable tr td:first-child {
-    display: flex;
     align-items: center;
     padding-top: 1rem;
     padding-bottom: 1rem;

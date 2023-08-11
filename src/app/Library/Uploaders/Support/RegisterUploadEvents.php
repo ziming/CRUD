@@ -189,7 +189,7 @@ final class RegisterUploadEvents
             return $subfield['baseModel'] ?? get_class(app('crud')->getModel());
         }
 
-        if(in_array($subfield['relation_type'], ['BelongsToMany', 'MorphToMany'])) {
+        if (in_array($subfield['relation_type'], ['BelongsToMany', 'MorphToMany'])) {
             return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
         }
 

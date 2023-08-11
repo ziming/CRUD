@@ -151,6 +151,7 @@ trait HandleRepeatableUploads
     {
         if ($this->isRelationship) {
             $this->deleteRelationshipFiles($entry);
+
             return;
         }
 
@@ -237,7 +238,7 @@ trait HandleRepeatableUploads
         return isset($uploadedValues) ? Str::after($uploadedValues, $upload->getPath()) : null;
     }
 
-    private function deleteRelationshipFiles(Model $entry) : void
+    private function deleteRelationshipFiles(Model $entry): void
     {
         if (in_array($this->getRepeatableRelationType(), ['BelongsToMany', 'MorphToMany'])) {
             $pivotAttributes = $entry->getAttributes();

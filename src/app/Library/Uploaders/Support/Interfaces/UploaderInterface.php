@@ -35,6 +35,8 @@ interface UploaderInterface
      */
     public function getName(): string;
 
+    public function getAttributeName(): string;
+
     public function getDisk(): string;
 
     public function getPath(): string;
@@ -52,6 +54,8 @@ interface UploaderInterface
     public function shouldDeleteFiles(): bool;
 
     public function canHandleMultipleFiles(): bool;
+
+    public function isRelationship(): bool;
 
     public function getPreviousFiles(Model $entry): mixed;
 }

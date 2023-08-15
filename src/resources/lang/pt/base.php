@@ -52,6 +52,8 @@ return [
     'error_saving'           => 'Ocorreu um erro ao guardar. Tente novamente.',
     'welcome'                => 'Bem-vindo!',
     'use_sidebar'            => 'Use a barra lateral à esquerda para criar, editar ou apagar conteúdo.',
+    'error_title'            => 'Erro :error',
+    'error_button'           => 'Voltar ao início',
 
     'password_reset' => [
         'greeting' => 'Olá!',

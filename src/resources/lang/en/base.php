@@ -52,6 +52,8 @@ return [
     'error_saving'           => 'Error while saving. Please try again.',
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
+    'error_title'            => 'Error :error',
+    'error_button'           => 'Take me home',
 
     'password_reset' => [
         'greeting' => 'Hello!',

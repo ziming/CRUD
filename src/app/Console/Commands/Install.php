@@ -312,7 +312,7 @@ class Install extends Command
 
         $total = 0;
         $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes()->toArray(), 1);
-        
+
         if ($input < 1 || $input > $this->themes()->count()) {
             $this->deleteLines(3);
             $this->note('Unknown theme. Using default theme value.');

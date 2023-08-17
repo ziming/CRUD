@@ -112,13 +112,15 @@ trait FieldsProtectedMethods
         }
 
         if (is_string($field)) {
-            return ['name' => $field];
+            return ['name' => $this->trimWhitespacesFromName($field)];
         }
 
         if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
 
+        $field['name'] = $this->trimWhitespacesFromName($field['name']);
+        
         return $field;
     }
 
@@ -371,5 +373,13 @@ trait FieldsProtectedMethods
     protected function getFieldKey(array $field): string
     {
         return $field['name'];
+    }
+
+    /**
+     * Makes sure that all name parts don't have white spaces.
+     */
+    private function trimWhitespacesFromName(string $name) : string
+    {
+        return implode(',', array_map(fn($item) => trim($item), explode(',', $name)));
     }
 }

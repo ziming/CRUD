@@ -254,8 +254,12 @@ trait FieldsProtectedMethods
      */
     protected function makeSureSubfieldsHaveNecessaryAttributes($field)
     {
-        if (! isset($field['subfields'])) {
+        if (! isset($field['subfields']) || ! is_array($field['subfields'])) {
             return $field;
+        }
+
+        if(! is_multidimensional_array($field['subfields'])) {
+            $field['subfields'] = [$field['subfields']];
         }
 
         foreach ($field['subfields'] as $key => $subfield) {

@@ -370,15 +370,20 @@ if (! function_exists('is_multidimensional_array')) {
      * @param  array  $array
      * @return bool
      */
-    function is_multidimensional_array(array $array)
+    function is_multidimensional_array(array $array, bool $strict = false)
     {
         foreach ($array as $item) {
-            if (is_array($item)) {
-                return true;
+            if($strict) {
+                if (! is_array($item)) {
+                    return false;
+                }
+            }else{
+                if (is_array($item)) {
+                    return true;
+                }
             }
         }
-
-        return false;
+        return $strict;
     }
 }
 

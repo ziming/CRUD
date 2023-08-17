@@ -258,8 +258,8 @@ trait FieldsProtectedMethods
             return $field;
         }
 
-        if (! is_multidimensional_array($field['subfields'])) {
-            $field['subfields'] = [$field['subfields']];
+        if(! is_multidimensional_array($field['subfields'], true)) {
+            abort(500, 'Subfields of «'.$field['name'].'» are malformed. Make sure you provide an array of subfields');
         }
 
         foreach ($field['subfields'] as $key => $subfield) {

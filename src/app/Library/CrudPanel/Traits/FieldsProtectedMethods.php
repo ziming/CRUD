@@ -258,7 +258,7 @@ trait FieldsProtectedMethods
             return $field;
         }
 
-        if(! is_multidimensional_array($field['subfields'])) {
+        if (! is_multidimensional_array($field['subfields'])) {
             $field['subfields'] = [$field['subfields']];
         }
 

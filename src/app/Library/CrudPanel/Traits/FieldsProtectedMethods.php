@@ -120,7 +120,7 @@ trait FieldsProtectedMethods
         }
 
         $field['name'] = $this->trimWhitespacesFromName($field['name']);
-        
+
         return $field;
     }
 
@@ -378,8 +378,8 @@ trait FieldsProtectedMethods
     /**
      * Makes sure that all name parts don't have white spaces.
      */
-    private function trimWhitespacesFromName(string $name) : string
+    private function trimWhitespacesFromName(string $name): string
     {
-        return implode(',', array_map(fn($item) => trim($item), explode(',', $name)));
+        return implode(',', array_map(fn ($item) => trim($item), explode(',', $name)));
     }
 }

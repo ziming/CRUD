@@ -47,7 +47,7 @@ trait ColumnsProtectedMethods
     protected function makeSureColumnHasName($column)
     {
         if (is_string($column)) {
-            $column = ['name' => Str::replace(' ', '', $column)];
+            return ['name' => Str::replace(' ', '', $column)];
         }
 
         if (is_array($column) && ! isset($column['name'])) {

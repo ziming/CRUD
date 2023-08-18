@@ -365,20 +365,22 @@ if (! function_exists('old_empty_or_null')) {
 
 if (! function_exists('is_multidimensional_array')) {
     /**
-     * If any of the items inside a given array is an array, the array is considered multidimensional.
+     * Check if the array is multidimensional.
      *
-     * @param  array  $array
-     * @return bool
+     * If $strict is enabled, the array is considered multidimensional only if all elements of the array are arrays.
      */
-    function is_multidimensional_array(array $array)
+    function is_multidimensional_array(array $array, bool $strict = false): bool
     {
         foreach ($array as $item) {
-            if (is_array($item)) {
+            if ($strict && ! is_array($item)) {
+                return false;
+            }
+            if (! $strict && is_array($item)) {
                 return true;
             }
         }
 
-        return false;
+        return $strict;
     }
 }
 

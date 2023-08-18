@@ -254,13 +254,17 @@ trait FieldsProtectedMethods
      */
     protected function makeSureSubfieldsHaveNecessaryAttributes($field)
     {
-        if (! isset($field['subfields'])) {
+        if (! isset($field['subfields']) || ! is_array($field['subfields'])) {
             return $field;
+        }
+
+        if (! is_multidimensional_array($field['subfields'], true)) {
+            abort(500, 'Subfields of «'.$field['name'].'» are malformed. Make sure you provide an array of subfields.');
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
             if (empty($subfield) || ! isset($subfield['name'])) {
-                abort(500, 'Subfield name can\'t be empty');
+                abort(500, 'A subfield of «'.$field['name'].'» is malformed. Subfield attribute name can\'t be empty.');
             }
 
             // make sure the field definition is an array

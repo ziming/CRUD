@@ -372,17 +372,13 @@ if (! function_exists('is_multidimensional_array')) {
     function is_multidimensional_array(array $array, bool $strict = false): bool
     {
         foreach ($array as $item) {
-            if ($strict) {
-                if (! is_array($item)) {
-                    return false;
-                }
-            } else {
-                if (is_array($item)) {
-                    return true;
-                }
+            if ($strict && ! is_array($item)) {
+                return false;
+            }
+            if (! $strict && is_array($item)) {
+                return true;
             }
         }
-
         return $strict;
     }
 }

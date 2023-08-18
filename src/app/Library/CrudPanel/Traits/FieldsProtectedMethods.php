@@ -112,12 +112,14 @@ trait FieldsProtectedMethods
         }
 
         if (is_string($field)) {
-            return ['name' => $field];
+            return ['name' => Str::replace(' ', '', $field)];
         }
 
         if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
+
+        $field['name'] = Str::replace(' ', '', $field['name']);
 
         return $field;
     }
@@ -271,6 +273,8 @@ trait FieldsProtectedMethods
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
+
+            $subfield['name'] = Str::replace(' ', '', $subfield['name']);
 
             $subfield['parentFieldName'] = $field['name'];
 

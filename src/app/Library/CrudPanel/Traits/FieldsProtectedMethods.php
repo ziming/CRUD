@@ -270,6 +270,8 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
+            $subfield['name'] = Str::replace(' ', '', $subfield['name']);
+
             $subfield['parentFieldName'] = $field['name'];
 
             if (! isset($field['model'])) {

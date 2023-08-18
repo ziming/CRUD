@@ -47,12 +47,14 @@ trait ColumnsProtectedMethods
     protected function makeSureColumnHasName($column)
     {
         if (is_string($column)) {
-            $column = ['name' => $column];
+            $column = ['name' => Str::replace(' ', '', $column)];
         }
 
         if (is_array($column) && ! isset($column['name'])) {
             $column['name'] = 'anonymous_column_'.Str::random(5);
         }
+
+        $column['name'] = Str::replace(' ', '', $column['name']);
 
         return $column;
     }

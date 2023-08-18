@@ -379,6 +379,7 @@ if (! function_exists('is_multidimensional_array')) {
                 return true;
             }
         }
+
         return $strict;
     }
 }

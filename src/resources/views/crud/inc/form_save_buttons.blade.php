@@ -29,7 +29,7 @@
         @endif
 
         @if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration') && $crud->hasAccess('delete'))
-            <button onclick="confirmAndDeleteEntry()" type="button" class="btn btn-danger float-right"><i class="la la-trash-alt"></i> {{ trans('backpack::crud.delete') }}</button>
+            <button onclick="confirmAndDeleteEntry()" type="button" class="btn btn-danger float-right float-end"><i class="la la-trash-alt"></i> {{ trans('backpack::crud.delete') }}</button>
         @endif
     </div>
 @endif

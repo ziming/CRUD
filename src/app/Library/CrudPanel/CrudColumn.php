@@ -38,15 +38,15 @@ class CrudColumn
 
     protected $attributes;
 
-    public function upload($upload = true)
+    public function __construct($nameOrDefinitionArray)
     {
-        $this->attributes['upload'] = $upload;
+        if (is_array($nameOrDefinitionArray)) {
+            $column = $this->crud()->addAndReturnColumn($nameOrDefinitionArray);
+            $name = $column->getAttributes()['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
+        }
 
-        return $this->save();
-    }
-
-    public function __construct($name)
-    {
         $column = $this->crud()->firstColumnWhere('name', $name);
 
         // if column exists
@@ -157,6 +157,13 @@ class CrudColumn
         $this->crud()->addColumn($this->attributes)->beforeColumn($destinationColumn);
 
         return $this;
+    }
+
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
+
+        return $this->save();
     }
 
     /**

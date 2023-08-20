@@ -7,6 +7,7 @@ use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait HandleRepeatableUploads
 {
@@ -62,8 +63,8 @@ trait HandleRepeatableUploads
         $value = $value->slice($modelCount, 1)->toArray();
 
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
-            if (array_key_exists($modelCount, $value) && isset($value[$modelCount][$uploader->getName()])) {
-                $entry->{$uploader->getName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getName()]);
+            if (array_key_exists($modelCount, $value) && array_key_exists($uploader->getAttributeName(), $value[$modelCount])) {
+                $entry->{$uploader->getAttributeName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getAttributeName()]);
             }
         }
 
@@ -73,10 +74,10 @@ trait HandleRepeatableUploads
     protected function processRepeatableUploads(Model $entry, Collection $values): Collection
     {
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
-            $uploadedValues = $uploader->uploadRepeatableFiles($values->pluck($uploader->getName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
+            $uploadedValues = $uploader->uploadRepeatableFiles($values->pluck($uploader->getAttributeName())->toArray(), $this->getPreviousRepeatableValues($entry, $uploader));
 
             $values = $values->map(function ($item, $key) use ($uploadedValues, $uploader) {
-                $item[$uploader->getName()] = $uploadedValues[$key] ?? null;
+                $item[$uploader->getAttributeName()] = $uploadedValues[$key] ?? null;
 
                 return $item;
             });
@@ -88,16 +89,68 @@ trait HandleRepeatableUploads
     private function retrieveRepeatableFiles(Model $entry): Model
     {
         if ($this->isRelationship) {
-            return $this->retrieveFiles($entry);
+            return $this->retrieveRepeatableRelationFiles($entry);
+        }
+
+        $repeatableUploaders = app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName());
+
+        $values = $entry->{$this->getRepeatableContainerName()};
+        $values = is_string($values) ? json_decode($values, true) : $values;
+        $values = array_map(function ($item) use ($repeatableUploaders) {
+            foreach ($repeatableUploaders as $upload) {
+                $item[$upload->getAttributeName()] = $this->getValuesWithPathStripped($item, $upload);
+            }
+
+            return $item;
+        }, $values);
+
+        $entry->{$this->getRepeatableContainerName()} = $values;
+
+        return $entry;
+    }
+
+    private function retrieveRepeatableRelationFiles(Model $entry)
+    {
+        switch($this->getRepeatableRelationType()) {
+            case 'BelongsToMany':
+            case 'MorphToMany':
+                $pivotClass = app('crud')->getModel()->{$this->getUploaderSubfield()['baseEntity']}()->getPivotClass();
+                $pivotFieldName = 'pivot_'.$this->getAttributeName();
+                $connectedEntry = new $pivotClass([$this->getAttributeName() => $entry->$pivotFieldName]);
+                $entry->{$pivotFieldName} = $this->retrieveFiles($connectedEntry)->{$this->getAttributeName()};
+
+                break;
+            default:
+                $entry = $this->retrieveFiles($entry);
         }
 
         return $entry;
     }
 
+    private function getRepeatableRelationType()
+    {
+        return $this->getUploaderField()->getAttributes()['relation_type'];
+    }
+
+    private function getUploaderField()
+    {
+        return app('crud')->field($this->getRepeatableContainerName());
+    }
+
+    private function getUploaderSubfield()
+    {
+        return collect($this->getUploaderFieldSubfields())->where('name', '===', $this->getName())->first();
+    }
+
+    private function getUploaderFieldSubfields()
+    {
+        return $this->getUploaderField()->getAttributes()['subfields'];
+    }
+
     private function deleteRepeatableFiles(Model $entry): void
     {
         if ($this->isRelationship) {
-            $this->deleteFiles($entry);
+            $this->deleteRelationshipFiles($entry);
 
             return;
         }
@@ -171,5 +224,55 @@ trait HandleRepeatableUploads
         }
 
         return $previousValues ?? [];
+    }
+
+    private function getValuesWithPathStripped(array|string|null $item, UploaderInterface $upload)
+    {
+        $uploadedValues = $item[$upload->getName()] ?? null;
+        if (is_array($uploadedValues)) {
+            return array_map(function ($value) use ($upload) {
+                return Str::after($value, $upload->getPath());
+            }, $uploadedValues);
+        }
+
+        return isset($uploadedValues) ? Str::after($uploadedValues, $upload->getPath()) : null;
+    }
+
+    private function deleteRelationshipFiles(Model $entry): void
+    {
+        if (in_array($this->getRepeatableRelationType(), ['BelongsToMany', 'MorphToMany'])) {
+            $pivotAttributes = $entry->getAttributes();
+            $connectedPivot = $entry->pivotParent->{$this->getRepeatableContainerName()}->where(function ($item) use ($pivotAttributes) {
+                $itemPivotAttributes = $item->pivot->only(array_keys($pivotAttributes));
+
+                return $itemPivotAttributes === $pivotAttributes;
+            })->first();
+
+            if (! $connectedPivot) {
+                return;
+            }
+
+            $files = $connectedPivot->getOriginal()['pivot_'.$this->getAttributeName()];
+
+            if (! $files) {
+                return;
+            }
+
+            if (is_array($files)) {
+                foreach ($files as $value) {
+                    $value = Str::start($value, $this->getPath());
+                    Storage::disk($this->getDisk())->delete($value);
+                }
+
+                return;
+            }
+
+            $value = Str::start($files, $this->getPath());
+            Storage::disk($this->getDisk())->delete($value);
+
+            return;
+        }
+
+        $this->deleteFiles($entry);
     }
 }

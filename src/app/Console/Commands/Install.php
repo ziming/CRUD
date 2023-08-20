@@ -49,9 +49,9 @@ class Install extends Command
      * @var array
      */
     protected $themes = [
-        Themes\RequireThemeCoreuiv2::class,
-        Themes\RequireThemeCoreuiv4::class,
         Themes\RequireThemeTabler::class,
+        Themes\RequireThemeCoreuiv4::class,
+        Themes\RequireThemeCoreuiv2::class,
     ];
 
     /**
@@ -93,7 +93,7 @@ class Install extends Command
 
         // Install Backpack Basset
         $this->progressBlock('Installing Basset');
-        $this->executeArtisanProcess('basset:install --no-interaction');
+        $this->executeArtisanProcess('basset:install --no-check --no-interaction');
         $this->closeProgressBlock();
 
         // Optional commands
@@ -109,10 +109,12 @@ class Install extends Command
         } elseif (! $this->isAnyThemeInstalled()) {
             // Install default theme
             $this->progressBlock('Installing default theme');
-            $this->executeArtisanProcess('backpack:require:theme-coreuiv2');
+            $this->executeArtisanProcess('backpack:require:theme-tabler');
             $this->closeProgressBlock();
         }
 
+        //execute basset checks
+        $this->call('basset:check');
         // Done
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
         $this->infoBlock('Backpack installation complete.', 'done');
@@ -309,14 +311,14 @@ class Install extends Command
             }, 0);
 
         $total = 0;
-        $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes()->toArray());
+        $input = (int) $this->listChoice('Which Backpack theme would you like to install? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->themes()->toArray(), 1);
 
         if ($input < 1 || $input > $this->themes()->count()) {
             $this->deleteLines(3);
-            $this->note('Skipping installing a theme.');
+            $this->note('Unknown theme. Using default theme value.');
             $this->newLine();
 
-            return;
+            $input = 1;
         }
 
         // Clear list

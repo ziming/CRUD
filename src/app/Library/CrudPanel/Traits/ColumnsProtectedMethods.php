@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -46,12 +47,14 @@ trait ColumnsProtectedMethods
     protected function makeSureColumnHasName($column)
     {
         if (is_string($column)) {
-            $column = ['name' => $column];
+            return ['name' => Str::replace(' ', '', $column)];
         }
 
         if (is_array($column) && ! isset($column['name'])) {
             $column['name'] = 'anonymous_column_'.Str::random(5);
         }
+
+        $column['name'] = Str::replace(' ', '', $column['name']);
 
         return $column;
     }
@@ -324,5 +327,18 @@ trait ColumnsProtectedMethods
         }
 
         return in_array($name, $columns);
+    }
+
+    /**
+     * Prepare the column attributes and add it to operation settings.
+     */
+    private function prepareAttributesAndAddColumn(array|string $column): CrudColumn
+    {
+        $column = $this->makeSureColumnHasNeededAttributes($column);
+        $this->addColumnToOperationSettings($column);
+
+        $column = (new CrudColumn($column['name']))->callRegisteredAttributeMacros();
+
+        return $column;
     }
 }

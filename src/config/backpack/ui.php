@@ -106,7 +106,7 @@ return [
     // CSS files that are loaded in all pages, using Laravel's @vite() helper
     // Please note that support for Vite was added in Laravel 9.19. Earlier versions are not able to use this feature.
     'vite_styles' => [ // resource file_path
-        // 'resources/css/app.css' => '',
+        // 'resources/css/app.css',
     ],
 
     // --------------
@@ -129,6 +129,19 @@ return [
     // JS files that are loaded in all pages, using Laravel's @vite() helper
     'vite_scripts' => [ // resource file_path
         // 'resources/js/app.js',
+    ],
+
+    'classes' => [
+        /**
+         * Use this as fallback config for themes to pass classes to the table displayed in List Operation
+         * It defaults to: "table table-striped table-hover nowrap rounded card-table table-vcenter card-table shadow-xs border-xs".
+         */
+        'table' => null,
+
+        /**
+         * Use this as fallback config for themes to pass classes to the table wrapper component displayed in List Operation.
+         */
+        'tableWrapper' => null,
     ],
 
 ];

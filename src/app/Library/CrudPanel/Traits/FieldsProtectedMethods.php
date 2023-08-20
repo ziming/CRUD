@@ -112,12 +112,14 @@ trait FieldsProtectedMethods
         }
 
         if (is_string($field)) {
-            return ['name' => $field];
+            return ['name' => Str::replace(' ', '', $field)];
         }
 
         if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
+
+        $field['name'] = Str::replace(' ', '', $field['name']);
 
         return $field;
     }
@@ -254,19 +256,25 @@ trait FieldsProtectedMethods
      */
     protected function makeSureSubfieldsHaveNecessaryAttributes($field)
     {
-        if (! isset($field['subfields'])) {
+        if (! isset($field['subfields']) || ! is_array($field['subfields'])) {
             return $field;
+        }
+
+        if (! is_multidimensional_array($field['subfields'], true)) {
+            abort(500, 'Subfields of «'.$field['name'].'» are malformed. Make sure you provide an array of subfields.');
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
             if (empty($subfield) || ! isset($subfield['name'])) {
-                abort(500, 'Subfield name can\'t be empty');
+                abort(500, 'A subfield of «'.$field['name'].'» is malformed. Subfield attribute name can\'t be empty.');
             }
 
             // make sure the field definition is an array
             if (is_string($subfield)) {
                 $subfield = ['name' => $subfield];
             }
+
+            $subfield['name'] = Str::replace(' ', '', $subfield['name']);
 
             $subfield['parentFieldName'] = $field['name'];
 
@@ -296,13 +304,32 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+
+                    $pivot = Arr::where($field['subfields'], function ($item) use ($pivotSelectorField) {
+                        return $item['name'] === $pivotSelectorField['name'];
+                    });
+
+                    if (! empty($pivot)) {
+                        break;
+                    }
+
                     $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
+
                     break;
                 case 'MorphMany':
                 case 'HasMany':
                     $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
                     $relationInstance = $this->getRelationInstance(['entity' => $entity]);
+
+                    $localKeyField = Arr::where($field['subfields'], function ($item) use ($relationInstance) {
+                        return $item['name'] === $relationInstance->getRelated()->getKeyName();
+                    });
+
+                    if (! empty($localKeyField)) {
+                        break;
+                    }
+
                     $field['subfields'] = Arr::prepend($field['subfields'], [
                         'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',

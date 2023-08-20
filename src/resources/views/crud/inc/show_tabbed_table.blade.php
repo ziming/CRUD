@@ -17,13 +17,19 @@
     <div class="nav-tabs-custom {{ $horizontalTabs ? '' : 'row'}}" id="form_tabs">
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'flex-column nav-pills'}} {{ $horizontalTabs ? '' : 'col-md-3' }}" role="tablist">
             @foreach ($columnsWithTabs as $k => $tabLabel)
+            @php
+                $tabSlug = Str::slug($tabLabel);
+                if(empty($tabSlug)) {
+                    $tabSlug = $k;
+                }
+            @endphp
                 <li role="presentation" class="nav-item">
-                    <a href="#tab_{{ Str::slug($tabLabel) }}"
-                        aria-controls="tab_{{ Str::slug($tabLabel) }}"
+                    <a href="#tab_{{ $tabSlug }}"
+                        aria-controls="tab_{{ $tabSlug }}"
                         role="tab"
                         data-toggle="tab" {{-- tab indicator for Bootstrap v4 --}}
-                        tab_name="{{ Str::slug($tabLabel) }}" {{-- tab name for Bootstrap v4 --}}
-                        data-name="{{ Str::slug($tabLabel) }}" {{-- tab name for Bootstrap v5 --}}
+                        tab_name="{{ $tabSlug }}" {{-- tab name for Bootstrap v4 --}}
+                        data-name="{{ $tabSlug }}" {{-- tab name for Bootstrap v5 --}}
                         data-bs-toggle="tab" {{-- tab name for Bootstrap v5 --}}
                         class="nav-link {{ $k === 0 ? 'active' : '' }}"
                     >{{ $tabLabel }}</a>
@@ -33,7 +39,13 @@
 
         <div class="tab-content p-0 {{ $horizontalTabs ? '' : 'col-md-9' }}">
             @foreach ($columnsWithTabs as $k => $tabLabel)
-                <div role="tabpanel" class="tab-pane p-0 border-none {{ $k === 0 ? 'active' : '' }}" id="tab_{{ Str::slug($tabLabel) }}">
+            @php
+                $tabSlug = Str::slug($tabLabel);
+                if(empty($tabSlug)) {
+                    $tabSlug = $k;
+                }
+            @endphp
+                <div role="tabpanel" class="tab-pane p-0 border-none {{ $k === 0 ? 'active' : '' }}" id="tab_{{ $tabSlug }}">
                     @include('crud::inc.show_table', ['columns' => $crud->getTabItems($tabLabel, 'columns'), 'displayActionsColumn' => false])
                 </div>
             @endforeach

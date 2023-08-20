@@ -20,6 +20,6 @@ class BackpackProRequiredException extends \Exception
                 break;
         }
 
-        return response(view('errors.500', ['exception' => $this]), 500);
+        return abort(500, $this->getMessage());
     }
 }

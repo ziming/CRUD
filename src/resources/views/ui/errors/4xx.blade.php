@@ -1,5 +1,9 @@
 @extends(backpack_view('errors.layout'))
 
+@php
+  $error_number ??= 400;
+@endphp
+
 @section('title')
   {{ trans('backpack::base.error.'.$error_number) }}
 @endsection

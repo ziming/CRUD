@@ -52,8 +52,22 @@ return [
     'error_saving'           => 'Error while saving. Please try again.',
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
-    'error_title'            => 'Error :error',
-    'error_button'           => 'Take me home',
+
+    'error' => [
+        'title'              => 'Error :error',
+        'button'             => 'Take me home',
+        'message_4xx'        => 'Please <a :href_back>go back</a> or return to <a :href_homepage>our homepage</a>.',
+        'message_500'        => 'An internal server error has occurred. If the error persists please contact the development team.',
+        'message_503'        => 'The server is overloaded or down for maintenance. Please try again later.',
+        '400'                => 'Bad request.',
+        '401'                => 'Unauthorized action.',
+        '403'                => 'Forbidden.',
+        '404'                => 'Page not found.',
+        '405'                => 'Method not allowed.',
+        '408'                => 'Request timeout.',
+        '429'                => 'Too many requests.',
+        '500'                => 'It\'s not you, it\'s me.',
+    ],
 
     'password_reset' => [
         'greeting' => 'Hello!',

@@ -1,16 +1,11 @@
-@extends(backpack_user() ? (backpack_theme_config('layout') ? backpack_view('layouts.'.backpack_theme_config('layout')) : backpack_view('errors.blank')) : backpack_view('errors.blank'))
+@extends(backpack_view(backpack_user() && backpack_theme_config('layout') ? 'layouts.'.backpack_theme_config('layout') : 'errors.blank'))
 {{-- show error using sidebar layout if looged in AND on an admin page; otherwise use a blank page --}}
-
-@php
-  // Set the page title
-  $title = 'Error '.$error_number;
-@endphp
 
 @section('content')
 <div class="row">
   <div class="col-md-12 text-center">
     <div class="error_number">
-      <small>ERROR</small><br>
+      <small>{{ strtoupper(trans('backpack::base.error')) }}</small><br>
       {{ $error_number }}
       <hr>
     </div>
@@ -21,7 +16,7 @@
     <div class="error_description text-muted">
       <small>
         @yield('description')
-     </small>
+      </small>
     </div>
     @endif
   </div>

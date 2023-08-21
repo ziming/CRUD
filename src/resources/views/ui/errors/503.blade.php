@@ -5,12 +5,9 @@
 @endphp
 
 @section('title')
-  It's not you, it's me.
+  {{ trans('backpack::base.error.503') }}
 @endsection
 
 @section('description')
-  @php
-    $default_error_message = "The server is overloaded or down for maintenance. Please try again later.";
-  @endphp
-  {!! isset($exception)? ($exception->getMessage()?e($exception->getMessage()):$default_error_message): $default_error_message !!}
+  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error.message_503') !!}
 @endsection

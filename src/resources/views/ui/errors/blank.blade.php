@@ -1,16 +1,9 @@
-@php
-  $title = 'Error '.$error_number;
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>{{$title}}</title>
-
-        <!-- Styles -->
+        <title>{{ trans('backpack::base.error.title', ['error' => $error_number]) }}</title>
         <style>
           .error_number {
               font-size: 156px;
@@ -39,7 +32,7 @@
               font-weight: 400;
           }
 
-          .center{
+          .center {
               height: 100vh;
               display: flex;
               justify-content: center;

@@ -53,6 +53,11 @@ return [
     'welcome'                => 'Bem-vindo!',
     'use_sidebar'            => 'Use a barra lateral à esquerda para criar, editar ou apagar conteúdo.',
 
+    'error' => [
+        'title'              => 'Erro :error',
+        'button'             => 'Voltar ao início',
+    ],
+
     'password_reset' => [
         'greeting' => 'Olá!',
         'subject'  => 'Notificação de reposição de password.',

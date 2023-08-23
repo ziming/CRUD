@@ -14,6 +14,9 @@
     $wrapper = $button->meta['wrapper'] ?? [];
     $wrapper['element'] = $wrapper['element'] ?? 'a';
     $wrapper['href'] = $wrapper['href'] ?? $defaultHref;
+    if (is_a($wrapper['href'], \Closure::class, true)) {
+        $wrapper['href'] = ($wrapper['href'])($entry, $crud);
+    }
     $wrapper['class'] = $wrapper['class'] ?? $defaultClass;
 @endphp
 

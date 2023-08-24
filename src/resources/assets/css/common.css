@@ -299,6 +299,7 @@ form .select2.select2-container {
 }
 
 .dt-buttons,
+.dtr-modal .details-control,
 .modal .details-control {
     display: none;
 }

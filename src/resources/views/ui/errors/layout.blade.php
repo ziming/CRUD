@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-12 text-center">
     <div class="error_number">
-      <small>{{ strtoupper(trans('backpack::base.error')) }}</small><br>
+      <small>{{ strtoupper(trans('backpack::base.error.title', ['error' => ''])) }}</small><br>
       {{ $error_number }}
       <hr>
     </div>

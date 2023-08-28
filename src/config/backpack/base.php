@@ -55,6 +55,13 @@ return [
     // Set this to false if you would like to skip adding the password recovery routes
     // (you then need to manually define the routes in your web.php)
     'setup_password_recovery_routes' => true,
+    
+    // Set this to true if you would like to enable email verification for your Authenticable model.
+    // Make sure your Authenticable model implements the MustVerifyEmail contract and your 
+    // database table contains the email_verified_at column.
+    // https://laravel.com/docs/10.x/verification#model-preparation
+    // https://laravel.com/docs/10.x/verification#database-preparation
+    'setup_email_verification_routes' => false,
 
     /*
     |--------------------------------------------------------------------------

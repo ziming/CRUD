@@ -131,22 +131,8 @@ class BackpackServiceProvider extends ServiceProvider
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
         }
 
-        // register the verified middleware in the backpack middleware group
-        // but only if functionality is enabled by developer in config
+        // register the email verification middleware, if the developer the config is enabled
         if (config('backpack.base.setup_email_verification_routes', false)) {
-            // developers that updated to 10.x but didn't add the aliases into their Kernel.php
-            // would get an error when trying to use the verified/signed middlewares
-            // we ensure they'r properly aliased if not previously set by developer
-            $routeMiddlewares = $router->getMiddleware();
-
-            if (! in_array('verified', array_keys($routeMiddlewares))) {
-                $router->aliasMiddleware('verified', \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
-            }
-
-            if (! in_array('signed', array_keys($routeMiddlewares))) {
-                $router->aliasMiddleware('signed', \Illuminate\Routing\Middleware\ValidateSignature::class);
-            }
-
             $router->pushMiddlewareToGroup($middleware_key, EnsureEmailVerification::class);
         }
     }

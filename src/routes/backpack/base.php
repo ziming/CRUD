@@ -40,9 +40,9 @@ Route::group(
             }
 
             if (config('backpack.base.setup_email_verification_routes', false)) {
-                Route::get('email/verify', 'VerifyEmailController@emailVerificationRequired')->name('verification.notice');
-                Route::get('email/verify/{id}/{hash}', 'VerifyEmailController@verifyEmail')->middleware('signed')->name('verification.verify');
-                Route::post('email/verification-notification', 'VerifyEmailController@resendVerificationEmail')->name('verification.send');
+                Route::get('email/verify', 'Auth\VerifyEmailController@emailVerificationRequired')->name('verification.notice');
+                Route::get('email/verify/{id}/{hash}', 'Auth\VerifyEmailController@verifyEmail')->name('verification.verify');
+                Route::post('email/verification-notification', 'Auth\VerifyEmailController@resendVerificationEmail')->name('verification.send');
             }
         }
 

@@ -63,6 +63,11 @@ return [
     // https://laravel.com/docs/10.x/verification#database-preparation
     'setup_email_verification_routes' => false,
 
+    // How many times in any given time period should the user be allowed to
+    // request a new verification email?
+    // Defaults to 1,10 - 1 time in 10 minutes.
+    'email_verification_throttle_access' => '2,10',
+
     /*
     |--------------------------------------------------------------------------
     | Security

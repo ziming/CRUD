@@ -85,4 +85,10 @@ return [
     'throttled'            => 'You have already requested a password reset recently. Please check your email. If you do not receive our email, please retry later.',
     'throttled_request'    => 'You have exceeded the limit of tries. Please wait a few minutes and try again.',
 
+    'verify_email' => [
+        'verification_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
+        'email_verification_required' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.',
+        'resend_verification_link' => 'Resend verification link',
+        'email_subject'   => 'Verify your email address',
+    ]
 ];

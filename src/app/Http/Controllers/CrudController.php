@@ -23,10 +23,6 @@ class CrudController extends Controller
             return;
         }
 
-        if (config('backpack.base.setup_veryfy_email_routes', false)) {
-            $this->middleware('verified');
-        }
-
         // ---------------------------
         // Create the CrudPanel object
         // ---------------------------

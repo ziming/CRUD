@@ -3,6 +3,7 @@
 namespace Backpack\CRUD;
 
 use Backpack\Basset\Facades\Basset;
+use Backpack\CRUD\app\Http\Middleware\EnsureEmailVerification;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
@@ -128,6 +129,25 @@ class BackpackServiceProvider extends ServiceProvider
         // but only if functionality is enabled by developer in config
         if (config('backpack.base.setup_password_recovery_routes')) {
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
+        }
+
+        // register the verified middleware in the backpack middleware group
+        // but only if functionality is enabled by developer in config
+        if (config('backpack.base.setup_email_verification_routes', false)) {
+            // developers that updated to 10.x but didn't add the aliases into their Kernel.php
+            // would get an error when trying to use the verified/signed middlewares
+            // we ensure they'r properly aliased if not previously set by developer
+            $routeMiddlewares = $router->getMiddleware();
+
+            if(! in_array('verified', array_keys($routeMiddlewares))) {
+                $router->aliasMiddleware('verified', \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
+            }
+            
+            if(! in_array('signed', array_keys($routeMiddlewares))) {
+                $router->aliasMiddleware('signed', \Illuminate\Routing\Middleware\ValidateSignature::class);
+            }
+
+            $router->pushMiddlewareToGroup($middleware_key, EnsureEmailVerification::class);
         }
     }
 

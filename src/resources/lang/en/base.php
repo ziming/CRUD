@@ -86,7 +86,7 @@ return [
     'throttled_request'    => 'You have exceeded the limit of tries. Please wait a few minutes and try again.',
 
     'verify_email' => [
-        'verification_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
+        'verification_link_sent' => 'A verification link has been sent to your email address.',
         'email_verification_required' => 'Please verify your email address, by clicking on the link we\'ve sent you.',
         'resend_verification_link' => 'Resend verification link',
         'email_subject'   => 'Verify your email address',

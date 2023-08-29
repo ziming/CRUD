@@ -6,7 +6,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest as OriginalEmailVerifica
 
 class EmailVerificationRequest extends OriginalEmailVerificationRequest
 {
-    
     public function user($guard = null)
     {
         return parent::user(backpack_guard_name());

@@ -139,11 +139,11 @@ class BackpackServiceProvider extends ServiceProvider
             // we ensure they'r properly aliased if not previously set by developer
             $routeMiddlewares = $router->getMiddleware();
 
-            if(! in_array('verified', array_keys($routeMiddlewares))) {
+            if (! in_array('verified', array_keys($routeMiddlewares))) {
                 $router->aliasMiddleware('verified', \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
             }
-            
-            if(! in_array('signed', array_keys($routeMiddlewares))) {
+
+            if (! in_array('signed', array_keys($routeMiddlewares))) {
                 $router->aliasMiddleware('signed', \Illuminate\Routing\Middleware\ValidateSignature::class);
             }
 

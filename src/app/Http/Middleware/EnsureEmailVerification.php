@@ -3,6 +3,8 @@
 namespace Backpack\CRUD\app\Http\Middleware;
 
 use Closure;
+use Exception; 
+use Throwable;
 
 class EnsureEmailVerification
 {
@@ -22,8 +24,11 @@ class EnsureEmailVerification
             $request->setUserResolver(function () use ($userResolver) {
                 return $userResolver(backpack_guard_name());
             });
-            $verifiedMiddleware = new (app('router')->getMiddleware()['verified'])();
-
+            try {
+                $verifiedMiddleware = new (app('router')->getMiddleware()['verified'])();
+            }catch(Throwable) {
+                throw new Exception('Missing "verified" alias middleware in App/Http/Kernel.php. More info: https://backpackforlaravel.com/docs/6.x/base-how-to#enable-email-verification-in-backpack-routes');
+            }
             return $verifiedMiddleware->handle($request, $next);
         }
 

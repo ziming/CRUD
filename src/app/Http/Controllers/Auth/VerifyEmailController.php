@@ -6,6 +6,8 @@ use Backpack\CRUD\app\Http\Requests\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Prologue\Alerts\Facades\Alert;
+use Throwable;
+use Exception;
 
 class VerifyEmailController extends Controller
 {
@@ -19,7 +21,14 @@ class VerifyEmailController extends Controller
     public function __construct()
     {
         $this->middleware(backpack_middleware());
-        $this->middleware('signed')->only('verifyEmail');
+
+        try {
+            $signedMiddleware = new (app('router')->getMiddleware()['signed'])();
+        }catch(Throwable) {
+            throw new Exception('Missing "signed" alias middleware in App/Http/Kernel.php. More info: https://backpackforlaravel.com/docs/6.x/base-how-to#enable-email-verification-in-backpack-routes');
+        }
+
+        $this->middleware($signedMiddleware)->only('verifyEmail');
         $this->middleware('throttle:'.config('backpack.base.email_verification_throttle_access'))->only('resendVerificationEmail');
 
         if (! backpack_users_have_email()) {

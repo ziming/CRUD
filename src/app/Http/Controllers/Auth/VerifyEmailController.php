@@ -3,11 +3,11 @@
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
 use Backpack\CRUD\app\Http\Requests\EmailVerificationRequest;
+use Backpack\CRUD\app\Library\Auth\UserFromCookie;
 use Exception;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Cookie;
 use Prologue\Alerts\Facades\Alert;
 
 class VerifyEmailController extends Controller
@@ -35,10 +35,10 @@ class VerifyEmailController extends Controller
         $this->redirectTo = $this->redirectTo !== null ? $this->redirectTo : backpack_url('dashboard');
     }
 
-    public function emailVerificationRequired(): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+    public function emailVerificationRequired(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
-        $user = $this->getUserFromCookie();
-
+        $user = $this->getUser($request);
+       
         if (! $user) {
             return redirect()->route('backpack.auth.login');
         }
@@ -83,15 +83,6 @@ class VerifyEmailController extends Controller
 
     private function getUser(Request $request): ?\Illuminate\Contracts\Auth\MustVerifyEmail
     {
-        return $request->user(backpack_guard_name()) ?? $this->getUserFromCookie();
-    }
-
-    private function getUserFromCookie(): ?\Illuminate\Contracts\Auth\MustVerifyEmail
-    {
-        if (Cookie::has('backpack_email_verification')) {
-            return config('backpack.base.user_model_fqn')::where(config('backpack.base.email_column'), Cookie::get('backpack_email_verification'))->first();
-        }
-
-        return null;
+        return $request->user(backpack_guard_name()) ?? (new UserFromCookie())();
     }
 }

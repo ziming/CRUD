@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Http\Controllers\Auth;
 
 use Backpack\CRUD\app\Http\Requests\EmailVerificationRequest;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Prologue\Alerts\Facades\Alert;

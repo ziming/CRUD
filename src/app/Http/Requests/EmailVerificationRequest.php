@@ -17,6 +17,7 @@ class EmailVerificationRequest extends OriginalEmailVerificationRequest
         if (Cookie::has('backpack_email_verification')) {
             return config('backpack.base.user_model_fqn')::where('email', Cookie::get('backpack_email_verification'))->first();
         }
+
         return null;
     }
 }

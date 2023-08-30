@@ -116,6 +116,7 @@ class RegisterController extends Controller
         event(new Registered($user));
         if (config('backpack.base.setup_email_verification_routes')) {
             Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+
             return redirect(route('verification.notice'));
         }
 

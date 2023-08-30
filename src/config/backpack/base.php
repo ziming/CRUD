@@ -57,13 +57,13 @@ return [
     'setup_password_recovery_routes' => true,
 
     // Set this to true if you would like to enable email verification for your user model.
-    // Make sure your user model implements the MustVerifyEmail contract and your database 
+    // Make sure your user model implements the MustVerifyEmail contract and your database
     // table contains the `email_verified_at` column. Read the following before enabling:
     // https://backpackforlaravel.com/docs/6.x/base-how-to#enable-email-verification-in-backpack-routes
     'setup_email_verification_routes' => false,
-    
+
     // We will automatically add the Verified middleware to the Backpack midleware group
-    // if you disable this you must manually add the verified route middleware to 
+    // if you disable this you must manually add the verified route middleware to
     // the routes you would like to be accessed only by verified users.
     'add_verified_to_backpack_middleware' => true,
 

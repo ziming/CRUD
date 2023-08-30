@@ -6,8 +6,8 @@ use Backpack\CRUD\app\Http\Requests\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Prologue\Alerts\Facades\Alert;
-use Throwable;
 use Exception;
+use Illuminate\Support\Facades\Cookie;
 
 class VerifyEmailController extends Controller
 {
@@ -20,15 +20,11 @@ class VerifyEmailController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(backpack_middleware());
-
-        try {
-            $signedMiddleware = new (app('router')->getMiddleware()['signed'])();
-        }catch(Throwable) {
+        if(! app('router')->getMiddleware()['signed'] ?? null) {
             throw new Exception('Missing "signed" alias middleware in App/Http/Kernel.php. More info: https://backpackforlaravel.com/docs/6.x/base-how-to#enable-email-verification-in-backpack-routes');
         }
 
-        $this->middleware($signedMiddleware)->only('verifyEmail');
+        $this->middleware('signed')->only('verifyEmail');
         $this->middleware('throttle:'.config('backpack.base.email_verification_throttle_access'))->only('resendVerificationEmail');
 
         if (! backpack_users_have_email()) {
@@ -38,8 +34,14 @@ class VerifyEmailController extends Controller
         $this->redirectTo = $this->redirectTo !== null ? $this->redirectTo : backpack_url('dashboard');
     }
 
-    public function emailVerificationRequired(): \Illuminate\Contracts\View\View
+    public function emailVerificationRequired(): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
+        $user = $this->getUserFromCookie();
+
+        if (! $user) {
+            return redirect()->route('backpack.auth.login');
+        }
+
         return view(backpack_view('auth.verify-email'));
     }
 
@@ -50,6 +52,12 @@ class VerifyEmailController extends Controller
      */
     public function verifyEmail(EmailVerificationRequest $request)
     {
+        $user = $this->getUser($request);
+
+        if (! $user) {
+            return redirect()->route('backpack.auth.login');
+        }
+
         $request->fulfill();
 
         return redirect($this->redirectTo);
@@ -60,10 +68,28 @@ class VerifyEmailController extends Controller
      */
     public function resendVerificationEmail(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $request->user(backpack_guard_name())->sendEmailVerificationNotification();
+        $user = $this->getUser($request);
 
+        if(! $user) {
+            return redirect()->route('backpack.auth.login');
+        }
+            
+        $user->sendEmailVerificationNotification();
         Alert::success('Email verification link sent successfully.')->flash();
 
         return back()->with('status', 'verification-link-sent');
+    }
+
+    private function getUser(Request $request): ?\Illuminate\Contracts\Auth\MustVerifyEmail
+    {
+        return $request->user(backpack_guard_name()) ?? $this->getUserFromCookie();
+    }
+    
+    private function getUserFromCookie(): ?\Illuminate\Contracts\Auth\MustVerifyEmail
+    {
+        if (Cookie::has('backpack_email_verification')) {
+            return config('backpack.base.user_model_fqn')::where('email', Cookie::get('backpack_email_verification'))->first();
+        }
+        return null;
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Cookie;
 
 trait AuthenticatesUsers
 {
@@ -47,6 +48,18 @@ trait AuthenticatesUsers
         }
 
         if ($this->attemptLogin($request)) {
+            if (config('backpack.base.setup_email_verification_routes', false) ) {
+                $user = $this->guard()->user();
+                if ($user->email_verified_at) {
+                    return $this->sendLoginResponse($request);
+                } else {
+                    $this->guard()->logout();
+                    Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+                    return $request->wantsJson()
+                        ? new Response('Email verification required', 403)
+                        : redirect(route('verification.notice'));
+                }
+            }
             return $this->sendLoginResponse($request);
         }
 

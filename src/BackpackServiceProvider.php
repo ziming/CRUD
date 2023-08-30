@@ -131,8 +131,8 @@ class BackpackServiceProvider extends ServiceProvider
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
         }
 
-        // register the email verification middleware, if the developer the config is enabled
-        if (config('backpack.base.setup_email_verification_routes', false)) {
+        // register the email verification middleware, if the developer enabled it in the config.
+        if (config('backpack.base.setup_email_verification_routes', false) && config('backpack.base.add_verified_to_backpack_middleware', true)) {
             $router->pushMiddlewareToGroup($middleware_key, EnsureEmailVerification::class);
         }
     }

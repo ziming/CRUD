@@ -38,7 +38,7 @@ class VerifyEmailController extends Controller
     public function emailVerificationRequired(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
         $user = $this->getUser($request);
-       
+
         if (! $user) {
             return redirect()->route('backpack.auth.login');
         }

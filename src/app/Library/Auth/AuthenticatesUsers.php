@@ -223,6 +223,7 @@ trait AuthenticatesUsers
         if ($request->wantsJson()) {
             return new Response('Email verification required', 403);
         }
+
         return redirect(route('verification.notice'));
     }
 }

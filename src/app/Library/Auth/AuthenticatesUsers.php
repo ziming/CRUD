@@ -49,17 +49,7 @@ trait AuthenticatesUsers
 
         if ($this->attemptLogin($request)) {
             if (config('backpack.base.setup_email_verification_routes', false)) {
-                $user = $this->guard()->user();
-                if ($user->email_verified_at) {
-                    return $this->sendLoginResponse($request);
-                } else {
-                    $this->guard()->logout();
-                    Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
-
-                    return $request->wantsJson()
-                        ? new Response('Email verification required', 403)
-                        : redirect(route('verification.notice'));
-                }
+                $this->verifyUserBeforeLogin($request);
             }
 
             return $this->sendLoginResponse($request);
@@ -213,5 +203,22 @@ trait AuthenticatesUsers
     protected function guard()
     {
         return Auth::guard();
+    }
+
+    private function verifyUserBeforeLogin(Request $request): Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    {
+        $user = $this->guard()->user();
+        if ($user->email_verified_at) {
+            // if the user is verified send the normal login response
+            return $this->sendLoginResponse($request);
+        } else {
+            $this->guard()->logout();
+            // add a cookie for 30m to remember the email address that needs to be verified
+            Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+
+            return $request->wantsJson()
+                ? new Response('Email verification required', 403)
+                : redirect(route('verification.notice'));
+        }
     }
 }

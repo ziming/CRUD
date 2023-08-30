@@ -208,17 +208,21 @@ trait AuthenticatesUsers
     private function verifyUserBeforeLogin(Request $request): Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $user = $this->guard()->user();
+
         if ($user->email_verified_at) {
             // if the user is verified send the normal login response
             return $this->sendLoginResponse($request);
-        } else {
-            $this->guard()->logout();
-            // add a cookie for 30m to remember the email address that needs to be verified
-            Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
-
-            return $request->wantsJson()
-                ? new Response('Email verification required', 403)
-                : redirect(route('verification.notice'));
         }
+
+        // user is not yet verified, log him out
+        $this->guard()->logout();
+
+        // add a cookie for 30m to remember the email address that needs to be verified
+        Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+
+        if ($request->wantsJson()) {
+            return new Response('Email verification required', 403);
+        }
+        return redirect(route('verification.notice'));
     }
 }

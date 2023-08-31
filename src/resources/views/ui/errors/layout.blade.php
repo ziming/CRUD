@@ -1,5 +1,5 @@
+{{-- show error using sidebar layout if logged in AND on an admin page; otherwise use a blank page --}}
 @extends(backpack_view(backpack_user() && backpack_theme_config('layout') ? 'layouts.'.backpack_theme_config('layout') : 'errors.blank'))
-{{-- show error using sidebar layout if looged in AND on an admin page; otherwise use a blank page --}}
 
 @section('content')
 <div class="row">

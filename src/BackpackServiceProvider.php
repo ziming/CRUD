@@ -3,6 +3,7 @@
 namespace Backpack\CRUD;
 
 use Backpack\Basset\Facades\Basset;
+use Backpack\CRUD\app\Http\Middleware\EnsureEmailVerification;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
@@ -128,6 +129,11 @@ class BackpackServiceProvider extends ServiceProvider
         // but only if functionality is enabled by developer in config
         if (config('backpack.base.setup_password_recovery_routes')) {
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
+        }
+
+        // register the email verification middleware, if the developer enabled it in the config.
+        if (config('backpack.base.setup_email_verification_routes', false) && config('backpack.base.setup_email_verification_middleware', true)) {
+            $router->pushMiddlewareToGroup($middleware_key, EnsureEmailVerification::class);
         }
     }
 

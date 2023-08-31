@@ -5,7 +5,6 @@ namespace Backpack\CRUD\app\Http\Controllers\Auth;
 use Backpack\CRUD\app\Http\Requests\EmailVerificationRequest;
 use Backpack\CRUD\app\Library\Auth\UserFromCookie;
 use Exception;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Prologue\Alerts\Facades\Alert;
@@ -62,6 +61,11 @@ class VerifyEmailController extends Controller
     public function resendVerificationEmail(Request $request): \Illuminate\Http\RedirectResponse
     {
         $user = $this->getUserOrRedirect($request);
+
+        if(is_a($user, \Illuminate\Http\RedirectResponse::class)) {
+            return $user;
+        }
+
         $user->sendEmailVerificationNotification();
         Alert::success('Email verification link sent successfully.')->flash();
 
@@ -73,9 +77,9 @@ class VerifyEmailController extends Controller
         return $request->user(backpack_guard_name()) ?? (new UserFromCookie())();
     }
 
-    private function getUserOrRedirect(Request $request): ?\Illuminate\Contracts\Auth\MustVerifyEmail|\Illuminate\Http\RedirectResponse
+    private function getUserOrRedirect(Request $request): \Illuminate\Contracts\Auth\MustVerifyEmail|\Illuminate\Http\RedirectResponse
     {        
-        if ($user = $request->getUser($request)) {
+        if ($user = $this->getUser($request)) {
             return $user;
         }
         

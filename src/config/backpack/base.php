@@ -62,10 +62,9 @@ return [
     // https://backpackforlaravel.com/docs/6.x/base-how-to#enable-email-verification-in-backpack-routes
     'setup_email_verification_routes' => false,
 
-    // We will automatically add the Verified middleware to the Backpack midleware group
-    // if you disable this you must manually add the verified route middleware to
-    // the routes you would like to be accessed only by verified users.
-    'add_verified_to_backpack_middleware' => true,
+    // When email verification is enabled, automatically add the Verified middleware to Backpack routes?
+    // Set false if you want to use your own Verified middleware in `middleware_class`.
+    'setup_email_verification_middleware' => true,
 
     // How many times in any given time period should the user be allowed to
     // request a new verification email?

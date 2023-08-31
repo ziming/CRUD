@@ -32,7 +32,7 @@ class VerifyEmailController extends Controller
             abort(500, trans('backpack::base.no_email_column'));
         }
         // where to redirect after the email is verified
-        $this->redirectTo = $this->redirectTo !== null ? $this->redirectTo : backpack_url('dashboard');
+        $this->redirectTo = $this->redirectTo ?? backpack_url('dashboard');
     }
 
     public function emailVerificationRequired(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse

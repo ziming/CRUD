@@ -209,9 +209,9 @@ trait AuthenticatesUsers
     {
         $user = $this->guard()->user();
 
+        // if the user is already verified, do nothing
         if ($user->email_verified_at) {
-            // if the user is verified send the normal login response
-            return $this->sendLoginResponse($request);
+            return;
         }
 
         // user is not yet verified, log him out

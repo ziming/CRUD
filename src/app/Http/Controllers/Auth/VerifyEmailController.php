@@ -62,7 +62,7 @@ class VerifyEmailController extends Controller
     {
         $user = $this->getUserOrRedirect($request);
 
-        if(is_a($user, \Illuminate\Http\RedirectResponse::class)) {
+        if (is_a($user, \Illuminate\Http\RedirectResponse::class)) {
             return $user;
         }
 
@@ -78,11 +78,11 @@ class VerifyEmailController extends Controller
     }
 
     private function getUserOrRedirect(Request $request): \Illuminate\Contracts\Auth\MustVerifyEmail|\Illuminate\Http\RedirectResponse
-    {        
+    {
         if ($user = $this->getUser($request)) {
             return $user;
         }
-        
+
         return redirect()->route('backpack.auth.login');
     }
 }

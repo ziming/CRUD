@@ -37,11 +37,7 @@ class VerifyEmailController extends Controller
 
     public function emailVerificationRequired(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
-        $user = $this->getUser($request);
-
-        if (! $user) {
-            return redirect()->route('backpack.auth.login');
-        }
+        $this->getUserOrRedirect($request);
 
         return view(backpack_view('auth.verify-email'));
     }
@@ -53,11 +49,7 @@ class VerifyEmailController extends Controller
      */
     public function verifyEmail(EmailVerificationRequest $request)
     {
-        $user = $this->getUser($request);
-
-        if (! $user) {
-            return redirect()->route('backpack.auth.login');
-        }
+        $this->getUserOrRedirect($request);
 
         $request->fulfill();
 
@@ -69,12 +61,7 @@ class VerifyEmailController extends Controller
      */
     public function resendVerificationEmail(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $user = $this->getUser($request);
-
-        if (! $user) {
-            return redirect()->route('backpack.auth.login');
-        }
-
+        $user = $this->getUserOrRedirect($request);
         $user->sendEmailVerificationNotification();
         Alert::success('Email verification link sent successfully.')->flash();
 
@@ -84,5 +71,14 @@ class VerifyEmailController extends Controller
     private function getUser(Request $request): ?\Illuminate\Contracts\Auth\MustVerifyEmail
     {
         return $request->user(backpack_guard_name()) ?? (new UserFromCookie())();
+    }
+
+    private function getUserOrRedirect(Request $request): ?\Illuminate\Contracts\Auth\MustVerifyEmail|\Illuminate\Http\RedirectResponse
+    {        
+        if ($user = $request->getUser($request)) {
+            return $user;
+        }
+        
+        return redirect()->route('backpack.auth.login');
     }
 }

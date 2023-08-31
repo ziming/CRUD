@@ -69,7 +69,7 @@ return [
     // How many times in any given time period should the user be allowed to
     // request a new verification email?
     // Defaults to 1,10 - 1 time in 10 minutes.
-    'email_verification_throttle_access' => '1,10',
+    'email_verification_throttle_access' => '3,15',
 
     /*
     |--------------------------------------------------------------------------

@@ -49,7 +49,7 @@ trait AuthenticatesUsers
 
         if ($this->attemptLogin($request)) {
             if (config('backpack.base.setup_email_verification_routes', false)) {
-                $this->verifyUserBeforeLogin($request);
+                return $this->logoutIfEmailNotVerified($request);
             }
 
             return $this->sendLoginResponse($request);
@@ -205,15 +205,14 @@ trait AuthenticatesUsers
         return Auth::guard();
     }
 
-    private function verifyUserBeforeLogin(Request $request): Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    private function logoutIfEmailNotVerified(Request $request): Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
     {
         $user = $this->guard()->user();
 
         // if the user is already verified, do nothing
         if ($user->email_verified_at) {
-            return;
+            return $this->sendLoginResponse($request);
         }
-
         // user is not yet verified, log him out
         $this->guard()->logout();
 

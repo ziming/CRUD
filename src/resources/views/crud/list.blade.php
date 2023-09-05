@@ -81,31 +81,20 @@
                     --}}
 
                     {{-- If it is an export field only, we are done. --}}
-                    @if(isset($column['exportOnlyField']) && $column['exportOnlyField'] === true)
-                      data-visible="false"
-                      data-visible-in-table="false"
-                      data-can-be-visible-in-table="false"
-                      data-visible-in-modal="false"
-                      data-visible-in-export="true"
-                      data-force-export="true"
-                    @else
-                      data-visible-in-table="{{var_export($column['visibleInTable'] ?? false)}}"
-                      data-visible="{{var_export($column['visibleInTable'] ?? true)}}"
-                      data-can-be-visible-in-table="true"
-                      data-visible-in-modal="{{var_export($column['visibleInModal'] ?? true)}}"
-                      @if(isset($column['visibleInExport']))
-                         @if($column['visibleInExport'] === false)
-                           data-visible-in-export="false"
-                           data-force-export="false"
-                         @else
-                           data-visible-in-export="true"
-                           data-force-export="true"
-                         @endif
-                       @else
-                         data-visible-in-export="true"
-                         data-force-export="false"
-                       @endif
-                    @endif
+                    @php
+                    $exportOnlyField = $column['exportOnlyField'] ?? false;
+                    $visibleInTable = $column['visibleInTable'] ?? true;
+                    $visibleInModal = $column['visibleInModal'] ?? true;
+                    $visibleInExport = $column['visibleInExport'] ?? true;
+                    $forceExport = $column['forceExport'] ?? ($column['exportOnlyField'] ? true : false);
+                    @endphp
+
+                    data-visible="{{ $exportOnlyField ? 'false' : var_export($visibleInTable, true) }}"
+                    data-visible-in-table="{{ var_export($visibleInTable, true) }}"
+                    data-can-be-visible-in-table="{{ $exportOnlyField ? 'false' : 'true' }}"
+                    data-visible-in-modal="{{ var_export($visibleInModal, true) }}"
+                    data-visible-in-export="{{ $exportOnlyField ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
+                    data-force-export="{{ var_export($forceExport, true) }}"
                   >
                     {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))

@@ -67,6 +67,13 @@
               <tr>
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
+                  @php
+                  $exportOnlyColumn = $column['exportOnlyColumn'] ?? false;
+                  $visibleInTable = $column['visibleInTable'] ?? true;
+                  $visibleInModal = $column['visibleInModal'] ?? true;
+                  $visibleInExport = $column['visibleInExport'] ?? true;
+                  $forceExport = $column['forceExport'] ?? (isset($column['exportOnlyColumn']) ? true : false);
+                  @endphp
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
@@ -81,19 +88,11 @@
                     --}}
 
                     {{-- If it is an export field only, we are done. --}}
-                    @php
-                    $exportOnlyField = $column['exportOnlyField'] ?? false;
-                    $visibleInTable = $column['visibleInTable'] ?? true;
-                    $visibleInModal = $column['visibleInModal'] ?? true;
-                    $visibleInExport = $column['visibleInExport'] ?? true;
-                    $forceExport = $column['forceExport'] ?? ($column['exportOnlyField'] ? true : false);
-                    @endphp
-
-                    data-visible="{{ $exportOnlyField ? 'false' : var_export($visibleInTable, true) }}"
+                    data-visible="{{ $exportOnlyColumn ? 'false' : var_export($visibleInTable, true) }}"
                     data-visible-in-table="{{ var_export($visibleInTable, true) }}"
-                    data-can-be-visible-in-table="{{ $exportOnlyField ? 'false' : 'true' }}"
+                    data-can-be-visible-in-table="{{ $exportOnlyColumn ? 'false' : 'true' }}"
                     data-visible-in-modal="{{ var_export($visibleInModal, true) }}"
-                    data-visible-in-export="{{ $exportOnlyField ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
+                    data-visible-in-export="{{ $exportOnlyColumn ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
                     data-force-export="{{ var_export($forceExport, true) }}"
                   >
                     {{-- Bulk checkbox --}}

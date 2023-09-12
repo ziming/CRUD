@@ -53,7 +53,7 @@ return [
     'welcome'                => 'Bem-vindo!',
     'use_sidebar'            => 'Use a barra lateral à esquerda para criar, editar ou apagar conteúdo.',
 
-    'error' => [
+    'error_page' => [
         'title'              => 'Erro :error',
         'button'             => 'Voltar ao início',
     ],

@@ -185,7 +185,7 @@ class CrudButton implements Arrayable
                 break;
         }
 
-        return $this->save();
+        return $this;
     }
 
     /**

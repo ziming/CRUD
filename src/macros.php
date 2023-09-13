@@ -52,6 +52,28 @@ if (! CrudField::hasMacro('withFiles')) {
     });
 }
 
+if (!CrudColumn::hasMacro('linkTo')) {
+    CrudColumn::macro('linkTo', function ($route, $target = null) {
+
+        $wrapper =  $this->attributes['wrapper'] ?? [];
+        if (in_array($this->attributes['type'], ['select','select_grouped','select2','select2_grouped','select2_nested','select2_from_ajax'])) {
+            $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route) {
+                return route($route, $related_key);
+            };
+        } else {
+            $wrapper['href'] = function ($crud,$column,$entry) use ($route) {
+                return url($route.$column["value"]);
+            };
+        }
+
+        if ($target)
+            $wrapper['target'] = $target;
+
+        $this->wrapper($wrapper);
+        return $this;
+    });
+}
+
 /**
  * The route macro allows developers to generate the routes for a CrudController,
  * for all operations, using a simple syntax: Route::crud().

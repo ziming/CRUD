@@ -68,7 +68,7 @@ return [
         '429'                => 'Quá nhiều yêu cầu.',
         '500'                => 'Không phải lỗi của bạn, mà là của tôi.',
     ],
-    
+
     'password_reset' => [
         'greeting' => 'Xin chào!',
         'subject'  => 'Thông Báo Đặt Lại Mật Khẩu',
@@ -91,5 +91,5 @@ return [
         'email_verification_required' => 'Vui lòng xác thực địa chỉ email của bạn bằng cách nhấn vào liên kết chúng tôi đã gửi cho bạn.',
         'resend_verification_link' => 'Gửi lại liên kết',
     ],
-    
+
 ];

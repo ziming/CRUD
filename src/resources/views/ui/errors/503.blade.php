@@ -5,9 +5,9 @@
 @endphp
 
 @section('title')
-  {{ trans('backpack::base.error.503') }}
+  {{ trans('backpack::base.error_page.503') }}
 @endsection
 
 @section('description')
-  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error.message_503') !!}
+  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error_page.message_503') !!}
 @endsection

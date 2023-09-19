@@ -5,11 +5,11 @@
 @endphp
 
 @section('title')
-  {{ trans('backpack::base.error.'.$error_number) }}
+  {{ trans('backpack::base.error_page.'.$error_number) }}
 @endsection
 
 @section('description')
-  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error.message_4xx', [
+  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error_page.message_4xx', [
     'href_back' => 'href="javascript:history.back()"',
     'href_homepage' => 'href="'.url('').'"',
   ]) !!}

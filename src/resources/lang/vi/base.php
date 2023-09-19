@@ -53,6 +53,22 @@ return [
     'welcome'                => 'Xin chào!',
     'use_sidebar'            => 'Sử dụng các chức năng ở thanh bên để tạo, sửa hoặc xoá các nội dung.',
 
+    'error' => [
+        'title'              => 'Lỗi :error',
+        'button'             => 'Đưa tôi về trang chủ',
+        'message_4xx'        => 'Vui lòng <a :href_back>quay lại</a> hoặc trở về <a :href_homepage>trang chủ của chúng tôi</a>.',
+        'message_500'        => 'Đã xảy ra lỗi máy chủ nội bộ. Nếu lỗi vẫn tiếp diễn, vui lòng liên hệ với nhóm phát triển.',
+        'message_503'        => 'Máy chủ quá tải hoặc đang trong quá trình bảo trì. Vui lòng thử lại sau.',
+        '400'                => 'Yêu cầu không hợp lệ.',
+        '401'                => 'Hành động không được ủy quyền.',
+        '403'                => 'Bị cấm truy cập.',
+        '404'                => 'Không tìm thấy trang.',
+        '405'                => 'Phương thức không được phép.',
+        '408'                => 'Hết thời gian yêu cầu.',
+        '429'                => 'Quá nhiều yêu cầu.',
+        '500'                => 'Không phải lỗi của bạn, mà là của tôi.',
+    ],
+    
     'password_reset' => [
         'greeting' => 'Xin chào!',
         'subject'  => 'Thông Báo Đặt Lại Mật Khẩu',
@@ -69,4 +85,11 @@ return [
     'throttled'            => 'Bạn vừa gửi một yêu cầu đặt lại mật khẩu gần đây. Vui lòng kiểm tra email. Nếu bạn không nhận được email hướng dẫn, vui lòng thử lại sau.',
     'throttled_request'    => 'Bạn đã yêu cầu đặt lại mật khẩu vượt quá số lần giới hạn. Vui lòng thử lại sau vài phút nữa.',
 
+    'verify_email' => [
+        'email_verification' => 'Xác thực Email',
+        'verification_link_sent' => 'Một liên kết xác thực đã được gửi đến địa chỉ email của bạn.',
+        'email_verification_required' => 'Vui lòng xác thực địa chỉ email của bạn bằng cách nhấn vào liên kết chúng tôi đã gửi cho bạn.',
+        'resend_verification_link' => 'Gửi lại liên kết',
+    ],
+    
 ];

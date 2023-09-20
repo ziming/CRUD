@@ -60,10 +60,9 @@ trait Create
             // then take those fields into account (check if they have relationships);
             // this is done in particular for the checklist_dependency field,
             // but other fields could use it too, in the future;
-            if (is_array($field['name']) &&
+            if ($this->holdsMultipleInputs($field['name']) &&
                 isset($field['subfields']) &&
-                is_array($field['subfields']) &&
-                count($field['subfields'])) {
+                is_array($field['subfields'])) {
                 foreach ($field['subfields'] as $subfield) {
                     if (isset($subfield['model']) && $subfield['model'] !== false) {
                         array_push($relationFields, $subfield);
@@ -102,7 +101,7 @@ trait Create
             switch ($relationType) {
                 case 'HasOne':
                 case 'MorphOne':
-                        $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
+                    $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
                     break;
                 case 'HasMany':
                 case 'MorphMany':
@@ -184,7 +183,7 @@ trait Create
 
             // Scenario D
             if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
-                $relation->delete();
+                $relation->first()?->delete();
 
                 return null;
             }
@@ -222,12 +221,10 @@ trait Create
         $relationForeignKey = $relation->getForeignKeyName();
         $relationLocalKey = $relation->getLocalKeyName();
 
-        if ($relationValues === null) {
+        if (empty($relationValues)) {
             // the developer cleared the selection
             // we gonna clear all related values by setting up the value to the fallback id, to null or delete.
-            $removedEntries = $modelInstance->where($relationForeignKey, $item->{$relationLocalKey});
-
-            return $this->handleManyRelationItemRemoval($modelInstance, $removedEntries, $relationDetails, $relationForeignKey);
+            return $this->handleManyRelationItemRemoval($modelInstance, $relation, $relationDetails, $relationForeignKey);
         }
         // we add the new values into the relation, if it is HasMany we only update the foreign_key,
         // otherwise (it's a MorphMany) we need to update the morphs keys too
@@ -290,10 +287,10 @@ trait Create
      * By using repeatable field, developer can allow the creation of such entries
      * in the crud forms.
      *
-     * @param $entry - eg: story
-     * @param $relation - eg  story HasMany monsters
-     * @param $relationMethod - eg: monsters
-     * @param $relationDetails - eg: info about relation including submited values
+     * @param  $entry  - eg: story
+     * @param  $relation  - eg  story HasMany monsters
+     * @param  $relationMethod  - eg: monsters
+     * @param  $relationDetails  - eg: info about relation including submited values
      * @return void
      */
     private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)

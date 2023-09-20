@@ -69,7 +69,7 @@ trait FieldsProtectedMethods
      */
     public function overwriteFieldNameFromDotNotationToArray($field)
     {
-        if (! is_array($field['name']) && strpos($field['name'], '.') !== false) {
+        if (strpos($field['name'], '.') !== false) {
             $entity_array = explode('.', $field['name']);
             $name_string = '';
 
@@ -112,12 +112,14 @@ trait FieldsProtectedMethods
         }
 
         if (is_string($field)) {
-            return ['name' => $field];
+            return ['name' => Str::replace(' ', '', $field)];
         }
 
         if (is_array($field) && ! isset($field['name'])) {
             abort(500, 'All fields must have their name defined');
         }
+
+        $field['name'] = Str::replace(' ', '', $field['name']);
 
         return $field;
     }
@@ -132,7 +134,7 @@ trait FieldsProtectedMethods
      */
     protected function makeSureFieldHasEntity($field)
     {
-        $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
+        $model = isset($field['baseModel']) ? (new $field['baseModel']) : $this->model;
 
         if (isset($field['entity'])) {
             return $field;
@@ -140,11 +142,6 @@ trait FieldsProtectedMethods
 
         // by default, entity is false if we cannot link it with guessing functions to a relation
         $field['entity'] = false;
-
-        // if the name is an array it's definitely not a relationship
-        if (is_array($field['name'])) {
-            return $field;
-        }
 
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
@@ -181,10 +178,19 @@ trait FieldsProtectedMethods
 
     protected function makeSureFieldHasAttribute($field)
     {
+        if (isset($field['entity']) && $field['entity']) {
+            // if the user setup the attribute in relation string, we are not going to infer that attribute from model
+            // instead we get the defined attribute by the user.
+            if ($this->isAttributeInRelationString($field)) {
+                $field['attribute'] = $field['attribute'] ?? Str::afterLast($field['entity'], '.');
+
+                return $field;
+            }
+        }
         // if there's a model defined, but no attribute
         // guess an attribute using the identifiableAttribute functionality in CrudTrait
         if (isset($field['model']) && ! isset($field['attribute']) && method_exists($field['model'], 'identifiableAttribute')) {
-            $field['attribute'] = call_user_func([(new $field['model']()), 'identifiableAttribute']);
+            $field['attribute'] = (new $field['model']())->identifiableAttribute();
         }
 
         return $field;
@@ -200,7 +206,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasLabel($field)
     {
         if (! isset($field['label'])) {
-            $name = is_array($field['name']) ? $field['name'][0] : $field['name'];
+            $name = str_replace(',', ' ', $field['name']);
             $name = str_replace('_id', '', $name);
             $field['label'] = mb_ucfirst(str_replace('_', ' ', $name));
         }
@@ -233,15 +239,11 @@ trait FieldsProtectedMethods
         switch ($relationType) {
             case 'BelongsTo':
                 return 'select';
-                break;
-
             case 'BelongsToMany':
             case 'MorphToMany':
                 return 'select_multiple';
-
             default:
                 return 'text';
-                break;
         }
     }
 
@@ -254,13 +256,17 @@ trait FieldsProtectedMethods
      */
     protected function makeSureSubfieldsHaveNecessaryAttributes($field)
     {
-        if (! isset($field['subfields'])) {
+        if (! isset($field['subfields']) || ! is_array($field['subfields'])) {
             return $field;
         }
 
+        if (! is_multidimensional_array($field['subfields'], true)) {
+            abort(500, 'Subfields of «'.$field['name'].'» are malformed. Make sure you provide an array of subfields.');
+        }
+
         foreach ($field['subfields'] as $key => $subfield) {
-            if (empty($field)) {
-                abort(500, 'Field name can\'t be empty');
+            if (empty($subfield) || ! isset($subfield['name'])) {
+                abort(500, 'A subfield of «'.$field['name'].'» is malformed. Subfield attribute name can\'t be empty.');
             }
 
             // make sure the field definition is an array
@@ -268,7 +274,9 @@ trait FieldsProtectedMethods
                 $subfield = ['name' => $subfield];
             }
 
-            $subfield['parentFieldName'] = is_array($field['name']) ? false : $field['name'];
+            $subfield['name'] = Str::replace(' ', '', $subfield['name']);
+
+            $subfield['parentFieldName'] = $field['name'];
 
             if (! isset($field['model'])) {
                 // we're inside a simple 'repeatable' with no model/relationship, so
@@ -282,6 +290,8 @@ trait FieldsProtectedMethods
                 $currentEntity = $subfield['baseEntity'] ?? $field['entity'];
                 $subfield['baseModel'] = $subfield['baseModel'] ?? $field['model'];
                 $subfield['baseEntity'] = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$currentEntity : $currentEntity;
+                $subfield['baseFieldName'] = is_array($subfield['name']) ? implode(',', $subfield['name']) : $subfield['name'];
+                $subfield['baseFieldName'] = Str::afterLast($subfield['baseFieldName'], '.');
             }
 
             $field['subfields'][$key] = $this->makeSureFieldHasNecessaryAttributes($subfield);
@@ -294,18 +304,37 @@ trait FieldsProtectedMethods
                 case 'MorphToMany':
                 case 'BelongsToMany':
                     $pivotSelectorField = static::getPivotFieldStructure($field);
+
+                    $pivot = Arr::where($field['subfields'], function ($item) use ($pivotSelectorField) {
+                        return $item['name'] === $pivotSelectorField['name'];
+                    });
+
+                    if (! empty($pivot)) {
+                        break;
+                    }
+
                     $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
+
                     break;
                 case 'MorphMany':
                 case 'HasMany':
                     $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
                     $relationInstance = $this->getRelationInstance(['entity' => $entity]);
+
+                    $localKeyField = Arr::where($field['subfields'], function ($item) use ($relationInstance) {
+                        return $item['name'] === $relationInstance->getRelated()->getKeyName();
+                    });
+
+                    if (! empty($localKeyField)) {
+                        break;
+                    }
+
                     $field['subfields'] = Arr::prepend($field['subfields'], [
                         'name' => $relationInstance->getRelated()->getKeyName(),
                         'type' => 'hidden',
                     ]);
-                break;
+                    break;
             }
         }
 
@@ -335,10 +364,8 @@ trait FieldsProtectedMethods
      */
     protected function addFieldToOperationSettings($field)
     {
-        $fieldKey = $this->getFieldKey($field);
-
         $allFields = $this->getOperationSetting('fields');
-        $allFields = array_merge($this->getCleanStateFields(), [$fieldKey => $field]);
+        $allFields = array_merge($this->getCleanStateFields(), [$field['name'] => $field]);
 
         $this->setOperationSetting('fields', $allFields);
     }
@@ -347,19 +374,10 @@ trait FieldsProtectedMethods
      * Get the string that should be used as an array key, for the attributive array
      * where the fields are stored for the current operation.
      *
-     * The array key for the field should be:
-     * - name (if the name is a string)
-     * - name1_name2_name3 (if the name is an array)
-     *
-     * @param  array  $field  Field definition array.
-     * @return string The string that should be used as array key.
+     * @deprecated v6
      */
-    protected function getFieldKey($field)
+    protected function getFieldKey(array $field): string
     {
-        if (is_array($field['name'])) {
-            return implode('_', $field['name']);
-        }
-
         return $field['name'];
     }
 }

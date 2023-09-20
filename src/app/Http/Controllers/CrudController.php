@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 
@@ -33,7 +32,7 @@ class CrudController extends Controller
         // It's done inside a middleware closure in order to have
         // the complete request inside the CrudPanel object.
         $this->middleware(function ($request, $next) {
-            $this->crud = app()->make('crud');
+            $this->crud = app('crud');
 
             $this->crud->setRequest($request);
 
@@ -96,6 +95,10 @@ class CrudController extends Controller
     protected function setupConfigurationForCurrentOperation()
     {
         $operationName = $this->crud->getCurrentOperation();
+        if (! $operationName) {
+            return;
+        }
+
         $setupClassName = 'setup'.Str::studly($operationName).'Operation';
 
         /*

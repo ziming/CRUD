@@ -32,16 +32,18 @@ trait FakeFields
 
         foreach ($fields as $field) {
             // compact fake fields
-            // cast the field name to array first, to account for array field names
-            // in fields that send multiple inputs and want them all saved to the database
-            foreach ((array) $field['name'] as $fieldName) {
+            // explode the comma delimited names, eg: start,end in a date_range:
+            $field['name'] = explode(',', $field['name']);
+            foreach ($field['name'] as $fieldName) {
                 $fakeFieldKey = isset($field['store_in']) ? $field['store_in'] : 'extras';
                 $isFakeField = $field['fake'] ?? false;
 
                 // field is represented by the subfields
                 if (isset($field['subfields']) && isset($field['model']) && $field['model'] === get_class($model)) {
                     foreach ($field['subfields'] as $subfield) {
-                        foreach ((array) $subfield['name'] as $subfieldName) {
+                        // explode the comma delimited names, eg: start,end in a date_range:
+                        $subfield['name'] = explode(',', $subfield['name']);
+                        foreach ($subfield['name'] as $subfieldName) {
                             $subfieldName = Str::afterLast($subfieldName, '.');
                             $isSubfieldFake = $subfield['fake'] ?? false;
                             $subFakeFieldKey = isset($subfield['store_in']) ? $subfield['store_in'] : 'extras';

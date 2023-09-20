@@ -2,14 +2,14 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Article;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Delete
  */
-class CrudPanelDeleteTest extends BaseDBCrudPanelTest
+class CrudPanelDeleteTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     public function testDelete()
     {
@@ -34,5 +34,11 @@ class CrudPanelDeleteTest extends BaseDBCrudPanelTest
         $unknownId = DB::getPdo()->lastInsertId() + 1;
 
         $this->crudPanel->delete($unknownId);
+    }
+
+    public function testItAddsTheBulkDeleteButton()
+    {
+        $this->crudPanel->addBulkDeleteButton();
+        $this->assertCount(1, $this->crudPanel->buttons());
     }
 }

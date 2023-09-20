@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Notifications;
 
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class ResetPasswordNotification extends ResetPassword
 {

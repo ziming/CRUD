@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -46,12 +47,14 @@ trait ColumnsProtectedMethods
     protected function makeSureColumnHasName($column)
     {
         if (is_string($column)) {
-            $column = ['name' => $column];
+            return ['name' => Str::replace(' ', '', $column)];
         }
 
         if (is_array($column) && ! isset($column['name'])) {
             $column['name'] = 'anonymous_column_'.Str::random(5);
         }
+
+        $column['name'] = Str::replace(' ', '', $column['name']);
 
         return $column;
     }
@@ -192,30 +195,14 @@ trait ColumnsProtectedMethods
 
             // if the first part of the string exists as method in the model
             if (method_exists($this->model, $possibleMethodName)) {
-
                 // check model method for possibility of being a relationship
                 $column['entity'] = $this->modelMethodIsRelationship($this->model, $possibleMethodName) ? $column['name'] : false;
 
                 if ($column['entity']) {
-                    $parts = explode('.', $column['entity']);
-
-                    $attribute_in_relation = false;
-
-                    $model = $this->model;
-
-                    // here we are going to iterate through all relation parts to check
-                    // if the attribute is present in the relation string.
-                    foreach ($parts as $i => $part) {
-                        try {
-                            $model = $model->$part()->getRelated();
-                        } catch (\Exception $e) {
-                            $attribute_in_relation = true;
-                        }
-                    }
                     // if the user setup the attribute in relation string, we are not going to infer that attribute from model
                     // instead we get the defined attribute by the user.
-                    if ($attribute_in_relation) {
-                        $column['attribute'] = $column['attribute'] ?? end($parts);
+                    if ($this->isAttributeInRelationString($column)) {
+                        $column['attribute'] = $column['attribute'] ?? Str::afterLast($column['entity'], '.');
                     }
                 }
 
@@ -225,8 +212,7 @@ trait ColumnsProtectedMethods
 
         // if there's a method on the model with this name
         if (method_exists($this->model, $column['name'])) {
-
-             // check model method for possibility of being a relationship
+            // check model method for possibility of being a relationship
             $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 
             return $column;
@@ -246,6 +232,17 @@ trait ColumnsProtectedMethods
         }
 
         return $column;
+    }
+
+    /**
+     * Infer the attribute for the column when needed.
+     *
+     * @param  array  $column
+     * @return void
+     */
+    protected function makeSureColumnHasAttribute(array $column)
+    {
+        return $this->makeSureFieldHasAttribute($column);
     }
 
     /**
@@ -330,5 +327,18 @@ trait ColumnsProtectedMethods
         }
 
         return in_array($name, $columns);
+    }
+
+    /**
+     * Prepare the column attributes and add it to operation settings.
+     */
+    private function prepareAttributesAndAddColumn(array|string $column): CrudColumn
+    {
+        $column = $this->makeSureColumnHasNeededAttributes($column);
+        $this->addColumnToOperationSettings($column);
+
+        $column = (new CrudColumn($column['name']))->callRegisteredAttributeMacros();
+
+        return $column;
     }
 }

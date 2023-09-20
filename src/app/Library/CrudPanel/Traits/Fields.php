@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait Fields
 {
@@ -53,6 +54,7 @@ trait Fields
 
         $field = $this->makeSureFieldHasType($field);
         $field = $this->makeSureSubfieldsHaveNecessaryAttributes($field);
+        $field = $this->makeSureMorphSubfieldsAreDefined($field);
 
         $this->setupFieldValidation($field, $field['parentFieldName'] ?? false);
 
@@ -108,6 +110,7 @@ trait Fields
 
         $this->enableTabsIfFieldUsesThem($field);
         $this->addFieldToOperationSettings($field);
+        (new CrudField($field['name']))->callRegisteredAttributeMacros();
 
         return $this;
     }
@@ -161,7 +164,7 @@ trait Fields
             return false;
         }
 
-        $firstField = array_keys(array_slice($this->getCleanFields(), 0, 1))[0];
+        $firstField = array_keys(array_slice($this->getCleanStateFields(), 0, 1))[0];
         $this->beforeField($firstField);
     }
 
@@ -231,10 +234,9 @@ trait Fields
     {
         $fieldsArray = $this->getCleanStateFields();
         $field = $this->firstFieldWhere('name', $fieldName);
-        $fieldKey = $this->getFieldKey($field);
 
         foreach ($modifications as $attributeName => $attributeValue) {
-            $fieldsArray[$fieldKey][$attributeName] = $attributeValue;
+            $fieldsArray[$field['name']][$attributeName] = $attributeValue;
         }
 
         $this->enableTabsIfFieldUsesThem($modifications);
@@ -288,10 +290,8 @@ trait Fields
         $casted_attributes = $model->getCastedAttributes();
 
         foreach ($fields as $field) {
-
             // Test the field is castable
             if (isset($field['name']) && is_string($field['name']) && array_key_exists($field['name'], $casted_attributes)) {
-
                 // Handle JSON field types
                 $jsonCastables = ['array', 'object', 'json'];
                 $fieldCasting = $casted_attributes[$field['name']];
@@ -344,14 +344,21 @@ trait Fields
      * Check if the create/update form has upload fields.
      * Upload fields are the ones that have "upload" => true defined on them.
      *
-     * @param  string  $form  create/update/both - defaults to 'both'
-     * @param  bool|int  $id  id of the entity - defaults to false
      * @return bool
      */
     public function hasUploadFields()
     {
         $fields = $this->getCleanStateFields();
         $upload_fields = Arr::where($fields, function ($value, $key) {
+            // check if any subfields have uploads
+            if (isset($value['subfields'])) {
+                foreach ($value['subfields'] as $subfield) {
+                    if (isset($subfield['upload']) && $subfield['upload'] === true) {
+                        return true;
+                    }
+                }
+            }
+
             return isset($value['upload']) && $value['upload'] == true;
         });
 
@@ -465,7 +472,21 @@ trait Fields
      */
     public function getAllFieldNames()
     {
-        return Arr::flatten(Arr::pluck($this->getCleanStateFields(), 'name'));
+        $fieldNamesArray = array_column($this->getCleanStateFields(), 'name');
+
+        return array_reduce($fieldNamesArray, function ($names, $item) {
+            if (strpos($item, ',') === false) {
+                $names[] = $item;
+
+                return $names;
+            }
+
+            foreach (explode(',', $item) as $fieldName) {
+                $names[] = $fieldName;
+            }
+
+            return $names;
+        });
     }
 
     /**
@@ -526,21 +547,31 @@ trait Fields
     }
 
     /**
+     * The field hold multiple inputs (one field represent multiple model attributes / relations)
+     * eg: date range or checklist dependency.
+     */
+    public function holdsMultipleInputs(string $fieldName): bool
+    {
+        return Str::contains($fieldName, ',');
+    }
+
+    /**
      * Create and return a CrudField object for that field name.
      *
      * Enables developers to use a fluent syntax to declare their fields,
      * in addition to the existing options:
      * - CRUD::addField(['name' => 'price', 'type' => 'number']);
      * - CRUD::field('price')->type('number');
+     * - CRUD::field(['name' => 'price', 'type' => 'number']);
      *
      * And if the developer uses the CrudField object as Field in their CrudController:
      * - Field::name('price')->type('number');
      *
-     * @param  string  $name  The name of the column in the db, or model attribute.
+     * @param  string|array  $nameOrDefinition  The name of the column in the db, or model attribute.
      * @return CrudField
      */
-    public function field($name)
+    public function field($nameOrDefinition)
     {
-        return new CrudField($name);
+        return new CrudField($nameOrDefinition);
     }
 }

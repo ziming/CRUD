@@ -9,10 +9,8 @@
     class CrudField {
         constructor(name) {
             this.name = name;
-
-            // get the input/textarea/select that has that field name
-            this.$input = $(`input[name="${this.name}"], textarea[name="${this.name}"], select[name="${this.name}"], select[name="${this.name}[]"]`).first();
-
+            // get the current input
+            this.$input = this.activeInput;
             // get the field wraper
             this.wrapper = this.inputWrapper;
 
@@ -34,6 +32,13 @@
 
             return this;
 
+        }
+
+        get activeInput() {
+            // get the input/textarea/select that has that field name
+            this.$input = $(`input[name="${this.name}"], textarea[name="${this.name}"], select[name="${this.name}"], select[name="${this.name}[]"]`);
+            let possibleInput = this.$input.length === 1 ? this.$input : this.$input.filter(function() { return $(this).closest('[id=inline-create-dialog]').length });
+            return possibleInput.length === 1 ? possibleInput : this.$input.first();
         }
 
         get mainInput() {
@@ -80,6 +85,7 @@
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name] ??= [];
                 window.crud.subfieldsCallbacks[this.parent.name].push({ closure, field: this });
+                this.wrapper.trigger('CrudField:subfieldCallbacksUpdated');
                 return this;
             }
 
@@ -95,7 +101,8 @@
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
             } else {
-                this.$input.trigger(`change`);
+                let event = new Event('change');
+                this.input?.dispatchEvent(event);
             }
 
             return this;
@@ -103,7 +110,8 @@
 
         show(value = true) {
             this.wrapper.toggleClass('d-none', !value);
-            this.$input.trigger(`CrudField:${value ? 'show' : 'hide'}`);
+            let event = new Event(`CrudField:${value ? 'show' : 'hide'}`);
+            this.input?.dispatchEvent(event);
             return this;
         }
 
@@ -113,7 +121,8 @@
 
         enable(value = true) {
             this.$input.attr('disabled', !value && 'disabled');
-            this.$input.trigger(`CrudField:${value ? 'enable' : 'disable'}`);
+            let event = new Event(`CrudField:${value ? 'enable' : 'disable'}`);
+            this.input?.dispatchEvent(event);
             return this;
         }
 
@@ -123,7 +132,8 @@
 
         require(value = true) {
             this.wrapper.toggleClass('required', value);
-            this.$input.trigger(`CrudField:${value ? 'require' : 'unrequire'}`);
+            let event = new Event(`CrudField:${value ? 'require' : 'unrequire'}`);
+            this.input?.dispatchEvent(event);
             return this;
         }
 

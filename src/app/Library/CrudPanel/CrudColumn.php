@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
+use Illuminate\Support\Traits\Conditionable;
+
 /**
  * Adds fluent syntax to Backpack CRUD Columns.
  *
@@ -26,13 +29,24 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self visibleInShow(bool $value)
  * @method self priority(int $value)
  * @method self key(string $value)
+ * @method self upload(bool $value)
  */
 class CrudColumn
 {
+    use Conditionable;
+    use MacroableWithAttributes;
+
     protected $attributes;
 
-    public function __construct($name)
+    public function __construct($nameOrDefinitionArray)
     {
+        if (is_array($nameOrDefinitionArray)) {
+            $column = $this->crud()->addAndReturnColumn($nameOrDefinitionArray);
+            $name = $column->getAttributes()['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
+        }
+
         $column = $this->crud()->firstColumnWhere('name', $name);
 
         // if column exists
@@ -78,10 +92,18 @@ class CrudColumn
         if (! isset($this->attributes['name'])) {
             abort(500, 'Column name must be defined before changing the key.');
         }
-        if ($this->crud()->hasColumnWhere('key', $this->attributes['key'])) {
-            $this->crud()->setColumnDetails($this->attributes['key'], array_merge($this->attributes, ['key' => $key]));
+
+        $columns = $this->crud()->columns();
+
+        $searchKey = $this->attributes['key'];
+        $column = $this->attributes;
+
+        if (isset($columns[$searchKey])) {
+            unset($columns[$searchKey]);
+            $column['key'] = $key;
         }
-        $this->attributes['key'] = $key;
+        $this->attributes = $column;
+        $this->crud()->setOperationSetting('columns', array_merge($columns, [$key => $column]));
 
         return $this;
     }
@@ -137,6 +159,13 @@ class CrudColumn
         return $this;
     }
 
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
+
+        return $this->save();
+    }
+
     /**
      * Make the current column the first one in the columns list.
      *
@@ -171,6 +200,8 @@ class CrudColumn
      * Dump the current object to the screen,
      * so that the developer can see its contents.
      *
+     * @codeCoverageIgnore
+     *
      * @return CrudColumn
      */
     public function dump()
@@ -185,6 +216,8 @@ class CrudColumn
      * so that the developer can see its contents, then stops
      * the execution.
      *
+     * @codeCoverageIgnore
+     *
      * @return CrudColumn
      */
     public function dd()
@@ -192,6 +225,11 @@ class CrudColumn
         dd($this);
 
         return $this;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 
     // ---------------
@@ -255,6 +293,10 @@ class CrudColumn
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         $this->setAttributeValue($method, $parameters[0]);
 
         return $this->save();

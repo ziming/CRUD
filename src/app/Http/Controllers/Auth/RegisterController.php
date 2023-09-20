@@ -6,7 +6,8 @@ use Backpack\CRUD\app\Library\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Validator;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -64,7 +65,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return User
+     * @return \Illuminate\Contracts\Auth\Authenticatable
      */
     protected function create(array $data)
     {
@@ -81,7 +82,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function showRegistrationForm()
     {
@@ -99,7 +100,7 @@ class RegisterController extends Controller
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\View\View
      */
     public function register(Request $request)
     {
@@ -113,6 +114,12 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
 
         event(new Registered($user));
+        if (config('backpack.base.setup_email_verification_routes')) {
+            Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+
+            return redirect(route('verification.notice'));
+        }
+
         $this->guard()->login($user);
 
         return redirect($this->redirectPath());

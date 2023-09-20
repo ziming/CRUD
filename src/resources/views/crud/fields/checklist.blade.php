@@ -1,4 +1,4 @@
-<!-- checklist -->
+{{-- checklist --}}
 @php
   $key_attribute = (new $field['model'])->getKeyName();
   $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();
@@ -55,7 +55,7 @@
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
-        @loadOnce('bpFieldInitChecklist')
+        @bassetBlock('backpack/crud/fields/checklist-field.js')
         <script>
             function bpFieldInitChecklist(element) {
                 var hidden_input = element.find('input[type=hidden]');
@@ -100,7 +100,7 @@
 
             }
         </script>
-        @endLoadOnce
+        @endBassetBlock
     @endpush
 {{-- End of Extra CSS and JS --}}
 {{-- ########################################## --}}

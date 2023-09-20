@@ -1,4 +1,4 @@
-<!-- radio -->
+{{-- radio --}}
 @php
     $optionValue = old_empty_or_null($field['name'], '') ??  $field['value'] ?? $field['default'] ?? '';
 
@@ -35,7 +35,7 @@
                         value="{{$value}}"
                         @include('crud::fields.inc.attributes')
                         >
-                <label class="{{ isset($field['inline']) && $field['inline'] ? 'radio-inline' : '' }} form-check-label font-weight-normal">{!! $label !!}</label>
+                <label class="{{ isset($field['inline']) && $field['inline'] ? 'radio-inline' : '' }} form-check-label font-weight-normal p-0">{!! $label !!}</label>
             </div>
 
         @endforeach
@@ -49,9 +49,13 @@
 
 @include('crud::fields.inc.wrapper_end')
 
-    {{-- FIELD JS - will be loaded in the after_scripts section --}}
-    @push('crud_fields_scripts')
-    @loadOnce('bpFieldInitRadioElement')
+{{-- ########################################## --}}
+{{-- Extra CSS and JS for this particular field --}}
+{{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
+
+{{-- FIELD JS - will be loaded in the after_scripts section --}}
+@push('crud_fields_scripts')
+    @bassetBlock('backpack/crud/fields/radio-field.js')
     <script>
         function bpFieldInitRadioElement(element) {
             var hiddenInput = element.find('input[type=hidden]');
@@ -88,5 +92,7 @@
             element.find('input[type=radio][value="'+value+'"]').prop('checked', true);
         }
     </script>
-    @endLoadOnce
-    @endpush
+    @endBassetBlock
+@endpush
+{{-- End of Extra CSS and JS --}}
+{{-- ########################################## --}}

@@ -4,7 +4,7 @@
     $field['wrapper']['data-field-name'] = $field['wrapper']['data-field-name'] ?? $field['name'];
 @endphp
 
-<!-- text input -->
+{{-- text input --}}
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
@@ -23,7 +23,7 @@
         @endif
             {{ $field['value'] }}
         </a>
-    	<a href="#" class="file_clear_button btn btn-light btn-sm float-right" title="Clear file"><i class="la la-remove"></i></a>
+    	<a href="#" class="file_clear_button btn btn-light btn-sm float-right" title="Clear file" data-filename="{{ $field['value'] }}"><i class="la la-remove"></i></a>
     	<div class="clearfix"></div>
     </div>
     @endif
@@ -33,7 +33,8 @@
         <input
             type="file"
             name="{{ $field['name'] }}"
-            @include('crud::fields.inc.attributes', ['default_class' => isset($field['value']) && $field['value']!=null?'file_input backstrap-file-input':'file_input backstrap-file-input'])
+            data-filename="{{ $field['value'] ?? '' }}"
+            @include('crud::fields.inc.attributes', ['default_class' => 'file_input backstrap-file-input'])
         >
         <label class="backstrap-file-label" for="customFile"></label>
     </div>
@@ -51,7 +52,7 @@
 {{-- If a field type is shown multiple times on a form, the CSS and JS will only be loaded once --}}
 
 @push('crud_fields_styles')
-  @loadOnce('upload_field_styles')
+  @bassetBlock('backpack/crud/fields/upload-field.css')
     <style type="text/css">
         .existing-file {
             border: 1px solid rgba(0,40,100,.12);
@@ -132,11 +133,11 @@
           border-radius: 0 0.25rem 0.25rem 0;
         }
     </style>
-  @endLoadOnce
+  @endBassetBlock
 @endpush
 
 @push('crud_fields_scripts')
-  @loadOnce('bpFieldInitUploadElement')
+  @bassetBlock('backpack/crud/fields/upload-field.js')
     <script>
         function bpFieldInitUploadElement(element) {
             var fileInput = element.find(".file_input");
@@ -145,10 +146,35 @@
             var inputWrapper = element.find(".backstrap-file");
             var inputLabel = element.find(".backstrap-file-label");
 
+            if(fileInput.attr('data-row-number')) {
+              $('<input type="hidden" class="order_uploads" name="_order_'+fieldName+'" value="'+fileInput.data('filename')+'">').insertAfter(fileInput);
+
+              var observer = new MutationObserver(function(mutations) {
+                
+                mutations.forEach(function(mutation) {
+                  if(mutation.attributeName == 'data-row-number') {                    
+                    let field = $(mutation.target);
+                    field = field.next('input[name="'+mutation.target.getAttribute('name')+'"]');
+                    field.attr('name', '_order_'+mutation.target.getAttribute('name'));
+                    field.val(mutation.target.getAttribute('data-filename'));                  
+                  }
+                });
+              });
+
+              observer.observe(fileInput[0], {
+                attributes: true,
+              });
+            }
+
             fileClearButton.click(function(e) {
                 e.preventDefault();
                 $(this).parent().addClass('d-none');
-
+                // if the file input has a data-row-number attribute, it means it's inside a repeatable field
+                // in that case, will send the value of the cleared input to the server
+                if(fileInput.attr('data-row-number')) {
+                  $("<input type='hidden' name='_clear_"+fieldName+"' value='"+fileInput.data('filename')+"'>").insertAfter(fileInput);
+                  fileInput.siblings('.order_uploads').remove();
+                }
                 fileInput.parent().removeClass('d-none');
                 fileInput.attr("value", "").replaceWith(fileInput.clone(true));
 
@@ -163,15 +189,15 @@
                 var path = $(this).val();
                 var path = path.replace("C:\\fakepath\\", "");
                 inputLabel.html(path);
-                // remove the hidden input, so that the setXAttribute method is no longer triggered
+                // remove the hidden input
                 $(this).next("input[type=hidden]").remove();
             });
 
             element.on('CrudField:disable', function(e) {
               element.children('.backstrap-file').find('input').prop('disabled', 'disabled');
-              
+
               let $deleteButton = element.children('.existing-file').children('a.file_clear_button');
-              
+
               if($deleteButton.length > 0) {
                 $deleteButton.on('click.prevent', function(e) {
                     e.stopImmediatePropagation();
@@ -189,5 +215,5 @@
 
         }
     </script>
-  @endLoadOnce
+  @endBassetBlock
 @endpush

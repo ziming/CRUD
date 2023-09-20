@@ -466,5 +466,15 @@ return [
             'crud::filters', // falls back to 'resources/views/vendor/backpack/crud/filters'
         ],
     ],
+    // the uploaders for the `withFiles` macro
+    'uploaders' => [
+        'withFiles' => [
+            'image'           => \Backpack\CRUD\app\Library\Uploaders\SingleBase64Image::class,
+            'upload'          => \Backpack\CRUD\app\Library\Uploaders\SingleFile::class,
+            'upload_multiple' => \Backpack\CRUD\app\Library\Uploaders\MultipleFiles::class,
+        ],
+    ],
+
+    'file_name_generator' => \Backpack\CRUD\app\Library\Uploaders\Support\FileNameGenerator::class,
 
 ];

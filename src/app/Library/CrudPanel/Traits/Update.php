@@ -76,18 +76,15 @@ trait Update
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
 
-        if (is_string($field['name'])) {
-            return $model->{$field['name']};
-        }
-
-        if (is_array($field['name'])) {
-            $result = [];
-            foreach ($field['name'] as $name) {
-                $result[] = $model->{$name};
-            }
+        if ($this->holdsMultipleInputs($field['name'])) {
+            $result = array_map(function ($item) use ($model) {
+                return $model->{$item};
+            }, explode(',', $field['name']));
 
             return $result;
         }
+
+        return $model->{$field['name']};
     }
 
     /**
@@ -123,6 +120,7 @@ trait Update
                     // we just return the plain models as we only need the ids
                     if (! isset($field['subfields'])) {
                         $result->push($model);
+
                         continue;
                     }
                     // when subfields are set we need to parse their values so they can be displayed
@@ -283,7 +281,7 @@ trait Update
                         $iterator = $iterator->$part;
                     }
 
-                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+                    Arr::set($result, $name, is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator);
                 }
             }
         }

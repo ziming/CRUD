@@ -12,23 +12,21 @@
 @endphp
 
 @section('header')
-  <div class="container-fluid">
-    <h2>
-      <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
-      <small id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</small>
-    </h2>
-  </div>
+    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-baseline d-print-none" bp-section="page-header">
+        <h1 class="text-capitalize mb-0" bp-section="page-heading">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h1>
+        <p class="ms-2 ml-2 mb-0" id="datatable_info_stack" bp-section="page-subheading">{!! $crud->getSubheading() ?? '' !!}</p>
+    </section>
 @endsection
 
 @section('content')
-  <!-- Default box -->
-  <div class="row">
+  {{-- Default box --}}
+  <div class="row" bp-section="crud-operation-list">
 
-    <!-- THE ACTUAL CONTENT -->
+    {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 
-        <div class="row mb-0">
-          <div class="col-sm-6">
+        <div class="row mb-2 align-items-center">
+          <div class="col-sm-9">
             @if ( $crud->buttons()->where('stack', 'top')->count() ||  $crud->exportButtons())
               <div class="d-print-none {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -37,8 +35,15 @@
               </div>
             @endif
           </div>
-          <div class="col-sm-6">
-            <div id="datatable_search_stack" class="mt-sm-0 mt-2 d-print-none"></div>
+          <div class="col-sm-3">
+            <div id="datatable_search_stack" class="mt-sm-0 mt-2 d-print-none">
+              <div class="input-icon">
+                <span class="input-icon-addon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                </span>
+                <input type="search" class="form-control" placeholder="{{ trans('backpack::crud.search') }}..."/>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -47,13 +52,15 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table
-          id="crudTable"
-          class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2"
-          data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
-          data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
-          data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
-          cellspacing="0">
+        <div class="{{ backpack_theme_config('classes.tableWrapper') }}">
+            <table
+              id="crudTable"
+              class="{{ backpack_theme_config('classes.table') ?? 'table table-striped table-hover nowrap rounded card-table table-vcenter card d-table shadow-xs border-xs' }}"
+              data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
+              data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
+              data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
+              data-has-line-buttons-as-dropdown="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdown') }}"
+              cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
@@ -110,6 +117,7 @@
                   <th data-orderable="false"
                       data-priority="{{ $crud->getActionsColumnPriority() }}"
                       data-visible-in-export="false"
+                      data-action-column="true"
                       >{{ trans('backpack::crud.actions') }}</th>
                 @endif
               </tr>
@@ -135,14 +143,14 @@
               </tr>
             </tfoot>
           </table>
+        </div>
 
-          @if ( $crud->buttons()->where('stack', 'bottom')->count() )
-          <div id="bottom_buttons" class="d-print-none text-center text-sm-left">
-            @include('crud::inc.button_stack', ['stack' => 'bottom'])
-
-            <div id="datatable_button_stack" class="float-right text-right hidden-xs"></div>
-          </div>
-          @endif
+        @if ( $crud->buttons()->where('stack', 'bottom')->count() )
+            <div id="bottom_buttons" class="d-print-none text-sm-left">
+                @include('crud::inc.button_stack', ['stack' => 'bottom'])
+                <div id="datatable_button_stack" class="float-right float-end text-right hidden-xs"></div>
+            </div>
+        @endif
 
     </div>
 
@@ -151,18 +159,18 @@
 @endsection
 
 @section('after_styles')
-  <!-- DATA TABLES -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-fixedheader-bs4/css/fixedHeader.bootstrap4.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('packages/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
+  {{-- DATA TABLES --}}
+  @basset('https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
 
-  <!-- CRUD LIST CONTENT - crud_list_styles stack -->
+  {{-- CRUD LIST CONTENT - crud_list_styles stack --}}
   @stack('crud_list_styles')
 @endsection
 
 @section('after_scripts')
   @include('crud::inc.datatables_logic')
 
-  <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
+  {{-- CRUD LIST CONTENT - crud_list_scripts stack --}}
   @stack('crud_list_scripts')
 @endsection

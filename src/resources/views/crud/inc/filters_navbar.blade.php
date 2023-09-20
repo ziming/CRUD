@@ -1,24 +1,32 @@
-<nav class="navbar navbar-expand-lg navbar-filters mb-0 pb-0 pt-0">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <a class="nav-item d-none d-lg-block"><span class="la la-filter"></span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bp-filters-navbar" aria-controls="bp-filters-navbar" aria-expanded="false" aria-label="{{ trans('backpack::crud.toggle_filters') }}">
+<nav class="navbar navbar-expand-lg navbar-filters mb-0 py-0 shadow-none">
+      {{-- Brand and toggle get grouped for better mobile display --}}
+      <a class="nav-item d-none d-lg-block my-auto"><span class="la la-filter"></span></a>
+      <button class="navbar-toggler ms-3"
+              type="button"
+              data-toggle="collapse"  {{-- for Bootstrap v4 --}}
+              data-target="#bp-filters-navbar" {{-- for Bootstrap v4 --}}
+              data-bs-toggle="collapse"   {{-- for Bootstrap v5 --}}
+              data-bs-target="#bp-filters-navbar"   {{-- for Bootstrap v5 --}}
+              aria-controls="bp-filters-navbar"
+              aria-expanded="false"
+              aria-label="{{ trans('backpack::crud.toggle_filters') }}">
         <span class="la la-filter"></span> {{ trans('backpack::crud.filters') }}
       </button>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
+      {{-- Collect the nav links, forms, and other content for toggling --}}
       <div class="collapse navbar-collapse" id="bp-filters-navbar">
         <ul class="nav navbar-nav">
-          <!-- THE ACTUAL FILTERS -->
+          {{-- THE ACTUAL FILTERS --}}
     			@foreach ($crud->filters() as $filter)
     				@includeFirst($filter->getNamespacedViewWithFallbacks())
     			@endforeach
           <li class="nav-item"><a href="#" id="remove_filters_button" class="nav-link {{ count(Request::input()) != 0 ? '' : 'invisible' }}"><i class="la la-eraser"></i> {{ trans('backpack::crud.remove_filters') }}</a></li>
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div>{{-- /.navbar-collapse --}}
   </nav>
 
 @push('crud_list_scripts')
-	<script src="{{ asset('packages/URI.js/URI.min.js') }}" type="text/javascript"></script>
+    @basset('https://unpkg.com/urijs@1.19.11/src/URI.min.js')
     <script>
       function addOrUpdateUriParameter(uri, parameter, value) {
             var new_url = normalizeAmpersand(uri);

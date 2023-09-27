@@ -22,9 +22,8 @@
     {{-- To make sure a value gets submitted even if the "select multiple" is empty, we need a hidden input --}}
     <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
-    	class="form-control"
         name="{{ $field['name'] }}[]"
-        @include('crud::fields.inc.attributes')
+        @include('crud::fields.inc.attributes', ['default_class' => 'form-select'])
         bp-field-main-input
     	multiple>
 

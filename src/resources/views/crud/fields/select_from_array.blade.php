@@ -10,7 +10,7 @@
     @if($field['multiple'])<input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />@endif
     <select
         name="{{ $field['name'] }}@if ($field['multiple'])[]@endif"
-        @include('crud::fields.inc.attributes')
+        @include('crud::fields.inc.attributes', ['default_class' => 'form-select'])
         @if ($field['multiple'])multiple bp-field-main-input @endif
         >
 

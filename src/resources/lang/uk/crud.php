@@ -149,24 +149,28 @@ return [
     'weekLabel' => 'W',
 
     // Fields
-    'browse_uploads'            => 'Завантажити файли',
-    'select_all'                => 'Вибрати все',
-    'select_files'              => 'Вибрати файли',
-    'select_file'               => 'Вибрати файл',
-    'clear'                     => 'Очистити',
-    'page_link'                 => 'Посилання на сторінку',
-    'page_link_placeholder'     => 'http://example.com/your-desired-page',
-    'internal_link'             => 'Внутрішнє посилання',
-    'internal_link_placeholder' => 'Внутрішній шлях. Наприклад: \'admin/page\' (без лапок) для \':url\'',
-    'external_link'             => 'Зовнішнє посилання',
-    'choose_file'               => 'Вибрати файл',
-    'new_item'                  => 'Новий елемент',
-    'select_entry'              => 'Вибрати запис',
-    'select_entries'            => 'Вибрати записи',
+    'browse_uploads'                    => 'Завантажити файли',
+    'select_all'                        => 'Вибрати все',
+    'select_files'                      => 'Вибрати файли',
+    'select_file'                       => 'Вибрати файл',
+    'clear'                             => 'Очистити',
+    'page_link'                         => 'Посилання на сторінку',
+    'page_link_placeholder'             => 'http://example.com/your-desired-page',
+    'internal_link'                     => 'Внутрішнє посилання',
+    'internal_link_placeholder'         => 'Внутрішній шлях. Наприклад: \'admin/page\' (без лапок) для \':url\'',
+    'external_link'                     => 'Зовнішнє посилання',
+    'choose_file'                       => 'Вибрати файл',
+    'new_item'                          => 'Новий елемент',
+    'select_entry'                      => 'Вибрати запис',
+    'select_entries'                    => 'Вибрати записи',
+    'upload_multiple_files_selected'    => 'Вибрані файли. Після збереження вони з\'являться вище.',
 
     //Table field
     'table_cant_add'    => 'Не вдається додати нове :entity',
     'table_max_reached' => 'Максимальна кількість з :max досягнута',
+
+    // google_map
+    'google_map_locate' => 'Отримати моє місцезнаходження',
 
     // File manager
     'file_manager' => 'Файловий менеджер',
@@ -174,7 +178,11 @@ return [
     // InlineCreateOperation
     'related_entry_created_success' => 'Пов\'язаний запис створено та вибрано.',
     'related_entry_created_error' => 'Не вдалося створити пов\'язаний запис.',
+    'inline_saving' => 'Збереження...',
 
     // returned when no translations found in select inputs
     'empty_translations' => '(порожньо)',
+
+    // The pivot selector required validation message
+    'pivot_selector_required_validation_message' => 'Поле зведеної таблиці є обов\'язковим.',
 ];

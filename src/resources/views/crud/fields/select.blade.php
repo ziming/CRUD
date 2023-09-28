@@ -25,7 +25,7 @@
         @if(isset($field['prefix'])) <span class="input-group-text">{!! $field['prefix'] !!}</span> @endif
         <select
             name="{{ $field['name'] }}"
-            @include('crud::fields.inc.attributes', ['default_class' => 'form-select'])
+            @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])
             >
 
             @if ($field['allows_null'])

@@ -23,7 +23,7 @@
     <input type="hidden" name="{{ $field['name'] }}" value="" @if(in_array('disabled', $field['attributes'] ?? [])) disabled @endif />
     <select
         name="{{ $field['name'] }}[]"
-        @include('crud::fields.inc.attributes', ['default_class' => 'form-select'])
+        @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])
         bp-field-main-input
     	multiple>
 

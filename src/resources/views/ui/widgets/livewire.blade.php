@@ -15,9 +15,7 @@
     @pushOnce('after_styles')
         @livewireStyles
     @endPushOnce
-@endif
-
-@if($widget['livewireAssets'] ?? false)
+    
     @pushOnce('after_scripts')
         @livewireScripts
     @endpushOnce

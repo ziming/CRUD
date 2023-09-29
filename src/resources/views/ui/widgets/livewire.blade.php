@@ -3,13 +3,13 @@
     $widget['wrapper']['class'] = $widget['wrapper']['class'] ?? $widget['wrapperClass'] ?? 'col-sm-6 col-lg-3';
 @endphp
 
-@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
+@includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_start'))
 
 <div class="{{ $widget['class'] ?? 'card' }}" @foreach($widget['attributes'] ?? [] as $key => $value) {{ $key }}="{{ $value }}" @endforeach>
     @livewire($widget['component'], $widget['params'] ?? [])
 </div>
 
-@includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')
+@includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_end'))
 
 @pushOnce('after_styles')
     @livewireStyles

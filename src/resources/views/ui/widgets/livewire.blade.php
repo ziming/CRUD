@@ -11,17 +11,15 @@
 
 @includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_end'))
 
-@push('after_styles')
-@bassetBlock('livewire-styles.css')
-    @livewireStyles
-@endBassetBlock
-@endpush
+@if($widget['livewireAssets'] ?? true)
+    @pushOnce('after_styles')
+        @livewireStyles
+    @endPushOnce
+@endif
 
-
-@push('after_scripts')
-@bassetBlock('livewire-scripts.js')
-    @livewireScripts
-@endBassetBlock
-@endpush
-
+@if($widget['livewireAssets'] ?? true)
+    @pushOnce('after_scripts')
+        @livewireScripts
+    @endpushOnce
+@endif
 

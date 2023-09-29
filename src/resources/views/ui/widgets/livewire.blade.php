@@ -11,13 +11,13 @@
 
 @includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_end'))
 
-@if($widget['livewireAssets'] ?? true)
+@if($widget['livewireAssets'] ?? false)
     @pushOnce('after_styles')
         @livewireStyles
     @endPushOnce
 @endif
 
-@if($widget['livewireAssets'] ?? true)
+@if($widget['livewireAssets'] ?? false)
     @pushOnce('after_scripts')
         @livewireScripts
     @endpushOnce

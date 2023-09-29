@@ -285,4 +285,25 @@ class CrudPanelButtonsTest extends BaseCrudPanel
     {
         CrudButton::name(array_values($this->{$buttonName}));
     }
+
+    public function testMovingTheButtonUsingPosition()
+    {
+        $button1 = CrudButton::name('lineTest')->to('line')->view('crud::buttons.test')->type('view');
+        $button2 = CrudButton::name('lineTest2')->to('line')->view('crud::buttons.test')->type('view')->position('beginning');
+        $this->assertEquals($button2->toArray(), $this->crudPanel->buttons()->first()->toArray());
+        $button2->position('end');
+        $this->assertEquals($button1->toArray(), $this->crudPanel->buttons()->first()->toArray());
+    }
+
+    public function testThrowsErrorInUnknownPosition()
+    {
+        try {
+            $button1 = CrudButton::name('lineTest')->to('line')->view('crud::buttons.test')->type('view')->position('unknown');
+        } catch (\Throwable $e) {
+        }
+        $this->assertEquals(
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Unknown button position - please use \'beginning\' or \'end\'.'),
+            $e
+        );
+    }
 }

@@ -66,7 +66,7 @@ trait ShowOperation
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {

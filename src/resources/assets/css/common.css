@@ -61,15 +61,6 @@ form .select2.select2-container {
 }
 
 /*Table - List View*/
-#crudTable_wrapper tfoot tr {
-    font-size: .625rem;
-    font-weight: var(--tblr-font-weight-bold);
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    line-height: 1rem;
-    color: var(--tblr-muted);
-}
-
 #crudTable_wrapper div.row .col-sm-12 {
     position: relative;
 }
@@ -156,15 +147,13 @@ form .select2.select2-container {
 
 #crudTable_wrapper #crudTable .crud_bulk_actions_checkbox,
 #crudTable_wrapper table.dataTable .crud_bulk_actions_checkbox {
-    display: flex;
     margin: 0 0.6rem 0 0.45rem;
 }
 
-#crudTable_wrapper #crudTable tr th:first-child,
-#crudTable_wrapper #crudTable tr td:first-child,
-#crudTable_wrapper table.dataTable tr th:first-child,
-#crudTable_wrapper table.dataTable tr td:first-child {
-    display: flex;
+#crudTable tr th:first-child,
+#crudTable tr td:first-child,
+#crudTable table.dataTable tr th:first-child,
+#crudTable table.dataTable tr td:first-child {
     align-items: center;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -310,6 +299,7 @@ form .select2.select2-container {
 }
 
 .dt-buttons,
+.dtr-modal .details-control,
 .modal .details-control {
     display: none;
 }
@@ -490,4 +480,38 @@ form .select2.select2-container {
 
 .navbar-filters, .dropdown-menu {
     --tblr-dropdown-divider-margin-y: .4rem !important;
+}
+
+/* ERRORS */
+
+.error_number {
+    font-size: 156px;
+    font-weight: 600;
+    line-height: 100px;
+}
+.error_number small {
+    font-size: 56px;
+    font-weight: 700;
+}
+
+.error_number hr {
+    margin-top: 60px;
+    margin-bottom: 0;
+    width: 50px;
+}
+
+.error_title {
+    margin-top: 40px;
+    font-size: 36px;
+    font-weight: 400;
+}
+
+.error_description {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+/* Summernote */
+.note-editor.note-frame.fullscreen {
+    background-color: white;
 }

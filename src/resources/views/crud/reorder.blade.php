@@ -12,11 +12,11 @@
 @endphp
 
 @section('header')
-    <section class="header-operation container-fluid animated fadeIn d-flex align-items-end d-print-none">
-        <h3 class="text-capitalize mb-0" style="line-height: 30px;">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h3>
-        <p class="ms-2 ml-2 mb-0">{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}</p>
+    <section class="header-operation container-fluid animated fadeIn d-flex align-items-baseline d-print-none" bp-section="page-header">
+        <h1 class="text-capitalize mb-0" bp-section="page-heading">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h1>
+        <p class="ms-2 ml-2 mb-0" bp-section="page-subheading">{!! $crud->getSubheading() ?? trans('backpack::crud.reorder').' '.$crud->entity_name_plural !!}</p>
         @if ($crud->hasAccess('list'))
-            <p class="ms-2 ml-2 mb-0">
+            <p class="ms-2 ml-2 mb-0" bp-section="page-subheading-back-button">
                 <small><a href="{{ url($crud->route) }}" class="d-print-none font-sm"><i class="la la-angle-double-left"></i> {{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span></a></small>
             </p>
         @endif
@@ -62,7 +62,7 @@
 
     ?>
 
-    <div class="row mt-4">
+    <div class="row mt-4" bp-section="crud-operation-reorder">
         <div class="{{ $crud->getReorderContentClass() }}">
             <div class="card p-4">
                 <p>{{ trans('backpack::crud.reorder_text') }}</p>

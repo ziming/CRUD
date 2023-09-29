@@ -234,15 +234,15 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "<img src='{{ asset('storage/basset/vendor/backpack/crud/src/resources/assets/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
+              "processing":     "<img src='{{ Basset::getUrl('vendor/backpack/crud/src/resources/assets/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search": "_INPUT_",
               "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
                   "last":       "{{ trans('backpack::crud.paginate.last') }}",
-                  "next":       ">",
-                  "previous":   "<"
+                  "next":       '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l5 5l-5 5"></path></svg>',
+                  "previous":   '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-5 5l5 5"></path></svg>'
               },
               "aria": {
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
@@ -272,8 +272,8 @@
           },
           dom:
             "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row mt-2 d-print-none '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
+            "<'table-content row'<'col-sm-12'tr>>" +
+            "<'table-footer row mt-2 d-print-none align-items-center '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
       }
   }
   </script>
@@ -287,8 +287,16 @@
       window.crud.updateUrl(location.href);
 
       // move search bar
-      $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
-      $("#crudTable_filter input").removeClass('form-control-sm');
+      $("#datatable_search_stack input").remove();
+      $("#crudTable_filter input").appendTo($('#datatable_search_stack .input-icon'));
+      $("#datatable_search_stack input").removeClass('form-control-sm');
+      $("#crudTable_filter").remove();
+
+      // remove btn-secondary from export and column visibility buttons
+      $("#crudTable_wrapper .table-footer .btn-secondary").removeClass('btn-secondary');
+
+      // remove forced overflow on load
+      $(".navbar.navbar-filters + div").css('overflow','initial');
 
       // move "showing x out of y" info to header
       @if($crud->getSubheading())
@@ -339,16 +347,6 @@
         $('#crudTable').on( 'length.dt', function ( e, settings, len ) {
             localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
         });
-
-        // make sure AJAX requests include XSRF token
-        $.ajaxPrefilter(function(options, originalOptions, xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-            }
-        });
-
 
         $('#crudTable').on( 'page.dt', function () {
             localStorage.setItem('page_changed', true);

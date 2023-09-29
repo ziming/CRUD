@@ -36,7 +36,7 @@
     @endif
 	{{-- Show the file picker on CREATE form. --}}
 	<input name="{{ $field['name'] }}[]" type="hidden" value="">
-	<div class="backstrap-file mt-2">
+	<div class="backstrap-file">
 		<input
 	        type="file"
 	        name="{{ $field['name'] }}[]"
@@ -154,14 +154,14 @@
 					fileInput.parent().siblings('.existing-file').find('a.file-clear-button').each(function(item) {
 						selectedFiles.push($(this).data('filename'));
 					});
-					
+
 					$('<input type="hidden" class="order-uploads" name="_order_'+fieldName+'" value="'+selectedFiles+'">').insertAfter(fileInput);
 
-					var observer = new MutationObserver(function(mutations) {	
+					var observer = new MutationObserver(function(mutations) {
 						mutations.forEach(function(mutation) {
-							if(mutation.attributeName == 'data-row-number') {          
+							if(mutation.attributeName == 'data-row-number') {
 								let field = $(mutation.target);
-								
+
 								fieldOrder = field.siblings('input[name="'+mutation.target.getAttribute('name').slice(0,-2)+'"]')
 								fieldOrder.attr('name', '_order_'+mutation.target.getAttribute('name').slice(0,-2));
 								let selectedFiles = [];
@@ -169,7 +169,7 @@
 									selectedFiles.push($(this).data('filename'));
 								});
 								fieldOrder.val(selectedFiles);
-							
+
 								fieldClear = field.siblings('.clear-files');
 								fieldClear.attr('name', 'clear_'+mutation.target.getAttribute('name'));
 							}

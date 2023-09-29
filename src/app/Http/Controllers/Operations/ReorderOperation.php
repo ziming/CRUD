@@ -50,7 +50,7 @@ trait ReorderOperation
      *
      *  Database columns needed: id, parent_id, lft, rgt, depth, name/title
      *
-     *  @return Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function reorder()
     {

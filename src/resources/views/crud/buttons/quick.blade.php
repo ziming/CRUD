@@ -14,10 +14,13 @@
     $wrapper = $button->meta['wrapper'] ?? [];
     $wrapper['element'] = $wrapper['element'] ?? 'a';
     $wrapper['href'] = $wrapper['href'] ?? $defaultHref;
+    if (is_a($wrapper['href'], \Closure::class, true)) {
+        $wrapper['href'] = ($wrapper['href'])($entry, $crud);
+    }
     $wrapper['class'] = $wrapper['class'] ?? $defaultClass;
 @endphp
 
-@if ($access == true || $crud->hasAccess($access))
+@if ($access === true || $crud->hasAccess($access))
     <{{ $wrapper['element'] }}
         @foreach ($wrapper as $attribute => $value)
             @if (is_string($attribute))

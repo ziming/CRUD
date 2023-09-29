@@ -12,21 +12,21 @@
 @endphp
 
 @section('header')
-    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-end d-print-none">
-        <h3 class="text-capitalize mb-0" style="line-height: 30px;">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h3>
-        <p class="ms-2 ml-2 mb-0" id="datatable_info_stack">{!! $crud->getSubheading() ?? '' !!}</p>
+    <section class="header-operation container-fluid animated fadeIn d-flex mb-2 align-items-baseline d-print-none" bp-section="page-header">
+        <h1 class="text-capitalize mb-0" bp-section="page-heading">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</h1>
+        <p class="ms-2 ml-2 mb-0" id="datatable_info_stack" bp-section="page-subheading">{!! $crud->getSubheading() ?? '' !!}</p>
     </section>
 @endsection
 
 @section('content')
   {{-- Default box --}}
-  <div class="row">
+  <div class="row" bp-section="crud-operation-list">
 
     {{-- THE ACTUAL CONTENT --}}
     <div class="{{ $crud->getListContentClass() }}">
 
         <div class="row mb-2 align-items-center">
-          <div class="col-sm-6">
+          <div class="col-sm-9">
             @if ( $crud->buttons()->where('stack', 'top')->count() ||  $crud->exportButtons())
               <div class="d-print-none {{ $crud->hasAccess('create')?'with-border':'' }}">
 
@@ -35,8 +35,15 @@
               </div>
             @endif
           </div>
-          <div class="col-sm-6">
-            <div id="datatable_search_stack" class="mt-sm-0 mt-2 d-print-none"></div>
+          <div class="col-sm-3">
+            <div id="datatable_search_stack" class="mt-sm-0 mt-2 d-print-none">
+              <div class="input-icon">
+                <span class="input-icon-addon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                </span>
+                <input type="search" class="form-control" placeholder="{{ trans('backpack::crud.search') }}..."/>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -48,7 +55,7 @@
         <div class="{{ backpack_theme_config('classes.tableWrapper') }}">
             <table
               id="crudTable"
-              class="{{ backpack_theme_config('classes.table') ?? 'table table-striped table-hover nowrap rounded card-table table-vcenter card-table shadow-xs border-xs' }}"
+              class="{{ backpack_theme_config('classes.table') ?? 'table table-striped table-hover nowrap rounded card-table table-vcenter card d-table shadow-xs border-xs' }}"
               data-responsive-table="{{ (int) $crud->getOperationSetting('responsiveTable') }}"
               data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
               data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"

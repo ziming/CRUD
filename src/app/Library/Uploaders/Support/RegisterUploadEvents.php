@@ -7,6 +7,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Exception;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 final class RegisterUploadEvents
 {
@@ -46,6 +47,10 @@ final class RegisterUploadEvents
         $model = $attributes['model'] ?? get_class($this->crudObject->crud()->getModel());
         $uploader = $this->getUploader($attributes, $this->uploaderConfiguration);
 
+        if (isset($attributes['relation_type']) && $attributes['entity'] !== false) {
+            $uploader = $uploader->relationship(true);
+        }
+
         $this->setupModelEvents($model, $uploader);
         $this->setupUploadConfigsInCrudObject($uploader);
     }
@@ -63,11 +68,12 @@ final class RegisterUploadEvents
             return;
         }
 
-        $model = $subfield['baseModel'] ?? get_class($this->crudObject->crud()->getModel());
-
         if (isset($crudObject['relation_type']) && $crudObject['entity'] !== false) {
             $uploader = $uploader->relationship(true);
+            $subfield['relation_type'] = $crudObject['relation_type'];
         }
+
+        $model = $this->getSubfieldModel($subfield, $uploader);
 
         // only the last subfield uploader will setup the model events for the whole group
         if ($registerModelEvents) {
@@ -120,7 +126,17 @@ final class RegisterUploadEvents
         if (app('crud')->entry) {
             app('crud')->entry = $uploader->retrieveUploadedFiles(app('crud')->entry);
         } else {
-            $model::retrieved(function ($entry) use ($uploader) {
+            // the retrieve model may differ from the deleting and saving models because retrieved event
+            // is not called in pivot models when loading the relations.
+            $retrieveModel = $this->getModelForRetrieveEvent($model, $uploader);
+
+            $retrieveModel::retrieved(function ($entry) use ($uploader) {
+                if ($entry->translationEnabled()) {
+                    $locale = request('_locale', \App::getLocale());
+                    if (in_array($locale, array_keys($entry->getAvailableLocales()))) {
+                        $entry->setLocale($locale);
+                    }
+                }
                 $entry = $uploader->retrieveUploadedFiles($entry);
             });
         }
@@ -165,5 +181,27 @@ final class RegisterUploadEvents
     private function setupUploadConfigsInCrudObject(UploaderInterface $uploader): void
     {
         $this->crudObject->upload(true)->disk($uploader->getDisk())->prefix($uploader->getPath());
+    }
+
+    private function getSubfieldModel(array $subfield, UploaderInterface $uploader)
+    {
+        if (! $uploader->isRelationship()) {
+            return $subfield['baseModel'] ?? get_class(app('crud')->getModel());
+        }
+
+        if (in_array($subfield['relation_type'], ['BelongsToMany', 'MorphToMany'])) {
+            return app('crud')->getModel()->{$subfield['baseEntity']}()->getPivotClass();
+        }
+
+        return $subfield['baseModel'];
+    }
+
+    private function getModelForRetrieveEvent(string $model, UploaderInterface $uploader)
+    {
+        if (! $uploader->isRelationship()) {
+            return $model;
+        }
+
+        return is_a($model, Pivot::class, true) ? $this->crudObject->getAttributes()['model'] : $model;
     }
 }

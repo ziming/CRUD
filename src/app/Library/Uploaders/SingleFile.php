@@ -11,7 +11,7 @@ class SingleFile extends Uploader
     public function uploadFiles(Model $entry, $value = null)
     {
         $value = $value ?? CrudPanelFacade::getRequest()->file($this->getName());
-        $previousFile = $entry->getOriginal($this->getName());
+        $previousFile = $this->getPreviousFiles($entry);
 
         if ($value && is_file($value) && $value->isValid()) {
             if ($previousFile) {
@@ -23,7 +23,7 @@ class SingleFile extends Uploader
             return $this->getPath().$fileName;
         }
 
-        if (! $value && CrudPanelFacade::getRequest()->has($this->getName()) && $previousFile) {
+        if (! $value && CrudPanelFacade::getRequest()->has($this->getRepeatableContainerName() ?? $this->getName()) && $previousFile) {
             Storage::disk($this->getDisk())->delete($previousFile);
 
             return null;

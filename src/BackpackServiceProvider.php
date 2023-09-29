@@ -3,13 +3,18 @@
 namespace Backpack\CRUD;
 
 use Backpack\Basset\Facades\Basset;
+use Backpack\CRUD\app\Http\Middleware\EnsureEmailVerification;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class BackpackServiceProvider extends ServiceProvider
 {
@@ -19,7 +24,6 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Install::class,
         \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
         \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
-        \Backpack\CRUD\app\Console\Commands\PublishAssets::class,
         \Backpack\CRUD\app\Console\Commands\Version::class,
         \Backpack\CRUD\app\Console\Commands\CreateUser::class,
         \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
@@ -27,6 +31,9 @@ class BackpackServiceProvider extends ServiceProvider
         \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
         \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
         \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeTabler::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv2::class,
+        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv4::class,
         \Backpack\CRUD\app\Console\Commands\Fix::class,
     ];
 
@@ -46,9 +53,6 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        $this->loadViewsWithFallbacks('crud');
-        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
-        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
         $this->loadTranslationsFrom(realpath(__DIR__.'/resources/lang'), 'backpack');
         $this->loadConfigs();
         $this->registerMiddlewareGroup($this->app->router);
@@ -69,6 +73,13 @@ class BackpackServiceProvider extends ServiceProvider
     {
         // load the macros
         include_once __DIR__.'/macros.php';
+
+        $this->loadViewsWithFallbacks('crud');
+        $this->loadViewsWithFallbacks('ui', 'backpack.ui');
+        $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
+        $this->loadViewComponents();
+
+        $this->registerBackpackErrorViews();
 
         // Bind the CrudPanel object to Laravel's service container
         $this->app->scoped('crud', function ($app) {
@@ -119,11 +130,15 @@ class BackpackServiceProvider extends ServiceProvider
         if (config('backpack.base.setup_password_recovery_routes')) {
             $router->aliasMiddleware('backpack.throttle.password.recovery', ThrottlePasswordRecovery::class);
         }
+
+        // register the email verification middleware, if the developer enabled it in the config.
+        if (config('backpack.base.setup_email_verification_routes', false) && config('backpack.base.setup_email_verification_middleware', true)) {
+            $router->pushMiddlewareToGroup($middleware_key, EnsureEmailVerification::class);
+        }
     }
 
     public function publishFiles()
     {
-        $error_views = [__DIR__.'/resources/error_views' => resource_path('views/errors')];
         $backpack_views = [__DIR__.'/resources/views' => resource_path('views/vendor/backpack')];
         $backpack_public_assets = [__DIR__.'/public' => public_path()];
         $backpack_lang_files = [__DIR__.'/resources/lang' => app()->langPath().'/vendor/backpack'];
@@ -143,7 +158,6 @@ class BackpackServiceProvider extends ServiceProvider
         $minimum = array_merge(
             // $backpack_views,
             // $backpack_lang_files,
-            $error_views,
             $backpack_public_assets,
             $backpack_config_files,
             $backpack_menu_contents_view,
@@ -156,7 +170,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->publishes($backpack_lang_files, 'lang');
         $this->publishes($backpack_views, 'views');
         $this->publishes($backpack_menu_contents_view, 'menu_contents');
-        $this->publishes($error_views, 'errors');
         $this->publishes($backpack_public_assets, 'public');
         $this->publishes($backpack_custom_routes_file, 'custom_routes');
         $this->publishes($gravatar_assets, 'gravatar');
@@ -262,16 +275,19 @@ class BackpackServiceProvider extends ServiceProvider
             [
                 'backpack' => [
                     'driver' => 'eloquent',
-                    'model' => config('backpack.base.user_model_fqn'),
+                    'model'  => config('backpack.base.user_model_fqn'),
                 ],
             ];
 
         // add the backpack_users password broker to the configuration
         $laravelAuthPasswordBrokers = app()->config['auth.passwords'];
+        $laravelFirstPasswordBroker = is_array($laravelAuthPasswordBrokers) && current($laravelAuthPasswordBrokers) ?
+                                        current($laravelAuthPasswordBrokers)['table'] :
+                                        '';
 
         $backpackPasswordBrokerTable = config('backpack.base.password_resets_table') ??
                                         config('auth.passwords.users.table') ??
-                                        current($laravelAuthPasswordBrokers)['table'];
+                                        $laravelFirstPasswordBroker;
 
         app()->config['auth.passwords'] = $laravelAuthPasswordBrokers +
         [
@@ -287,10 +303,17 @@ class BackpackServiceProvider extends ServiceProvider
         app()->config['auth.guards'] = app()->config['auth.guards'] +
             [
                 'backpack' => [
-                    'driver' => 'session',
+                    'driver'   => 'session',
                     'provider' => 'backpack',
                 ],
             ];
+    }
+
+    public function loadViewComponents()
+    {
+        $this->app->afterResolving(BladeCompiler::class, function () {
+            Blade::componentNamespace('Backpack\\CRUD\\app\\View\\Components', 'backpack');
+        });
     }
 
     /**
@@ -309,5 +332,41 @@ class BackpackServiceProvider extends ServiceProvider
     public function provides()
     {
         return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository'];
+    }
+
+    private function registerBackpackErrorViews()
+    {
+        // register the backpack error when the exception handler is resolved from the container
+        $this->callAfterResolving(ExceptionHandler::class, function ($handler) {
+            if (! Str::startsWith(request()->path(), config('backpack.base.route_prefix'))) {
+                return;
+            }
+
+            // parse the namespaces set in config
+            [$themeNamespace, $themeFallbackNamespace] = (function () {
+                $themeNamespace = config('backpack.ui.view_namespace');
+                $themeFallbackNamespace = config('backpack.ui.view_namespace_fallback');
+
+                return [
+                    Str::endsWith($themeNamespace, '::') ? substr($themeNamespace, 0, -2) : substr($themeNamespace, 0, -1),
+                    Str::endsWith($themeFallbackNamespace, '::') ? substr($themeFallbackNamespace, 0, -2) : substr($themeFallbackNamespace, 0, -1),
+                ];
+            })();
+
+            $viewFinderHints = app('view')->getFinder()->getHints();
+
+            // here we are going to generate the paths array containing:
+            // - theme paths
+            // - fallback theme paths
+            // - ui path
+            $themeErrorPaths = $viewFinderHints[$themeNamespace] ?? [];
+            $themeErrorPaths = $themeNamespace === $themeFallbackNamespace ? $themeErrorPaths :
+                array_merge($viewFinderHints[$themeFallbackNamespace] ?? [], $themeErrorPaths);
+            $uiErrorPaths = [base_path('vendor/backpack/crud/src/resources/views/ui')];
+            $themeErrorPaths = array_merge($themeErrorPaths, $uiErrorPaths);
+
+            // merge the paths array with the view.paths defined in the application
+            app('config')->set('view.paths', array_merge($themeErrorPaths, config('view.paths', [])));
+        });
     }
 }

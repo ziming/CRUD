@@ -11,14 +11,17 @@
 
 @includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_end'))
 
-@bassetBlock('livewire-styles.css')
 @push('after_styles')
+@bassetBlock('livewire-styles.css')
     @livewireStyles
-@endpush
 @endBassetBlock
+@endpush
 
-@bassetBlock('livewire-scripts.js')
+
 @push('after_scripts')
+@bassetBlock('livewire-scripts.js')
     @livewireScripts
-@endpush
 @endBassetBlock
+@endpush
+
+

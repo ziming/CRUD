@@ -39,7 +39,7 @@ trait Access
         $condition = $this->get($operation.'.access');
 
         if (is_callable($condition)) {
-            $entry = $entry ?? $this->getCurrentEntry();
+            $entry = $entry ?? $this->getCurrentEntry() ? $this->getCurrentEntry() : null;
 
             return $condition($entry);
         }

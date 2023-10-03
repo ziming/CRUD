@@ -12,7 +12,7 @@ trait Access
      * @param  string|array  $operation
      * @return bool
      */
-    public function allowAccess(array|string $operation) : bool
+    public function allowAccess(array|string $operation): bool
     {
         foreach ((array) $operation as $op) {
             $this->set($op.'.access', true);
@@ -43,12 +43,13 @@ trait Access
      * @param  \Model  $entry
      * @return bool
      */
-    public function hasAccess(string $operation, $entry = null) : bool
+    public function hasAccess(string $operation, $entry = null): bool
     {
         $condition = $this->get($operation.'.access');
 
         if (is_callable($condition)) {
             $entry = $entry ?? $this->getCurrentEntry();
+
             return $condition($entry);
         }
 
@@ -62,7 +63,7 @@ trait Access
      * @param  \Model  $entry
      * @return bool
      */
-    public function hasAccessToAny(array|string $operation_array, $entry = null) : bool
+    public function hasAccessToAny(array|string $operation_array, $entry = null): bool
     {
         foreach ((array) $operation_array as $key => $operation) {
             if ($this->hasAccess($operation, $entry) == true) {
@@ -80,7 +81,7 @@ trait Access
      * @param  \Model  $entry
      * @return bool
      */
-    public function hasAccessToAll(array|string $operation_array, $entry = null) : bool
+    public function hasAccessToAll(array|string $operation_array, $entry = null): bool
     {
         foreach ((array) $operation_array as $key => $operation) {
             if (! $this->hasAccess($operation, $entry)) {
@@ -100,7 +101,7 @@ trait Access
      *
      * @throws \Backpack\CRUD\Exception\AccessDeniedException in case the operation is not enabled
      */
-    public function hasAccessOrFail(string $operation, $entry = null) : bool
+    public function hasAccessOrFail(string $operation, $entry = null): bool
     {
         if (! $this->hasAccess($operation, $entry)) {
             throw new AccessDeniedException(trans('backpack::crud.unauthorized_access', ['access' => $operation]));
@@ -116,7 +117,7 @@ trait Access
      * @param  string  $operation
      * @return bool|callable|null
      */
-    public function getAccessCondition(string $operation) : bool|callable|null
+    public function getAccessCondition(string $operation): bool|callable|null
     {
         return $this->get($operation.'.access');
     }
@@ -128,7 +129,7 @@ trait Access
      * @param  bool|callable|null  $condition
      * @return void
      */
-    public function setAccessCondition(array|string $operation, bool|callable|null $condition) : void
+    public function setAccessCondition(array|string $operation, bool|callable|null $condition): void
     {
         foreach ((array) $operation as $op) {
             $this->set($op.'.access', $condition);
@@ -142,9 +143,8 @@ trait Access
      * @param  string  $operation
      * @return bool
      */
-    public function hasAccessCondition(string $operation) : bool
+    public function hasAccessCondition(string $operation): bool
     {
         return $this->get($operation.'.access') !== null;
     }
-
 }

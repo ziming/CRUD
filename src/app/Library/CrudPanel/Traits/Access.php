@@ -22,7 +22,7 @@ trait Access
     /**
      * Disable the access to a certain operation, or the current one.
      */
-    public function denyAccess(array|string $operation) : bool
+    public function denyAccess(array|string $operation): bool
     {
         foreach ((array) $operation as $op) {
             $this->set($op.'.access', false);
@@ -50,7 +50,7 @@ trait Access
     /**
      * Check if any operations are allowed for a Crud Panel. Return false if not.
      */
-    public function hasAccessToAny(array|string $operation_array, ?Model $entry = null) : bool
+    public function hasAccessToAny(array|string $operation_array, ?Model $entry = null): bool
     {
         foreach ((array) $operation_array as $key => $operation) {
             if ($this->hasAccess($operation, $entry) == true) {
@@ -64,7 +64,7 @@ trait Access
     /**
      * Check if all operations are allowed for a Crud Panel. Return false if not.
      */
-    public function hasAccessToAll(array|string $operation_array, ?Model $entry = null) : bool
+    public function hasAccessToAll(array|string $operation_array, ?Model $entry = null): bool
     {
         foreach ((array) $operation_array as $key => $operation) {
             if (! $this->hasAccess($operation, $entry)) {
@@ -80,7 +80,7 @@ trait Access
      *
      * @throws \Backpack\CRUD\Exception\AccessDeniedException in case the operation is not enabled
      */
-    public function hasAccessOrFail(string $operation, ?Model $entry = null) : bool
+    public function hasAccessOrFail(string $operation, ?Model $entry = null): bool
     {
         if (! $this->hasAccess($operation, $entry)) {
             throw new AccessDeniedException(trans('backpack::crud.unauthorized_access', ['access' => $operation]));

@@ -39,7 +39,10 @@ trait Access
         $condition = $this->get($operation.'.access');
 
         if (is_callable($condition)) {
-            $entry = $entry ?? $this->getCurrentEntry() ? $this->getCurrentEntry() : null;
+            // supply the current entry, if $entry is missing
+            if (! $entry && $this->getCurrentEntry()) {
+                $entry = $this->getCurrentEntry();
+            } // this also makes sure the entry is null when missing
 
             return $condition($entry);
         }

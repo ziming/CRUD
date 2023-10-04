@@ -22,7 +22,7 @@ return [
     'name'                   => 'Nome',
     'email_address'          => 'Indirizzo E-mail',
     'email'                  => 'E-mail',
-    'username'               => 'Nome utente', 
+    'username'               => 'Nome utente',
     'password'               => 'Password',
     'old_password'           => 'Vecchia Password',
     'new_password'           => 'Nuova Password',

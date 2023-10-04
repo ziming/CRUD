@@ -21,7 +21,7 @@ return [
     'register'               => 'Registrati',
     'name'                   => 'Nome',
     'email_address'          => 'Indirizzo E-mail',
-    'email'                  => 'E-mail,
+    'email'                  => 'E-mail',
     'username'               => 'Nome utente', 
     'password'               => 'Password',
     'old_password'           => 'Vecchia Password',

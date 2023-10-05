@@ -163,10 +163,14 @@ return [
     'new_item'                                => 'Новый элемент',
     'select_entry'                            => 'Выбрать запись',
     'select_entries'                          => 'Выбрать записи',
+    'upload_multiple_files_selected'          => 'Файлы выбраны. После сохранения они появятся выше.',
 
     //Table field
     'table_cant_add'                          => 'Не удалось добавить новую :entity',
     'table_max_reached'                       => 'Максимальное количество из :max достигнуто',
+
+    // google_map
+    'google_map_locate'                       => 'Получить мое местоположение',
 
     // File manager
     'file_manager'                            => 'Файловый менеджер',
@@ -174,7 +178,11 @@ return [
     // InlineCreateOperation
     'related_entry_created_success'           => 'Связанная запись создана и выбрана.',
     'related_entry_created_error'             => 'Не удалось создать связанную запись.',
+    'inline_saving' => 'Сохранение...',
 
     // returned when no translations found in select inputs
     'empty_translations' => '(пусто)',
+
+    // The pivot selector required validation message
+    'pivot_selector_required_validation_message' => 'Поле сводной таблицы является обязательным.',
 ];

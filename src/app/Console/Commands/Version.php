@@ -30,7 +30,12 @@ class Version extends Command
     public function handle()
     {
         $this->comment('### PHP VERSION:');
-        $this->runConsoleCommand(['php', '-v']);
+        $this->line(phpversion());
+        $this->line('');
+
+        $this->comment('### PHP EXTENSIONS:');
+        $this->line(implode(', ', get_loaded_extensions()));
+        $this->line('');
 
         $this->comment('### LARAVEL VERSION:');
         $this->line(\Composer\InstalledVersions::getVersion('laravel/framework'));
@@ -42,29 +47,6 @@ class Version extends Command
             if (substr($package, 0, 9) == 'backpack/') {
                 $this->line($package.': '.\Composer\InstalledVersions::getPrettyVersion($package));
             }
-        }
-    }
-
-    /**
-     * Run a shell command in a separate process.
-     *
-     * @param  array  $command  Text to be executed.
-     * @return void
-     */
-    private function runConsoleCommand($command)
-    {
-        $process = new Process($command, null, null, null, 60, null);
-        $process->run(function ($type, $buffer) {
-            if (Process::ERR === $type) {
-                $this->line($buffer);
-            } else {
-                $this->line($buffer);
-            }
-        });
-
-        // executes after the command finishes
-        if (! $process->isSuccessful()) {
-            throw new ProcessFailedException($process);
         }
     }
 }

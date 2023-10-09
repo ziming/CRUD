@@ -329,6 +329,7 @@ trait SaveActions
         $saveAction = $request->input('_save_action', $this->getFallBackSaveAction());
         $itemId = $itemId ?: $request->input('id');
         $actions = $this->getOperationSetting('save_actions');
+        $redirectUrl = $this->route;
 
         if (isset($actions[$saveAction])) {
             if (is_callable($actions[$saveAction]['redirect'])) {

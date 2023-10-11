@@ -19,11 +19,11 @@ trait Reorder
 
         // we use the upsert method that should update the values of the matching ids.
         // it has the drawback of creating new entries when the id is not found
-        // for that reason we get a list of all the ids and filter the ones 
+        // for that reason we get a list of all the ids and filter the ones
         // sent in the request that are not in the database
         $itemKeys = $this->model->all()->pluck('id');
 
-        $reorderItems = collect($request)->filter(function($item) use ($itemKeys) {
+        $reorderItems = collect($request)->filter(function ($item) use ($itemKeys) {
             return $item['item_id'] != '' && $item['item_id'] != null && $itemKeys->contains($item['item_id']);
         })->map(function ($item) use ($primaryKey) {
             $item[$primaryKey] = $item['item_id'];
@@ -32,9 +32,10 @@ trait Reorder
             $item['lft'] = empty($item['left']) ? null : $item['left'];
             $item['rgt'] = empty($item['right']) ? null : $item['right'];
             unset($item['item_id']);
+
             return $item;
         })->toArray();
-       
+
         $this->model->upsert(
             $reorderItems,
             [$primaryKey],

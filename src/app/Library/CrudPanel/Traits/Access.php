@@ -40,9 +40,8 @@ trait Access
 
         if (is_callable($condition)) {
             // supply the current entry, if $entry is missing
-            if (! $entry && $this->getCurrentEntry()) {
-                $entry = $this->getCurrentEntry();
-            } // this also makes sure the entry is null when missing
+            // this also makes sure the entry is null when missing
+            $entry ??= $this->getCurrentEntry() ?: null;
 
             return $condition($entry);
         }

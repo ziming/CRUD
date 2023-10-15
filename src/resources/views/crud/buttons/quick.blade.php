@@ -20,7 +20,7 @@
     $wrapper['class'] = $wrapper['class'] ?? $defaultClass;
 @endphp
 
-@if ($access === true || $crud->hasAccess($access))
+@if ($access === true || $crud->hasAccess($access, isset($entry) ? $entry : null))
     <{{ $wrapper['element'] }}
         @foreach ($wrapper as $attribute => $value)
             @if (is_string($attribute))

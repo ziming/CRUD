@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('update'))
+@if ($crud->hasAccess('update', $entry))
 	@if (!$crud->model->translationEnabled())
 
 	{{-- Single edit button --}}

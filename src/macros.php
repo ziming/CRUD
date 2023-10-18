@@ -53,11 +53,18 @@ if (! CrudField::hasMacro('withFiles')) {
 }
 
 if (! CrudColumn::hasMacro('linkTo')) {
-    CrudColumn::macro('linkTo', function (string $routeName, ?string $target = null): static {
+    CrudColumn::macro('linkTo', function (string|array $routeNameOrConfiguration, ?string $target = null): static {
+        if (is_array($routeNameOrConfiguration)) {
+            $routeName = $routeNameOrConfiguration['routeName'] ?? null;
+            $target = $routeNameOrConfiguration['target'] ?? $target;
+        } else {
+            $routeName = $routeNameOrConfiguration;
+        }
+
         $route = Route::getRoutes()->getByName($routeName);
 
         if (! $route) {
-            throw new \Exception("Route [{$routeName}] not found");
+            throw new \Exception("Route [{$routeName}] not found while building the link for column [{$this->name}].");
         }
 
         $parameters = $route->parameterNames();
@@ -68,23 +75,19 @@ if (! CrudColumn::hasMacro('linkTo')) {
 
         $wrapper = $this->attributes['wrapper'] ?? [];
         $wrapper['target'] ??= $target;
-
-        $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
+        
+        $wrapper['href'] = function($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
             if (count($parameters) === 1) {
                 $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
                 $parameterValue = $related_key ?? $entry->{$entity}?->getKey();
                 if (! $parameterValue) {
                     return null;
                 }
-
                 return route($routeName, [$parameters[0] => $parameterValue]);
             }
-
             return route($routeName);
         };
-
         $this->wrapper($wrapper);
-
         return $this;
     });
 }

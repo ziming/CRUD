@@ -30,6 +30,7 @@ use Illuminate\Support\Traits\Conditionable;
  * @method self priority(int $value)
  * @method self key(string $value)
  * @method self upload(bool $value)
+ * @method self linkTo(string $routeName, ?string $target = null)
  */
 class CrudColumn
 {

@@ -53,24 +53,35 @@ if (! CrudField::hasMacro('withFiles')) {
 }
 
 if (! CrudColumn::hasMacro('linkTo')) {
-    CrudColumn::macro('linkTo', function ($route, $target = null) {
-        $wrapper = $this->attributes['wrapper'] ?? [];
-        if (in_array($this->attributes['type'], ['select', 'select_grouped', 'select2', 'select2_grouped', 'select2_nested', 'select2_from_ajax'])) {
-            $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route) {
-                return route($route, $related_key);
-            };
-        } else {
-            $wrapper['href'] = function ($crud, $column, $entry) use ($route) {
-                return url($route.$column['value']);
-            };
+    CrudColumn::macro('linkTo', function (string $routeName, ?string $target = null): static {
+        $route = Route::getRoutes()->getByName($routeName);
+
+        if(! $route) {
+            throw new \Exception("Route [{$routeName}] not found");
         }
 
-        if ($target) {
-            $wrapper['target'] = $target;
+        $parameters = $route->parameterNames();
+
+        if(count($parameters) > 1) {
+            throw new \Exception("Route {$routeName} requires multiple parameters. Please define the wrapper link manually.");
         }
+
+        $wrapper = $this->attributes['wrapper'] ?? [];
+        $wrapper['target'] ??= $target;
+        
+        $wrapper['href'] = function($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
+            if(count($parameters) === 1) {
+                $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
+                $parameterValue = $related_key ?? $entry->{$entity}?->getKey();
+                if(! $parameterValue) {
+                    return null;
+                }
+                return route($routeName, [$parameters[0] => $parameterValue]);
+            }
+            return route($routeName);
+        };
 
         $this->wrapper($wrapper);
-
         return $this;
     });
 }

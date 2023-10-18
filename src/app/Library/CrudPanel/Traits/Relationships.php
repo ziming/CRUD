@@ -360,11 +360,8 @@ trait Relationships
     /**
      * Check if it's possible that attribute is in the relation string when
      * the last part of the string is not a method on the chained relations.
-     *
-     * @param  array  $field
-     * @return bool
      */
-    private function isAttributeInRelationString($field)
+    public function isAttributeInRelationString(array $field): bool
     {
         if (! str_contains($field['entity'], '.')) {
             return false;

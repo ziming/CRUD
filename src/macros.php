@@ -75,19 +75,22 @@ if (! CrudColumn::hasMacro('linkTo')) {
 
         $wrapper = $this->attributes['wrapper'] ?? [];
         $wrapper['target'] ??= $target;
-        
-        $wrapper['href'] = function($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
+
+        $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
             if (count($parameters) === 1) {
                 $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
                 $parameterValue = $related_key ?? $entry->{$entity}?->getKey();
                 if (! $parameterValue) {
                     return null;
                 }
+
                 return route($routeName, [$parameters[0] => $parameterValue]);
             }
+
             return route($routeName);
         };
         $this->wrapper($wrapper);
+
         return $this;
     });
 }

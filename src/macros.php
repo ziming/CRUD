@@ -56,32 +56,35 @@ if (! CrudColumn::hasMacro('linkTo')) {
     CrudColumn::macro('linkTo', function (string $routeName, ?string $target = null): static {
         $route = Route::getRoutes()->getByName($routeName);
 
-        if(! $route) {
+        if (! $route) {
             throw new \Exception("Route [{$routeName}] not found");
         }
 
         $parameters = $route->parameterNames();
 
-        if(count($parameters) > 1) {
+        if (count($parameters) > 1) {
             throw new \Exception("Route {$routeName} requires multiple parameters. Please define the wrapper link manually.");
         }
 
         $wrapper = $this->attributes['wrapper'] ?? [];
         $wrapper['target'] ??= $target;
-        
-        $wrapper['href'] = function($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
-            if(count($parameters) === 1) {
+
+        $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
+            if (count($parameters) === 1) {
                 $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
                 $parameterValue = $related_key ?? $entry->{$entity}?->getKey();
-                if(! $parameterValue) {
+                if (! $parameterValue) {
                     return null;
                 }
+
                 return route($routeName, [$parameters[0] => $parameterValue]);
             }
+
             return route($routeName);
         };
 
         $this->wrapper($wrapper);
+
         return $this;
     });
 }

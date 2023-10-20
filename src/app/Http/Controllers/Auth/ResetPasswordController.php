@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
-    private string $redirectTo;
+    protected ?string $redirectTo = null;
 
     protected $data = []; // the information we send to the view
 

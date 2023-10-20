@@ -44,13 +44,13 @@ class LoginController extends Controller
         // ----------------------------------
 
         // If not logged in redirect here.
-        $this->loginPath = ! empty($this->loginPath) ? $this->loginPath : backpack_url('login');
+        $this->loginPath ??= backpack_url('login');
 
         // Redirect here after successful login.
-        $this->redirectTo = ! empty($this->redirectTo) ? $this->redirectTo : backpack_url('dashboard');
+        $this->redirectTo ??= backpack_url('dashboard');
 
         // Redirect here after logout.
-        $this->redirectAfterLogout = ! empty($this->redirectAfterLogout) ? $this->redirectAfterLogout : backpack_url('login');
+        $this->redirectAfterLogout ??= backpack_url('login');
     }
 
     /**

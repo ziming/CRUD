@@ -743,6 +743,20 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->assertEquals('http://localhost/admin/articles/1/show?test=testing', $url);
     }
 
+    public function testColumnArrayDefinitionLinkToRouteNameOnly()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->column([
+            'name' => 'articles',
+            'entity' => 'articles',
+            'linkTo' => 'articles.show',
+        ]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show', $url);
+    }
+
     public function testColumnArrayDefinitionLinkToRouteNameAndAdditionalParameters()
     {
         $this->crudPanel->setModel(User::class);

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
+    protected ?string $redirectTo = null;
+
     protected $data = []; // the information we send to the view
 
     /*
@@ -51,7 +53,7 @@ class ResetPasswordController extends Controller
         }
 
         // where to redirect after password was reset
-        $this->redirectTo = property_exists($this, 'redirectTo') ? $this->redirectTo : backpack_url('dashboard');
+        $this->redirectTo ??= backpack_url('dashboard');
     }
 
     // -------------------------------------------------------

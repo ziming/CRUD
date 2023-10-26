@@ -21,6 +21,8 @@ return [
     'register'               => 'Register',
     'name'                   => 'Name',
     'email_address'          => 'E-mail address',
+    'email'                  => 'Email',
+    'username'               => 'Username',
     'password'               => 'Password',
     'old_password'           => 'Old password',
     'new_password'           => 'New password',
@@ -53,7 +55,7 @@ return [
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
 
-    'error' => [
+    'error_page' => [
         'title'              => 'Error :error',
         'button'             => 'Take me home',
         'message_4xx'        => 'Please <a :href_back>go back</a> or return to <a :href_homepage>our homepage</a>.',

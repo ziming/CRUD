@@ -163,6 +163,32 @@ class CrudButton implements Arrayable
     }
 
     /**
+     * Set the button position. Defines where the button will be shown
+     * in regard to other buttons in the same stack.
+     *
+     * @param  string  $stack  'beginning' or 'end'
+     * @return CrudButton
+     */
+    public function position($position)
+    {
+        switch ($position) {
+            case 'beginning':
+                $this->makeFirst();
+                break;
+
+            case 'end':
+                $this->makeLast();
+                break;
+
+            default:
+                abort(500, "Unknown button position - please use 'beginning' or 'end'.");
+                break;
+        }
+
+        return $this;
+    }
+
+    /**
      * Sets the meta that will be available in the view.
      *
      * @param  array  $value  Array of metadata that will be available in the view.

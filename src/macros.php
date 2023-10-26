@@ -64,14 +64,15 @@ if (! CrudColumn::hasMacro('linkTo')) {
             $route = $routeOrConfiguration;
         }
 
-        if($route instanceof Closure) {
+        if ($route instanceof Closure) {
             $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route) {
                 return $route($entry, $related_key, $column, $crud);
             };
             $this->wrapper($wrapper);
+
             return $this;
-        }       
-        
+        }
+
         $routeInstance = Route::getRoutes()->getByName($route);
 
         if (! $routeInstance) {
@@ -80,23 +81,26 @@ if (! CrudColumn::hasMacro('linkTo')) {
 
         $expectedParameters = $routeInstance->parameterNames();
 
-        $parameters = (function() use ($parameters, $expectedParameters, $route) {
-            if(count($expectedParameters) === 0) {
+        $parameters = (function () use ($parameters, $expectedParameters, $route) {
+            if (count($expectedParameters) === 0) {
                 return $parameters;
             }
             $autoInferedParameter = array_diff($expectedParameters, array_keys($parameters));
-            if(count($autoInferedParameter) > 1) {
+            if (count($autoInferedParameter) > 1) {
                 throw new \Exception("Route [{$route}] expects parameters [".implode(', ', $expectedParameters)."]. Insuficient parameters provided in column: [{$this->attributes['name']}].");
             }
-            $autoInferedParameter = current($autoInferedParameter) ? [current($autoInferedParameter) => function($entry, $related_key, $column, $crud) {
+            $autoInferedParameter = current($autoInferedParameter) ? [current($autoInferedParameter) => function ($entry, $related_key, $column, $crud) {
                 $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
+
                 return $related_key ?? $entry->{$entity}?->getKey();
             }] : [];
+
             return array_merge($autoInferedParameter, $parameters);
         })();
 
         $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route, $parameters) {
-            $parameters = collect($parameters)->map(fn($item) => is_callable($item) ? $item($entry, $related_key, $column, $crud) : $item)->toArray();
+            $parameters = collect($parameters)->map(fn ($item) => is_callable($item) ? $item($entry, $related_key, $column, $crud) : $item)->toArray();
+
             return route($route, $parameters);
         };
         $this->wrapper($wrapper);

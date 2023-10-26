@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
-use Backpack\CRUD\Tests\config\Models\User;
 use Backpack\CRUD\Tests\config\Models\Article;
+use Backpack\CRUD\Tests\config\Models\User;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Columns
@@ -638,14 +638,14 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     public function testColumnLinkToThrowsExceptionWhenNotAllRequiredParametersAreFilled()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Route [article.show.detail] expects parameters [id, detail]. Insuficient parameters provided in column: [articles].");
+        $this->expectExceptionMessage('Route [article.show.detail] expects parameters [id, detail]. Insuficient parameters provided in column: [articles].');
         $this->crudPanel->column('articles')->entity('articles')->linkTo('article.show.detail', ['test' => 'testing']);
     }
 
     public function testItThrowsExceptionIfRouteNotFound()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage("Route [users.route.doesnt.exist] not found while building the link for column [id].");
+        $this->expectExceptionMessage('Route [users.route.doesnt.exist] not found while building the link for column [id].');
 
         CrudColumn::name('id')->linkTo('users.route.doesnt.exist')->toArray();
     }
@@ -655,7 +655,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->crudPanel->column('articles')->entity('articles')->linkTo('articles.show');
         $columnArray = $this->crudPanel->columns()['articles'];
         $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
-        $arguments  = $reflection->getClosureUsedVariables();
+        $arguments = $reflection->getClosureUsedVariables();
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('articles.show', $arguments['route']);
@@ -668,12 +668,12 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->crudPanel->column('articles')->entity('articles')->linkTo('articles.show', ['test' => 'testing', 'test2' => 'testing2']);
         $columnArray = $this->crudPanel->columns()['articles'];
         $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
-        $arguments  = $reflection->getClosureUsedVariables();
+        $arguments = $reflection->getClosureUsedVariables();
         $this->assertEquals('articles.show', $arguments['route']);
         $this->assertCount(3, $arguments['parameters']);
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
-        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=testing2', $url);    
+        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=testing2', $url);
     }
 
     public function testColumnLinkToWithCustomParameters()
@@ -689,7 +689,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     {
         $this->crudPanel->column('articles')
                         ->entity('articles')
-                        ->linkTo('article.show.detail', ['detail' => fn($entry, $related_key) => $related_key, 'otherParam' => fn($entry) => $entry->content]);
+                        ->linkTo('article.show.detail', ['detail' => fn ($entry, $related_key) => $related_key, 'otherParam' => fn ($entry) => $entry->content]);
         $columnArray = $this->crudPanel->columns()['articles'];
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
@@ -700,7 +700,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     {
         $this->crudPanel->column('articles')
                         ->entity('articles')
-                        ->linkTo('article.show.detail', ['id' => 123, 'detail' => fn($entry, $related_key) => $related_key, 'otherParam' => fn($entry) => $entry->content]);
+                        ->linkTo('article.show.detail', ['id' => 123, 'detail' => fn ($entry, $related_key) => $related_key, 'otherParam' => fn ($entry) => $entry->content]);
         $columnArray = $this->crudPanel->columns()['articles'];
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
@@ -711,7 +711,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     {
         $this->crudPanel->column('articles')
                         ->entity('articles')
-                        ->linkTo('article.show.detail', ['id' => 123, 'otherParam' => fn($entry) => $entry->content]);
+                        ->linkTo('article.show.detail', ['id' => 123, 'otherParam' => fn ($entry) => $entry->content]);
         $columnArray = $this->crudPanel->columns()['articles'];
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
@@ -722,25 +722,25 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     {
         $this->crudPanel->column('articles')
                         ->entity('articles')
-                        ->linkTo(fn($entry) => route('articles.show', $entry->content));
+                        ->linkTo(fn ($entry) => route('articles.show', $entry->content));
         $columnArray = $this->crudPanel->columns()['articles'];
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/Some%20Content/show', $url);
     }
-   
+
     public function testColumnArrayDefinitionLinkToRouteAsClosure()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->column([
             'name' => 'articles',
             'entity' => 'articles',
-            'linkTo' => fn($entry) => route('articles.show', ['id' => $entry->id, 'test' => 'testing'])
+            'linkTo' => fn ($entry) => route('articles.show', ['id' => $entry->id, 'test' => 'testing']),
         ]);
         $columnArray = $this->crudPanel->columns()['articles'];
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
-        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing', $url);    
+        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing', $url);
     }
 
     public function testColumnArrayDefinitionLinkToRouteNameAndAdditionalParameters()
@@ -753,20 +753,17 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
                 'route' => 'articles.show',
                 'parameters' => [
                     'test' => 'testing',
-                    'test2' => fn($entry) => $entry->content
-                ]
-            ]
+                    'test2' => fn ($entry) => $entry->content,
+                ],
+            ],
         ]);
         $columnArray = $this->crudPanel->columns()['articles'];
         $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
-        $arguments  = $reflection->getClosureUsedVariables();
+        $arguments = $reflection->getClosureUsedVariables();
         $this->assertEquals('articles.show', $arguments['route']);
         $this->assertCount(3, $arguments['parameters']);
         $this->crudPanel->entry = Article::first();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
-        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=Some%20Content', $url);    
+        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=Some%20Content', $url);
     }
-
-    
-    
 }

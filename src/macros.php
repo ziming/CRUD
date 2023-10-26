@@ -36,6 +36,7 @@ if (! Str::hasMacro('dotsToSquareBrackets')) {
 }
 if (! CrudColumn::hasMacro('withFiles')) {
     CrudColumn::macro('withFiles', function ($uploadDefinition = [], $subfield = null, $registerUploaderEvents = true) {
+        $uploadDefinition = is_array($uploadDefinition) ? $uploadDefinition : [];
         /** @var CrudField|CrudColumn $this */
         RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield, $registerUploaderEvents);
 
@@ -45,6 +46,7 @@ if (! CrudColumn::hasMacro('withFiles')) {
 
 if (! CrudField::hasMacro('withFiles')) {
     CrudField::macro('withFiles', function ($uploadDefinition = [], $subfield = null, $registerUploaderEvents = true) {
+        $uploadDefinition = is_array($uploadDefinition) ? $uploadDefinition : [];
         /** @var CrudField|CrudColumn $this */
         RegisterUploadEvents::handle($this, $uploadDefinition, 'withFiles', $subfield, $registerUploaderEvents);
 
@@ -53,41 +55,49 @@ if (! CrudField::hasMacro('withFiles')) {
 }
 
 if (! CrudColumn::hasMacro('linkTo')) {
-    CrudColumn::macro('linkTo', function (string|array $routeNameOrConfiguration, ?string $target = null): static {
-        if (is_array($routeNameOrConfiguration)) {
-            $routeName = $routeNameOrConfiguration['routeName'] ?? null;
-            $target = $routeNameOrConfiguration['target'] ?? $target;
-        } else {
-            $routeName = $routeNameOrConfiguration;
-        }
-
-        $route = Route::getRoutes()->getByName($routeName);
-
-        if (! $route) {
-            throw new \Exception("Route [{$routeName}] not found while building the link for column [{$this->name}].");
-        }
-
-        $parameters = $route->parameterNames();
-
-        if (count($parameters) > 1) {
-            throw new \Exception("Route {$routeName} requires multiple parameters. Please define the wrapper link manually.");
-        }
-
+    CrudColumn::macro('linkTo', function (string|array|Closure $routeOrConfiguration, ?array $parameters = []): static {
         $wrapper = $this->attributes['wrapper'] ?? [];
-        $wrapper['target'] ??= $target;
+        if (is_array($routeOrConfiguration)) {
+            $route = $routeOrConfiguration['route'] ?? null;
+            $parameters = $routeOrConfiguration['parameters'] ?? [];
+        } else {
+            $route = $routeOrConfiguration;
+        }
 
-        $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($routeName, $parameters) {
-            if (count($parameters) === 1) {
-                $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
-                $parameterValue = $related_key ?? $entry->{$entity}?->getKey();
-                if (! $parameterValue) {
-                    return null;
-                }
+        if($route instanceof Closure) {
+            $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route) {
+                return $route($entry, $related_key, $column, $crud);
+            };
+            $this->wrapper($wrapper);
+            return $this;
+        }       
+        
+        $routeInstance = Route::getRoutes()->getByName($route);
 
-                return route($routeName, [$parameters[0] => $parameterValue]);
+        if (! $routeInstance) {
+            throw new \Exception("Route [{$route}] not found while building the link for column [{$this->attributes['name']}].");
+        }
+
+        $expectedParameters = $routeInstance->parameterNames();
+
+        $parameters = (function() use ($parameters, $expectedParameters, $route) {
+            if(count($expectedParameters) === 0) {
+                return $parameters;
             }
+            $autoInferedParameter = array_diff($expectedParameters, array_keys($parameters));
+            if(count($autoInferedParameter) > 1) {
+                throw new \Exception("Route [{$route}] expects parameters [".implode(', ', $expectedParameters)."]. Insuficient parameters provided in column: [{$this->attributes['name']}].");
+            }
+            $autoInferedParameter = current($autoInferedParameter) ? [current($autoInferedParameter) => function($entry, $related_key, $column, $crud) {
+                $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
+                return $related_key ?? $entry->{$entity}?->getKey();
+            }] : [];
+            return array_merge($autoInferedParameter, $parameters);
+        })();
 
-            return route($routeName);
+        $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route, $parameters) {
+            $parameters = collect($parameters)->map(fn($item) => is_callable($item) ? $item($entry, $related_key, $column, $crud) : $item)->toArray();
+            return route($route, $parameters);
         };
         $this->wrapper($wrapper);
 

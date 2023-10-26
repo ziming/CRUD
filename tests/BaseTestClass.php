@@ -24,7 +24,9 @@ abstract class BaseTestClass extends TestCase
             'prefix'     => config('backpack.base.route_prefix', 'admin'),
         ],
             function () {
+                Route::get('articles/{id}/show/{detail}', ['as' => 'article.show.detail', 'action' => 'Backpack\CRUD\Tests\config\Http\Controllers\ArticleCrudController@detail']);
                 Route::crud('users', 'Backpack\CRUD\Tests\config\Http\Controllers\UserCrudController');
+                Route::crud('articles', 'Backpack\CRUD\Tests\config\Http\Controllers\ArticleCrudController');      
             }
         );
     }

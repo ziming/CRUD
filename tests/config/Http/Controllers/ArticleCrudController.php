@@ -3,9 +3,9 @@
 namespace Backpack\CRUD\Tests\Config\Http\Controllers;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\Tests\config\Models\User;
+use Backpack\CRUD\Tests\config\Models\Article;
 
-class UserCrudController extends CrudController
+class ArticleCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -14,8 +14,8 @@ class UserCrudController extends CrudController
 
     public function setup()
     {
-        $this->crud->setModel(User::class);
-        $this->crud->setRoute('users');
+        $this->crud->setModel(Article::class);
+        $this->crud->setRoute('articles');
     }
 
     public function setupUpdateOperation()
@@ -25,5 +25,10 @@ class UserCrudController extends CrudController
     protected function create()
     {
         return response('create');
+    }
+
+    protected function detail()
+    {
+        return response('detail');
     }
 }

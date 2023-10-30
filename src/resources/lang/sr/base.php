@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Nalog uspešno ažuriran.',
     'unknown_error'          => 'Nepoznata greška se dogodila. Pokušajte ponovo.',
     'error_saving'           => 'Greška pri pokušaju čuvanja. Pokušajte ponovo.',
+    'error-login'            => 'Vaša šifra je promenjena u drugoj sesiji pregledača. Molimo prijavite se ponovo sa novom šifrom.',
     'welcome'                => 'Dobro došli!',
     'use_sidebar'            => 'Upotrebite bočni meni na levoj strani da kreirate, izmenite ili obrišete sadržaj.',
 

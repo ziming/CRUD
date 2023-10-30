@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Účet uložen.',
     'unknown_error'          => 'Nastala neznámá chyba. Zkuste znovu nebo kontaktujte podporu.',
     'error_saving'           => 'Chyba při ukládání. Zkuste znovu nebo kontaktujte podporu.',
+    'error-login'            => 'Vaše heslo bylo změněno v jiném prohlížeči. Prosím přihlašte se znovu s novým heslem.',
     'welcome'                => 'Vítejte!',
     'use_sidebar'            => 'Použíjte boční menu k vytvoření, editaci nebo smazání záznamů.',
 

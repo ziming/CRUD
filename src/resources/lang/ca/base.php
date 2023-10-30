@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Compte actualitzat correctament.',
     'unknown_error'          => 'Ha ocorregut un error. Si us plau, torni a intentar-ho.',
     'error_saving'           => 'Error desant dades. Si us plau, torni a intentar-ho.',
+    'error_login'            => 'La seva contrasenya ha estat canviada en un altre navegador. Si us plau, torni a iniciar sessió amb la seva nova contrasenya.',
     'welcome'                => 'Benvingut!',
     'use_sidebar'            => 'Utilitzi la barra lateral a l\'esquerra per crear, editar o eliminar contingut.',
 

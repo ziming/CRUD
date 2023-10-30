@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Tài khoản đã được cập nhật thành công.',
     'unknown_error'          => 'Đã xảy ra lỗi. Vui lòng thử lại.',
     'error_saving'           => 'Đã xảy ra lỗi trong lúc lưu. Vui lòng thử lại.',
+    'error-login'            => 'Mật khẩu của bạn đã được thay đổi trong phiên trình duyệt khác. Vui lòng đăng nhập lại với mật khẩu mới của bạn.',
     'welcome'                => 'Xin chào!',
     'use_sidebar'            => 'Sử dụng các chức năng ở thanh bên để tạo, sửa hoặc xoá các nội dung.',
 

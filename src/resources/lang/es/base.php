@@ -40,6 +40,7 @@ return [
     'save'                   => 'Guardar',
     'cancel'                 => 'Cancelar',
     'error'                  => 'Error',
+    'error-login'            => 'Error al iniciar sesión. Por favor vuelva a intenter.',
     'success'                => 'Existoso',
     'warning'                => 'Advertencia',
     'notice'                 => 'Aviso',

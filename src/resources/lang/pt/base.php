@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Conta actualizada com sucesso.',
     'unknown_error'          => 'Ocorreu um erro desconhecido. Tente novamente.',
     'error_saving'           => 'Ocorreu um erro ao guardar. Tente novamente.',
+    'error-login'            => 'Sua senha foi alterada noutra sessão do navegador. Por favor, faça login novamente com a sua nova senha.',
     'welcome'                => 'Bem-vindo!',
     'use_sidebar'            => 'Use a barra lateral à esquerda para criar, editar ou apagar conteúdo.',
 

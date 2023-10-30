@@ -97,7 +97,7 @@ class AuthenticateSession extends LaravelAuthenticateSession
 
         $request->session()->flush();
 
-        \Alert::error('Your password was changed in another browser session. Please login again using the new password.')->flash();
+        \Alert::error(trans('backpack::base.error-login'))->flash();
 
         throw new AuthenticationException('Unauthenticated.', [backpack_guard_name()], backpack_url('login'));
     }

@@ -39,7 +39,7 @@ return [
     'save'                   => 'Enregistrer',
     'cancel'                 => 'Annuler',
     'error'                  => 'Erreur',
-    'password_changed'       => 'Votre mot de passe a été changé dans une autre session. Veuillez vous reconnecter avec le nouveau mot de passe.',
+    'session_expired_error'  => 'Votre session a expiré. Veuillez vous reconnecter à votre compte.',
     'success'                => 'Succès',
     'warning'                => 'Attention',
     'old_password_incorrect' => 'L’ancien mot de passe est erroné.',

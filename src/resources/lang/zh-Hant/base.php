@@ -50,7 +50,7 @@ return [
     'account_updated'        => '已成功更新帳戶。',
     'unknown_error'          => '發生未知錯誤，請再試一次。',
     'error_saving'           => '儲存時發生錯誤，請再試一次。',
-    'password_changed'       => '您的密碼已在另一個瀏覽器會話期間被更改。請使用您的新密碼重新登入。',
+    'session_expired_error'  => '您的會話已過期。 請重新登入您的帳戶。',
     'welcome'                => '歡迎使用！',
     'use_sidebar'            => '使用左方的側邊欄以新增、編輯或刪除內容。',
 

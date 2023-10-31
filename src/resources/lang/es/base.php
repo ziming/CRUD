@@ -40,7 +40,7 @@ return [
     'save'                   => 'Guardar',
     'cancel'                 => 'Cancelar',
     'error'                  => 'Error',
-    'password_changed'       => 'Error al iniciar sesión. Por favor vuelva a intenter.',
+    'session_expired_error'  => 'Su sesión ha caducado. Por favor inicie sesión nuevamente en su cuenta.',
     'success'                => 'Existoso',
     'warning'                => 'Advertencia',
     'notice'                 => 'Aviso',

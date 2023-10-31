@@ -50,7 +50,7 @@ return [
     'account_updated'        => 'Konta rediģēšana veiksmīga.',
     'unknown_error'          => 'Nezināma kļūda. Lūdzu mēģini vēlreiz.',
     'error_saving'           => 'Kļūda saglabājot. Lūdzu mēģini vēlreiz.',
-    'error-login'            => 'Jūsu parole ir nomainīta citā pārlūkprogrammas sesijā. Lūdzu pieslēdzieties ar jauno paroli.',
+    'password_changed'            => 'Jūsu parole ir nomainīta citā pārlūkprogrammas sesijā. Lūdzu pieslēdzieties ar jauno paroli.',
     'welcome'                => 'Laipni lūgti!',
     'use_sidebar'            => 'Izmantojiet sānjoslu pa kreisi, lai izveidotu, rediģētu vai izdzēstu saturu.',
 

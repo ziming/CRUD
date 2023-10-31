@@ -48,7 +48,7 @@ return [
     'account_updated'           => 'Account aktualisiert.',
     'unknown_error'             => 'Ein unbekannter Fehler ist aufgetreten. Bitte erneut versuchen',
     'error_saving'              => 'Fehler beim Speichern. Bitte erneut probieren.',
-    'error-login'               => 'Ihr Passwort wurde in einem anderen Browser geändert. Bitte loggen Sie sich erneut ein.',
+    'password_changed'               => 'Ihr Passwort wurde in einem anderen Browser geändert. Bitte loggen Sie sich erneut ein.',
     'welcome'                   => 'Willkommen!',
     'use_sidebar'               => 'Nutze die Seitenleiste links, um Inhalte zu erstellen oder zu editieren.',
 

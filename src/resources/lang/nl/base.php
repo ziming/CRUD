@@ -50,7 +50,7 @@ return [
     'account_updated'        => 'Account succesvol bijgewerkt.',
     'unknown_error'          => 'Onbekende fout opgetreden. Probeer het opnieuw.',
     'error_saving'           => 'Fout bij het opslaan opgetreden. Probeer het opnieuw.',
-    'error-login'            => 'Je wachtwoord is gewijzigd in een andere browser sessie. Log opnieuw in met je nieuwe wachtwoord.',
+    'password_changed'            => 'Je wachtwoord is gewijzigd in een andere browser sessie. Log opnieuw in met je nieuwe wachtwoord.',
     'welcome'                => 'Welkom!',
     'use_sidebar'            => 'Gebruik de menubalk links om inhoud te maken, bewerken of verwijderen.',
 

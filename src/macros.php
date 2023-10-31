@@ -56,7 +56,6 @@ if (! CrudField::hasMacro('withFiles')) {
 
 if (! CrudColumn::hasMacro('linkTo')) {
     CrudColumn::macro('linkTo', function (string|array|Closure $routeOrConfiguration, ?array $parameters = []): static {
-
         $wrapper = $this->attributes['wrapper'] ?? [];
 
         // parse the function input to get the actual route and parameters we'll be working with

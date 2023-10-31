@@ -52,7 +52,7 @@ return [
     'account_updated'        => 'Account updated successfully.',
     'unknown_error'          => 'An unknown error has occurred. Please try again.',
     'error_saving'           => 'Error while saving. Please try again.',
-    'password_changed'            => 'Your password was changed in another browser session. Please login again using the new password.',
+    'password_changed'       => 'Your password was changed in another browser session. Please login again using the new password.',
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
 

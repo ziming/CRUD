@@ -52,7 +52,7 @@ return [
     'account_updated'        => 'Account aggiornato con successo.',
     'unknown_error'          => 'Si è verificato un errore sconosciuto. Riprova più tardi.',
     'error_saving'           => 'Errore durante il salvataggio. Riprova più tardi.',
-    'password_changed'            => 'La tua password è stata cambiata in un\'altra sessione del browser. Accedi nuovamente con la tua nuova password.',
+    'password_changed'       => 'La tua password è stata cambiata in un\'altra sessione del browser. Accedi nuovamente con la tua nuova password.',
     'welcome'                => 'Benvenuto!',
     'use_sidebar'            => 'Utilizza la barra laterale per creare, modificare od eliminare contenuti.',
 

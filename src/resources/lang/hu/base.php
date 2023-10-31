@@ -50,7 +50,7 @@ return [
     'account_updated'        => 'A fiók sikeresen frissítve.',
     'unknown_error'          => 'Ismeretlen hiba történt. Kérlek próbáld újra!',
     'error_saving'           => 'Hiba mentésnél. Kérlek próbáld újra!',
-    'password_changed'            => 'A jelszavad megváltozott egy másik böngészőben. Kérlek jelentkezz be újra a friss jelszóval.',
+    'password_changed'       => 'A jelszavad megváltozott egy másik böngészőben. Kérlek jelentkezz be újra a friss jelszóval.',
     'welcome'                => 'Üdvözöllek!',
     'use_sidebar'            => 'Használd a bal oldali sávot tartalom létrehozásához, szerkesztéséhez, vagy törléséhez.',
 

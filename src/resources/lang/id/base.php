@@ -50,7 +50,7 @@ return [
     'account_updated'        => 'Akun berhasil diperbarui.',
     'unknown_error'          => 'Telah terjadi kesalahan yang tidak diketahui. Silakan coba lagi.',
     'error_saving'           => 'Kesalahan saat menyimpan. Silakan coba lagi.',
-    'password_changed'            => 'Kata sandi Anda telah diubah di sesi browser lain. Silakan masuk kembali dengan kata sandi baru Anda.',
+    'password_changed'       => 'Kata sandi Anda telah diubah di sesi browser lain. Silakan masuk kembali dengan kata sandi baru Anda.',
     'welcome'                => 'Selamat datang!',
     'use_sidebar'            => 'Gunakan menu kiri untuk membuat, mengedit, atau menghapus konten.',
 

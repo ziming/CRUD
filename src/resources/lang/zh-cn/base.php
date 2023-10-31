@@ -50,7 +50,7 @@ return [
     'account_updated'        => '账户信息更新成功.',
     'unknown_error'          => '未知错误，请重新试一次.',
     'error_saving'           => '保存时出现错误. 请重新试一次.',
-    'password_changed'            => '您的密码在另一个浏览器会话期间被更改。 请使用您的新密码重新登录。',
+    'password_changed'       => '您的密码在另一个浏览器会话期间被更改。 请使用您的新密码重新登录。',
     'welcome'                => '欢迎!',
     'use_sidebar'            => '使用左侧边栏创建、编辑或删除内容。',
 

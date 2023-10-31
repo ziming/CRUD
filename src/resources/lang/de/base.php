@@ -48,6 +48,7 @@ return [
     'account_updated'           => 'Account aktualisiert.',
     'unknown_error'             => 'Ein unbekannter Fehler ist aufgetreten. Bitte erneut versuchen',
     'error_saving'              => 'Fehler beim Speichern. Bitte erneut probieren.',
+    'session_expired_error'     => 'Deine Sitzung ist abgelaufen. Bitte loggen Sie sich erneut in Ihr Konto ein.',
     'welcome'                   => 'Willkommen!',
     'use_sidebar'               => 'Nutze die Seitenleiste links, um Inhalte zu erstellen oder zu editieren.',
 

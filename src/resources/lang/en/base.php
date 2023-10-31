@@ -52,6 +52,7 @@ return [
     'account_updated'        => 'Account updated successfully.',
     'unknown_error'          => 'An unknown error has occurred. Please try again.',
     'error_saving'           => 'Error while saving. Please try again.',
+    'session_expired_error'  => 'Your session has expired. Please login again into your account.',
     'welcome'                => 'Welcome!',
     'use_sidebar'            => 'Use the sidebar to the left to create, edit or delete content.',
 

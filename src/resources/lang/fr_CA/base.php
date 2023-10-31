@@ -58,4 +58,5 @@ return [
     'account_updated'        => 'Compte mis à jour avec succès.',
     'unknown_error'          => 'Un erreur s’est produite. Veuillez réessayer.',
     'error_saving'           => 'Erreur lors de l’enregistrement. Veuillez réessayer.',
+    'session_expired_error'  => 'Votre session a expiré. Veuillez vous reconnecter à votre compte.',
 ];

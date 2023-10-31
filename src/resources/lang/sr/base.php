@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Nalog uspešno ažuriran.',
     'unknown_error'          => 'Nepoznata greška se dogodila. Pokušajte ponovo.',
     'error_saving'           => 'Greška pri pokušaju čuvanja. Pokušajte ponovo.',
+    'session_expired_error'  => 'Vaša sesija je istekla. Molimo prijavite se ponovo na svoj račun.',
     'welcome'                => 'Dobro došli!',
     'use_sidebar'            => 'Upotrebite bočni meni na levoj strani da kreirate, izmenite ili obrišete sadržaj.',
 

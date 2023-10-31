@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Account succesvol bijgewerkt.',
     'unknown_error'          => 'Onbekende fout opgetreden. Probeer het opnieuw.',
     'error_saving'           => 'Fout bij het opslaan opgetreden. Probeer het opnieuw.',
+    'session_expired_error'  => 'Uw sessie is verlopen. Log opnieuw in op uw account.',
     'welcome'                => 'Welkom!',
     'use_sidebar'            => 'Gebruik de menubalk links om inhoud te maken, bewerken of verwijderen.',
 

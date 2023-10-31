@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'A fiók sikeresen frissítve.',
     'unknown_error'          => 'Ismeretlen hiba történt. Kérlek próbáld újra!',
     'error_saving'           => 'Hiba mentésnél. Kérlek próbáld újra!',
+    'session_expired_error'  => 'A munkamenet lejárt. Kérjük, jelentkezzen be újra fiókjába.',
     'welcome'                => 'Üdvözöllek!',
     'use_sidebar'            => 'Használd a bal oldali sávot tartalom létrehozásához, szerkesztéséhez, vagy törléséhez.',
 

@@ -48,6 +48,7 @@ return [
     'account_updated'        => 'Contul a fost modificat cu succes.',
     'unknown_error'          => 'A avut loc o eroare necunoscută. Vă rugăm să încercați din nou.',
     'error_saving'           => 'Eroare în timpul salvării. Vă rugăm să încercați din nou.',
+    'session_expired_error'  => 'Sesiunea dumneavoastră a expirat. Vă rugăm să vă conectați din nou la contul dvs.',
 
     'password_reset' => [
         'greeting' => 'Salutare!',

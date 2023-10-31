@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Akun berhasil diperbarui.',
     'unknown_error'          => 'Telah terjadi kesalahan yang tidak diketahui. Silakan coba lagi.',
     'error_saving'           => 'Kesalahan saat menyimpan. Silakan coba lagi.',
+    'session_expired_error'  => 'Sesi Anda telah berakhir. Silakan login kembali ke akun Anda.',
     'welcome'                => 'Selamat datang!',
     'use_sidebar'            => 'Gunakan menu kiri untuk membuat, mengedit, atau menghapus konten.',
 

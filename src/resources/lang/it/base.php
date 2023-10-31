@@ -52,6 +52,7 @@ return [
     'account_updated'        => 'Account aggiornato con successo.',
     'unknown_error'          => 'Si è verificato un errore sconosciuto. Riprova più tardi.',
     'error_saving'           => 'Errore durante il salvataggio. Riprova più tardi.',
+    'session_expired_error'  => 'La tua sessione è scaduta. Effettua nuovamente l\'accesso al tuo account.',
     'welcome'                => 'Benvenuto!',
     'use_sidebar'            => 'Utilizza la barra laterale per creare, modificare od eliminare contenuti.',
 

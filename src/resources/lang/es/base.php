@@ -40,6 +40,7 @@ return [
     'save'                   => 'Guardar',
     'cancel'                 => 'Cancelar',
     'error'                  => 'Error',
+    'session_expired_error'  => 'Su sesión ha caducado. Por favor inicie sesión nuevamente en su cuenta.',
     'success'                => 'Existoso',
     'warning'                => 'Advertencia',
     'notice'                 => 'Aviso',

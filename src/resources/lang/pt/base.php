@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Conta actualizada com sucesso.',
     'unknown_error'          => 'Ocorreu um erro desconhecido. Tente novamente.',
     'error_saving'           => 'Ocorreu um erro ao guardar. Tente novamente.',
+    'session_expired_error'  => 'A sua sessão expirou. Faça login novamente na sua conta.',
     'welcome'                => 'Bem-vindo!',
     'use_sidebar'            => 'Use a barra lateral à esquerda para criar, editar ou apagar conteúdo.',
 

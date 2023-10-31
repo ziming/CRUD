@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Účet uložen.',
     'unknown_error'          => 'Nastala neznámá chyba. Zkuste znovu nebo kontaktujte podporu.',
     'error_saving'           => 'Chyba při ukládání. Zkuste znovu nebo kontaktujte podporu.',
+    'session_expired_error'  => 'Vaše relace vypršela. Přihlaste se prosím znovu ke svému účtu.',
     'welcome'                => 'Vítejte!',
     'use_sidebar'            => 'Použíjte boční menu k vytvoření, editaci nebo smazání záznamů.',
 

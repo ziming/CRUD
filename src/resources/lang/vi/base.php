@@ -50,6 +50,7 @@ return [
     'account_updated'        => 'Tài khoản đã được cập nhật thành công.',
     'unknown_error'          => 'Đã xảy ra lỗi. Vui lòng thử lại.',
     'error_saving'           => 'Đã xảy ra lỗi trong lúc lưu. Vui lòng thử lại.',
+    'session_expired_error'  => 'Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại vào tài khoản của bạn.',
     'welcome'                => 'Xin chào!',
     'use_sidebar'            => 'Sử dụng các chức năng ở thanh bên để tạo, sửa hoặc xoá các nội dung.',
 

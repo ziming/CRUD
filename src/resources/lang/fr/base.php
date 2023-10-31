@@ -39,6 +39,7 @@ return [
     'save'                   => 'Enregistrer',
     'cancel'                 => 'Annuler',
     'error'                  => 'Erreur',
+    'session_expired_error'  => 'Votre session a expiré. Veuillez vous reconnecter à votre compte.',
     'success'                => 'Succès',
     'warning'                => 'Attention',
     'old_password_incorrect' => 'L’ancien mot de passe est erroné.',

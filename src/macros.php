@@ -57,6 +57,8 @@ if (! CrudField::hasMacro('withFiles')) {
 if (! CrudColumn::hasMacro('linkTo')) {
     CrudColumn::macro('linkTo', function (string|array|Closure $routeOrConfiguration, ?array $parameters = []): static {
         $wrapper = $this->attributes['wrapper'] ?? [];
+
+        // parse the function input to get the actual route and parameters we'll be working with
         if (is_array($routeOrConfiguration)) {
             $route = $routeOrConfiguration['route'] ?? null;
             $parameters = $routeOrConfiguration['parameters'] ?? [];
@@ -64,6 +66,7 @@ if (! CrudColumn::hasMacro('linkTo')) {
             $route = $routeOrConfiguration;
         }
 
+        // if the route is a closure, we'll just call it
         if ($route instanceof Closure) {
             $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route) {
                 return $route($entry, $related_key, $column, $crud);
@@ -73,18 +76,20 @@ if (! CrudColumn::hasMacro('linkTo')) {
             return $this;
         }
 
-        $routeInstance = Route::getRoutes()->getByName($route);
-
-        if (! $routeInstance) {
+        // if the route doesn't exist, we'll throw an exception
+        if (! $routeInstance = Route::getRoutes()->getByName($route)) {
             throw new \Exception("Route [{$route}] not found while building the link for column [{$this->attributes['name']}].");
         }
 
-        $expectedParameters = $routeInstance->parameterNames();
+        // calculate the parameters we'll be using for the route() call
+        // (eg. if there's only one parameter and user didn't provide it, we'll assume it's the entry's related key)
+        $parameters = (function () use ($parameters, $routeInstance, $route) {
+            $expectedParameters = $routeInstance->parameterNames();
 
-        $parameters = (function () use ($parameters, $expectedParameters, $route) {
             if (count($expectedParameters) === 0) {
                 return $parameters;
             }
+
             $autoInferedParameter = array_diff($expectedParameters, array_keys($parameters));
             if (count($autoInferedParameter) > 1) {
                 throw new \Exception("Route [{$route}] expects parameters [".implode(', ', $expectedParameters)."]. Insuficient parameters provided in column: [{$this->attributes['name']}].");
@@ -98,11 +103,14 @@ if (! CrudColumn::hasMacro('linkTo')) {
             return array_merge($autoInferedParameter, $parameters);
         })();
 
+        // set up the wrapper href attribute
         $wrapper['href'] = function ($crud, $column, $entry, $related_key) use ($route, $parameters) {
+            // if the parameter is callable, we'll call it
             $parameters = collect($parameters)->map(fn ($item) => is_callable($item) ? $item($entry, $related_key, $column, $crud) : $item)->toArray();
 
             return route($route, $parameters);
         };
+
         $this->wrapper($wrapper);
 
         return $this;

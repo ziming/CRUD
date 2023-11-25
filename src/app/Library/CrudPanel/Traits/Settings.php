@@ -161,8 +161,8 @@ trait Settings
     {
         return collect($this->settings)
             ->keys()
-            ->filter(fn(string $key): bool => str_contains($key, '.access'))
-            ->map(fn(string $key): string => str_replace('.access', '', $key))
+            ->filter(fn (string $key): bool => str_contains($key, '.access'))
+            ->map(fn (string $key): string => str_replace('.access', '', $key))
             ->values()
             ->toArray();
     }

@@ -126,4 +126,14 @@ trait Access
     {
         $this->denyAccess($this->getAvailableOperationsList());
     }
+
+    /**
+     * Allow access only to operations in the array.
+     * By denying access to all other operations.
+     */
+    public function allowAccessOnlyTo(array|string $operation): void
+    {
+        $this->denyAllAccess();
+        $this->allowAccess($operation);
+    }
 }

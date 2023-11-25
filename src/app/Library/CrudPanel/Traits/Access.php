@@ -118,4 +118,12 @@ trait Access
     {
         return $this->get($operation.'.access') !== null;
     }
+
+    /**
+     * Remove the access to all available operations.
+     */
+    public function denyAllAccess(): void
+    {
+        $this->denyAccess($this->getAvailableOperationsList());
+    }
 }

@@ -67,4 +67,11 @@ return [
     'confirm_new_password' => 'Bestätige das neue Passwort',
     'throttled'            => 'Du hast kürzlich bereits ein Zurücksetzen des Passworts beantragt. Bitte prüfe deine E-Mails. Solltest du keine E-Mail erhalten haben, versuche es später bitte erneut.',
     'throttled_request'    => 'Du hast das Limit an Versuchen erreicht. Bitte warte ein paar Minuten und versuche es erneut.',
+
+    'verify_email' => [
+        'email_verification' => 'E-Mail-Verifizierung',
+        'verification_link_sent' => 'Ein Verifizierungslink wurde an deine E-Mail-Adresse gesendet.',
+        'email_verification_required' => 'Bitte verifiziere deine E-Mail-Adresse, indem du auf den Link klickst, den wir dir geschickt haben.',
+        'resend_verification_link' => 'Link erneut senden',
+    ],
 ];

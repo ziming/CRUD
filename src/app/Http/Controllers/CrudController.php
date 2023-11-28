@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Http\Controllers;
 
+use Backpack\CRUD\app\Library\Attributes\DeprecatedIgnoreOnRuntime;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
@@ -59,6 +60,7 @@ class CrudController extends Controller
      * @param  string  $routeName  Route name prefix (ends with .).
      * @param  string  $controller  Name of the current controller.
      */
+    #[DeprecatedIgnoreOnRuntime('we dont call this method anymore unless you had it overwritten in your CrudController')]
     public function setupRoutes($segment, $routeName, $controller)
     {
         preg_match_all('/(?<=^|;)setup([^;]+?)Routes(;|$)/', implode(';', get_class_methods($this)), $matches);

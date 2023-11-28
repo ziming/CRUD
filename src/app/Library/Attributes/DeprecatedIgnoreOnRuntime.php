@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\app\Library\Attributes;
+
 use Attribute;
 
 /**

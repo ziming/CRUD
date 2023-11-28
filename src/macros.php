@@ -151,22 +151,19 @@ if (! Route::hasMacro('crud')) {
         } else {
             $groupNamespace = '';
         }
+
         $namespacedController = $groupNamespace.$controller;
+        $controllerReflection = new ReflectionClass($namespacedController);
+        $setupRoutesMethod = $controllerReflection->getMethod('setupRoutes');
 
-        $reflection = new ReflectionClass($namespacedController);
-
-        $setupRoutesMethod = $reflection->getMethod('setupRoutes');
-
-        // check if method has deprecated attribute, in case it does it means developer didn't overwrite the method
-        // and we can safely use reflection instead of instantiating the controller class
-        $deprecated = $setupRoutesMethod->getAttributes(\Backpack\CRUD\app\Library\Attributes\DeprecatedIgnoreOnRuntime::class);
-
-        if (empty($deprecated)) {
-            // when the attribute DeprecatedIgnoreOnRuntime is not found is because the developer has overwritten the method
-            // we will keep the old behavior for backwards compatibility
+        // check if method has #[DeprecatedIgnoreOnRuntime] attribute
+        if (empty($setupRoutesMethod->getAttributes(\Backpack\CRUD\app\Library\Attributes\DeprecatedIgnoreOnRuntime::class))) {
+            // when the attribute is not found the developer has overwritten the method
+            // or the CrudPanel, we will keep the old behavior for backwards compatibility
             $setupRoutesMethod->invoke(App::make($namespacedController), $name, $routeName, $controller);
         } else {
-            foreach ($reflection->getMethods() as $method) {
+            $controllerInstance = $controllerReflection->newInstanceWithoutConstructor();
+            foreach ($controllerReflection->getMethods() as $method) {
                 if (($method->isPublic() ||
                     $method->isProtected()) &&
                     $method->getName() !== 'setupRoutes' &&
@@ -174,7 +171,7 @@ if (! Route::hasMacro('crud')) {
                     str_ends_with($method->getName(), 'Routes')
                 ) {
                     $method->setAccessible(true);
-                    $method->invoke($reflection->newInstanceWithoutConstructor(), $name, $routeName, $controller);
+                    $method->invoke($controllerInstance, $name, $routeName, $controller);
                 }
             }
         }

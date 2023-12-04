@@ -151,4 +151,19 @@ trait Settings
             }
         }
     }
+
+    /**
+     * Get the current CRUD operations loaded.
+     *
+     * @return array operaiton names
+     */
+    private function getAvailableOperationsList(): array
+    {
+        return collect($this->settings)
+            ->keys()
+            ->filter(fn (string $key): bool => str_contains($key, '.access'))
+            ->map(fn (string $key): string => str_replace('.access', '', $key))
+            ->values()
+            ->toArray();
+    }
 }

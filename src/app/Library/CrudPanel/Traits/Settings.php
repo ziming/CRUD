@@ -157,7 +157,7 @@ trait Settings
      *
      * @return array operaiton names
      */
-    public function getAvailableOperationsList(): array
+    private function getAvailableOperationsList(): array
     {
         return collect($this->settings)
             ->keys()

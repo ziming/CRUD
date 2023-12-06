@@ -27,7 +27,7 @@ trait ListOperation
             'operation' => 'list',
         ]);
 
-        if (! isset($this->listOperationDetailsRow) || $this->listOperationDetailsRow) {
+        if (! isset($this->setupDetailsRowRoutes) || $this->setupDetailsRowRoutes === true) {
             Route::get($segment.'/{id}/details', [
                 'as'        => $routeName.'.showDetailsRow',
                 'uses'      => $controller.'@showDetailsRow',

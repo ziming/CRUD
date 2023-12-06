@@ -27,7 +27,7 @@ trait ListOperation
             'operation' => 'list',
         ]);
 
-        if(!isset($this->listOperationDetailsRow) || (isset($this->listOperationDetailsRow) && is_bool($this->listOperationDetailsRow) && $this->listOperationDetailsRow)) {
+        if (! isset($this->listOperationDetailsRow) || (isset($this->listOperationDetailsRow) && is_bool($this->listOperationDetailsRow) && $this->listOperationDetailsRow)) {
             Route::get($segment.'/{id}/details', [
                 'as'        => $routeName.'.showDetailsRow',
                 'uses'      => $controller.'@showDetailsRow',

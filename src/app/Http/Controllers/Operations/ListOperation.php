@@ -27,11 +27,13 @@ trait ListOperation
             'operation' => 'list',
         ]);
 
-        Route::get($segment.'/{id}/details', [
-            'as'        => $routeName.'.showDetailsRow',
-            'uses'      => $controller.'@showDetailsRow',
-            'operation' => 'list',
-        ]);
+        if (! isset($this->setupDetailsRowRoute) || $this->setupDetailsRowRoute === true) {
+            Route::get($segment.'/{id}/details', [
+                'as'        => $routeName.'.showDetailsRow',
+                'uses'      => $controller.'@showDetailsRow',
+                'operation' => 'list',
+            ]);
+        }
     }
 
     /**

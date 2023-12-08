@@ -61,7 +61,7 @@ trait HandleRepeatableUploads
     {
         $modelCount = CRUD::get('uploaded_'.$this->getRepeatableContainerName().'_count');
         $value = $value->slice($modelCount, 1)->toArray();
-     
+
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
             if (array_key_exists($modelCount, $value) && array_key_exists($uploader->getAttributeName(), $value[$modelCount])) {
                 $entry->{$uploader->getAttributeName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getAttributeName()]);

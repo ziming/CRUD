@@ -17,14 +17,14 @@ class MultipleFiles extends Uploader
 
     public function uploadFiles(Model $entry, $value = null)
     {
-        if($value && isset($value[0]) && is_null($value[0])) {
+        if ($value && isset($value[0]) && is_null($value[0])) {
             $value = false;
         }
 
         $filesToDelete = collect(CRUD::getRequest()->get('clear_'.$this->getRepeatableContainerName() ?? $this->getName()))->flatten()->toArray();
         $value = $value ?? collect(CRUD::getRequest()->file($this->getRepeatableContainerName() ?? $this->getName()))->flatten()->toArray();
         $previousFiles = $this->getPreviousFiles($entry) ?? [];
-       
+
         if (! is_array($previousFiles) && is_string($previousFiles)) {
             $previousFiles = json_decode($previousFiles, true);
         }
@@ -41,7 +41,7 @@ class MultipleFiles extends Uploader
             }
         }
 
-        if(!is_array($value)) {
+        if (! is_array($value)) {
             $value = [];
         }
 

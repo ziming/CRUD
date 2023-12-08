@@ -64,7 +64,9 @@ trait HandleRepeatableUploads
 
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
             if (array_key_exists($modelCount, $value) && array_key_exists($uploader->getAttributeName(), $value[$modelCount])) {
-                $entry->{$uploader->getAttributeName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getAttributeName()]);
+                $entryFiles = request()->file($this->getRepeatableContainerName())[$modelCount] ?? null;
+                $entryFiles = !is_null($entryFiles) ? $entryFiles[$uploader->getAttributeName()] : ($value[$modelCount][$uploader->getAttributeName()] ?? false);
+                $entry->{$uploader->getAttributeName()} = $uploader->uploadFiles($entry, $entryFiles);
             }
         }
 

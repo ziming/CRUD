@@ -2,8 +2,10 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 trait Update
 {
@@ -25,9 +27,18 @@ trait Update
         $item = $this->model->findOrFail($id);
 
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
-        $updated = $item->update($directInputs);
-        $this->createRelationsForItem($item, $relationInputs);
+        if(config('backpack.crud.use_database_transactions_on_create_and_update')) {
+            return DB::transaction(function() use($item, $directInputs, $relationInputs) {
+                $this->updateModelAndRelations($item, $directInputs, $relationInputs);
+            });
+        }
+        
+        return $this->updateModelAndRelations($item, $directInputs, $relationInputs);
+    }
 
+    private function updateModelAndRelations(Model $item, array $directInputs, array $relationInputs): Model {
+        $item->update($directInputs);
+        $this->createRelationsForItem($item, $relationInputs);
         return $item;
     }
 

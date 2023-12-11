@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 trait Create
 {
@@ -21,9 +23,19 @@ trait Create
     public function create($input)
     {
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
+
+        if(config('backpack.crud.use_database_transactions_on_create_and_update')) {
+            return DB::transaction(function() use($directInputs, $relationInputs) {
+                $this->createModelAndRelations($directInputs, $relationInputs);
+            });
+        }
+        
+        return $this->createModelAndRelations($directInputs, $relationInputs);
+    }
+
+    private function createModelAndRelations(array $directInputs, array $relationInputs): Model {
         $item = $this->model->create($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
-
         return $item;
     }
 

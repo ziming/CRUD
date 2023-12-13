@@ -4,8 +4,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 trait Update
 {
@@ -27,16 +27,18 @@ trait Update
         $item = $this->model->findOrFail($id);
 
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
-        if($this->get('update.useDatabaseTransactions')) {
-            return DB::transaction(fn() => $this->updateModelAndRelations($item, $directInputs, $relationInputs));
+        if ($this->get('update.useDatabaseTransactions')) {
+            return DB::transaction(fn () => $this->updateModelAndRelations($item, $directInputs, $relationInputs));
         }
-        
+
         return $this->updateModelAndRelations($item, $directInputs, $relationInputs);
     }
 
-    private function updateModelAndRelations(Model $item, array $directInputs, array $relationInputs): Model {
+    private function updateModelAndRelations(Model $item, array $directInputs, array $relationInputs): Model
+    {
         $item->update($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
+
         return $item;
     }
 

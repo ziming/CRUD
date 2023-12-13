@@ -24,16 +24,18 @@ trait Create
     {
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
 
-        if($this->get('create.useDatabaseTransactions')) {
-            return DB::transaction(fn()  => $this->createModelAndRelations($directInputs, $relationInputs));
+        if ($this->get('create.useDatabaseTransactions')) {
+            return DB::transaction(fn () => $this->createModelAndRelations($directInputs, $relationInputs));
         }
-        
+
         return $this->createModelAndRelations($directInputs, $relationInputs);
     }
 
-    private function createModelAndRelations(array $directInputs, array $relationInputs): Model {
+    private function createModelAndRelations(array $directInputs, array $relationInputs): Model
+    {
         $item = $this->model->create($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
+
         return $item;
     }
 

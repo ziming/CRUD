@@ -35,6 +35,9 @@ return [
     // Should we warn a user before leaving the page with unsaved changes?
     'warnBeforeLeaving' => false,
 
+    // Should the create process (queries to insert the entry and it's relationships) be wrapped in a transaction?
+    'useDatabaseTransactions' => false,
+
     // Before saving the entry, how would you like the request to be stripped?
     //  - false - use Backpack's default (ONLY save inputs that have fields)
     //  - invokable class - custom stripping (the return should be an array with input names)

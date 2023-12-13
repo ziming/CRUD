@@ -24,10 +24,8 @@ trait Create
     {
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
 
-        if(config('backpack.crud.use_database_transactions_on_create_and_update')) {
-            return DB::transaction(function() use($directInputs, $relationInputs) {
-                $this->createModelAndRelations($directInputs, $relationInputs);
-            });
+        if($this->get('create.useDatabaseTransactions')) {
+            return DB::transaction(fn()  => $this->createModelAndRelations($directInputs, $relationInputs));
         }
         
         return $this->createModelAndRelations($directInputs, $relationInputs);

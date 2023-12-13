@@ -27,10 +27,8 @@ trait Update
         $item = $this->model->findOrFail($id);
 
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
-        if(config('backpack.crud.use_database_transactions_on_create_and_update')) {
-            return DB::transaction(function() use($item, $directInputs, $relationInputs) {
-                $this->updateModelAndRelations($item, $directInputs, $relationInputs);
-            });
+        if($this->get('update.useDatabaseTransactions')) {
+            return DB::transaction(fn() => $this->updateModelAndRelations($item, $directInputs, $relationInputs));
         }
         
         return $this->updateModelAndRelations($item, $directInputs, $relationInputs);

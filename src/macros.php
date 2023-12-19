@@ -152,28 +152,6 @@ if (! Route::hasMacro('crud')) {
             $groupNamespace = '';
         }
 
-        $namespacedController = $groupNamespace.$controller;
-        $controllerReflection = new ReflectionClass($namespacedController);
-        $setupRoutesMethod = $controllerReflection->getMethod('setupRoutes');
-
-        // check if method has #[DeprecatedIgnoreOnRuntime] attribute
-        if (empty($setupRoutesMethod->getAttributes(\Backpack\CRUD\app\Library\Attributes\DeprecatedIgnoreOnRuntime::class))) {
-            // when the attribute is not found the developer has overwritten the method
-            // or the CrudPanel, we will keep the old behavior for backwards compatibility
-            $setupRoutesMethod->invoke(App::make($namespacedController), $name, $routeName, $controller);
-        } else {
-            $controllerInstance = $controllerReflection->newInstanceWithoutConstructor();
-            foreach ($controllerReflection->getMethods() as $method) {
-                if (($method->isPublic() ||
-                    $method->isProtected()) &&
-                    $method->getName() !== 'setupRoutes' &&
-                    str_starts_with($method->getName(), 'setup') &&
-                    str_ends_with($method->getName(), 'Routes')
-                ) {
-                    $method->setAccessible(true);
-                    $method->invoke($controllerInstance, $name, $routeName, $controller);
-                }
-            }
-        }
+        \Backpack\CRUD\app\Library\CrudPanel\CrudRouter::setupControllerRoutes($name, $routeName, $controller, $groupNamespace); 
     });
 }

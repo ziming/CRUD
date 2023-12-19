@@ -2,7 +2,6 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Backpack\CRUD\app\Library\Contracts\CrudControllerContract;
 use Illuminate\Support\Facades\App;
 use ReflectionClass;
 
@@ -11,7 +10,7 @@ final class CrudRouter
     public static function setupControllerRoutes(string $name, string $routeName, string $controller, string $groupNamespace = ''): void
     {
         $namespacedController = $groupNamespace.$controller;
-            
+
         $controllerReflection = new ReflectionClass($namespacedController);
         $setupRoutesMethod = $controllerReflection->getMethod('setupRoutes');
 
@@ -20,6 +19,7 @@ final class CrudRouter
             // when the attribute is not found the developer has overwritten the method
             // we will keep the old behavior for backwards compatibility
             $setupRoutesMethod->invoke(App::make($namespacedController), $name, $routeName, $controller);
+
             return;
         }
 

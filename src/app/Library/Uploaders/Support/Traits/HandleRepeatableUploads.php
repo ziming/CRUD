@@ -13,7 +13,7 @@ trait HandleRepeatableUploads
 {
     public bool $handleRepeatableFiles = false;
 
-    public ?string $repeatableContainerName = null;
+    public null|string $repeatableContainerName = null;
 
     /*******************************
      * Setters - fluently configure the uploader
@@ -30,7 +30,7 @@ trait HandleRepeatableUploads
     /*******************************
      * Getters
      *******************************/
-    public function getRepeatableContainerName(): ?string
+    public function getRepeatableContainerName(): null|string
     {
         return $this->repeatableContainerName;
     }

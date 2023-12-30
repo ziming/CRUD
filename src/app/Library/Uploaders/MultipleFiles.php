@@ -21,8 +21,8 @@ class MultipleFiles extends Uploader
             $value = false;
         }
 
-        $filesToDelete = collect(CRUD::getRequest()->get('clear_'.$this->getRepeatableContainerName() ?? $this->getName()))->flatten()->toArray();
-        $value = $value ?? collect(CRUD::getRequest()->file($this->getRepeatableContainerName() ?? $this->getName()))->flatten()->toArray();
+        $filesToDelete = collect(CRUD::getRequest()->get('clear_'.$this->getNameForRequest()))->flatten()->toArray();
+        $value = $value ?? collect(CRUD::getRequest()->file($this->getNameForRequest()))->flatten()->toArray();
         $previousFiles = $this->getPreviousFiles($entry) ?? [];
 
         if (! is_array($previousFiles) && is_string($previousFiles)) {

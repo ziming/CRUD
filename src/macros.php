@@ -138,6 +138,17 @@ if (! CrudColumn::hasMacro('linkToShow')) {
     });
 }
 
+if (! CrudColumn::hasMacro('linkTarget')) {
+    CrudColumn::macro('linkTarget', function (string $target = '_self'): static {
+        $this->wrapper([
+            ...$this->attributes['wrapper'] ?? [],
+            'target' => $target,
+        ]);
+
+        return $this;
+    });
+}
+
 /**
  * The route macro allows developers to generate the routes for a CrudController,
  * for all operations, using a simple syntax: Route::crud().

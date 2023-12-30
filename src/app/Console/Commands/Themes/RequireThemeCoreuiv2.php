@@ -29,13 +29,13 @@ class RequireThemeCoreuiv2 extends Command
      * @var array
      */
     public static $addon = [
-        'name'        => 'CoreUIv2',
+        'name' => 'CoreUIv2',
         'description' => [
             'UI provided by CoreUIv2, a Boostrap 4 template. Considered legacy, but useful for IE support.',
             '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv2/</>',
         ],
-        'repo'    => 'backpack/theme-coreuiv2',
-        'path'    => 'vendor/backpack/theme-coreuiv2',
+        'repo' => 'backpack/theme-coreuiv2',
+        'path' => 'vendor/backpack/theme-coreuiv2',
         'command' => 'backpack:require:theme-coreuiv2',
         'view_namespace' => 'backpack.theme-coreuiv2::',
         'publish_tag' => 'theme-coreuiv2-config',

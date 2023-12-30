@@ -21,7 +21,7 @@ abstract class BaseTestClass extends TestCase
         Route::group([
             (array) config('backpack.base.web_middleware', 'web'),
             (array) config('backpack.base.middleware_key', 'admin'),
-            'prefix'     => config('backpack.base.route_prefix', 'admin'),
+            'prefix' => config('backpack.base.route_prefix', 'admin'),
         ],
             function () {
                 Route::get('articles/{id}/show/{detail}', ['as' => 'article.show.detail', 'action' => 'Backpack\CRUD\Tests\config\Http\Controllers\ArticleCrudController@detail']);

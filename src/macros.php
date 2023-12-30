@@ -117,6 +117,27 @@ if (! CrudColumn::hasMacro('linkTo')) {
     });
 }
 
+if (! CrudColumn::hasMacro('linkToShow')) {
+    CrudColumn::macro('linkToShow', function (): static {
+        $name = $this->attributes['name'];
+        $entity = $this->attributes['entity'] ?? null;
+        $route = "$entity.show";
+
+        if (! $entity) {
+            throw new \Exception("Entity not found while building the link for column [{$name}].");
+        }
+
+        if (! Route::getRoutes()->getByName($route)) {
+            throw new \Exception("Route '{$route}' not found while building the link for column [{$name}].");
+        }
+
+        // set up the link to the show page
+        $this->linkTo($route);
+
+        return $this;
+    });
+}
+
 if (! CrudColumn::hasMacro('linkTarget')) {
     CrudColumn::macro('linkTarget', function (string $target = '_self'): static {
         $this->wrapper([

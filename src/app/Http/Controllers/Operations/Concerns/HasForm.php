@@ -18,13 +18,13 @@ trait HasForm
         $postFormMethod = 'post'.$operationName.'Form';
 
         Route::get($segment.$secondSegment.$thirdSegment, [
-            'as'        => $routeName.'.'.$getFormMethod,
-            'uses'      => $controller.'@'.$getFormMethod,
+            'as' => $routeName.'.'.$getFormMethod,
+            'uses' => $controller.'@'.$getFormMethod,
             'operation' => $operationName,
         ]);
         Route::post($segment.$secondSegment.$thirdSegment, [
-            'as'        => $routeName.'.'.$postFormMethod,
-            'uses'      => $controller.'@'.$postFormMethod,
+            'as' => $routeName.'.'.$postFormMethod,
+            'uses' => $controller.'@'.$postFormMethod,
             'operation' => $operationName,
         ]);
     }

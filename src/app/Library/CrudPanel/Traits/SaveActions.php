@@ -289,7 +289,7 @@ trait SaveActions
         }
 
         return [
-            'active'  => $saveCurrent,
+            'active' => $saveCurrent,
             'options' => $dropdownOptions,
         ];
     }
@@ -347,8 +347,8 @@ trait SaveActions
         // if the request is AJAX, return a JSON response
         if ($this->getRequest()->ajax()) {
             return response()->json([
-                'success'      => true,
-                'data'         => $this->entry,
+                'success' => true,
+                'data' => $this->entry,
                 'redirect_url' => $redirectUrl,
                 'referrer_url' => $referrer_url ?? false,
             ]);

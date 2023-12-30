@@ -108,7 +108,11 @@ if (! CrudColumn::hasMacro('linkTo')) {
             // if the parameter is callable, we'll call it
             $parameters = collect($parameters)->map(fn ($item) => is_callable($item) ? $item($entry, $related_key, $column, $crud) : $item)->toArray();
 
-            return route($route, $parameters);
+            try {
+                return route($route, $parameters);
+            } catch (\Exception $e) {
+                return false;
+            }
         };
 
         $this->wrapper($wrapper);

@@ -157,6 +157,11 @@ abstract class Uploader implements UploaderInterface
         return $this->name;
     }
 
+    public function getNameForRequest(): string
+    {
+        return $this->repeatableContainerName ?? $this->name;
+    }
+
     public function canHandleMultipleFiles(): bool
     {
         return $this->handleMultipleFiles;

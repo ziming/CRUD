@@ -6,6 +6,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Uploaders\Support\Interfaces\UploaderInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -44,31 +45,86 @@ trait HandleRepeatableUploads
 
     protected function handleRepeatableFiles(Model $entry): Model
     {
+        if ($this->isRelationship) {
+            return $this->processRelationshipRepeatableUploaders($entry);
+        }
+
         $values = collect(CRUD::getRequest()->get($this->getRepeatableContainerName()));
         $files = collect(CRUD::getRequest()->file($this->getRepeatableContainerName()));
         $value = $this->mergeValuesRecursive($values, $files);
-
-        if ($this->isRelationship) {
-            return $this->uploadRelationshipFiles($entry, $value);
-        }
 
         $entry->{$this->getRepeatableContainerName()} = json_encode($this->processRepeatableUploads($entry, $value));
 
         return $entry;
     }
 
-    private function uploadRelationshipFiles(Model $entry, mixed $value): Model
+    private function processRelationshipRepeatableUploaders(Model $entry)
     {
-        $modelCount = CRUD::get('uploaded_'.$this->getRepeatableContainerName().'_count');
-        $value = $value->slice($modelCount, 1)->toArray();
-
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
-            if (array_key_exists($modelCount, $value) && array_key_exists($uploader->getAttributeName(), $value[$modelCount])) {
-                $entry->{$uploader->getAttributeName()} = $uploader->uploadFiles($entry, $value[$modelCount][$uploader->getAttributeName()]);
-            }
+            $entry = $uploader->uploadRelationshipFiles($entry);
         }
 
         return $entry;
+    }
+
+    protected function uploadRelationshipFiles(Model $entry): Model
+    {
+        $entryValue = $this->getFilesFromEntry($entry);
+
+        if ($this->handleMultipleFiles && is_string($entryValue)) {
+            try {
+                $entryValue = json_decode($entryValue, true);
+            } catch (\Exception) {
+                return $entry;
+            }
+        }
+
+        if ($this->hasDeletedFiles($entryValue)) {
+            $entry->{$this->getAttributeName()} = $this->uploadFiles($entry, false);
+            $this->updatedPreviousFiles = $this->getEntryAttributeValue($entry);
+        }
+
+        if ($this->shouldKeepPreviousValueUnchanged($entry, $entryValue)) {
+            $entry->{$this->getAttributeName()} = $this->updatedPreviousFiles ?? $this->getEntryOriginalValue($entry);
+
+            return $entry;
+        }
+
+        if ($this->shouldUploadFiles($entryValue)) {
+            $entry->{$this->getAttributeName()} = $this->uploadFiles($entry, $entryValue);
+        }
+
+        return $entry;
+    }
+
+    protected function getFilesFromEntry(Model $entry)
+    {
+        return $entry->getAttribute($this->getAttributeName());
+    }
+
+    protected function getEntryAttributeValue(Model $entry)
+    {
+        return $entry->{$this->getAttributeName()};
+    }
+
+    protected function getEntryOriginalValue(Model $entry)
+    {
+        return $entry->getOriginal($this->getAttributeName());
+    }
+
+    protected function shouldUploadFiles($entryValue): bool
+    {
+        return true;
+    }
+
+    protected function shouldKeepPreviousValueUnchanged(Model $entry, $entryValue): bool
+    {
+        return $entry->exists && ($entryValue === null || $entryValue === [null]);
+    }
+
+    protected function hasDeletedFiles($entryValue): bool
+    {
+        return $entryValue === false || $entryValue === null || $entryValue === [null];
     }
 
     protected function processRepeatableUploads(Model $entry, Collection $values): Collection
@@ -240,6 +296,13 @@ trait HandleRepeatableUploads
 
     private function deleteRelationshipFiles(Model $entry): void
     {
+        foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
+            $uploader->deleteRepeatableRelationFiles($entry);
+        }
+    }
+
+    private function deleteRepeatableRelationFiles(Model $entry)
+    {
         if (in_array($this->getRepeatableRelationType(), ['BelongsToMany', 'MorphToMany'])) {
             $pivotAttributes = $entry->getAttributes();
             $connectedPivot = $entry->pivotParent->{$this->getRepeatableContainerName()}->where(function ($item) use ($pivotAttributes) {
@@ -256,6 +319,16 @@ trait HandleRepeatableUploads
 
             if (! $files) {
                 return;
+            }
+
+            if ($this->handleMultipleFiles && is_string($files)) {
+                try {
+                    $files = json_decode($files, true);
+                } catch (\Exception) {
+                    Log::error('Could not parse files for deletion pivot entry with key: '.$entry->getKey().' and uploader: '.$this->getName());
+
+                    return;
+                }
             }
 
             if (is_array($files)) {

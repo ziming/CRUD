@@ -42,6 +42,11 @@ abstract class Uploader implements UploaderInterface
      */
     private bool $isRelationship = false;
 
+    /**
+     * When previous files are updated, we need to keep track of them so that we don't add deleted files to the new list.
+     */
+    private $updatedPreviousFiles = null;
+
     public function __construct(array $crudObject, array $configuration)
     {
         $this->name = $crudObject['name'];
@@ -237,22 +242,27 @@ abstract class Uploader implements UploaderInterface
 
     private function deleteFiles(Model $entry)
     {
-        $values = $entry->{$this->name};
+        $values = $entry->{$this->getAttributeName()};
+
+        if ($values === null) {
+            return;
+        }
 
         if ($this->handleMultipleFiles) {
             // ensure we have an array of values when field is not casted in model.
             if (! isset($entry->getCasts()[$this->name]) && is_string($values)) {
                 $values = json_decode($values, true);
             }
-            foreach ($values as $value) {
-                Storage::disk($this->disk)->delete($this->path.$value);
+            foreach ($values ?? [] as $value) {
+                $value = Str::start($value, $this->path);
+                Storage::disk($this->disk)->delete($value);
             }
 
             return;
         }
 
-        $values = Str::after($values, $this->path);
-        Storage::disk($this->disk)->delete($this->path.$values);
+        $values = Str::start($values, $this->path);
+        Storage::disk($this->disk)->delete($values);
     }
 
     private function performFileDeletion(Model $entry)
@@ -278,6 +288,10 @@ abstract class Uploader implements UploaderInterface
 
     private function getOriginalValue(Model $entry, $field = null)
     {
+        if ($this->updatedPreviousFiles !== null) {
+            return $this->updatedPreviousFiles;
+        }
+
         $previousValue = $entry->getOriginal($field ?? $this->getAttributeName());
 
         if (! $previousValue) {

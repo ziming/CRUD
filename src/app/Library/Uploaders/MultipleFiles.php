@@ -98,6 +98,4 @@ class MultipleFiles extends Uploader
     {
         return collect(CRUD::getRequest()->get('clear_'.$this->getNameForRequest()))->flatten()->toArray();
     }
-
-
 }

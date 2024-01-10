@@ -67,6 +67,6 @@ class SingleBase64Image extends Uploader
 
     protected function shouldKeepPreviousValueUnchanged(Model $entry, $entryValue): bool
     {
-        return $entry->exists && is_string($entryValue) && !Str::startsWith($entryValue, 'data:image');
+        return $entry->exists && is_string($entryValue) && ! Str::startsWith($entryValue, 'data:image');
     }
 }

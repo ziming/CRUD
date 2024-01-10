@@ -60,7 +60,7 @@ trait HandleRepeatableUploads
 
     private function processRelationshipRepeatableUploaders(Model $entry)
     {
-        foreach(app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
+        foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
             $entry = $uploader->uploadRelationshipFiles($entry);
         }
 
@@ -70,12 +70,12 @@ trait HandleRepeatableUploads
     protected function uploadRelationshipFiles(Model $entry): Model
     {
         $entryValue = $this->getFilesFromEntry($entry);
-        
-        if($this->handleMultipleFiles && is_string($entryValue)) {
+
+        if ($this->handleMultipleFiles && is_string($entryValue)) {
             try {
                 $entryValue = json_decode($entryValue, true);
             } catch (\Exception) {
-               return $entry;
+                return $entry;
             }
         }
 
@@ -84,12 +84,13 @@ trait HandleRepeatableUploads
             $this->updatedPreviousFiles = $this->getEntryAttributeValue($entry);
         }
 
-        if($this->shouldKeepPreviousValueUnchanged($entry, $entryValue)) {
+        if ($this->shouldKeepPreviousValueUnchanged($entry, $entryValue)) {
             $entry->{$this->getAttributeName()} = $this->updatedPreviousFiles ?? $this->getEntryOriginalValue($entry);
+
             return $entry;
         }
 
-        if($this->shouldUploadFiles($entryValue)) {
+        if ($this->shouldUploadFiles($entryValue)) {
             $entry->{$this->getAttributeName()} = $this->uploadFiles($entry, $entryValue);
         }
 
@@ -125,7 +126,7 @@ trait HandleRepeatableUploads
     {
         return $entryValue === false || $entryValue === null || $entryValue === [null];
     }
-    
+
     protected function processRepeatableUploads(Model $entry, Collection $values): Collection
     {
         foreach (app('UploadersRepository')->getRepeatableUploadersFor($this->getRepeatableContainerName()) as $uploader) {
@@ -320,15 +321,15 @@ trait HandleRepeatableUploads
                 return;
             }
 
-            if($this->handleMultipleFiles && is_string($files)) {
+            if ($this->handleMultipleFiles && is_string($files)) {
                 try {
                     $files = json_decode($files, true);
                 } catch (\Exception) {
-                   Log::error('Could not parse files for deletion pivot entry with key: '. $entry->getKey() . ' and uploader: ' . $this->getName());
-                   return;
+                    Log::error('Could not parse files for deletion pivot entry with key: '.$entry->getKey().' and uploader: '.$this->getName());
+
+                    return;
                 }
             }
-           
 
             if (is_array($files)) {
                 foreach ($files as $value) {

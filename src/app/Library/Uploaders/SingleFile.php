@@ -13,8 +13,9 @@ class SingleFile extends Uploader
         $value = $value ?? CrudPanelFacade::getRequest()->file($this->getName());
         $previousFile = $this->getPreviousFiles($entry);
 
-        if($value === false && $previousFile) {
+        if ($value === false && $previousFile) {
             Storage::disk($this->getDisk())->delete($previousFile);
+
             return null;
         }
 
@@ -33,6 +34,7 @@ class SingleFile extends Uploader
 
             return null;
         }
+
         return $previousFile;
     }
 
@@ -61,7 +63,7 @@ class SingleFile extends Uploader
     }
 
     /**
-     * Single file uploaders send no value when they are not dirty
+     * Single file uploaders send no value when they are not dirty.
      */
     protected function shouldKeepPreviousValueUnchanged(Model $entry, $entryValue): bool
     {

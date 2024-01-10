@@ -243,8 +243,8 @@ abstract class Uploader implements UploaderInterface
     private function deleteFiles(Model $entry)
     {
         $values = $entry->{$this->getAttributeName()};
-        
-        if($values === null) {
+
+        if ($values === null) {
             return;
         }
 
@@ -288,7 +288,7 @@ abstract class Uploader implements UploaderInterface
 
     private function getOriginalValue(Model $entry, $field = null)
     {
-        if($this->updatedPreviousFiles !== null) {
+        if ($this->updatedPreviousFiles !== null) {
             return $this->updatedPreviousFiles;
         }
 

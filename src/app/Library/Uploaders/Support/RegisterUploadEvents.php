@@ -112,13 +112,7 @@ final class RegisterUploadEvents
 
         if ($this->crudObjectType === 'field') {
             $model::saving(function ($entry) use ($uploader) {
-                $updatedCountKey = 'uploaded_'.($uploader->getRepeatableContainerName() ?? $uploader->getName()).'_count';
-
-                CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) ?? 0);
-
                 $entry = $uploader->storeUploadedFiles($entry);
-
-                CRUD::set($updatedCountKey, CRUD::get($updatedCountKey) + 1);
             });
         }
         // if the entry is already retrieved from database, don't register the event
@@ -132,7 +126,7 @@ final class RegisterUploadEvents
 
             $retrieveModel::retrieved(function ($entry) use ($uploader) {
                 if ($entry->translationEnabled()) {
-                    $locale = request('_locale', \App::getLocale());
+                    $locale = request('_locale', app()->getLocale());
                     if (in_array($locale, array_keys($entry->getAvailableLocales()))) {
                         $entry->setLocale($locale);
                     }

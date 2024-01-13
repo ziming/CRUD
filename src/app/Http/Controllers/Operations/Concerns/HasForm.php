@@ -105,7 +105,7 @@ trait HasForm
     {
         if ($id) {
             // Get entry ID from Request (makes sure its the last ID for nested resources)
-            $id =  $this->crud->getCurrentEntryId() ?: $id;
+            $id = $this->crud->getCurrentEntryId() ?: $id;
             $entry = $this->crud->getEntryWithLocale($id);
         }
 

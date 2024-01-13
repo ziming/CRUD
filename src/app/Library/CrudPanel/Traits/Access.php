@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Exceptions\AccessDeniedException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 trait Access
 {
@@ -37,6 +38,13 @@ trait Access
     public function hasAccess(string $operation, $entry = null): bool
     {
         $condition = $this->get($operation.'.access');
+
+        // this shouldn't happen, but in v6 we introduced the "quick" button with an inconsistency with other buttons. 
+        // the quick button name is converted with `Str::studly()` to get the access string and that makes it impossible 
+        // for this function to determine the proper access key. For example, a quick button with the name `comment`
+        // would have the access key `Comment`, while create, update, delete etc have the access keys `create`, `update`, `delete` without transformation.
+        // we should remove the transformation in vendor\backpack\crud\src\resources\views\crud\buttons\quick.blade.php and remove this line from here in v7.
+        $condition = $condition ?? $this->get(Str::camel($operation).'.access');
 
         if (is_callable($condition)) {
             // supply the current entry, if $entry is missing

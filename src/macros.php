@@ -108,7 +108,11 @@ if (! CrudColumn::hasMacro('linkTo')) {
             // if the parameter is callable, we'll call it
             $parameters = collect($parameters)->map(fn ($item) => is_callable($item) ? $item($entry, $related_key, $column, $crud) : $item)->toArray();
 
-            return route($route, $parameters);
+            try {
+                return route($route, $parameters);
+            } catch (\Exception $e) {
+                return false;
+            }
         };
 
         $this->wrapper($wrapper);
@@ -133,6 +137,17 @@ if (! CrudColumn::hasMacro('linkToShow')) {
 
         // set up the link to the show page
         $this->linkTo($route);
+
+        return $this;
+    });
+}
+
+if (! CrudColumn::hasMacro('linkTarget')) {
+    CrudColumn::macro('linkTarget', function (string $target = '_self'): static {
+        $this->wrapper([
+            ...$this->attributes['wrapper'] ?? [],
+            'target' => $target,
+        ]);
 
         return $this;
     });

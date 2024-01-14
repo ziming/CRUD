@@ -32,27 +32,27 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
     private $expectedUpdatedFields = [
         'id' => [
-            'name'   => 'id',
-            'type'   => 'hidden',
-            'label'  => 'Id',
+            'name' => 'id',
+            'type' => 'hidden',
+            'label' => 'Id',
             'entity' => false,
         ],
         'name' => [
-            'name'   => 'name',
-            'label'  => 'Name',
-            'type'   => 'text',
+            'name' => 'name',
+            'label' => 'Name',
+            'type' => 'text',
             'entity' => false,
         ],
         'email' => [
-            'name'   => 'email',
-            'type'   => 'email',
-            'label'  => 'Email',
+            'name' => 'email',
+            'type' => 'email',
+            'label' => 'Email',
             'entity' => false,
         ],
         'password' => [
-            'name'   => 'password',
-            'type'   => 'password',
-            'label'  => 'Password',
+            'name' => 'password',
+            'type' => 'password',
+            'label' => 'Password',
             'entity' => false,
         ],
     ];
@@ -63,8 +63,8 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFields);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
         ];
 
@@ -82,8 +82,8 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFields);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
         ];
 
@@ -97,8 +97,8 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFields);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
             'password' => bcrypt($faker->password()),
         ];
         $entry = $this->crudPanel->create($inputData);
@@ -131,10 +131,10 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ], [
             'name' => 'tags',
         ], [
-            'label'     => 'Author',
-            'type'      => 'select',
-            'name'      => 'user_id',
-            'entity'    => 'user',
+            'label' => 'Author',
+            'type' => 'select',
+            'name' => 'user_id',
+            'entity' => 'user',
             'attribute' => 'name',
         ], [
             'name' => 'status',
@@ -148,16 +148,16 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ]);
         $faker = Factory::create();
         $inputData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
-            'metas'       => null,
-            'extras'      => null,
-            'status'      => 'publish',
-            'state'       => 'COLD',
-            'style'       => 'DRAFT',
-            'cast_metas'  => null,
-            'cast_tags'   => null,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
+            'metas' => null,
+            'extras' => null,
+            'status' => 'publish',
+            'state' => 'COLD',
+            'style' => 'DRAFT',
+            'cast_metas' => null,
+            'cast_tags' => null,
             'cast_extras' => null,
         ];
         $article = $this->crudPanel->create($inputData);

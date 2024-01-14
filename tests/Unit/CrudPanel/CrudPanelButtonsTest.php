@@ -28,33 +28,33 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->crudPanel->setOperation('list');
 
         $this->topViewButton = [
-            'name'    => 'topViewButton',
-            'stack'   => 'top',
-            'type'    => 'view',
+            'name' => 'topViewButton',
+            'stack' => 'top',
+            'type' => 'view',
             'content' => 'crud::buttons.show',
             'meta' => [],
         ];
         $this->lineViewButton = [
-            'name'     => 'lineViewButton',
-            'stack'    => 'line',
-            'type'     => 'view',
-            'content'  => 'crud::buttons.show',
+            'name' => 'lineViewButton',
+            'stack' => 'line',
+            'type' => 'view',
+            'content' => 'crud::buttons.show',
             'position' => null,
             'meta' => [],
         ];
         $this->bottomViewButton = [
-            'name'     => 'bottomViewButton',
-            'stack'    => 'bottom',
-            'type'     => 'view',
-            'content'  => 'crud::buttons.show',
+            'name' => 'bottomViewButton',
+            'stack' => 'bottom',
+            'type' => 'view',
+            'content' => 'crud::buttons.show',
             'position' => null,
             'meta' => [],
         ];
         $this->topModelFunctionButton = [
-            'name'     => 'topModelFunctionButton',
-            'stack'    => 'top',
-            'type'     => 'model_function',
-            'content'  => 'crud::buttons.show',
+            'name' => 'topModelFunctionButton',
+            'stack' => 'top',
+            'type' => 'model_function',
+            'content' => 'crud::buttons.show',
             'position' => null,
             'meta' => [],
         ];

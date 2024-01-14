@@ -24,7 +24,7 @@ trait Create
     {
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
 
-        if ($this->get('create.useDatabaseTransactions')) {
+        if ($this->get('create.useDatabaseTransactions') ?? config('backpack.base.useDatabaseTransactions', false)) {
             return DB::transaction(fn () => $this->createModelAndRelations($directInputs, $relationInputs));
         }
 

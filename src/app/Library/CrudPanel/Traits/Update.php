@@ -27,7 +27,7 @@ trait Update
         $item = $this->model->findOrFail($id);
 
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
-        if ($this->get('update.useDatabaseTransactions')) {
+        if ($this->get('update.useDatabaseTransactions') ?? config('backpack.base.useDatabaseTransactions', false)) {
             return DB::transaction(fn () => $this->updateModelAndRelations($item, $directInputs, $relationInputs));
         }
 

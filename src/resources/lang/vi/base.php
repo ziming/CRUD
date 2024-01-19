@@ -20,7 +20,9 @@ return [
     'login' => 'Đăng nhập',
     'register' => 'Đăng ký',
     'name' => 'Tên',
-    'email_address' => 'E-mail',
+    'email_address' => 'Địa chỉ email',
+    'email' => 'Email',
+    'username' => 'Tên người dùng',
     'password' => 'Mật khẩu',
     'old_password' => 'Mật khẩu cũ',
     'new_password' => 'Mật khẩu mới',
@@ -92,5 +94,4 @@ return [
         'email_verification_required' => 'Vui lòng xác thực địa chỉ email của bạn bằng cách nhấn vào liên kết chúng tôi đã gửi cho bạn.',
         'resend_verification_link' => 'Gửi lại liên kết',
     ],
-
 ];

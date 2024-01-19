@@ -1,5 +1,10 @@
 @php
-    $access = $button->meta['access'] ?? Str::of($button->name)->studly();
+    $access = (function() use ($crud, $button) {
+        if (isset($button->meta['access']) && $button->meta['access'] !== null && $button->meta['access'] !== false) {
+            return $button->meta['access'];
+        }
+        return !is_null($crud->get(Str::of($button->name)->studly().'.access'))  ? Str::of($button->name)->studly() : $button->name;
+    })();
     $icon = $button->meta['icon'] ?? '';
     $label = $button->meta['label'] ?? Str::of($button->name)->headline();
 

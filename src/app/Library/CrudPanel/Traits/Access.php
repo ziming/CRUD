@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Exceptions\AccessDeniedException;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 trait Access
 {
@@ -38,7 +37,7 @@ trait Access
     public function hasAccess(string $operation, $entry = null): bool
     {
         $condition = $this->get($operation.'.access');
-        
+
         if (is_callable($condition)) {
             // supply the current entry, if $entry is missing
             // this also makes sure the entry is null when missing

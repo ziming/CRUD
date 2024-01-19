@@ -66,7 +66,7 @@
     @include('crud::fields.inc.translatable_icon')
     <select
         name="{{ $field['name'] }}"
-        @include('crud::fields.inc.attributes')
+        @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])
         >
 
         @if ($entity_model::isColumnNullable($field['name']))

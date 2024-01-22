@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends Command
 {
@@ -46,7 +47,7 @@ class CreateUser extends Command
         }
 
         if ($this->option('encrypt')) {
-            $password = bcrypt($password);
+            $password = Hash::make($password);
         }
 
         $auth = config('backpack.base.user_model_fqn', 'App\User');

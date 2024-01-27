@@ -111,6 +111,11 @@ return [
         'print' => 'Imprimir',
         'column_visibility' => 'Colunas visíveis',
     ],
+    'custom_views' => [
+        'title' => 'vistas personalizadas',
+        'title_short' => 'vistas',
+        'default' => 'predefinida',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Acesso não autorizado - não tem as permissões necessárias para ver esta página.',

@@ -111,6 +111,11 @@ return [
         'print' => 'Print',
         'column_visibility' => 'Column visibility',
     ],
+    'custom_views' => [
+        'title' => 'custom views',
+        'title_short' => 'views',
+        'default' => 'default',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Unauthorized access - you do not have the necessary permissions to see this page.',

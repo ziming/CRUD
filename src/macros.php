@@ -1,9 +1,9 @@
 <?php
 
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
 use Backpack\CRUD\app\Library\Uploaders\Support\RegisterUploadEvents;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -186,9 +186,7 @@ if (! Route::hasMacro('crud')) {
         } else {
             $groupNamespace = '';
         }
-        $namespacedController = $groupNamespace.$controller;
-        $controllerInstance = App::make($namespacedController);
 
-        return $controllerInstance->setupRoutes($name, $routeName, $controller);
+        \Backpack\CRUD\app\Library\CrudPanel\CrudRouter::setupControllerRoutes($name, $routeName, $controller, $groupNamespace);
     });
 }

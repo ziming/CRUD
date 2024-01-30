@@ -41,7 +41,6 @@ return [
     'update_account_info' => 'Cập Nhật Thông Tin Tài Khoản',
     'save' => 'Lưu',
     'cancel' => 'Huỷ bỏ',
-    'error' => 'Lỗi',
     'success' => 'Thành công',
     'warning' => 'Cảnh báo',
     'notice' => 'Thông báo',

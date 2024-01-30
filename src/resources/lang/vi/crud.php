@@ -163,26 +163,26 @@ return [
     'new_item' => 'Bản ghi mới',
     'select_entry' => 'Chọn một bản ghi',
     'select_entries' => 'Chọn các bản ghi',
-    'upload_multiple_files_selected' => 'Đã chọn tệp. Sau khi lưu, chúng sẽ hiển thị ở phía trên.'
-    
+    'upload_multiple_files_selected' => 'Đã chọn tệp. Sau khi lưu, chúng sẽ hiển thị ở phía trên.',
+
     //Table field
     'table_cant_add' => 'Không thể thêm mới :entity',
     'table_max_reached' => 'Đã đạt đến số lượng tối đa :max bản ghi',
-    
-     // google_map
-    'google_map_locate' => 'Lấy vị trí của tôi'
-    
+
+    // google_map
+    'google_map_locate' => 'Lấy vị trí của tôi',
+
     // File manager
     'file_manager' => 'Quản lý Tập tin',
 
     // InlineCreateOperation
     'related_entry_created_success' => 'Bản ghi liên quan đã được tạo và được chọn.',
     'related_entry_created_error' => 'Không thể tạo bản ghi liên qua.',
-    'inline_saving' => 'Đang lưu...'
+    'inline_saving' => 'Đang lưu...',
 
     // returned when no translations found in select inputs
     'empty_translations' => '(chưa có)',
-    
+
     // The pivot selector required validation message
-    'pivot_selector_required_validation_message' => 'Trường pivot là bắt buộc.'
+    'pivot_selector_required_validation_message' => 'Trường pivot là bắt buộc.',
 ];

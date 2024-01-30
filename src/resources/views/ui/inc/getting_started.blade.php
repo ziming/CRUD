@@ -7,7 +7,7 @@
     <div id="accordion" role="tablist">
       <div class="card mb-1">
         <div class="card-header bg-light" id="headingOne" role="tab">
-          <h5 class="mb-0 w-100"><a data-bs-toggle="collapse" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed text-dark"><span class="badge bg-warning me-2">1</span>Create your first CRUD <small class="float-end float-right">1-5 min</small></a></h5>
+          <h5 class="mb-0 w-100"><a data-bs-toggle="collapse" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed"><span class="badge bg-warning me-2">1</span>Create your first CRUD <small class="float-end float-right">1-5 min</small></a></h5>
         </div>
         <div class="collapse" id="collapseOne" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
           <div class="card-body">
@@ -74,7 +74,7 @@
 
       <div class="card mb-1">
         <div class="card-header bg-light" id="headingTwo" role="tab">
-          <h5 class="mb-0 w-100"><a class="collapsed text-dark" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><span class="badge bg-warning me-2">2</span>Learn the basics <small class="float-end float-right">20-30 min</small></a></h5>
+          <h5 class="mb-0 w-100"><a class="collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><span class="badge bg-warning me-2">2</span>Learn the basics <small class="float-end float-right">20-30 min</small></a></h5>
         </div>
         <div class="collapse" id="collapseTwo" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" style="">
           <div class="card-body">
@@ -90,7 +90,7 @@
 
       <div class="card mb-1">
         <div class="card-header bg-light" id="headingThree" role="tab">
-          <h5 class="mb-0 w-100"><a class="collapsed text-dark" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><span class="badge bg-warning me-2">4</span>Subscribe or purchase <small class="float-end float-right">1-3 min</small></a></h5>
+          <h5 class="mb-0 w-100"><a class="collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><span class="badge bg-warning me-2">4</span>Subscribe or purchase <small class="float-end float-right">1-3 min</small></a></h5>
         </div>
         <div class="collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="">
           <div class="card-body">
@@ -108,7 +108,7 @@
 
       <div class="card mb-1">
         <div class="card-header bg-light" id="headingThree" role="tab">
-          <h5 class="mb-0 w-100"><a class="collapsed text-dark" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><span class="badge bg-warning me-2">4</span>Hide this notice <small class="float-end float-right">1 min</small></a></h5>
+          <h5 class="mb-0 w-100"><a class="collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><span class="badge bg-warning me-2">4</span>Hide this notice <small class="float-end float-right">1 min</small></a></h5>
         </div>
         <div class="collapse" id="collapseFour" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="">
           <div class="card-body">Go to your <code class="text-primary bg-light p-1 rounded">config/backpack/ui.php</code> and change <code class="text-primary bg-light p-1 rounded">show_getting_started</code> to <code class="text-primary bg-light p-1 rounded">false</code>.</div>

@@ -31,10 +31,10 @@
             // mark the element as shown
             $all_entries[$key]->tree_element_shown = true;
             $entry->tree_element_shown = true;
-
+            $entryLabel = $crud->get('reorder.escaped') ? e(object_get($entry, $crud->get('reorder.label'))) : object_get($entry, $crud->get('reorder.label'));
             // show the tree element
             echo '<li id="list_'.$entry->getKey().'">';
-            echo '<div><span class="disclose"><span></span></span>'.object_get($entry, $crud->get('reorder.label')).'</div>';
+            echo '<div><span class="disclose"><span></span></span>'.$entryLabel.'</div>';
 
             // see if this element has any children
             $children = [];

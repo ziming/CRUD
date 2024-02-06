@@ -11,6 +11,6 @@ return [
     // To override per Controller use $this->crud->setReorderContentClass('class-string')
     'contentClass' => 'col-md-12 col-md-offset-2',
 
-    // should the content of the reorder label be escaped? 
+    // should the content of the reorder label be escaped?
     'escaped' => false,
 ];

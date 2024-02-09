@@ -9,7 +9,7 @@ final class CrudRouter
 {
     public static function setupControllerRoutes(string $name, string $routeName, string $controller, string $groupNamespace = ''): void
     {
-        $namespacedController = $groupNamespace.$controller;
+        $namespacedController = class_exists($controller) ? $controller : $groupNamespace.$controller;
 
         $controllerReflection = new ReflectionClass($namespacedController);
         $setupRoutesMethod = $controllerReflection->getMethod('setupRoutes');

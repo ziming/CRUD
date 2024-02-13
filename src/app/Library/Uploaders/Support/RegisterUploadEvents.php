@@ -178,7 +178,7 @@ final class RegisterUploadEvents
 
         if ($uploader->useTemporaryUrl()) {
             $this->crudObject->temporary($uploader->useTemporaryUrl());
-            $this->crudObject->expiration($uploader->getExpirationTimeInSeconds());
+            $this->crudObject->expiration($uploader->getExpirationTimeInMinutes());
         }
     }
 

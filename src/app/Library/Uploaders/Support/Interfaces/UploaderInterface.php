@@ -45,8 +45,6 @@ interface UploaderInterface
 
     public function getExpirationTimeInMinutes(): int;
 
-    public function getExpirationTimeInSeconds(): int;
-
     public function getFileName(string|UploadedFile $file): string;
 
     public function getRepeatableContainerName(): ?string;

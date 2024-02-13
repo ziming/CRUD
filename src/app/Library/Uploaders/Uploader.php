@@ -148,6 +148,11 @@ abstract class Uploader implements UploaderInterface
         return $this->temporaryUrlExpirationTimeInMinutes;
     }
 
+    public function getExpirationTimeInSeconds(): int
+    {
+        return $this->getExpirationTimeInMinutes() * 60;
+    }
+
     public function shouldDeleteFiles(): bool
     {
         return $this->deleteWhenEntryIsDeleted;

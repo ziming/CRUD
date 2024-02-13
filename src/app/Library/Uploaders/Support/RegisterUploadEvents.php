@@ -175,6 +175,11 @@ final class RegisterUploadEvents
     private function setupUploadConfigsInCrudObject(UploaderInterface $uploader): void
     {
         $this->crudObject->upload(true)->disk($uploader->getDisk())->prefix($uploader->getPath());
+
+        if ($uploader->useTemporaryUrl()) {
+            $this->crudObject->temporary($uploader->useTemporaryUrl());
+            $this->crudObject->expiration($uploader->getExpirationTimeInSeconds());
+        }
     }
 
     private function getSubfieldModel(array $subfield, UploaderInterface $uploader)

@@ -111,6 +111,11 @@ return [
         'print' => 'Imprimir',
         'column_visibility' => 'Visibilitat de columnes',
     ],
+    'custom_views' => [
+        'title' => 'vistes personalitzades',
+        'title_short' => 'vistes',
+        'default' => 'per defecte',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Accés denegat - vostè no té els permisos necessaris per veure aquesta pàgina.',

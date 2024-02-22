@@ -3,9 +3,9 @@
 namespace Backpack\CRUD;
 
 use Backpack\Basset\Facades\Basset;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\Support\Facades\Blade;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -264,7 +264,7 @@ class ThemeServiceProvider extends ServiceProvider
 
     public function registerPackageBladeComponents()
     {
-        if($this->componentsNamespace) {
+        if ($this->componentsNamespace) {
             $this->app->afterResolving(BladeCompiler::class, function () {
                 Blade::componentNamespace($this->componentsNamespace, $this->packageName);
             });

@@ -21,6 +21,8 @@ return [
     'register' => 'Crear usuari/a',
     'name' => 'Nom',
     'email_address' => 'Correu',
+    'email' => 'Correu electrònic',
+    'username' => 'Nom d\'usuari',
     'password' => 'Contrasenya',
     'old_password' => 'Contrasenya anterior',
     'new_password' => 'Contrasenya nova',
@@ -51,8 +53,25 @@ return [
     'unknown_error' => 'Ha ocorregut un error. Si us plau, torni a intentar-ho.',
     'error_saving' => 'Error desant dades. Si us plau, torni a intentar-ho.',
     'error_login' => 'La seva contrasenya ha estat canviada en un altre navegador. Si us plau, torni a iniciar sessió amb la seva nova contrasenya.',
+    'session_expired_error' => 'La teva sessió ha caducat. Si us plau, torneu a iniciar sessió al vostre compte.',
     'welcome' => 'Benvingut!',
     'use_sidebar' => 'Utilitzi la barra lateral a l\'esquerra per crear, editar o eliminar contingut.',
+
+    'error_page' => [
+        'title' => 'Error :error',
+        'button' => 'Anar a la pàgina d\'inici',
+        'message_4xx' => 'Si us plau, <a :href_back>torneu enrere</a> o aneu a <a :href_homepage>la pàgina d\'inici</a>.',
+        'message_500' => 'S\'ha produït un error intern del servidor. Si l\'error persisteix, poseu-vos en contacte amb l\'equip de desenvolupament.',
+        'message_503' => 'El servidor està sobrecarregat o en manteniment. Siusplau, intenta-ho més tard.',
+        '400' => 'Sol·licitud errònia.',
+        '401' => 'Acció no autoritzada.',
+        '403' => 'Prohibit.',
+        '404' => 'Pàgina no trobada.',
+        '405' => 'Mètode no permès.',
+        '408' => 'Temps d\'espera esgotat.',
+        '429' => 'Massa peticions.',
+        '500' => 'No ets tu, sóc jo.',
+    ],
 
     'password_reset' => [
         'greeting' => 'Hola!',
@@ -70,4 +89,10 @@ return [
     'throttled' => 'Ja ha demanat un restabliment de contrasenya recentment. Si us plau, revisi el seu correu electrònic. Si no ha rebut el correu de restabliment, torni-ho a intentar més tard.',
     'throttled_request' => 'Ha excedit el màxim d\'intents. Si us plau, esperi uns minuts i torni-ho a intentar.',
 
+    'verify_email' => [
+        'email_verification' => 'Verificació del correu electrònic',
+        'verification_link_sent' => 'S\'ha enviat un enllaç de verificació a la vostra adreça de correu electrònic.',
+        'email_verification_required' => 'Si us plau, verifiqueu la vostra adreça de correu electrònic fent clic a l\'enllaç que us hem enviat.',
+        'resend_verification_link' => 'Torna a enviar l\'enllaç',
+    ],
 ];

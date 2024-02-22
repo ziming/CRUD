@@ -18,6 +18,7 @@ class MenuDropdown extends Component
         public bool $open = false,
         public array $items = [],
         public bool $nested = false,
+        public bool $withColumns = false,
     ) {
     }
 

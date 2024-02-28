@@ -37,7 +37,7 @@
     "require": {
         "laravel/framework": "^10.0|^11.0",
         "prologue/alerts": "dev-l11-compatibility",
-        "backpack/basset": "^1.1.1",
+        "backpack/basset": "l11-compatibility",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.0"

@@ -23,7 +23,21 @@
 		  title: "{!! trans('backpack::base.warning') !!}",
 		  text: "{!! trans('backpack::crud.delete_confirm') !!}",
 		  icon: "warning",
-		  buttons: ["{!! trans('backpack::crud.cancel') !!}", "{!! trans('backpack::crud.delete') !!}"],
+		  buttons: {
+		  cancel: {
+				  text: "{!! trans('backpack::crud.cancel') !!}",
+				  value: null,
+				  visible: true,
+				  className: "bg-secondary",
+				  closeModal: true,
+				},
+			  	delete: {
+				  text: "{!! trans('backpack::crud.delete') !!}",
+				  value: true,
+				  visible: true,
+				  className: "bg-danger",
+				},
+			},
 		  dangerMode: true,
 		}).then((value) => {
 			if (value) {

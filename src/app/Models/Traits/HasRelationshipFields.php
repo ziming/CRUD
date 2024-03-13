@@ -23,12 +23,15 @@ trait HasRelationshipFields
         $connection = DB::connection($this->getConnectionName());
 
         $types = [
-            'enum' => 'string',
+            'enum'  => 'string',
             'jsonb' => 'json',
         ];
 
         // only register the extra types in sql databases
         if (self::isSqlConnection()) {
+            if (! method_exists($connection, 'getDoctrineSchemaManager')) {
+                return $connection;
+            }
             $platform = $connection->getDoctrineSchemaManager()->getDatabasePlatform();
             foreach ($types as $type_key => $type_value) {
                 if (! $platform->hasDoctrineTypeMappingFor($type_key)) {

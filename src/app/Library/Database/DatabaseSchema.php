@@ -32,14 +32,8 @@ final class DatabaseSchema
      */
     private static function generateDatabaseSchema(string $connection, string $table)
     {
-        if (! isset(self::$schema[$connection])) {
-            $rawTables = DB::connection($connection)->getDoctrineSchemaManager()->createSchema();
-            self::$schema[$connection] = self::mapTables($rawTables);
-        } else {
-            // check for a specific table in case it was created after schema had been generated.
-            if (! isset(self::$schema[$connection][$table])) {
-                self::$schema[$connection][$table] = DB::connection($connection)->getDoctrineSchemaManager()->listTableDetails($table);
-            }
+        if (! isset(self::$schema[$connection]) || ! isset(self::$schema[$connection][$table])) {
+            self::$schema[$connection] = self::mapTables($connection);
         }
     }
 
@@ -49,10 +43,23 @@ final class DatabaseSchema
      * @param  Doctrine\DBAL\Schema\Schema  $rawTables
      * @return array
      */
-    private static function mapTables($rawTables)
+    private static function mapTables(string $connection)
     {
-        return LazyCollection::make($rawTables->getTables())->mapWithKeys(function ($table, $key) {
-            return [$table->getName() => $table];
+        return LazyCollection::make(self::getSchemaManager($connection)->getTables())->mapWithKeys(function ($table, $key) use ($connection) {
+            $tableName = is_array($table) ? $table['name'] : $table->getName();
+            if (is_array($table)) {
+                $columns = self::getSchemaManager($connection)->getColumns($tableName);
+                $table = new Table($columns);
+            }
+
+            return [$tableName => $table];
         })->toArray();
+    }
+
+    private static function getSchemaManager(string $connection)
+    {
+        $connection = DB::connection($connection);
+
+        return method_exists($connection, 'getDoctrineSchemaManager') ? $connection->getDoctrineSchemaManager()->createSchema() : $connection->getSchemaBuilder();
     }
 }

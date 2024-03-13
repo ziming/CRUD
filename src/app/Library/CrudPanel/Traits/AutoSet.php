@@ -17,22 +17,22 @@ trait AutoSet
         array_map(function ($field) use ($setFields, $setColumns) {
             if ($setFields && ! isset($this->getCleanStateFields()[$field])) {
                 $this->addField([
-                    'name'       => $field,
-                    'label'      => $this->makeLabel($field),
-                    'value'      => null,
-                    'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
-                    'type'       => $this->inferFieldTypeFromDbColumnType($field),
-                    'values'     => [],
+                    'name' => $field,
+                    'label' => $this->makeLabel($field),
+                    'value' => null,
+                    'default' => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
+                    'type' => $this->inferFieldTypeFromDbColumnType($field),
+                    'values' => [],
                     'attributes' => [],
-                    'autoset'    => true,
+                    'autoset' => true,
                 ]);
             }
 
             if ($setColumns && ! in_array($field, $this->model->getHidden()) && ! isset($this->columns()[$field])) {
                 $this->addColumn([
-                    'name'    => $field,
-                    'label'   => $this->makeLabel($field),
-                    'type'    => $this->inferFieldTypeFromDbColumnType($field),
+                    'name' => $field,
+                    'label' => $this->makeLabel($field),
+                    'type' => $this->inferFieldTypeFromDbColumnType($field),
                     'autoset' => true,
                 ]);
             }
@@ -54,7 +54,7 @@ trait AutoSet
             return $dbColumnTypes;
         }
         $dbColumns = $this->getDbTableColumns();
-      
+
         foreach ($dbColumns as $key => $column) {
             $column_type = $column->getType()->getName();
             $dbColumnTypes[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));

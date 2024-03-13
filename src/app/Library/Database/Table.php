@@ -5,6 +5,7 @@ namespace Backpack\CRUD\app\Library\Database;
 final class Table
 {
     private array $columns;
+
     public function __construct(array $columns = [])
     {
         foreach ($columns as $column) {
@@ -12,7 +13,6 @@ final class Table
             {
                 public function __construct(private array $column)
                 {
-                    
                 }
 
                 public function getName()

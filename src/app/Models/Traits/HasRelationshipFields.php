@@ -23,7 +23,7 @@ trait HasRelationshipFields
         $connection = DB::connection($this->getConnectionName());
 
         $types = [
-            'enum'  => 'string',
+            'enum' => 'string',
             'jsonb' => 'json',
         ];
 

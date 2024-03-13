@@ -21,6 +21,8 @@ return [
     'register' => 'Crear usuario',
     'name' => 'Nombre',
     'email_address' => 'Correo',
+    'email' => 'Correo electrónico',
+    'username' => 'Nombre de usuario',
     'password' => 'Contraseña',
     'old_password' => 'Contraseña anterior',
     'new_password' => 'Contraseña nueva',
@@ -40,7 +42,6 @@ return [
     'save' => 'Guardar',
     'cancel' => 'Cancelar',
     'error' => 'Error',
-    'session_expired_error' => 'Su sesión ha caducado. Por favor inicie sesión nuevamente en su cuenta.',
     'success' => 'Existoso',
     'warning' => 'Advertencia',
     'notice' => 'Aviso',
@@ -51,8 +52,26 @@ return [
     'account_updated' => 'Cuenta actualizada correctamente.',
     'unknown_error' => 'Ha ocurrido un error. Por favor vuelva a intenter.',
     'error_saving' => 'Error mientras se guardaba. Por favor vuelva a intenter.',
+    'error_login' => 'Su contraseña ha cambiado en otro navegador. Por favor, vuelva a iniciar sesión con su nueva contraseña.',
+    'session_expired_error' => 'Su sesión ha caducado. Por favor inicie sesión nuevamente en su cuenta.',
     'welcome' => '¡Bienvenido!',
     'use_sidebar' => 'Use la barra lateral a la izquierda para crear, editar o eliminar contenido.',
+
+    'error_page' => [
+        'title' => 'Error :error',
+        'button' => 'Ir a la página de inicio',
+        'message_4xx' => 'Por favor, <a :href_back>vuelva atrás</a> o vaya a <a :href_homepage>la página de inicio</a>',
+        'message_500' => 'Se ha producido un error interno del servidor. Si el error persiste, póngase en contacto con el equipo de desarrollo.',
+        'message_503' => 'El servidor está sobrecargado o en mantenimiento. Por favor, inténtalo más tarde.',
+        '400' => 'Solicitud errónea.',
+        '401' => 'Acción no autorizada.',
+        '403' => 'Prohibido.',
+        '404' => 'Página no encontrada.',
+        '405' => 'Método no permitido.',
+        '408' => 'Tiempo de espera agotado.',
+        '429' => 'Demasiadas peticiones.',
+        '500' => 'No eres tú, soy yo.',
+    ],
 
     'password_reset' => [
         'greeting' => '¡Hola!',
@@ -67,5 +86,13 @@ return [
     'confirm_email' => 'Confirmar correo electrónico',
     'choose_new_password' => 'Elija nueva contraseña',
     'confirm_new_password' => 'Confirmar nueva contraseña',
+    'throttled' => 'Ya ha pedido un restablecimiento de contraseña recientemente. Por favor, revise su correo electrónico. Si no ha recibido el correo de restablecimiento, vuelva a intentarlo más tarde.',
+    'throttled_request' => 'Ha excedido el máximo de intentos. Por favor, espere unos minutos y vuelva a intentarlo.',
 
+    'verify_email' => [
+        'email_verification' => 'Verificación del correo electrónico',
+        'verification_link_sent' => 'Se ha enviado un enlace de verificación a su dirección de correo electrónico.',
+        'email_verification_required' => 'Por favor, verifique su dirección de correo electrónico haciendo clic en el enlace que le hemos enviado.',
+        'resend_verification_link' => 'Reenviar enlace',
+    ],
 ];

@@ -111,6 +111,11 @@ return [
         'print' => 'Imprimir',
         'column_visibility' => 'Visibilidad de columnas',
     ],
+    'custom_views' => [
+        'title' => 'vistas personalizadas',
+        'title_short' => 'vistas',
+        'default' => 'por defecto',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Acceso denegado - usted no tiene los permisos necesarios para ver esta página.',
@@ -168,13 +173,20 @@ return [
     'table_cant_add' => 'No se puede agregar una nueva :entity',
     'table_max_reached' => 'El número máximo de :max alcanzado',
 
+    // google_map
+    'google_map_locate' => 'Obtener mi ubicación',
+
     // File manager
     'file_manager' => 'Administrador de archivos',
 
     // InlineCreateOperation
     'related_entry_created_success' => 'El elemento relacionado ha sido creado y seleccionado.',
     'related_entry_created_error' => 'No se pueden crear elementos relacionados.',
+    'inline_saving' => 'Guardando...',
 
     // returned when no translations found in select inputs
     'empty_translations' => '(vacío)',
+
+    // The pivot selector required validation message
+    'pivot_selector_required_validation_message' => 'El campo dinámico es obligatorio.',
 ];

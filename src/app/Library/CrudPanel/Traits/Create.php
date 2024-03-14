@@ -284,6 +284,13 @@ trait Create
         // get the default that could be set at database level.
         $dbColumnDefault = $modelInstance->getDbColumnDefault($relationForeignKey);
 
+        // check if the relation foreign key is in casts, and cast it to the correct type
+        if ($modelInstance->hasCast($relationForeignKey)) {
+            $dbColumnDefault = match ($modelInstance->getCasts()[$relationForeignKey]) {
+                'int', 'integer' => $dbColumnDefault = (int) $dbColumnDefault,
+                default => $dbColumnDefault = $dbColumnDefault
+            };
+        }
         // if column is not nullable in database, and there is no column default (null),
         // we will delete the entry from the database, otherwise it will throw and ugly DB error.
         if (! $relationColumnIsNullable && $dbColumnDefault === null) {

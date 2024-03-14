@@ -24,6 +24,11 @@ jobs:
                 dbal: [^3.0]
                 phpunit: [10.*]
                 dependency-version: [stable] # to add: lowest 
+                exclude:
+                    -   laravel: "^11.0"
+                        php: "8.1"
+                        dbal: "^3.0"
+
 
         name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}, PHPUnit ${{ matrix.phpunit }}, DBAL ${{ matrix.dbal }} --prefer-${{ matrix.dependency-version }}
         

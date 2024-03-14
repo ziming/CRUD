@@ -53,8 +53,9 @@ trait AutoSet
         if (! $this->driverIsSql()) {
             return $dbColumnTypes;
         }
+        $dbColumns = $this->getDbTableColumns();
 
-        foreach ($this->getDbTableColumns() as $key => $column) {
+        foreach ($dbColumns as $key => $column) {
             $column_type = $column->getType()->getName();
             $dbColumnTypes[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $dbColumnTypes[$column->getName()]['default'] = $column->getDefault();
@@ -87,7 +88,6 @@ trait AutoSet
         if (isset($this->autoset['table_columns']) && $this->autoset['table_columns']) {
             return $this->autoset['table_columns'];
         }
-
         $this->autoset['table_columns'] = $this->model::getDbTableSchema()->getColumns();
 
         return $this->autoset['table_columns'];
@@ -137,10 +137,8 @@ trait AutoSet
                 // break;
 
             case 'boolean':
-                return 'boolean';
-
             case 'tinyint':
-                return 'active';
+                return 'boolean';
 
             case 'text':
             case 'mediumtext':

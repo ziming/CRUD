@@ -19,6 +19,9 @@ class Comet extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = ['user_id'];
+    protected $casts = [
+        'user_id' => 'integer',
+    ];
     // protected $hidden = [];
     // protected $dates = [];
 

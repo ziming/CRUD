@@ -22,8 +22,12 @@ trait HasRelationshipFields
     {
         $connection = DB::connection($this->getConnectionName());
 
+        if (! method_exists($connection, 'getDoctrineSchemaManager')) {
+            return $connection;
+        }
+
         $types = [
-            'enum' => 'string',
+            'enum'  => 'string',
             'jsonb' => 'json',
         ];
 

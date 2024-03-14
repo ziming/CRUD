@@ -39,7 +39,7 @@
         "prologue/alerts": "^1.0",
         "backpack/basset": "^1.1.1|^1.3",
         "creativeorange/gravatar": "~1.0",
-        "doctrine/dbal": "^3.0|^4.0",
+        "doctrine/dbal": "^3.0",
         "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {

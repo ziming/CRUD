@@ -40,7 +40,7 @@ final class Table
 
                         public function getName()
                         {
-                            return $this->column['type'];
+                            return $this->column['type_name'];
                         }
                     };
                 }

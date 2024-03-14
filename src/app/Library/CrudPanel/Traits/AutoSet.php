@@ -137,10 +137,8 @@ trait AutoSet
                 // break;
 
             case 'boolean':
-                return 'boolean';
-
             case 'tinyint':
-                return 'active';
+                return 'boolean';
 
             case 'text':
             case 'mediumtext':

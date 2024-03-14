@@ -261,6 +261,7 @@ class Widget extends Fluent
         } else {
             $this->collection()[$this->attributes['name']] = $this;
         }
+
         return $this;
     }
 
@@ -297,12 +298,13 @@ class Widget extends Fluent
 
     /**
      * Overwritten methods to prevent BC in Laravel 11, since they introduced the `value()` method
-     * in their Fluent class. Altough the Widget class is Fluent, it does not behave the same 
-     * in regards to `value()`, since we use it as a key in widget definition. 
+     * in their Fluent class. Altough the Widget class is Fluent, it does not behave the same
+     * in regards to `value()`, since we use it as a key in widget definition.
      */
     public function value($value, $default = null)
     {
         $this->attributes['value'] = $value;
+
         return $this->save();
     }
 
@@ -334,8 +336,7 @@ class Widget extends Fluent
     public function __call($method, $parameters)
     {
         $this->attributes[$method] = count($parameters) > 0 ? $parameters[0] : true;
+
         return $this->save();
     }
-
-
 }

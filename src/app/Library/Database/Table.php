@@ -53,7 +53,7 @@ final class Table
         return $this->columns;
     }
 
-    public function hasColumn($columnName)
+    public function hasColumn(string $columnName)
     {
         return isset($this->columns[$columnName]);
     }

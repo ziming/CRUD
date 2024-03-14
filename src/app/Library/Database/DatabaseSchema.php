@@ -22,6 +22,18 @@ final class DatabaseSchema
         return self::$schema[$connection][$table] ?? null;
     }
 
+    public function listTableColumnsNames(string $connection, string $table)
+    {
+        $table = self::getForTable($connection, $table);
+
+        return array_keys($table->getColumns());
+    }
+
+    public function listTableIndexes(string $connection, string $table)
+    {
+        return self::getIndexColumnNames($connection, $table);
+    }
+
     /**
      * Generates and store the database schema.
      *
@@ -59,7 +71,7 @@ final class DatabaseSchema
         })->toArray();
     }
 
-    private static function getIndexColumnNames($connection, $table)
+    private static function getIndexColumnNames(string $connection, string $table)
     {
         $schemaManager = self::getSchemaManager($connection);
         $indexes = method_exists($schemaManager, 'listTableIndexes') ? $schemaManager->listTableIndexes($table) : $schemaManager->getIndexes($table);
@@ -73,7 +85,7 @@ final class DatabaseSchema
         return array_unique($indexes);
     }
 
-    private static function mapTableColumns($connection, $table)
+    private static function mapTableColumns(string $connection, string $table)
     {
         $indexedColumns = self::getIndexColumnNames($connection, $table);
 
@@ -96,17 +108,5 @@ final class DatabaseSchema
         $connection = DB::connection($connection);
 
         return method_exists($connection, 'getDoctrineSchemaManager') ? $connection->getDoctrineSchemaManager() : $connection->getSchemaBuilder();
-    }
-
-    public function listTableColumnsNames(string $connection, string $table)
-    {
-        $table = self::getForTable($connection, $table);
-
-        return array_keys($table->getColumns());
-    }
-
-    public function listTableIndexes(string $connection, string $table)
-    {
-        return self::getIndexColumnNames($connection, $table);
     }
 }

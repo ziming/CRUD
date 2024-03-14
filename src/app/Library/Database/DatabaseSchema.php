@@ -18,6 +18,7 @@ final class DatabaseSchema
     public static function getForTable(string $connection, string $table)
     {
         self::generateDatabaseSchema($connection, $table);
+
         return self::$schema[$connection][$table] ?? null;
     }
 
@@ -30,7 +31,7 @@ final class DatabaseSchema
      */
     private static function generateDatabaseSchema(string $connection, string $table)
     {
-        if (! isset(self::$schema[$connection]) || !isset(self::$schema[$connection][$table])) {
+        if (! isset(self::$schema[$connection]) || ! isset(self::$schema[$connection][$table])) {
             self::$schema[$connection] = self::mapTables($connection);
         }
     }
@@ -45,14 +46,13 @@ final class DatabaseSchema
     {
         return LazyCollection::make(self::getCreateSchema($connection)->getTables())->mapWithKeys(function ($table, $key) use ($connection) {
             $tableName = is_array($table) ? $table['name'] : $table->getName();
-            
-            if(self::$schema[$connection][$tableName] ?? false) {
+
+            if (self::$schema[$connection][$tableName] ?? false) {
                 return [$tableName => self::$schema[$connection][$tableName]];
             }
-            
+
             if (is_array($table)) {
                 $table = new Table(self::mapTableColumns($connection, $tableName));
-                
             }
 
             return [$tableName => $table];
@@ -87,6 +87,7 @@ final class DatabaseSchema
     private static function getCreateSchema(string $connection)
     {
         $schemaManager = self::getSchemaManager($connection);
+
         return method_exists($schemaManager, 'createSchema') ? $schemaManager->createSchema() : $schemaManager;
     }
 
@@ -100,6 +101,7 @@ final class DatabaseSchema
     public function listTableColumnsNames(string $connection, string $table)
     {
         $table = self::getForTable($connection, $table);
+
         return array_keys($table->getColumns());
     }
 

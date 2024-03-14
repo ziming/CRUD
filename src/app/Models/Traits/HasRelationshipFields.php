@@ -27,7 +27,7 @@ trait HasRelationshipFields
         }
 
         $types = [
-            'enum'  => 'string',
+            'enum' => 'string',
             'jsonb' => 'json',
         ];
 

@@ -9,7 +9,7 @@ class TableSchema
 
     public function __construct(string $connection, string $table)
     {
-        $this->schema = DatabaseSchema::getForTable($connection, $table);
+        $this->schema = app('DatabaseSchema')->getForTable($connection, $table);
     }
 
     /**

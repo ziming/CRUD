@@ -11,15 +11,22 @@ final class DatabaseSchema
 
     /**
      * Return the schema for the table.
-     *
-     * @param  string  $connection
-     * @param  string  $table
      */
     public static function getForTable(string $connection, string $table)
     {
-        self::generateDatabaseSchema($connection, $table);
+        $connection = $connection ?: config('database.default');
+
+        self::generateDatabaseSchema($connection);
 
         return self::$schema[$connection][$table] ?? null;
+    }
+
+    public static function getTables(string $connection = null): array
+    {
+        $connection = $connection ?: config('database.default');
+        self::generateDatabaseSchema($connection);
+
+        return self::$schema[$connection] ?? [];
     }
 
     public function listTableColumnsNames(string $connection, string $table)
@@ -34,16 +41,19 @@ final class DatabaseSchema
         return self::getIndexColumnNames($connection, $table);
     }
 
+    public function getManager(string $connection = null)
+    {
+        $connection = $connection ?: config('database.default');
+
+        return self::getSchemaManager($connection);
+    }
+
     /**
      * Generates and store the database schema.
-     *
-     * @param  string  $connection
-     * @param  string  $table
-     * @return void
      */
-    private static function generateDatabaseSchema(string $connection, string $table)
+    private static function generateDatabaseSchema(string $connection)
     {
-        if (! isset(self::$schema[$connection]) || ! isset(self::$schema[$connection][$table])) {
+        if (! isset(self::$schema[$connection])) {
             self::$schema[$connection] = self::mapTables($connection);
         }
     }
@@ -64,7 +74,7 @@ final class DatabaseSchema
             }
 
             if (is_array($table)) {
-                $table = new Table(self::mapTableColumns($connection, $tableName));
+                $table = new Table($tableName, self::mapTableColumns($connection, $tableName));
             }
 
             return [$tableName => $table];
@@ -103,10 +113,34 @@ final class DatabaseSchema
         return method_exists($schemaManager, 'createSchema') ? $schemaManager->createSchema() : $schemaManager;
     }
 
+    private static function dbalTypes()
+    {
+        return [
+            'enum' => \Doctrine\DBAL\Types\Types::STRING,
+            'jsonb' => \Doctrine\DBAL\Types\Types::JSON,
+            'geometry' => \Doctrine\DBAL\Types\Types::STRING,
+            'point' => \Doctrine\DBAL\Types\Types::STRING,
+            'lineString' => \Doctrine\DBAL\Types\Types::STRING,
+            'polygon' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiPoint' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiLineString' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiPolygon' => \Doctrine\DBAL\Types\Types::STRING,
+            'geometryCollection' => \Doctrine\DBAL\Types\Types::STRING,
+        ];
+    }
+
     private static function getSchemaManager(string $connection)
     {
         $connection = DB::connection($connection);
 
-        return method_exists($connection, 'getDoctrineSchemaManager') ? $connection->getDoctrineSchemaManager() : $connection->getSchemaBuilder();
+        if (method_exists($connection, 'getDoctrineSchemaManager')) {
+            foreach (self::dbalTypes() as $key => $value) {
+                $connection->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping($key, $value);
+            }
+
+            return $connection->getDoctrineSchemaManager();
+        }
+
+        return $connection->getSchemaBuilder();
     }
 }

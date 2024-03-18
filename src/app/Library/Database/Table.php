@@ -4,10 +4,12 @@ namespace Backpack\CRUD\app\Library\Database;
 
 final class Table
 {
+    private string $name;
     private array $columns;
 
-    public function __construct(array $columns = [])
+    public function __construct(string $name, array $columns = [])
     {
+        $this->name = $name;
         foreach ($columns as $column) {
             $this->columns[$column['name']] = new class($column)
             {
@@ -30,6 +32,11 @@ final class Table
                     return $this->column['default'];
                 }
 
+                public function getUnsigned()
+                {
+                    return in_array('unsigned', explode(' ', $this->column['type']));
+                }
+
                 public function getType()
                 {
                     return new class($this->column)
@@ -46,6 +53,11 @@ final class Table
                 }
             };
         }
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getColumns()

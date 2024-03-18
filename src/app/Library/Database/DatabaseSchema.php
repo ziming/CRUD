@@ -48,49 +48,7 @@ final class DatabaseSchema
         return self::getSchemaManager($connection);
     }
 
-    public function registerDbalTypes(array $types, string $connection = null)
-    {
-        $connection = $connection ?: config('database.default');
-        $manager = self::getSchemaManager($connection);
-
-        if (! method_exists($manager, 'getDatabasePlatform')) {
-            return;
-        }
-
-        $platform = $manager->getDatabasePlatform();
-
-        foreach ($types as $key => $value) {
-            $platform->registerDoctrineTypeMapping($key, $value);
-        }
-    }
-
-    public static function dbalTypes()
-    {
-        if (! method_exists(self::getSchemaManager(), 'getDatabasePlatform')) {
-            return [];
-        }
-
-        return [
-            'enum' => \Doctrine\DBAL\Types\Types::STRING,
-            'geometry' => \Doctrine\DBAL\Types\Types::STRING,
-            'point' => \Doctrine\DBAL\Types\Types::STRING,
-            'lineString' => \Doctrine\DBAL\Types\Types::STRING,
-            'polygon' => \Doctrine\DBAL\Types\Types::STRING,
-            'multiPoint' => \Doctrine\DBAL\Types\Types::STRING,
-            'multiLineString' => \Doctrine\DBAL\Types\Types::STRING,
-            'multiPolygon' => \Doctrine\DBAL\Types\Types::STRING,
-            'geometryCollection' => \Doctrine\DBAL\Types\Types::STRING,
-
-            \Doctrine\DBAL\Types\Types::BIGINT => 'bigInteger',
-            \Doctrine\DBAL\Types\Types::SMALLINT => 'smallInteger',
-            \Doctrine\DBAL\Types\Types::BLOB => 'binary',
-            \Doctrine\DBAL\Types\Types::DATE_IMMUTABLE => 'date',
-            \Doctrine\DBAL\Types\Types::DATETIME_IMMUTABLE => 'dateTime',
-            \Doctrine\DBAL\Types\Types::DATETIMETZ_IMMUTABLE => 'dateTimeTz',
-            \Doctrine\DBAL\Types\Types::TIME_IMMUTABLE => 'time',
-            \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY => 'array',
-        ];
-    }
+    
 
     /**
      * Generates and store the database schema.
@@ -157,10 +115,33 @@ final class DatabaseSchema
         return method_exists($schemaManager, 'createSchema') ? $schemaManager->createSchema() : $schemaManager;
     }
 
+    private static function dbalTypes()
+    {
+        return [
+            'enum' => \Doctrine\DBAL\Types\Types::STRING,
+            'jsonb' => \Doctrine\DBAL\Types\Types::JSON,
+            'geometry' => \Doctrine\DBAL\Types\Types::STRING,
+            'point' => \Doctrine\DBAL\Types\Types::STRING,
+            'lineString' => \Doctrine\DBAL\Types\Types::STRING,
+            'polygon' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiPoint' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiLineString' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiPolygon' => \Doctrine\DBAL\Types\Types::STRING,
+            'geometryCollection' => \Doctrine\DBAL\Types\Types::STRING
+        ];
+    }
+
     private static function getSchemaManager(string $connection)
     {
         $connection = DB::connection($connection);
 
-        return method_exists($connection, 'getDoctrineSchemaManager') ? $connection->getDoctrineSchemaManager() : $connection->getSchemaBuilder();
+        if(method_exists($connection, 'getDoctrineSchemaManager')) {
+            foreach (self::dbalTypes() as $key => $value) {
+                $connection->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping($key, $value);
+            }
+            return $connection->getDoctrineSchemaManager();
+        }
+    
+        return $connection->getSchemaBuilder();
     }
 }

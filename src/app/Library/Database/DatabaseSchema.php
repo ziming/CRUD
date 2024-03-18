@@ -15,7 +15,7 @@ final class DatabaseSchema
     public static function getForTable(string $connection, string $table)
     {
         $connection = $connection ?: config('database.default');
-        
+
         self::generateDatabaseSchema($connection);
 
         return self::$schema[$connection][$table] ?? null;
@@ -25,7 +25,7 @@ final class DatabaseSchema
     {
         $connection = $connection ?: config('database.default');
         self::generateDatabaseSchema($connection);
-        
+
         return self::$schema[$connection] ?? [];
     }
 
@@ -53,7 +53,7 @@ final class DatabaseSchema
         $connection = $connection ?: config('database.default');
         $manager = self::getSchemaManager($connection);
 
-        if(!method_exists($manager, 'getDatabasePlatform')) {
+        if (! method_exists($manager, 'getDatabasePlatform')) {
             return;
         }
 
@@ -66,18 +66,19 @@ final class DatabaseSchema
 
     public static function dbalTypes()
     {
-        if(!method_exists(self::getSchemaManager(), 'getDatabasePlatform')) {
+        if (! method_exists(self::getSchemaManager(), 'getDatabasePlatform')) {
             return [];
         }
+
         return [
-            'enum'               => \Doctrine\DBAL\Types\Types::STRING,
-            'geometry'           => \Doctrine\DBAL\Types\Types::STRING,
-            'point'              => \Doctrine\DBAL\Types\Types::STRING,
-            'lineString'         => \Doctrine\DBAL\Types\Types::STRING,
-            'polygon'            => \Doctrine\DBAL\Types\Types::STRING,
-            'multiPoint'         => \Doctrine\DBAL\Types\Types::STRING,
-            'multiLineString'    => \Doctrine\DBAL\Types\Types::STRING,
-            'multiPolygon'       => \Doctrine\DBAL\Types\Types::STRING,
+            'enum' => \Doctrine\DBAL\Types\Types::STRING,
+            'geometry' => \Doctrine\DBAL\Types\Types::STRING,
+            'point' => \Doctrine\DBAL\Types\Types::STRING,
+            'lineString' => \Doctrine\DBAL\Types\Types::STRING,
+            'polygon' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiPoint' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiLineString' => \Doctrine\DBAL\Types\Types::STRING,
+            'multiPolygon' => \Doctrine\DBAL\Types\Types::STRING,
             'geometryCollection' => \Doctrine\DBAL\Types\Types::STRING,
 
             \Doctrine\DBAL\Types\Types::BIGINT => 'bigInteger',
@@ -87,7 +88,7 @@ final class DatabaseSchema
             \Doctrine\DBAL\Types\Types::DATETIME_IMMUTABLE => 'dateTime',
             \Doctrine\DBAL\Types\Types::DATETIMETZ_IMMUTABLE => 'dateTimeTz',
             \Doctrine\DBAL\Types\Types::TIME_IMMUTABLE => 'time',
-            \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY => 'array'
+            \Doctrine\DBAL\Types\Types::SIMPLE_ARRAY => 'array',
         ];
     }
 

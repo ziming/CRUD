@@ -48,8 +48,6 @@ final class DatabaseSchema
         return self::getSchemaManager($connection);
     }
 
-    
-
     /**
      * Generates and store the database schema.
      */
@@ -127,7 +125,7 @@ final class DatabaseSchema
             'multiPoint' => \Doctrine\DBAL\Types\Types::STRING,
             'multiLineString' => \Doctrine\DBAL\Types\Types::STRING,
             'multiPolygon' => \Doctrine\DBAL\Types\Types::STRING,
-            'geometryCollection' => \Doctrine\DBAL\Types\Types::STRING
+            'geometryCollection' => \Doctrine\DBAL\Types\Types::STRING,
         ];
     }
 
@@ -135,13 +133,14 @@ final class DatabaseSchema
     {
         $connection = DB::connection($connection);
 
-        if(method_exists($connection, 'getDoctrineSchemaManager')) {
+        if (method_exists($connection, 'getDoctrineSchemaManager')) {
             foreach (self::dbalTypes() as $key => $value) {
                 $connection->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping($key, $value);
             }
+
             return $connection->getDoctrineSchemaManager();
         }
-    
+
         return $connection->getSchemaBuilder();
     }
 }

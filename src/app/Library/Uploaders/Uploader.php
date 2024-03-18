@@ -288,7 +288,7 @@ abstract class Uploader implements UploaderInterface
 
     private function getOriginalValue(Model $entry, $field = null)
     {
-        $field = $field ?? $this->getAttributeName();
+        $field ??= $this->getAttributeName();
         
         if ($this->updatedPreviousFiles !== null) {
             return $this->updatedPreviousFiles;

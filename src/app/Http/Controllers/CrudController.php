@@ -8,13 +8,16 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 
+/**
+ * Class CrudController.
+ *
+ * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
+ * @property array $data
+ */
 class CrudController extends Controller
 {
     use DispatchesJobs, ValidatesRequests;
 
-    /**
-     * @var \Backpack\CRUD\app\Library\CrudPanel\CrudPanel
-     */
     public $crud;
     public $data = [];
 

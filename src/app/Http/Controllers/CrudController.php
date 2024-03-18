@@ -9,11 +9,10 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 
 /**
- * Class CrudController
+ * Class CrudController.
  *
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  * @property array $data
- * @package Backpack\CRUD\app\Http\Controllers
  */
 class CrudController extends Controller
 {

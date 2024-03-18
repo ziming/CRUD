@@ -289,7 +289,7 @@ abstract class Uploader implements UploaderInterface
     private function getOriginalValue(Model $entry, $field = null)
     {
         $field ??= $this->getAttributeName();
-        
+
         if ($this->updatedPreviousFiles !== null) {
             return $this->updatedPreviousFiles;
         }
@@ -301,7 +301,7 @@ abstract class Uploader implements UploaderInterface
         }
 
         if (
-            method_exists($entry, 'translationEnabled') && 
+            method_exists($entry, 'translationEnabled') &&
             $entry->translationEnabled() &&
             $entry->isTranslatableAttribute($field)
         ) {

@@ -6,6 +6,7 @@ use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
@@ -65,7 +66,7 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
         ];
 
         $entry = $this->crudPanel->update(1, $inputData);
@@ -84,7 +85,7 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
         ];
 
         $unknownId = DB::getPdo()->lastInsertId() + 2;
@@ -99,7 +100,7 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
         ];
         $entry = $this->crudPanel->create($inputData);
         $this->addValuesToExpectedFields($entry->id, $inputData);

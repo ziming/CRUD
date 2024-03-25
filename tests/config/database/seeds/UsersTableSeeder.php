@@ -4,6 +4,7 @@ namespace Backpack\CRUD\Tests\Config\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
@@ -22,7 +23,7 @@ class UsersTableSeeder extends Seeder
             'id' => 1,
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
-            'password' => bcrypt('secret'),
+            'password' => Hash::make('secret'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
@@ -32,7 +33,7 @@ class UsersTableSeeder extends Seeder
             'id' => 2,
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
-            'password' => bcrypt('secret'),
+            'password' => Hash::make('secret'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,

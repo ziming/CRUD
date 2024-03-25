@@ -13,6 +13,7 @@ use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Create
@@ -132,7 +133,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -152,7 +153,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'accountDetails' => [
                 'nickname' => $account_details_nickname,
                 'profile_picture' => 'test.jpg',
@@ -184,7 +185,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'accountDetails' => [
                 ['nickname' => $account_details_nickname, 'profile_picture' => 'test.jpg'],
             ],
@@ -251,7 +252,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'roles' => [1, 2],
         ];
@@ -336,7 +337,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'roles' => [1, 2],
             'accountDetails' => [
@@ -398,7 +399,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'bills' => [1],
         ];
@@ -434,7 +435,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'recommends' => [
                 [
@@ -492,7 +493,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'superArticles' => [
                 [
@@ -560,7 +561,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'roles' => [1, 2],
             'accountDetails' => [
@@ -630,7 +631,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'bang_relation_field' => 1,
         ];
@@ -689,7 +690,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'roles' => [1, 2],
             'accountDetails' => [
@@ -734,7 +735,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'roles' => [1, 2],
             'accountDetails' => [
@@ -778,7 +779,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'comment' => [
                 'text' => 'some test comment text',
@@ -814,7 +815,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'stars' => [
                 [
@@ -867,7 +868,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'universes' => [
                 [
@@ -952,7 +953,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'planets' => [1, 2],
         ];
@@ -987,7 +988,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'planets' => [1, 2],
         ];
@@ -1052,7 +1053,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'incomes' => [
                 [
@@ -1141,7 +1142,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'planets' => [1, 2],
         ];
@@ -1175,7 +1176,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'planets' => [1, 2],
         ];
@@ -1208,7 +1209,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'comets' => [1, 2],
         ];
@@ -1242,7 +1243,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'planetsNonNullable' => [1, 2],
         ];
@@ -1282,7 +1283,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'universes' => [
                 [
@@ -1335,7 +1336,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'roles' => [1, 2],
             'accountDetails' => [
@@ -1383,7 +1384,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData = [
             'name' => $faker->name,
             'email' => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'superArticles' => [
                 [

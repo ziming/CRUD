@@ -5,7 +5,7 @@ namespace Backpack\CRUD\app\Library\Database;
 final class Table
 {
     private string $name;
-    private array $columns;
+    private array $columns = [];
 
     public function __construct(string $name, array $columns = [])
     {

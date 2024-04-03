@@ -4,6 +4,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 trait AutoSet
 {
+    protected $autoset = [];
+
     /**
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.

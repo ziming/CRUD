@@ -40,7 +40,7 @@ trait AutoSet
             }
         }, $this->getDbColumnsNames());
 
-        unset($this->autoset);
+       $this->autoset = [];
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\ViewNamespaces;
 use Carbon\Carbon;
-use Doctrine\DBAL\Types\JsonType;
 use Validator;
 
 trait Search
@@ -113,7 +112,7 @@ trait Search
                     if (method_exists($this->model, 'translationEnabled') &&
                         $this->model->translationEnabled() &&
                         $this->model->isTranslatableAttribute($column['name']) &&
-                        is_a($this->model->getConnection()->getDoctrineColumn($this->model->getTableWithPrefix(), $column['name'])->getType(), JsonType::class)
+                        $this->isJsonColumnType($column['name'])
                     ) {
                         $this->orderByWithPrefix($column['name'].'->'.app()->getLocale(), $column_direction);
                     } else {
@@ -412,5 +411,10 @@ trait Search
     public function getColumnWithTableNamePrefixed($query, $column)
     {
         return $query->getModel()->getTable().'.'.$column;
+    }
+
+    private function isJsonColumnType(string $columnName)
+    {
+        return $this->model->getDbTableSchema()->getColumnType($columnName) === 'json';
     }
 }

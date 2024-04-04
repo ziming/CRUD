@@ -7,10 +7,13 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+    protected ?string $redirectTo = null;
+
     protected $data = []; // the information we send to the view
 
     /*
@@ -37,8 +40,7 @@ class RegisterController extends Controller
         $this->middleware("guest:$guard");
 
         // Where to redirect users after login / registration.
-        $this->redirectTo = property_exists($this, 'redirectTo') ? $this->redirectTo
-            : config('backpack.base.route_prefix', 'dashboard');
+        $this->redirectTo ??= config('backpack.base.route_prefix', 'dashboard');
     }
 
     /**
@@ -55,9 +57,9 @@ class RegisterController extends Controller
         $email_validation = backpack_authentication_column() == 'email' ? 'email|' : '';
 
         return Validator::make($data, [
-            'name'                             => 'required|max:255',
-            backpack_authentication_column()   => 'required|'.$email_validation.'max:255|unique:'.$users_table,
-            'password'                         => 'required|min:6|confirmed',
+            'name' => 'required|max:255',
+            backpack_authentication_column() => 'required|'.$email_validation.'max:255|unique:'.$users_table,
+            'password' => 'required|min:6|confirmed',
         ]);
     }
 
@@ -73,9 +75,9 @@ class RegisterController extends Controller
         $user = new $user_model_fqn();
 
         return $user->create([
-            'name'                             => $data['name'],
-            backpack_authentication_column()   => $data[backpack_authentication_column()],
-            'password'                         => bcrypt($data['password']),
+            'name' => $data['name'],
+            backpack_authentication_column() => $data[backpack_authentication_column()],
+            'password' => Hash::make($data['password']),
         ]);
     }
 

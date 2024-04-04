@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudColumn;
+use Backpack\CRUD\Tests\config\Models\Article;
 use Backpack\CRUD\Tests\config\Models\User;
 
 /**
@@ -14,294 +15,294 @@ use Backpack\CRUD\Tests\config\Models\User;
 class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $oneColumnArray = [
-        'name'  => 'column1',
+        'name' => 'column1',
         'label' => 'Column1',
     ];
 
     private $expectedOneColumnArray = [
         'column1' => [
-            'label'       => 'Column1',
-            'name'        => 'column1',
-            'key'         => 'column1',
-            'type'        => 'text',
+            'label' => 'Column1',
+            'name' => 'column1',
+            'key' => 'column1',
+            'type' => 'text',
             'tableColumn' => false,
-            'orderable'   => false,
+            'orderable' => false,
             'searchLogic' => false,
-            'priority'    => 0,
+            'priority' => 0,
         ],
     ];
 
     private $otherOneColumnArray = [
-        'name'  => 'column4',
+        'name' => 'column4',
         'label' => 'Column4',
     ];
 
     private $twoColumnsArray = [
         [
-            'name'  => 'column1',
+            'name' => 'column1',
             'label' => 'Column1',
         ],
         [
-            'name'  => 'column2',
+            'name' => 'column2',
             'label' => 'Column2',
         ],
     ];
 
     private $expectedTwoColumnsArray = [
         'column1' => [
-            'name'        => 'column1',
-            'key'         => 'column1',
-            'label'       => 'Column1',
-            'type'        => 'text',
+            'name' => 'column1',
+            'key' => 'column1',
+            'label' => 'Column1',
+            'type' => 'text',
             'tableColumn' => false,
-            'orderable'   => false,
+            'orderable' => false,
             'searchLogic' => false,
-            'priority'    => 0,
+            'priority' => 0,
 
         ],
         'column2' => [
-            'name'        => 'column2',
-            'key'         => 'column2',
-            'label'       => 'Column2',
-            'type'        => 'text',
+            'name' => 'column2',
+            'key' => 'column2',
+            'label' => 'Column2',
+            'type' => 'text',
             'tableColumn' => false,
-            'orderable'   => false,
+            'orderable' => false,
             'searchLogic' => false,
-            'priority'    => 1,
+            'priority' => 1,
         ],
     ];
 
     private $threeColumnsArray = [
         [
-            'name'  => 'column1',
+            'name' => 'column1',
             'label' => 'Column1',
         ],
         [
-            'name'  => 'column2',
+            'name' => 'column2',
             'label' => 'Column2',
         ],
         [
-            'name'  => 'column3',
+            'name' => 'column3',
             'label' => 'Column3',
         ],
     ];
 
     private $expectedThreeColumnsArray = [
         'column1' => [
-            'name'        => 'column1',
-            'key'         => 'column1',
-            'label'       => 'Column1',
-            'type'        => 'text',
+            'name' => 'column1',
+            'key' => 'column1',
+            'label' => 'Column1',
+            'type' => 'text',
             'tableColumn' => false,
-            'orderable'   => false,
+            'orderable' => false,
             'searchLogic' => false,
-            'priority'    => 0,
+            'priority' => 0,
         ],
         'column2' => [
-            'name'        => 'column2',
-            'key'         => 'column2',
-            'label'       => 'Column2',
-            'type'        => 'text',
+            'name' => 'column2',
+            'key' => 'column2',
+            'label' => 'Column2',
+            'type' => 'text',
             'tableColumn' => false,
-            'orderable'   => false,
+            'orderable' => false,
             'searchLogic' => false,
-            'priority'    => 1,
+            'priority' => 1,
         ],
         'column3' => [
-            'name'        => 'column3',
-            'key'         => 'column3',
-            'label'       => 'Column3',
-            'type'        => 'text',
+            'name' => 'column3',
+            'key' => 'column3',
+            'label' => 'Column3',
+            'type' => 'text',
             'tableColumn' => false,
-            'orderable'   => false,
+            'orderable' => false,
             'searchLogic' => false,
-            'priority'    => 2,
+            'priority' => 2,
         ],
     ];
 
     private $expectedRelationColumnsArrayWithoutPro = [
         'accountDetails' => [
-            'name'          => 'accountDetails',
-            'label'         => 'AccountDetails',
-            'type'          => 'text',
-            'key'           => 'accountDetails',
-            'priority'      => 0,
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'entity'        => 'accountDetails',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            'name' => 'accountDetails',
+            'label' => 'AccountDetails',
+            'type' => 'text',
+            'key' => 'accountDetails',
+            'priority' => 0,
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'entity' => 'accountDetails',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
             'relation_type' => 'HasOne',
-            'attribute'     => 'nickname',
+            'attribute' => 'nickname',
         ],
         'accountDetails__nickname' => [
-            'name'          => 'accountDetails.nickname',
-            'label'         => 'AccountDetails.nickname',
-            'type'          => 'text',
-            'key'           => 'accountDetails__nickname',
-            'priority'      => 1,
-            'attribute'     => 'nickname',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
+            'name' => 'accountDetails.nickname',
+            'label' => 'AccountDetails.nickname',
+            'type' => 'text',
+            'key' => 'accountDetails__nickname',
+            'priority' => 1,
+            'attribute' => 'nickname',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
             'relation_type' => 'HasOne',
-            'entity'        => 'accountDetails.nickname',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            'entity' => 'accountDetails.nickname',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
         ],
         'accountDetails__user' => [
-            'name'          => 'accountDetails.user',
-            'label'         => 'AccountDetails.user',
-            'type'          => 'select',
-            'key'           => 'accountDetails__user',
-            'priority'      => 2,
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
+            'name' => 'accountDetails.user',
+            'label' => 'AccountDetails.user',
+            'type' => 'select',
+            'key' => 'accountDetails__user',
+            'priority' => 2,
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
             'relation_type' => 'BelongsTo',
-            'entity'        => 'accountDetails.user',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\User',
-            'attribute'     => 'name',
+            'entity' => 'accountDetails.user',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\User',
+            'attribute' => 'name',
         ],
     ];
 
     private $expectedRelationColumnsArrayWithPro = [
         'accountDetails' => [
-            'name'          => 'accountDetails',
-            'label'         => 'AccountDetails',
-            'type'          => 'relationship',
-            'key'           => 'accountDetails',
-            'priority'      => 0,
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'entity'        => 'accountDetails',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            'name' => 'accountDetails',
+            'label' => 'AccountDetails',
+            'type' => 'relationship',
+            'key' => 'accountDetails',
+            'priority' => 0,
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'entity' => 'accountDetails',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
             'relation_type' => 'HasOne',
-            'attribute'     => 'nickname',
+            'attribute' => 'nickname',
         ],
         'accountDetails__nickname' => [
-            'name'          => 'accountDetails.nickname',
-            'label'         => 'AccountDetails.nickname',
-            'type'          => 'relationship',
-            'key'           => 'accountDetails__nickname',
-            'priority'      => 1,
-            'attribute'     => 'nickname',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
+            'name' => 'accountDetails.nickname',
+            'label' => 'AccountDetails.nickname',
+            'type' => 'relationship',
+            'key' => 'accountDetails__nickname',
+            'priority' => 1,
+            'attribute' => 'nickname',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
             'relation_type' => 'HasOne',
-            'entity'        => 'accountDetails.nickname',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            'entity' => 'accountDetails.nickname',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
         ],
         'accountDetails__user' => [
-            'name'          => 'accountDetails.user',
-            'label'         => 'AccountDetails.user',
-            'type'          => 'relationship',
-            'key'           => 'accountDetails__user',
-            'priority'      => 2,
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
+            'name' => 'accountDetails.user',
+            'label' => 'AccountDetails.user',
+            'type' => 'relationship',
+            'key' => 'accountDetails__user',
+            'priority' => 2,
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
             'relation_type' => 'BelongsTo',
-            'entity'        => 'accountDetails.user',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\User',
-            'attribute'     => 'name',
+            'entity' => 'accountDetails.user',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\User',
+            'attribute' => 'name',
         ],
     ];
 
     private $relationColumnArray = [
-        'name'      => 'nickname',
-        'type'      => 'select',
-        'entity'    => 'accountDetails',
+        'name' => 'nickname',
+        'type' => 'select',
+        'entity' => 'accountDetails',
         'attribute' => 'nickname',
     ];
 
     private $expectedRelationColumnArray = [
         'nickname' => [
-            'name'          => 'nickname',
-            'type'          => 'select',
-            'entity'        => 'accountDetails',
-            'attribute'     => 'nickname',
-            'label'         => 'Nickname',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
-            'key'           => 'nickname',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'priority'      => 0,
+            'name' => 'nickname',
+            'type' => 'select',
+            'entity' => 'accountDetails',
+            'attribute' => 'nickname',
+            'label' => 'Nickname',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            'key' => 'nickname',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'priority' => 0,
             'relation_type' => 'HasOne',
         ],
     ];
 
     private $nestedRelationColumnArray = [
-        'name'      => 'accountDetails.article',
+        'name' => 'accountDetails.article',
     ];
 
     private $secondNestedRelationColumnArray = [
-        'name'      => 'accountDetails.article',
+        'name' => 'accountDetails.article',
         'attribute' => 'content',
-        'key'       => 'ac_article_content',
+        'key' => 'ac_article_content',
     ];
 
     private $expectedNestedRelationColumnArrayWithPro = [
         'accountDetails__article' => [
-            'name'          => 'accountDetails.article',
-            'type'          => 'relationship',
-            'entity'        => 'accountDetails.article',
-            'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
-            'key'           => 'accountDetails__article',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'priority'      => 0,
+            'name' => 'accountDetails.article',
+            'type' => 'relationship',
+            'entity' => 'accountDetails.article',
+            'label' => 'AccountDetails.article',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\Article',
+            'key' => 'accountDetails__article',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'priority' => 0,
             'relation_type' => 'BelongsTo',
-            'attribute'     => 'content',
+            'attribute' => 'content',
         ],
         'ac_article_content' => [
-            'name'          => 'accountDetails.article',
-            'type'          => 'relationship',
-            'entity'        => 'accountDetails.article',
-            'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
-            'key'           => 'ac_article_content',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'priority'      => 1,
+            'name' => 'accountDetails.article',
+            'type' => 'relationship',
+            'entity' => 'accountDetails.article',
+            'label' => 'AccountDetails.article',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\Article',
+            'key' => 'ac_article_content',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'priority' => 1,
             'relation_type' => 'BelongsTo',
-            'attribute'     => 'content',
+            'attribute' => 'content',
         ],
     ];
 
     private $expectedNestedRelationColumnArrayWithoutPro = [
         'accountDetails__article' => [
-            'name'          => 'accountDetails.article',
-            'type'          => 'select',
-            'entity'        => 'accountDetails.article',
-            'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
-            'key'           => 'accountDetails__article',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'priority'      => 0,
+            'name' => 'accountDetails.article',
+            'type' => 'select',
+            'entity' => 'accountDetails.article',
+            'label' => 'AccountDetails.article',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\Article',
+            'key' => 'accountDetails__article',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'priority' => 0,
             'relation_type' => 'BelongsTo',
-            'attribute'     => 'content',
+            'attribute' => 'content',
         ],
         'ac_article_content' => [
-            'name'          => 'accountDetails.article',
-            'type'          => 'select',
-            'entity'        => 'accountDetails.article',
-            'label'         => 'AccountDetails.article',
-            'model'         => 'Backpack\CRUD\Tests\Config\Models\Article',
-            'key'           => 'ac_article_content',
-            'tableColumn'   => false,
-            'orderable'     => false,
-            'searchLogic'   => false,
-            'priority'      => 1,
+            'name' => 'accountDetails.article',
+            'type' => 'select',
+            'entity' => 'accountDetails.article',
+            'label' => 'AccountDetails.article',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\Article',
+            'key' => 'ac_article_content',
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
+            'priority' => 1,
             'relation_type' => 'BelongsTo',
-            'attribute'     => 'content',
+            'attribute' => 'content',
         ],
     ];
 
@@ -556,14 +557,14 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->assertCount(1, $this->crudPanel->columns());
 
         $this->assertEquals([
-            'name'               => 'my_column',
-            'type'               => 'text',
-            'label'              => 'my_column',
-            'key'                => 'my_column',
-            'priority'           => 0,
-            'tableColumn'        => false,
-            'orderable'          => false,
-            'searchLogic'        => false,
+            'name' => 'my_column',
+            'type' => 'text',
+            'label' => 'my_column',
+            'key' => 'my_column',
+            'priority' => 0,
+            'tableColumn' => false,
+            'orderable' => false,
+            'searchLogic' => false,
         ], $this->crudPanel->columns()['my_column']);
     }
 
@@ -632,5 +633,151 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     {
         $this->crudPanel->column(['type' => 'text']);
         $this->assertCount(1, $this->crudPanel->columns());
+    }
+
+    public function testColumnLinkToThrowsExceptionWhenNotAllRequiredParametersAreFilled()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Route [article.show.detail] expects parameters [id, detail]. Insuficient parameters provided in column: [articles].');
+        $this->crudPanel->column('articles')->entity('articles')->linkTo('article.show.detail', ['test' => 'testing']);
+    }
+
+    public function testItThrowsExceptionIfRouteNotFound()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Route [users.route.doesnt.exist] not found while building the link for column [id].');
+
+        CrudColumn::name('id')->linkTo('users.route.doesnt.exist')->toArray();
+    }
+
+    public function testColumnLinkToWithRouteNameOnly()
+    {
+        $this->crudPanel->column('articles')->entity('articles')->linkTo('articles.show');
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
+        $arguments = $reflection->getClosureUsedVariables();
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('articles.show', $arguments['route']);
+        $this->assertCount(1, $arguments['parameters']);
+        $this->assertEquals('http://localhost/admin/articles/1/show', $url);
+    }
+
+    public function testColumnLinkToWithRouteNameAndAdditionalParameters()
+    {
+        $this->crudPanel->column('articles')->entity('articles')->linkTo('articles.show', ['test' => 'testing', 'test2' => 'testing2']);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
+        $arguments = $reflection->getClosureUsedVariables();
+        $this->assertEquals('articles.show', $arguments['route']);
+        $this->assertCount(3, $arguments['parameters']);
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=testing2', $url);
+    }
+
+    public function testColumnLinkToWithCustomParameters()
+    {
+        $this->crudPanel->column('articles')->entity('articles')->linkTo('article.show.detail', ['detail' => 'testing', 'otherParam' => 'test']);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show/testing?otherParam=test', $url);
+    }
+
+    public function testColumnLinkToWithCustomClosureParameters()
+    {
+        $this->crudPanel->column('articles')
+                        ->entity('articles')
+                        ->linkTo('article.show.detail', ['detail' => fn ($entry, $related_key) => $related_key, 'otherParam' => fn ($entry) => $entry->content]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show/1?otherParam=Some%20Content', $url);
+    }
+
+    public function testColumnLinkToDontAutoInferParametersIfAllProvided()
+    {
+        $this->crudPanel->column('articles')
+                        ->entity('articles')
+                        ->linkTo('article.show.detail', ['id' => 123, 'detail' => fn ($entry, $related_key) => $related_key, 'otherParam' => fn ($entry) => $entry->content]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/123/show/1?otherParam=Some%20Content', $url);
+    }
+
+    public function testColumnLinkToAutoInferAnySingleParameter()
+    {
+        $this->crudPanel->column('articles')
+                        ->entity('articles')
+                        ->linkTo('article.show.detail', ['id' => 123, 'otherParam' => fn ($entry) => $entry->content]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/123/show/1?otherParam=Some%20Content', $url);
+    }
+
+    public function testColumnLinkToWithClosure()
+    {
+        $this->crudPanel->column('articles')
+                        ->entity('articles')
+                        ->linkTo(fn ($entry) => route('articles.show', $entry->content));
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/Some%20Content/show', $url);
+    }
+
+    public function testColumnArrayDefinitionLinkToRouteAsClosure()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->column([
+            'name' => 'articles',
+            'entity' => 'articles',
+            'linkTo' => fn ($entry) => route('articles.show', ['id' => $entry->id, 'test' => 'testing']),
+        ]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing', $url);
+    }
+
+    public function testColumnArrayDefinitionLinkToRouteNameOnly()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->column([
+            'name' => 'articles',
+            'entity' => 'articles',
+            'linkTo' => 'articles.show',
+        ]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show', $url);
+    }
+
+    public function testColumnArrayDefinitionLinkToRouteNameAndAdditionalParameters()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->column([
+            'name' => 'articles',
+            'entity' => 'articles',
+            'linkTo' => [
+                'route' => 'articles.show',
+                'parameters' => [
+                    'test' => 'testing',
+                    'test2' => fn ($entry) => $entry->content,
+                ],
+            ],
+        ]);
+        $columnArray = $this->crudPanel->columns()['articles'];
+        $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
+        $arguments = $reflection->getClosureUsedVariables();
+        $this->assertEquals('articles.show', $arguments['route']);
+        $this->assertCount(3, $arguments['parameters']);
+        $this->crudPanel->entry = Article::first();
+        $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
+        $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=Some%20Content', $url);
     }
 }

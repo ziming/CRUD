@@ -13,6 +13,7 @@ use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Create
@@ -25,7 +26,7 @@ use Illuminate\Support\Arr;
 class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $nonRelationshipField = [
-        'name'  => 'field1',
+        'name' => 'field1',
         'label' => 'Field1',
     ];
 
@@ -53,10 +54,10 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ], [
             'name' => 'tags',
         ], [
-            'label'     => 'Author',
-            'type'      => 'select',
-            'name'      => 'user_id',
-            'entity'    => 'user',
+            'label' => 'Author',
+            'type' => 'select',
+            'name' => 'user_id',
+            'entity' => 'user',
             'attribute' => 'name',
         ],
     ];
@@ -74,12 +75,12 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             'name' => 'password',
             'type' => 'password',
         ], [
-            'label'     => 'Roles',
-            'type'      => 'select_multiple',
-            'name'      => 'roles',
-            'entity'    => 'roles',
+            'label' => 'Roles',
+            'type' => 'select_multiple',
+            'name' => 'roles',
+            'entity' => 'roles',
             'attribute' => 'name',
-            'pivot'     => true,
+            'pivot' => true,
         ],
     ];
 
@@ -96,15 +97,15 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             'name' => 'password',
             'type' => 'password',
         ], [
-            'label'     => 'Roles',
-            'type'      => 'relationship',
-            'name'      => 'roles',
-            'entity'    => 'roles',
+            'label' => 'Roles',
+            'type' => 'relationship',
+            'name' => 'roles',
+            'entity' => 'roles',
             'attribute' => 'name',
         ], [
-            'label'     => 'Street',
-            'name'      => 'street',
-            'entity'    => 'accountDetails.addresses',
+            'label' => 'Street',
+            'name' => 'street',
+            'entity' => 'accountDetails.addresses',
             'attribute' => 'street',
         ],
     ];
@@ -130,9 +131,9 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -150,11 +151,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
         $account_details_nickname = $faker->name;
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'accountDetails' => [
-                'nickname'        => $account_details_nickname,
+                'nickname' => $account_details_nickname,
                 'profile_picture' => 'test.jpg',
             ],
         ];
@@ -169,7 +170,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField([
-            'name'   => 'accountDetails',
+            'name' => 'accountDetails',
             'fields' => [
                 [
                     'name' => 'nickname',
@@ -182,9 +183,9 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
         $account_details_nickname = $faker->name;
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'accountDetails' => [
                 ['nickname' => $account_details_nickname, 'profile_picture' => 'test.jpg'],
             ],
@@ -203,13 +204,13 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->articleInputBelongsToRelationName);
         $faker = Factory::create();
         $inputData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user'        => 1,
-            'metas'       => null,
-            'extras'      => null,
-            'cast_metas'  => null,
-            'cast_tags'   => null,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user' => 1,
+            'metas' => null,
+            'extras' => null,
+            'cast_metas' => null,
+            'cast_tags' => null,
             'cast_extras' => null,
         ];
         $entry = $this->crudPanel->create($inputData);
@@ -225,13 +226,13 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->articleInputFieldsOneToMany);
         $faker = Factory::create();
         $inputData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
-            'metas'       => null,
-            'extras'      => null,
-            'cast_metas'  => null,
-            'cast_tags'   => null,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
+            'metas' => null,
+            'extras' => null,
+            'cast_metas' => null,
+            'cast_tags' => null,
             'cast_extras' => null,
         ];
 
@@ -249,11 +250,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFieldsManyToMany);
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -334,13 +335,13 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
-                'nickname'        => 'i_have_has_one',
+                'nickname' => 'i_have_has_one',
                 'profile_picture' => 'simple_picture.jpg',
             ],
         ];
@@ -396,11 +397,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'bills'          => [1],
+            'bills' => [1],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -432,14 +433,14 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'                => $faker->name,
-            'email'               => $faker->safeEmail,
-            'password'            => bcrypt($faker->password()),
-            'remember_token'      => null,
-            'recommends'          => [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'recommends' => [
                 [
                     'recommends' => 1,
-                    'text'       => 'my pivot recommend field',
+                    'text' => 'my pivot recommend field',
                 ],
             ],
         ];
@@ -454,7 +455,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $inputData['recommends'] = [
             [
                 'recommends' => 2,
-                'text'       => 'I changed the recommend and the pivot text',
+                'text' => 'I changed the recommend and the pivot text',
             ],
         ];
 
@@ -472,7 +473,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField([
-            'name'      => 'superArticles',
+            'name' => 'superArticles',
             'subfields' => [
                 [
                     'name' => 'notes',
@@ -482,22 +483,22 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $articleData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
         ];
 
         $article = Article::create($articleData);
 
         $inputData = [
-            'name'                   => $faker->name,
-            'email'                  => $faker->safeEmail,
-            'password'               => bcrypt($faker->password()),
-            'remember_token'         => null,
-            'superArticles'          => [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'superArticles' => [
                 [
                     'superArticles' => $article->id,
-                    'notes'         => 'my first article note',
+                    'notes' => 'my first article note',
                 ],
             ],
         ];
@@ -516,7 +517,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField(
             [
-                'name'      => 'accountDetails',
+                'name' => 'accountDetails',
                 'subfields' => [
                     [
                         'name' => 'nickname',
@@ -528,7 +529,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                         'name' => 'article',
                     ],
                     [
-                        'name'      => 'addresses',
+                        'name' => 'addresses',
                         'subfields' => [
                             [
                                 'name' => 'bang',
@@ -545,7 +546,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                         'name' => 'bangs',
                     ],
                     [
-                        'name'      => 'bangsPivot',
+                        'name' => 'bangsPivot',
                         'subfields' => [
                             [
                                 'name' => 'pivot_field',
@@ -558,29 +559,29 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 [
-                    'nickname'        => 'i_have_has_one',
+                    'nickname' => 'i_have_has_one',
                     'profile_picture' => 'ohh my picture 1.jpg',
-                    'article'         => 1,
-                    'addresses'       => [
+                    'article' => 1,
+                    'addresses' => [
                         [
-                            'bang'   => 1,
+                            'bang' => 1,
                             'street' => 'test',
                             'number' => 1,
                         ],
                         [
-                            'bang'   => 1,
+                            'bang' => 1,
                             'street' => 'test2',
                             'number' => 2,
                         ],
                     ],
-                    'bangs'      => [1, 2],
+                    'bangs' => [1, 2],
                     'bangsPivot' => [
                         ['bangsPivot' => 1, 'pivot_field' => 'test1'],
                         ['bangsPivot' => 2, 'pivot_field' => 'test2'],
@@ -606,18 +607,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     public function testCreateBelongsToFake()
     {
         $belongsToField = [   // select_grouped
-            'label'                      => 'Select_grouped',
-            'type'                       => 'select_grouped', //https://github.com/Laravel-Backpack/CRUD/issues/502
-            'name'                       => 'bang_relation_field',
-            'fake'                       => true,
-            'entity'                     => 'bang',
-            'model'                      => 'Backpack\CRUD\Tests\config\Models\Bang',
-            'attribute'                  => 'title',
-            'group_by'                   => 'category', // the relationship to entity you want to use for grouping
-            'group_by_attribute'         => 'name', // the attribute on related model, that you want shown
+            'label' => 'Select_grouped',
+            'type' => 'select_grouped', //https://github.com/Laravel-Backpack/CRUD/issues/502
+            'name' => 'bang_relation_field',
+            'fake' => true,
+            'entity' => 'bang',
+            'model' => 'Backpack\CRUD\Tests\config\Models\Bang',
+            'attribute' => 'title',
+            'group_by' => 'category', // the relationship to entity you want to use for grouping
+            'group_by_attribute' => 'name', // the attribute on related model, that you want shown
             'group_by_relationship_back' => 'articles', // relationship from related model back to this model
-            'tab'                        => 'Selects',
-            'wrapperAttributes'          => ['class' => 'form-group col-md-6'],
+            'tab' => 'Selects',
+            'wrapperAttributes' => ['class' => 'form-group col-md-6'],
         ];
 
         $this->crudPanel->setModel(User::class);
@@ -628,11 +629,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
 
         $inputData = [
-            'name'                         => $faker->name,
-            'email'                        => $faker->safeEmail,
-            'password'                     => bcrypt($faker->password()),
-            'remember_token'               => null,
-            'bang_relation_field'          => 1,
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'bang_relation_field' => 1,
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -657,10 +658,10 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                 'name' => 'accountDetails.article',
             ],
             [
-                'name'      => 'accountDetails.addresses',
+                'name' => 'accountDetails.addresses',
                 'subfields' => [
                     [
-                        'name'   => 'city',
+                        'name' => 'city',
                         'entity' => 'bang',
                     ],
                     [
@@ -675,7 +676,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                 'name' => 'accountDetails.bangs',
             ],
             [
-                'name'      => 'accountDetails.bangsPivot',
+                'name' => 'accountDetails.bangsPivot',
                 'subfields' => [
                     [
                         'name' => 'pivot_field',
@@ -687,28 +688,28 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
-                'nickname'        => 'i_have_has_one',
+                'nickname' => 'i_have_has_one',
                 'profile_picture' => 'ohh my picture 1.jpg',
-                'article'         => 1,
-                'addresses'       => [
+                'article' => 1,
+                'addresses' => [
                     [
-                        'city'   => 1,
+                        'city' => 1,
                         'street' => 'test',
                         'number' => 1,
                     ],
                     [
-                        'city'   => 2,
+                        'city' => 2,
                         'street' => 'test2',
                         'number' => 2,
                     ],
                 ],
-                'bangs'      => [1, 2],
+                'bangs' => [1, 2],
                 'bangsPivot' => [
                     ['bangsPivot' => 1, 'pivot_field' => 'test1'],
                     ['bangsPivot' => 2, 'pivot_field' => 'test2'],
@@ -732,28 +733,28 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         // Now test the remove process
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
-                'nickname'        => 'i_have_has_one',
+                'nickname' => 'i_have_has_one',
                 'profile_picture' => 'ohh my picture 1.jpg',
-                'article'         => 1,
-                'addresses'       => [ // HasOne is tested in other test function
+                'article' => 1,
+                'addresses' => [ // HasOne is tested in other test function
                     [
-                        'city'   => 2,
+                        'city' => 2,
                         'street' => 'test',
                         'number' => 1,
                     ],
                     [
-                        'city'   => 1,
+                        'city' => 1,
                         'street' => 'test2',
                         'number' => 2,
                     ],
                 ],
-                'bangs'      => [],
+                'bangs' => [],
                 'bangsPivot' => [],
             ],
         ];
@@ -776,11 +777,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'             => $faker->name,
-            'email'            => $faker->safeEmail,
-            'password'         => bcrypt($faker->password()),
-            'remember_token'   => null,
-            'comment'          => [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'comment' => [
                 'text' => 'some test comment text',
             ],
         ];
@@ -802,7 +803,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'      => 'stars',
+            'name' => 'stars',
             'subfields' => [
                 [
                     'name' => 'title',
@@ -812,17 +813,17 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'stars'          => [
+            'stars' => [
                 [
-                    'id'    => null,
+                    'id' => null,
                     'title' => 'this is the star 1 title',
                 ],
                 [
-                    'id'    => null,
+                    'id' => null,
                     'title' => 'this is the star 2 title',
                 ],
             ],
@@ -837,7 +838,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $inputData['stars'] = [
             [
-                'id'    => 1,
+                'id' => 1,
                 'title' => 'only one star with changed title',
             ],
         ];
@@ -855,7 +856,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'      => 'universes',
+            'name' => 'universes',
             'subfields' => [
                 [
                     'name' => 'title',
@@ -865,13 +866,13 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'               => $faker->name,
-            'email'              => $faker->safeEmail,
-            'password'           => bcrypt($faker->password()),
-            'remember_token'     => null,
-            'universes'          => [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'universes' => [
                 [
-                    'id'    => null,
+                    'id' => null,
                     'title' => 'this is the star 1 title',
                 ],
                 [
@@ -889,11 +890,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $inputData['universes'] = [
             [
-                'id'    => 1,
+                'id' => 1,
                 'title' => 'star 1 with changed title',
             ],
             [
-                'id'    => 2,
+                'id' => 2,
                 'title' => 'star 2 with changed title',
             ],
         ];
@@ -906,7 +907,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $inputData['universes'] = [
             [
-                'id'    => 1,
+                'id' => 1,
                 'title' => 'only one star with changed title',
             ],
         ];
@@ -919,7 +920,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $inputData['universes'] = [
             [
-                'id'    => null,
+                'id' => null,
                 'title' => 'new star 3',
             ],
         ];
@@ -943,18 +944,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'         => 'planets',
+            'name' => 'planets',
             'force_delete' => false,
-            'fallback_id'  => false,
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'             => $faker->name,
-            'email'            => $faker->safeEmail,
-            'password'         => bcrypt($faker->password()),
-            'remember_token'   => null,
-            'planets'          => [1, 2],
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -978,18 +979,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'         => 'planets',
+            'name' => 'planets',
             'force_delete' => false,
-            'fallback_id'  => false,
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'             => $faker->name,
-            'email'            => $faker->safeEmail,
-            'password'         => bcrypt($faker->password()),
-            'remember_token'   => null,
-            'planets'          => [1, 2],
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1012,15 +1013,15 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'          => 'incomes',
-            'subfields'     => [
+            'name' => 'incomes',
+            'subfields' => [
                 [
                     'name' => 'label',
                     'type' => 'text',
                 ],
                 [
-                    'name'  => 'type',
-                    'type'  => 'hidden',
+                    'name' => 'type',
+                    'type' => 'hidden',
                     'value' => 'income',
                 ],
                 [
@@ -1030,15 +1031,15 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             ],
         ], 'both');
         $this->crudPanel->addField([
-            'name'          => 'expenses',
-            'subfields'     => [
+            'name' => 'expenses',
+            'subfields' => [
                 [
                     'name' => 'label',
                     'type' => 'text',
                 ],
                 [
-                    'name'  => 'type',
-                    'type'  => 'hidden',
+                    'name' => 'type',
+                    'type' => 'hidden',
                     'value' => 'expense',
                 ],
                 [
@@ -1050,32 +1051,32 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'incomes'        => [
+            'incomes' => [
                 [
-                    'label'  => $faker->name,
+                    'label' => $faker->name,
                     'amount' => 33,
-                    'type'   => 'income',
+                    'type' => 'income',
                 ],
                 [
-                    'label'  => $faker->name,
+                    'label' => $faker->name,
                     'amount' => 22,
-                    'type'   => 'income',
+                    'type' => 'income',
                 ],
             ],
             'expenses' => [
                 [
-                    'label'  => $faker->name,
+                    'label' => $faker->name,
                     'amount' => 44,
-                    'type'   => 'expense',
+                    'type' => 'expense',
                 ],
                 [
-                    'label'  => $faker->name,
+                    'label' => $faker->name,
                     'amount' => 10,
-                    'type'   => 'expense',
+                    'type' => 'expense',
                 ],
             ],
         ];
@@ -1090,24 +1091,24 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $inputData['incomes'] = [
             [
-                'id'     => 2,
-                'label'  => $faker->name,
+                'id' => 2,
+                'label' => $faker->name,
                 'amount' => 222,
-                'type'   => 'income',
+                'type' => 'income',
             ],
         ];
         $inputData['expenses'] = [
             [
-                'id'     => 3,
-                'label'  => $faker->name,
+                'id' => 3,
+                'label' => $faker->name,
                 'amount' => 44,
-                'type'   => 'expense',
+                'type' => 'expense',
             ],
             [
-                'id'     => 4,
-                'label'  => $faker->name,
+                'id' => 4,
+                'label' => $faker->name,
                 'amount' => 10,
-                'type'   => 'expense',
+                'type' => 'expense',
             ],
         ];
         $this->crudPanel->update($entry->id, $inputData);
@@ -1132,18 +1133,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'         => 'planets',
-            'fallback_id'  => 0,
+            'name' => 'planets',
+            'fallback_id' => 0,
             'force_delete' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'             => $faker->name,
-            'email'            => $faker->safeEmail,
-            'password'         => bcrypt($faker->password()),
-            'remember_token'   => null,
-            'planets'          => [1, 2],
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1166,18 +1167,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'         => 'planets',
+            'name' => 'planets',
             'force_delete' => true,
-            'fallback_id'  => false,
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'             => $faker->name,
-            'email'            => $faker->safeEmail,
-            'password'         => bcrypt($faker->password()),
-            'remember_token'   => null,
-            'planets'          => [1, 2],
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1199,18 +1200,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'         => 'comets',
+            'name' => 'comets',
             'force_delete' => false,
-            'fallback_id'  => false,
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'            => $faker->name,
-            'email'           => $faker->safeEmail,
-            'password'        => bcrypt($faker->password()),
-            'remember_token'  => null,
-            'comets'          => [1, 2],
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'comets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1233,18 +1234,18 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'         => 'planetsNonNullable',
+            'name' => 'planetsNonNullable',
             'force_delete' => false,
-            'fallback_id'  => false,
+            'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'                        => $faker->name,
-            'email'                       => $faker->safeEmail,
-            'password'                    => bcrypt($faker->password()),
-            'remember_token'              => null,
-            'planetsNonNullable'          => [1, 2],
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'planetsNonNullable' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1266,7 +1267,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'      => 'universes',
+            'name' => 'universes',
             'subfields' => [
                 [
                     'name' => 'title',
@@ -1280,20 +1281,20 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $inputData = [
-            'name'               => $faker->name,
-            'email'              => $faker->safeEmail,
-            'password'           => bcrypt($faker->password()),
-            'remember_token'     => null,
-            'universes'          => [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'universes' => [
                 [
-                    'id'         => null,
-                    'title'      => 'this is the star 1 title',
+                    'id' => null,
+                    'title' => 'this is the star 1 title',
                     'start_date' => '2021-02-26',
-                    'end_date'   => '2091-01-26',
+                    'end_date' => '2091-01-26',
                 ],
                 [
-                    'title'      => 'this is the star 2 title',
-                    'end_date'   => '2021-02-26',
+                    'title' => 'this is the star 2 title',
+                    'end_date' => '2021-02-26',
                     'start_date' => '2091-01-26',
                 ],
             ],
@@ -1316,7 +1317,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField(
             [
-                'name'      => 'accountDetails',
+                'name' => 'accountDetails',
                 'subfields' => [
                     [
                         'name' => 'nickname',
@@ -1333,17 +1334,17 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 [
-                    'nickname'        => 'i_have_has_one',
+                    'nickname' => 'i_have_has_one',
                     'profile_picture' => 'ohh my picture 1.jpg',
-                    'start_date'      => '2021-02-26',
-                    'end_date'        => '2091-01-26',
+                    'start_date' => '2021-02-26',
+                    'end_date' => '2091-01-26',
                 ],
             ],
         ];
@@ -1360,7 +1361,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $this->crudPanel->addField([
-            'name'      => 'superArticles',
+            'name' => 'superArticles',
             'subfields' => [
                 [
                     'name' => 'notes',
@@ -1373,24 +1374,24 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $faker = Factory::create();
         $articleData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
         ];
 
         $article = Article::create($articleData);
 
         $inputData = [
-            'name'                   => $faker->name,
-            'email'                  => $faker->safeEmail,
-            'password'               => bcrypt($faker->password()),
-            'remember_token'         => null,
-            'superArticles'          => [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'superArticles' => [
                 [
                     'superArticles' => $article->id,
-                    'notes'         => 'my first article note',
-                    'start_date'    => '2021-02-26',
-                    'end_date'      => '2091-01-26',
+                    'notes' => 'my first article note',
+                    'start_date' => '2021-02-26',
+                    'end_date' => '2091-01-26',
                 ],
             ],
         ];
@@ -1409,7 +1410,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     {
         $this->crudPanel->setModel(Star::class);
         $this->crudPanel->addField([
-            'name'         => 'starable',
+            'name' => 'starable',
             'morphOptions' => [
                 ['Backpack\CRUD\Tests\config\Models\User', 'User'],
             ],
@@ -1429,7 +1430,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->expectException(\Exception::class);
 
         $this->crudPanel->addField([
-            'name'         => 'starable',
+            'name' => 'starable',
             'morphOptions' => [
                 ['Backpack\CRUD\Tests\config\Models\User', 'User'],
                 ['Backpack\CRUD\Tests\config\Models\User', 'User'],
@@ -1443,7 +1444,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->expectException(\Exception::class);
 
         $this->crudPanel->addField([
-            'name'         => 'starable',
+            'name' => 'starable',
             'morphOptions' => [
                 ['somethingThatDoesNotExist'],
             ],
@@ -1455,11 +1456,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->setModel(Star::class);
 
         Relation::morphMap([
-            'user'    => 'Backpack\CRUD\Tests\config\Models\User',
+            'user' => 'Backpack\CRUD\Tests\config\Models\User',
         ]);
 
         $this->crudPanel->addField([
-            'name'         => 'starable',
+            'name' => 'starable',
             'morphOptions' => [
                 ['user'],
             ],
@@ -1475,11 +1476,11 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->expectException(\Exception::class);
 
         Relation::morphMap([
-            'user'    => 'Backpack\CRUD\Tests\config\Models\User',
+            'user' => 'Backpack\CRUD\Tests\config\Models\User',
         ]);
 
         $this->crudPanel->addField([
-            'name'         => 'starable',
+            'name' => 'starable',
             'morphOptions' => [
                 ['user'],
                 ['user'],

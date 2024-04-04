@@ -29,13 +29,13 @@ class RequireThemeCoreuiv4 extends Command
      * @var array
      */
     public static $addon = [
-        'name'        => 'CoreUIv4',
+        'name' => 'CoreUIv4',
         'description' => [
             'UI provided by CoreUIv4, a Boostrap 5 template.',
             '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv4/</>',
         ],
-        'repo'    => 'backpack/theme-coreuiv4',
-        'path'    => 'vendor/backpack/theme-coreuiv4',
+        'repo' => 'backpack/theme-coreuiv4',
+        'path' => 'vendor/backpack/theme-coreuiv4',
         'command' => 'backpack:require:theme-coreuiv4',
         'view_namespace' => 'backpack.theme-coreuiv4::',
         'publish_tag' => 'theme-coreuiv4-config',

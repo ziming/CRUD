@@ -3,7 +3,9 @@
 namespace Backpack\CRUD;
 
 use Backpack\Basset\Facades\Basset;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -12,6 +14,7 @@ class ThemeServiceProvider extends ServiceProvider
     protected string $packageName = 'theme-name';
     protected array $commands = [];
     protected bool $theme = true;
+    protected null|string $componentsNamespace = null;
 
     /**
      * -------------------------
@@ -56,6 +59,8 @@ class ThemeServiceProvider extends ServiceProvider
         if ($this->packageDirectoryExistsAndIsNotEmpty('routes')) {
             $this->loadRoutesFrom($this->packageRoutesFile());
         }
+
+        $this->registerPackageBladeComponents();
 
         // Publishing is only necessary when using the CLI.
         if (app()->runningInConsole()) {
@@ -255,5 +260,14 @@ class ThemeServiceProvider extends ServiceProvider
 
         return config('backpack.ui.view_namespace') === $viewNamespace ||
             config('backpack.ui.view_namespace_fallback') === $viewNamespace;
+    }
+
+    public function registerPackageBladeComponents()
+    {
+        if ($this->componentsNamespace) {
+            $this->app->afterResolving(BladeCompiler::class, function () {
+                Blade::componentNamespace($this->componentsNamespace, $this->packageName);
+            });
+        }
     }
 }

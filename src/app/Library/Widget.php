@@ -37,7 +37,9 @@ class Widget extends Fluent
         // if that widget name already exists in the widgets collection
         // then pick up all widget attributes from that entry
         // and overwrite them with the ones passed in $attributes
-        if ($existingItem = self::collection()->firstWhere('name', $attributes['name'])) {
+        if ($existingItem = self::collection()->filter(function ($item) use ($attributes) {
+            return $item->attributes['name'] === $attributes['name'];
+        })->first()) {
             $attributes = array_merge($existingItem->attributes, $attributes);
         }
 
@@ -121,7 +123,7 @@ class Widget extends Fluent
      */
     public function makeFirst()
     {
-        $this->collection()->pull($this->name);
+        $this->collection()->pull($this->attributes['name']);
         $this->collection()->prepend($this);
 
         return $this;
@@ -134,7 +136,7 @@ class Widget extends Fluent
      */
     public function makeLast()
     {
-        $this->collection()->pull($this->name);
+        $this->collection()->pull($this->attributes['name']);
         $this->collection()->push($this);
 
         return $this;
@@ -149,14 +151,14 @@ class Widget extends Fluent
      */
     public function getFinalViewPath()
     {
-        if (isset($this->viewNamespace)) {
-            $path = $this->viewNamespace.'.'.$this->type;
+        if (isset($this->attributes['viewNamespace'])) {
+            $path = $this->attributes['viewNamespace'].'.'.$this->attributes['type'];
 
             if (view()->exists($path)) {
                 return $path;
             }
         }
-        $type = $this->type;
+        $type = $this->attributes['type'];
         $paths = array_map(function ($item) use ($type) {
             return $item.'.'.$type;
         }, ViewNamespaces::getWithFallbackFor('widgets', 'backpack.ui.component_view_namespaces.widgets'));
@@ -168,9 +170,9 @@ class Widget extends Fluent
         }
         // if no view exists, in any of the directories above... no bueno
         if (! backpack_pro()) {
-            throw new BackpackProRequiredException('Cannot find the widget view: '.$this->type.'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
+            throw new BackpackProRequiredException('Cannot find the widget view: '.$this->attributes['type'].'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
         }
-        abort(500, 'Cannot find the view for «'.$this->type.'» widget type. Please check for typos.');
+        abort(500, 'Cannot find the view for «'.$this->attributes['type'].'» widget type. Please check for typos.');
     }
 
     // -------
@@ -220,7 +222,7 @@ class Widget extends Fluent
      */
     public function remove()
     {
-        $this->collection()->pull($this->name);
+        $this->collection()->pull($this->attributes['name']);
 
         return $this;
     }
@@ -251,12 +253,13 @@ class Widget extends Fluent
      */
     private function save()
     {
-        $itemExists = $this->collection()->contains('name', $this->attributes['name']);
-
+        $itemExists = $this->collection()->filter(function ($item) {
+            return $item->attributes['name'] === $this->attributes['name'];
+        })->isNotEmpty();
         if (! $itemExists) {
             $this->collection()->put($this->attributes['name'], $this);
         } else {
-            $this->collection()[$this->name] = $this;
+            $this->collection()[$this->attributes['name']] = $this;
         }
 
         return $this;
@@ -291,6 +294,29 @@ class Widget extends Fluent
         dd($this);
 
         return $this;
+    }
+
+    /**
+     * Overwritten methods to prevent BC in Laravel 11, since they introduced the `value()` method
+     * in their Fluent class. Altough the Widget class is Fluent, it does not behave the same
+     * in regards to `value()`, since we use it as a key in widget definition.
+     */
+    public function value($value, $default = null)
+    {
+        $this->attributes['value'] = $value;
+
+        return $this->save();
+    }
+
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset): mixed
+    {
+        return $this->get($offset);
+    }
+
+    public function __get($key)
+    {
+        return $this->get($key);
     }
 
     // -------------

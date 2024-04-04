@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 trait Update
@@ -25,7 +27,16 @@ trait Update
         $item = $this->model->findOrFail($id);
 
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
-        $updated = $item->update($directInputs);
+        if ($this->get('update.useDatabaseTransactions') ?? config('backpack.base.useDatabaseTransactions', false)) {
+            return DB::transaction(fn () => $this->updateModelAndRelations($item, $directInputs, $relationInputs));
+        }
+
+        return $this->updateModelAndRelations($item, $directInputs, $relationInputs);
+    }
+
+    private function updateModelAndRelations(Model $item, array $directInputs, array $relationInputs): Model
+    {
+        $item->update($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
@@ -49,9 +60,9 @@ trait Update
         // always have a hidden input for the entry id
         if (! array_key_exists('id', $fields)) {
             $fields['id'] = [
-                'name'  => $entry->getKeyName(),
+                'name' => $entry->getKeyName(),
                 'value' => $entry->getKey(),
-                'type'  => 'hidden',
+                'type' => 'hidden',
             ];
         }
 

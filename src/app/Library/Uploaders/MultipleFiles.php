@@ -17,9 +17,17 @@ class MultipleFiles extends Uploader
 
     public function uploadFiles(Model $entry, $value = null)
     {
-        $filesToDelete = CRUD::getRequest()->get('clear_'.$this->getName());
-        $value = $value ?? CRUD::getRequest()->file($this->getName());
+        if ($value && isset($value[0]) && is_null($value[0])) {
+            $value = false;
+        }
+
+        $filesToDelete = $this->getFilesToDeleteFromRequest();
+        $value = $value ?? collect(CRUD::getRequest()->file($this->getNameForRequest()))->flatten()->toArray();
         $previousFiles = $this->getPreviousFiles($entry) ?? [];
+
+        if (is_array($previousFiles) && empty($previousFiles[0] ?? [])) {
+            $previousFiles = [];
+        }
 
         if (! is_array($previousFiles) && is_string($previousFiles)) {
             $previousFiles = json_decode($previousFiles, true);
@@ -37,7 +45,11 @@ class MultipleFiles extends Uploader
             }
         }
 
-        foreach ($value ?? [] as $file) {
+        if (! is_array($value)) {
+            $value = [];
+        }
+
+        foreach ($value as $file) {
             if ($file && is_file($file)) {
                 $fileName = $this->getFileName($file);
                 $file->storeAs($this->getPath(), $fileName, $this->getDisk());
@@ -72,5 +84,22 @@ class MultipleFiles extends Uploader
         }
 
         return $fileOrder;
+    }
+
+    protected function hasDeletedFiles($value): bool
+    {
+        return empty($this->getFilesToDeleteFromRequest()) ? false : true;
+    }
+
+    protected function getEntryAttributeValue(Model $entry)
+    {
+        $value = $entry->{$this->getAttributeName()};
+
+        return isset($entry->getCasts()[$this->getName()]) ? $value : json_encode($value);
+    }
+
+    private function getFilesToDeleteFromRequest(): array
+    {
+        return collect(CRUD::getRequest()->get('clear_'.$this->getNameForRequest()))->flatten()->toArray();
     }
 }

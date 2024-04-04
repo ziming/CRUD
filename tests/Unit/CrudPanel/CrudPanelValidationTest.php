@@ -25,7 +25,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setValidation(UserRequest::class);
 
         $request = request()->create('users/', 'POST', [
-            'email'    => 'test@test.com',
+            'email' => 'test@test.com',
             'password' => 'test',
         ]);
 
@@ -40,8 +40,8 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setValidation(UserRequest::class);
 
         $request = request()->create('users/', 'POST', [
-            'name'     => 'test name',
-            'email'    => 'test@test.com',
+            'name' => 'test name',
+            'email' => 'test@test.com',
             'password' => 'test',
         ]);
 
@@ -51,7 +51,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
 
         $this->crudPanel->addFields([
             [
-                'name'            => 'email',
+                'name' => 'email',
                 'validationRules' => 'required',
             ],
             [
@@ -80,9 +80,9 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setValidation(UserRequest::class);
 
         $request = request()->create('users/', 'POST', [
-            'name'     => '',
+            'name' => '',
             'password' => '',
-            'email'    => '',
+            'email' => '',
         ]);
 
         $request->setRouteResolver(function () use ($request) {
@@ -91,7 +91,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
 
         $this->crudPanel->addFields([
             [
-                'name'            => 'email',
+                'name' => 'email',
                 'validationRules' => 'required',
             ],
             [
@@ -120,8 +120,8 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setOperation('create');
 
         $request = request()->create('users/', 'POST', [
-            'name'     => 'test name',
-            'email'    => 'test@test.com',
+            'name' => 'test name',
+            'email' => 'test@test.com',
             'password' => 'test',
         ]);
 
@@ -130,24 +130,24 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         });
 
         $this->crudPanel->addField([
-            'name'            => 'email',
+            'name' => 'email',
             'validationRules' => 'required',
         ]);
 
         $this->crudPanel->addField([
-            'name'               => 'name',
-            'validationRules'    => 'required',
+            'name' => 'name',
+            'validationRules' => 'required',
             'validationMessages' => [
                 'required' => 'required ma friend',
             ],
         ]);
 
         $this->crudPanel->addField([
-            'name'      => 'password',
+            'name' => 'password',
             'subfields' => [
                 [
-                    'name'               => 'test',
-                    'validationRules'    => 'required',
+                    'name' => 'test',
+                    'validationRules' => 'required',
                     'validationMessages' => [
                         'required' => 'required ma friend',
                     ],
@@ -184,7 +184,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
         $this->crudPanel->setValidation([
-            'name'     => 'required',
+            'name' => 'required',
             'password' => 'required',
         ]);
         $this->crudPanel->setValidation(UserRequest::class);
@@ -203,7 +203,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->crudPanel->setOperation('create');
         $this->assertFalse($this->crudPanel->isRequired('test'));
         $this->crudPanel->setValidation([
-            'email'           => 'required',
+            'email' => 'required',
             'password.*.test' => 'required',
         ]);
 
@@ -221,8 +221,8 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
 
         $this->assertFalse($this->crudPanel->isRequired('test'));
         $this->crudPanel->setValidation([
-            'email'     => ValidUpload::field('required'),
-            'password'  => ValidUploadMultiple::field('required'),
+            'email' => ValidUpload::field('required'),
+            'password' => ValidUploadMultiple::field('required'),
         ]);
 
         $this->crudPanel->setValidation(UserRequest::class);
@@ -242,9 +242,9 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $pdf2 = UploadedFile::fake()->create('test2.pdf', 1000);
 
         $request = request()->create('users/', 'POST', [
-            'email'       => $pdf1,
-            'password'    => [$pdf1, $pdf2],
-            'name'        => 'test',
+            'email' => $pdf1,
+            'password' => [$pdf1, $pdf2],
+            'name' => 'test',
         ]);
 
         $request->setRouteResolver(function () use ($request) {
@@ -253,11 +253,11 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
 
         $this->crudPanel->addFields([
             [
-                'name'            => 'password',
+                'name' => 'password',
                 'validationRules' => ValidUploadMultiple::field('required')->file('file|mimes:pdf|max:500'),
             ],
             [
-                'name'            => 'email',
+                'name' => 'email',
                 'validationRules' => ValidUpload::field('required')->file('file|mimes:jpg'),
             ],
 

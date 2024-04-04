@@ -4,12 +4,12 @@ namespace Backpack\CRUD\app\Library\Database;
 
 class TableSchema
 {
-    /** @var Doctrine\DBAL\Schema\Table */
+    /** @var Doctrine\DBAL\Schema\Table|Backpack\CRUD\app\Library\Database\Table */
     public $schema;
 
     public function __construct(string $connection, string $table)
     {
-        $this->schema = DatabaseSchema::getForTable($connection, $table);
+        $this->schema = app('DatabaseSchema')->getForTable($connection, $table);
     }
 
     /**

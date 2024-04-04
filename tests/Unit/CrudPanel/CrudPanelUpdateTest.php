@@ -6,6 +6,7 @@ use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
@@ -32,27 +33,27 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
     private $expectedUpdatedFields = [
         'id' => [
-            'name'   => 'id',
-            'type'   => 'hidden',
-            'label'  => 'Id',
+            'name' => 'id',
+            'type' => 'hidden',
+            'label' => 'Id',
             'entity' => false,
         ],
         'name' => [
-            'name'   => 'name',
-            'label'  => 'Name',
-            'type'   => 'text',
+            'name' => 'name',
+            'label' => 'Name',
+            'type' => 'text',
             'entity' => false,
         ],
         'email' => [
-            'name'   => 'email',
-            'type'   => 'email',
-            'label'  => 'Email',
+            'name' => 'email',
+            'type' => 'email',
+            'label' => 'Email',
             'entity' => false,
         ],
         'password' => [
-            'name'   => 'password',
-            'type'   => 'password',
-            'label'  => 'Password',
+            'name' => 'password',
+            'type' => 'password',
+            'label' => 'Password',
             'entity' => false,
         ],
     ];
@@ -63,9 +64,9 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFields);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
         ];
 
         $entry = $this->crudPanel->update(1, $inputData);
@@ -82,9 +83,9 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFields);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
         ];
 
         $unknownId = DB::getPdo()->lastInsertId() + 2;
@@ -97,9 +98,9 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->userInputFields);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
         ];
         $entry = $this->crudPanel->create($inputData);
         $this->addValuesToExpectedFields($entry->id, $inputData);
@@ -131,10 +132,10 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ], [
             'name' => 'tags',
         ], [
-            'label'     => 'Author',
-            'type'      => 'select',
-            'name'      => 'user_id',
-            'entity'    => 'user',
+            'label' => 'Author',
+            'type' => 'select',
+            'name' => 'user_id',
+            'entity' => 'user',
             'attribute' => 'name',
         ], [
             'name' => 'status',
@@ -148,16 +149,16 @@ class CrudPanelUpdateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ]);
         $faker = Factory::create();
         $inputData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
-            'metas'       => null,
-            'extras'      => null,
-            'status'      => 'publish',
-            'state'       => 'COLD',
-            'style'       => 'DRAFT',
-            'cast_metas'  => null,
-            'cast_tags'   => null,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
+            'metas' => null,
+            'extras' => null,
+            'status' => 'publish',
+            'state' => 'COLD',
+            'style' => 'DRAFT',
+            'cast_metas' => null,
+            'cast_tags' => null,
             'cast_extras' => null,
         ];
         $article = $this->crudPanel->create($inputData);

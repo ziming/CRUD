@@ -394,10 +394,10 @@ trait Search
         }
 
         return [
-            'draw'            => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
-            'recordsTotal'    => $totalRows,
+            'draw' => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
+            'recordsTotal' => $totalRows,
             'recordsFiltered' => $filteredRows,
-            'data'            => $rows,
+            'data' => $rows,
         ];
     }
 
@@ -415,6 +415,6 @@ trait Search
 
     private function isJsonColumnType(string $columnName)
     {
-        return $this->model->getDbTableSchema()->getColumnType($columnName) === 'json'; 
+        return $this->model->getDbTableSchema()->getColumnType($columnName) === 'json';
     }
 }

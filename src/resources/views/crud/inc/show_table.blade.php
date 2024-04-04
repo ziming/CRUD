@@ -3,12 +3,10 @@
         <tbody>
         @foreach($columns as $column)
             <tr>
-                @if(!empty($column['label']))
-                    <td @if($loop->index === 0) class="border-top-0" @endif>
-                        <strong>{!! $column['label'] !!}:</strong>
-                    </td>
-                @endif
-                <td colspan="{{ !empty($column['label']) ? 1 : 2 }}" @if($loop->index === 0) class="border-top-0" @endif>
+                <td @if($loop->index === 0) class="border-top-0" @endif>
+                    <strong>{!! $column['label'] !!}@if(!empty($column['label'])):@endif</strong>
+                </td>
+                <td @if($loop->index === 0) class="border-top-0" @endif>
                     @php
                         // create a list of paths to column blade views
                         // including the configured view_namespaces

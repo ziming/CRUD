@@ -4,7 +4,7 @@
         @foreach($columns as $column)
             <tr>
                 <td @if($loop->index === 0) class="border-top-0" @endif>
-                    <strong>{!! $column['label'] !!}:</strong>
+                    <strong>{!! $column['label'] !!}@if(!empty($column['label'])):@endif</strong>
                 </td>
                 <td @if($loop->index === 0) class="border-top-0" @endif>
                     @php

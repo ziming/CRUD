@@ -82,7 +82,7 @@ Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/
 ## Install
 
 For the current version (recommended):
-- [Install Backpack v6 on Laravel 10](https://backpackforlaravel.com/docs/installation);
+- [Install Backpack v6 on Laravel 10 & 11](https://backpackforlaravel.com/docs/installation);
 
 For the previous versions (not recommended):
 - [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/5.x/installation)  - last feature update was 27th April 2023;

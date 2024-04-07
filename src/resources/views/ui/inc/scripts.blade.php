@@ -8,7 +8,7 @@
         @if(is_array($path))
             @basset(...$path)
         @else
-            @basset(asset: $path, extension: 'js')
+            @basset($path, true, [], 'js')
         @endif
     @endforeach
 @endif

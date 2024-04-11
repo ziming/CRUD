@@ -177,7 +177,7 @@ class CrudPanel
      */
     public function getSqlDriverList()
     {
-        return ['mysql', 'sqlsrv', 'sqlite', 'pgsql'];
+        return ['mysql', 'sqlsrv', 'sqlite', 'pgsql', 'mariadb'];
     }
 
     /**

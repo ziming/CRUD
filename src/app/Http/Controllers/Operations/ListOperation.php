@@ -79,6 +79,13 @@ trait ListOperation
         $length = (int) request()->input('length');
         $search = request()->input('search');
 
+        // check if length is allowed by developer
+        if ($length && ! in_array($length, $this->crud->getPageLengthMenu()[0])) {
+            return response()->json([
+                'error' => 'Unknown page length.',
+            ], 400);
+        }
+
         // if a search term was present
         if ($search && $search['value'] ?? false) {
             // filter the results accordingly

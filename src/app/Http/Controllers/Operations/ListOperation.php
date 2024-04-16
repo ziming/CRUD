@@ -79,10 +79,12 @@ trait ListOperation
         $length = (int) request()->input('length');
         $search = request()->input('search');
 
-        // we get the max length from the page length menu possibilities
-        $maxLength = $this->crud->maxPageLength();
-
-        $length = $maxLength === -1 ? $length : ($length > $maxLength ? $maxLength : $length);
+        // check if length is allowed by developer
+        if ($length && ! in_array($length, $this->crud->getPageLengthMenu()[0])) {
+            return response()->json([
+                'error' => 'Unknown page length.',
+            ], 400);
+        }
 
         // if a search term was present
         if ($search && $search['value'] ?? false) {

@@ -226,11 +226,11 @@ trait Read
     {
         $pageLengthMenu = $this->getPageLengthMenu();
 
-        if(in_array(-1, $pageLengthMenu[0])) {
+        if (in_array(-1, $pageLengthMenu[0])) {
             return -1;
         }
 
-        return (int)max($pageLengthMenu[0]);
+        return (int) max($pageLengthMenu[0]);
     }
 
     /**

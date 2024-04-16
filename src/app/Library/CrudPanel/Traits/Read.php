@@ -219,6 +219,21 @@ trait Read
     }
 
     /**
+     * Get the higher limit from the page length menu.
+     * -1 means "All" so if present it means no limit.
+     */
+    public function maxPageLength(): int
+    {
+        $pageLengthMenu = $this->getPageLengthMenu();
+
+        if(in_array(-1, $pageLengthMenu[0])) {
+            return -1;
+        }
+
+        return (int)max($pageLengthMenu[0]);
+    }
+
+    /**
      * If a custom page length was specified as default, make sure it
      * also show up in the page length menu.
      */

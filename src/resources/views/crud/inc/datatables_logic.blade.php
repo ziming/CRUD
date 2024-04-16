@@ -13,7 +13,7 @@
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js')
   @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
 
-  @basset(base_path('vendor/backpack/crud/src/resources/assets/img/spinner.svg'))
+  @basset(base_path('vendor/backpack/crud/src/resources/assets/img/spinner.svg'), false)
 
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.

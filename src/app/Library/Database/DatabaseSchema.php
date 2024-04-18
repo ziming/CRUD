@@ -32,7 +32,7 @@ final class DatabaseSchema
             if ($existingTable = self::$schema[$connection][$tableName] ?? false) {
                 return [$tableName => $existingTable];
             }
-           
+
             $table = self::mapTable($connection, $tableName);
 
             return [$tableName => $table];
@@ -73,14 +73,14 @@ final class DatabaseSchema
     private static function mapTable(string $connection, string $tableName)
     {
         try {
-            $table = method_exists(self::getCreateSchema($connection), 'getTable') ? 
-                        self::getCreateSchema($connection)->getTable($tableName) : 
+            $table = method_exists(self::getCreateSchema($connection), 'getTable') ?
+                        self::getCreateSchema($connection)->getTable($tableName) :
                         self::getCreateSchema($connection)->getColumns($tableName);
         } catch (\Exception $e) {
             return new Table($tableName, []);
         }
- 
-        if(!is_array($table) || empty($table)) {
+
+        if (! is_array($table) || empty($table)) {
             return $table;
         }
 
@@ -92,7 +92,7 @@ final class DatabaseSchema
         }, $indexes);
 
         $table = new Table($tableName, $table);
-        
+
         $indexes = Arr::flatten($indexes);
         $table->setIndexes(array_unique($indexes));
 
@@ -104,7 +104,7 @@ final class DatabaseSchema
         self::generateDatabaseSchema($connection, $table);
 
         $indexes = self::$schema[$connection][$table]->getIndexes();
-        
+
         $indexes = \Illuminate\Support\Arr::flatten(array_map(function ($index) {
             return is_string($index) ? $index : $index->getColumns();
         }, $indexes));

@@ -110,7 +110,7 @@ trait Settings
      * Defaults to the current operation.
      *
      * @param  string  $key  Has no operation prepended. (ex: exportButtons)
-     * @return bool 
+     * @return bool
      */
     public function hasOperationSetting(string $key, $operation = null)
     {

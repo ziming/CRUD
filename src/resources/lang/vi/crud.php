@@ -111,6 +111,11 @@ return [
         'print' => 'In',
         'column_visibility' => 'Ẩn/hiện cột',
     ],
+    'custom_views' => [
+        'title' => 'Chế độ xem tuỳ chỉnh',
+        'title_short' => 'lượt xem',
+        'default' => 'mặc định',
+    ],
 
     // global crud - errors
     'unauthorized_access' => 'Truy cập chưa được cấp phép - bạn cần được cấp quyền để xem trang này.',

@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 trait Update
@@ -25,7 +27,16 @@ trait Update
         $item = $this->model->findOrFail($id);
 
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
-        $updated = $item->update($directInputs);
+        if ($this->get('update.useDatabaseTransactions') ?? config('backpack.base.useDatabaseTransactions', false)) {
+            return DB::transaction(fn () => $this->updateModelAndRelations($item, $directInputs, $relationInputs));
+        }
+
+        return $this->updateModelAndRelations($item, $directInputs, $relationInputs);
+    }
+
+    private function updateModelAndRelations(Model $item, array $directInputs, array $relationInputs): Model
+    {
+        $item->update($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
 
         return $item;
@@ -49,9 +60,9 @@ trait Update
         // always have a hidden input for the entry id
         if (! array_key_exists('id', $fields)) {
             $fields['id'] = [
-                'name'  => $entry->getKeyName(),
+                'name' => $entry->getKeyName(),
                 'value' => $entry->getKey(),
-                'type'  => 'hidden',
+                'type' => 'hidden',
             ];
         }
 
@@ -76,18 +87,15 @@ trait Update
             return $this->getModelAttributeValueFromRelationship($model, $field);
         }
 
-        if (is_string($field['name'])) {
-            return $model->{$field['name']};
-        }
-
-        if (is_array($field['name'])) {
-            $result = [];
-            foreach ($field['name'] as $name) {
-                $result[] = $model->{$name};
-            }
+        if ($this->holdsMultipleInputs($field['name'])) {
+            $result = array_map(function ($item) use ($model) {
+                return $model->{$item};
+            }, explode(',', $field['name']));
 
             return $result;
         }
+
+        return $model->{$field['name']};
     }
 
     /**
@@ -123,6 +131,7 @@ trait Update
                     // we just return the plain models as we only need the ids
                     if (! isset($field['subfields'])) {
                         $result->push($model);
+
                         continue;
                     }
                     // when subfields are set we need to parse their values so they can be displayed
@@ -167,7 +176,7 @@ trait Update
                 }
 
                 // when subfields exists developer used the repeatable interface to manage this relation
-                if ($field['subfields']) {
+                if (isset($field['subfields'])) {
                     return [$this->getSubfieldsValues($field['subfields'], $model)];
                 }
 
@@ -282,7 +291,7 @@ trait Update
                         $iterator = $iterator->$part;
                     }
 
-                    Arr::set($result, $name, (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator));
+                    Arr::set($result, $name, is_a($iterator, 'Illuminate\Database\Eloquent\Model', true) ? $this->getModelWithFakes($iterator)->getAttributes() : $iterator);
                 }
             }
         }

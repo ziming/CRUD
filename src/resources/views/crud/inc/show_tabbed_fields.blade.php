@@ -1,10 +1,18 @@
 @php
     $horizontalTabs = $crud->getTabsType()=='horizontal' ? true : false;
-
-    if ($errors->any() && array_key_exists(array_keys($errors->messages())[0], $crud->getCurrentFields()) &&
-        array_key_exists('tab', $crud->getCurrentFields()[array_keys($errors->messages())[0]])) {
-        $tabWithError = ($crud->getCurrentFields()[array_keys($errors->messages())[0]]['tab']);
-    }
+    $tabWithError = (function() use ($crud) {
+        if(! session()->get('errors')) {
+            return false;
+        }
+        foreach(session()->get('errors')->getBags() as $bag => $errorMessages) {
+            foreach($errorMessages->getMessages() as $fieldName => $messages) {
+                if(array_key_exists($fieldName, $crud->getCurrentFields()) && array_key_exists('tab', $crud->getCurrentFields()[$fieldName])) {
+                    return $crud->getCurrentFields()[$fieldName]['tab'];
+                }
+            }
+        }
+        return false;
+    })();
 @endphp
 
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
@@ -22,25 +30,39 @@
     <div class="nav-tabs-custom {{ $horizontalTabs ? '' : 'row'}}" id="form_tabs">
         <ul class="nav {{ $horizontalTabs ? 'nav-tabs' : 'flex-column nav-pills'}} {{ $horizontalTabs ? '' : 'col-md-3' }}" role="tablist">
             @foreach ($crud->getTabs() as $k => $tab)
+            @php
+                $tabSlug = Str::slug($tab);
+                if(empty($tabSlug)) {
+                    $tabSlug = $k;
+                }
+            @endphp
                 <li role="presentation" class="nav-item">
-                    <a href="#tab_{{ Str::slug($tab) }}" 
-                        aria-controls="tab_{{ Str::slug($tab) }}" 
-                        role="tab" 
-                        tab_name="{{ Str::slug($tab) }}" 
-                        data-toggle="tab" 
-                        class="nav-link {{ isset($tabWithError) ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
+                    <a href="#tab_{{ $tabSlug }}"
+                        aria-controls="tab_{{ $tabSlug }}"
+                        role="tab"
+                        data-toggle="tab" {{-- tab indicator for Bootstrap v4 --}}
+                        tab_name="{{ $tabSlug }}" {{-- tab name for Bootstrap v4 --}}
+                        data-name="{{ $tabSlug }}" {{-- tab name for Bootstrap v5 --}}
+                        data-bs-toggle="tab" {{-- tab name for Bootstrap v5 --}}
+                        class="nav-link text-decoration-none {{ isset($tabWithError) && $tabWithError ? ($tab == $tabWithError ? 'active' : '') : ($k == 0 ? 'active' : '') }}"
                         >{{ $tab }}</a>
                 </li>
             @endforeach
         </ul>
 
-        <div class="tab-content p-0 {{$horizontalTabs ? '' : 'col-md-9'}}">
+        <div class="tab-content {{$horizontalTabs ? '' : 'col-md-9'}}">
 
-            @foreach ($crud->getTabs() as $k => $tab)
-            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
+            @foreach ($crud->getTabs() as $k => $tabLabel)
+            @php
+                $tabSlug = Str::slug($tabLabel);
+                if(empty($tabSlug)) {
+                    $tabSlug = $k;
+                }
+            @endphp
+            <div role="tabpanel" class="tab-pane {{ isset($tabWithError) && $tabWithError ? ($tabLabel == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ $tabSlug }}">
 
                 <div class="row">
-                @include('crud::inc.show_fields', ['fields' => $crud->getTabFields($tab)])
+                    @include('crud::inc.show_fields', ['fields' => $crud->getTabItems($tabLabel, 'fields')])
                 </div>
             </div>
             @endforeach
@@ -64,15 +86,13 @@
             margin-top: 0;
         }
 
-        /*  
+        /*
             when select2 is multiple and it's not on the first displayed tab the placeholder would
             not display correctly because the element was not "visible" on the page (hidden by tab)
             thus getting `0px` width. This makes sure that the placeholder element is always 100% width
             by preventing the select2 inline style (0px) from applying using !important
         */
-        .select2-container, 
-        .select2-container li:only-child,
-        .select2-container input:placeholder-shown {
+        .select2-search__field {
             width: 100% !important;
         }
     </style>

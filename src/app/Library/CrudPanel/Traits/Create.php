@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 trait Create
 {
@@ -21,6 +23,16 @@ trait Create
     public function create($input)
     {
         [$directInputs, $relationInputs] = $this->splitInputIntoDirectAndRelations($input);
+
+        if ($this->get('create.useDatabaseTransactions') ?? config('backpack.base.useDatabaseTransactions', false)) {
+            return DB::transaction(fn () => $this->createModelAndRelations($directInputs, $relationInputs));
+        }
+
+        return $this->createModelAndRelations($directInputs, $relationInputs);
+    }
+
+    private function createModelAndRelations(array $directInputs, array $relationInputs): Model
+    {
         $item = $this->model->create($directInputs);
         $this->createRelationsForItem($item, $relationInputs);
 
@@ -60,10 +72,9 @@ trait Create
             // then take those fields into account (check if they have relationships);
             // this is done in particular for the checklist_dependency field,
             // but other fields could use it too, in the future;
-            if (is_array($field['name']) &&
+            if ($this->holdsMultipleInputs($field['name']) &&
                 isset($field['subfields']) &&
-                is_array($field['subfields']) &&
-                count($field['subfields'])) {
+                is_array($field['subfields'])) {
                 foreach ($field['subfields'] as $subfield) {
                     if (isset($subfield['model']) && $subfield['model'] !== false) {
                         array_push($relationFields, $subfield);
@@ -102,7 +113,7 @@ trait Create
             switch ($relationType) {
                 case 'HasOne':
                 case 'MorphOne':
-                        $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
+                    $this->createUpdateOrDeleteOneToOneRelation($relation, $relationMethod, $relationDetails);
                     break;
                 case 'HasMany':
                 case 'MorphMany':
@@ -184,7 +195,7 @@ trait Create
 
             // Scenario D
             if (is_null($relationMethodValue) && $relationDetails['entity'] === $relationMethod) {
-                $relation->delete();
+                $relation->first()?->delete();
 
                 return null;
             }
@@ -273,6 +284,13 @@ trait Create
         // get the default that could be set at database level.
         $dbColumnDefault = $modelInstance->getDbColumnDefault($relationForeignKey);
 
+        // check if the relation foreign key is in casts, and cast it to the correct type
+        if ($modelInstance->hasCast($relationForeignKey)) {
+            $dbColumnDefault = match ($modelInstance->getCasts()[$relationForeignKey]) {
+                'int', 'integer' => $dbColumnDefault = (int) $dbColumnDefault,
+                default => $dbColumnDefault = $dbColumnDefault
+            };
+        }
         // if column is not nullable in database, and there is no column default (null),
         // we will delete the entry from the database, otherwise it will throw and ugly DB error.
         if (! $relationColumnIsNullable && $dbColumnDefault === null) {
@@ -288,10 +306,10 @@ trait Create
      * By using repeatable field, developer can allow the creation of such entries
      * in the crud forms.
      *
-     * @param $entry - eg: story
-     * @param $relation - eg  story HasMany monsters
-     * @param $relationMethod - eg: monsters
-     * @param $relationDetails - eg: info about relation including submited values
+     * @param  $entry  - eg: story
+     * @param  $relation  - eg  story HasMany monsters
+     * @param  $relationMethod  - eg: monsters
+     * @param  $relationDetails  - eg: info about relation including submited values
      * @return void
      */
     private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)

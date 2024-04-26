@@ -21,25 +21,29 @@
     <label>{!! $field['label'] !!}</label>
     @include('crud::fields.inc.translatable_icon')
 
-    <select
-        name="{{ $field['name'] }}"
-        @include('crud::fields.inc.attributes')
-        >
+    @if(isset($field['prefix']) || isset($field['suffix'])) <div class="input-group"> @endif
+        @if(isset($field['prefix'])) <span class="input-group-text">{!! $field['prefix'] !!}</span> @endif
+        <select
+            name="{{ $field['name'] }}"
+            @include('crud::fields.inc.attributes', ['default_class' => 'form-control form-select'])
+            >
 
-        @if ($field['allows_null'])
-            <option value="">-</option>
-        @endif
+            @if ($field['allows_null'])
+                <option value="">-</option>
+            @endif
 
-        @if (count($options))
-            @foreach ($options as $connected_entity_entry)
-                @if($current_value == $connected_entity_entry->getKey())
-                    <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
-                @else
-                    <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
-                @endif
-            @endforeach
-        @endif
-    </select>
+            @if (count($options))
+                @foreach ($options as $connected_entity_entry)
+                    @if($current_value == $connected_entity_entry->getKey())
+                        <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
+                    @else
+                        <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
+                    @endif
+                @endforeach
+            @endif
+        </select>
+        @if(isset($field['suffix'])) <span class="input-group-text">{!! $field['suffix'] !!}</span> @endif
+    @if(isset($field['prefix']) || isset($field['suffix'])) </div> @endif
 
     {{-- HINT --}}
     @if (isset($field['hint']))

@@ -4,6 +4,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 trait AutoSet
 {
+    protected $autoset = [];
+
     /**
      * For a simple CRUD Panel, there should be no need to add/define the fields.
      * The public columns in the database will be converted to be fields.
@@ -12,35 +14,33 @@ trait AutoSet
      */
     public function setFromDb($setFields = true, $setColumns = true)
     {
-        if ($this->driverIsSql()) {
-            $this->getDbColumnTypes();
-        }
+        $this->getDbColumnTypes();
 
         array_map(function ($field) use ($setFields, $setColumns) {
             if ($setFields && ! isset($this->getCleanStateFields()[$field])) {
                 $this->addField([
-                    'name'       => $field,
-                    'label'      => $this->makeLabel($field),
-                    'value'      => null,
-                    'default'    => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
-                    'type'       => $this->inferFieldTypeFromDbColumnType($field),
-                    'values'     => [],
+                    'name' => $field,
+                    'label' => $this->makeLabel($field),
+                    'value' => null,
+                    'default' => isset($this->autoset['db_column_types'][$field]['default']) ? $this->autoset['db_column_types'][$field]['default'] : null,
+                    'type' => $this->inferFieldTypeFromDbColumnType($field),
+                    'values' => [],
                     'attributes' => [],
-                    'autoset'    => true,
+                    'autoset' => true,
                 ]);
             }
 
             if ($setColumns && ! in_array($field, $this->model->getHidden()) && ! isset($this->columns()[$field])) {
                 $this->addColumn([
-                    'name'    => $field,
-                    'label'   => $this->makeLabel($field),
-                    'type'    => $this->inferFieldTypeFromDbColumnType($field),
+                    'name' => $field,
+                    'label' => $this->makeLabel($field),
+                    'type' => $this->inferFieldTypeFromDbColumnType($field),
                     'autoset' => true,
                 ]);
             }
         }, $this->getDbColumnsNames());
 
-        unset($this->autoset);
+        $this->autoset = [];
     }
 
     /**
@@ -50,11 +50,14 @@ trait AutoSet
      */
     public function getDbColumnTypes()
     {
-        $this->setDoctrineTypesMapping();
-
         $dbColumnTypes = [];
 
-        foreach ($this->getDbTableColumns() as $key => $column) {
+        if (! $this->driverIsSql()) {
+            return $dbColumnTypes;
+        }
+        $dbColumns = $this->getDbTableColumns();
+
+        foreach ($dbColumns as $key => $column) {
             $column_type = $column->getType()->getName();
             $dbColumnTypes[$column->getName()]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $dbColumnTypes[$column->getName()]['default'] = $column->getDefault();
@@ -63,6 +66,18 @@ trait AutoSet
         $this->autoset['db_column_types'] = $dbColumnTypes;
 
         return $dbColumnTypes;
+    }
+
+    /**
+     * Set extra types mapping on model.
+     *
+     * DEPRECATION NOTICE: This method is no longer used and will be removed in future versions of Backpack
+     *
+     * @deprecated
+     */
+    public function setDoctrineTypesMapping()
+    {
+        $this->getModel()->getConnectionWithExtraTypeMappings();
     }
 
     /**
@@ -75,12 +90,7 @@ trait AutoSet
         if (isset($this->autoset['table_columns']) && $this->autoset['table_columns']) {
             return $this->autoset['table_columns'];
         }
-
-        $conn = $this->model->getConnection();
-        $table = $conn->getTablePrefix().$this->model->getTable();
-        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
-
-        $this->autoset['table_columns'] = $columns;
+        $this->autoset['table_columns'] = $this->model::getDbTableSchema()->getColumns();
 
         return $this->autoset['table_columns'];
     }
@@ -101,7 +111,7 @@ trait AutoSet
             return 'email';
         }
 
-        if (is_array($fieldName)) {
+        if ($this->holdsMultipleInputs($fieldName)) {
             return 'text'; // not because it's right, but because we don't know what it is
         }
 
@@ -124,15 +134,13 @@ trait AutoSet
             case 'set':
                 return 'text';
 
-            // case 'enum':
+                // case 'enum':
             //     return 'enum';
-            // break;
+                // break;
 
             case 'boolean':
-                return 'boolean';
-
             case 'tinyint':
-                return 'active';
+                return 'boolean';
 
             case 'text':
             case 'mediumtext':
@@ -150,25 +158,13 @@ trait AutoSet
                 return 'time';
 
             case 'json':
-                return 'table';
+                return backpack_pro() ? 'table' : 'textarea';
 
             default:
                 return 'text';
         }
 
         return 'text';
-    }
-
-    // Fix for DBAL not supporting enum
-    public function setDoctrineTypesMapping()
-    {
-        $types = ['enum' => 'string'];
-        $platform = $this->getSchema()->getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-        foreach ($types as $type_key => $type_value) {
-            if (! $platform->hasDoctrineTypeMappingFor($type_key)) {
-                $platform->registerDoctrineTypeMapping($type_key, $type_value);
-            }
-        }
     }
 
     /**
@@ -220,8 +216,7 @@ trait AutoSet
             $columns = $fillable;
         } else {
             // Automatically-set columns should be both in the database, and in the $fillable variable on the Eloquent Model
-            $columns = $this->model->getConnection()->getSchemaBuilder()->getColumnListing($this->model->getTable());
-
+            $columns = $this->model::getDbTableSchema()->getColumnsNames();
             if (! empty($fillable)) {
                 $columns = array_intersect($columns, $fillable);
             }

@@ -1,15 +1,19 @@
-@if ($crud->hasAccess('show'))
+@if ($crud->hasAccess('show', $entry))
 	@if (!$crud->model->translationEnabled())
 
 	{{-- Single edit button --}}
-	<a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" class="btn btn-sm btn-link"><i class="la la-eye"></i> {{ trans('backpack::crud.preview') }}</a>
+	<a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" class="btn btn-sm btn-link">
+		<span><i class="la la-eye"></i> {{ trans('backpack::crud.preview') }}</span>
+	</a>
 
 	@else
 
 	{{-- Edit button group --}}
 	<div class="btn-group">
-	  <a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" class="btn btn-sm btn-link pr-0"><i class="la la-eye"></i> {{ trans('backpack::crud.preview') }}</a>
-	  <a class="btn btn-sm btn-link dropdown-toggle text-primary pl-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  <a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" class="btn btn-sm btn-link pr-0">
+	  	<span><i class="la la-eye"></i> {{ trans('backpack::crud.preview') }}</span>
+	  </a>
+	  <a class="btn btn-sm btn-link dropdown-toggle text-primary pl-1" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	    <span class="caret"></span>
 	  </a>
 	  <ul class="dropdown-menu dropdown-menu-right">

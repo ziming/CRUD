@@ -2,6 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
+use Illuminate\Support\Traits\Conditionable;
+
 /**
  * Adds fluent syntax to Backpack CRUD Fields.
  *
@@ -28,15 +31,29 @@ namespace Backpack\CRUD\app\Library\CrudPanel;
  * @method self validationRules(string $value)
  * @method self validationMessages(array $value)
  * @method self entity(string $value)
+ * @method self addMorphOption(string $key, string $label, array $options)
+ * @method self morphTypeField(array $value)
+ * @method self morphIdField(array $value)
+ * @method self upload(bool $value)
  */
 class CrudField
 {
+    use MacroableWithAttributes;
+    use Conditionable;
+
     protected $attributes;
 
-    public function __construct($name)
+    public function __construct($nameOrDefinitionArray)
     {
-        if (empty($name)) {
+        if (empty($nameOrDefinitionArray)) {
             abort(500, 'Field name can\'t be empty.');
+        }
+
+        if (is_array($nameOrDefinitionArray)) {
+            $this->crud()->addField($nameOrDefinitionArray);
+            $name = $nameOrDefinitionArray['name'];
+        } else {
+            $name = $nameOrDefinitionArray;
         }
 
         $field = $this->crud()->firstFieldWhere('name', $name);
@@ -209,8 +226,25 @@ class CrudField
      */
     public function subfields($subfields)
     {
+        $callAttributeMacro = ! isset($this->attributes['subfields']);
         $this->attributes['subfields'] = $subfields;
         $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
+        if ($callAttributeMacro) {
+            $this->callRegisteredAttributeMacros();
+        }
+
+        return $this->save();
+    }
+
+    /**
+     * Mark the field has having upload functionality, so that the form would become multipart.
+     *
+     * @param  bool  $upload
+     * @return self
+     */
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
 
         return $this->save();
     }
@@ -249,6 +283,88 @@ class CrudField
         return $this;
     }
 
+    /**
+     * This function is responsible for setting up the morph fields structure.
+     * Developer can define the morph structure as follows:
+     *  'morphOptions => [
+     *       ['nameOnAMorphMap', 'label', [options]],
+     *       ['App\Models\Model'], // display the name of the model
+     *       ['App\Models\Model', 'label', ['data_source' => backpack_url('smt')]
+     *  ]
+     * OR
+     * ->addMorphOption('App\Models\Model', 'label', ['data_source' => backpack_url('smt')]).
+     *
+     * @param  string  $key  - the morph option key, usually a \Model\Class or a string for the morphMap
+     * @param  string|null  $label  - the displayed text for this option
+     * @param  array  $options  - options for the corresponding morphable_id field (usually ajax options)
+     * @return self
+     *
+     * @throws \Exception
+     */
+    public function addMorphOption(string $key, $label = null, array $options = [])
+    {
+        $this->crud()->addMorphOption($this->attributes['name'], $key, $label, $options);
+
+        return $this;
+    }
+
+    /**
+     * Allow developer to configure the morph type field.
+     *
+     * @param  array  $configs
+     * @return self
+     *
+     * @throws \Exception
+     */
+    public function morphTypeField(array $configs)
+    {
+        $morphField = $this->crud()->fields()[$this->attributes['name']];
+
+        if (empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
+            throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
+        }
+        [$morphTypeField, $morphIdField] = $morphField['subfields'];
+
+        $morphTypeField = array_merge($morphTypeField, $configs);
+
+        $morphField['subfields'] = [$morphTypeField, $morphIdField];
+
+        $this->crud()->modifyField($this->attributes['name'], $morphField);
+
+        return $this;
+    }
+
+    /**
+     * Allow developer to configure the morph type id selector.
+     *
+     * @param  array  $configs
+     * @return self
+     *
+     * @throws \Exception
+     */
+    public function morphIdField(array $configs)
+    {
+        $morphField = $this->crud()->fields()[$this->attributes['name']];
+
+        if (empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
+            throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
+        }
+
+        [$morphTypeField, $morphIdField] = $morphField['subfields'];
+
+        $morphIdField = array_merge($morphIdField, $configs);
+
+        $morphField['subfields'] = [$morphTypeField, $morphIdField];
+
+        $this->crud()->modifyField($this->attributes['name'], $morphField);
+
+        return $this;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
     // ---------------
     // PRIVATE METHODS
     // ---------------
@@ -301,6 +417,8 @@ class CrudField
      * Dump the current object to the screen,
      * so that the developer can see its contents.
      *
+     * @codeCoverageIgnore
+     *
      * @return CrudField
      */
     public function dump()
@@ -314,6 +432,8 @@ class CrudField
      * Dump and die. Duumps the current object to the screen,
      * so that the developer can see its contents, then stops
      * the execution.
+     *
+     * @codeCoverageIgnore
      *
      * @return CrudField
      */
@@ -341,6 +461,10 @@ class CrudField
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         $this->setAttributeValue($method, $parameters[0]);
 
         return $this->save();

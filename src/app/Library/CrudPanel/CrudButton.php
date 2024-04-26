@@ -2,7 +2,9 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
-use Backpack\Crud\ViewNamespaces;
+use Backpack\CRUD\ViewNamespaces;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Traits\Conditionable;
 
 /**
  * Adds fluent syntax to Backpack CRUD Buttons.
@@ -16,26 +18,35 @@ use Backpack\Crud\ViewNamespaces;
  * And if the developer uses CrudButton as Button in their CrudController:
  * - Button::name('create')->stack('top')->view('crud::butons.create');
  */
-class CrudButton
+class CrudButton implements Arrayable
 {
+    use Conditionable;
+
     public $stack;
+
     public $name;
+
     public $type;
+
     public $content;
+
     public $position;
 
-    public function __construct($name, $stack = null, $type = null, $content = null, $position = null)
+    public $meta = [];
+
+    public function __construct($nameOrAttributes, $stack = null, $type = null, $content = null, $position = null, $meta = [])
     {
         // in case an array was passed as name
         // assume it's an array that includes [$name, $stack, $type, $content]
-        if (is_array($name)) {
-            extract($name);
+        if (is_array($nameOrAttributes)) {
+            extract($nameOrAttributes);
         }
 
-        $this->name = $name ?? 'button_'.rand(1, 999999999);
+        $this->name = $nameOrAttributes ?? 'button_'.rand(1, 999999999);
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
         $this->content = $content;
+        $this->meta = $meta;
 
         // if no position was passed, the defaults are:
         // - 'beginning' for the 'line' stack
@@ -52,21 +63,21 @@ class CrudButton
     /**
      * Add a new button to the default stack.
      *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
+     * @param  string|array  $nameOrAttributes  Button name or array that contains name, stack, type and content.
      */
-    public static function name($attributes = null)
+    public static function name($nameOrAttributes)
     {
-        return new static($attributes);
+        return new static($nameOrAttributes);
     }
 
     /**
      * Add a new button to the default stack.
      *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
+     * @param  string|array  $nameOrAttributes  Button name or array that contains name, stack, type and content.
      */
-    public static function add($attributes = null)
+    public static function add($nameOrAttributes)
     {
-        return new static($attributes);
+        return new static($nameOrAttributes);
     }
 
     /**
@@ -80,12 +91,12 @@ class CrudButton
      * div button. But they don't want them added to the before_content of after_content
      * stacks. So what they do is basically add them to a 'hidden' stack, that nobody will ever see.
      *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
+     * @param  string|array  $nameOrAttributes  Button name or array that contains name, stack, type and content.
      * @return CrudButton
      */
-    public static function make($attributes = null)
+    public static function make($nameOrAttributes)
     {
-        $button = static::add($attributes);
+        $button = static::add($nameOrAttributes);
         $button->stack('hidden');
 
         return $button;
@@ -147,6 +158,45 @@ class CrudButton
     {
         $this->content = $value;
         $this->type = 'view';
+
+        return $this->save();
+    }
+
+    /**
+     * Set the button position. Defines where the button will be shown
+     * in regard to other buttons in the same stack.
+     *
+     * @param  string  $stack  'beginning' or 'end'
+     * @return CrudButton
+     */
+    public function position($position)
+    {
+        switch ($position) {
+            case 'beginning':
+                $this->makeFirst();
+                break;
+
+            case 'end':
+                $this->makeLast();
+                break;
+
+            default:
+                abort(500, "Unknown button position - please use 'beginning' or 'end'.");
+                break;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets the meta that will be available in the view.
+     *
+     * @param  array  $value  Array of metadata that will be available in the view.
+     * @return CrudButton
+     */
+    public function meta($value)
+    {
+        $this->meta = $value;
 
         return $this->save();
     }
@@ -243,7 +293,7 @@ class CrudButton
      * The HTML itself of the button.
      *
      * @param  object|null  $entry  The eloquent Model for the current entry or null if no current entry.
-     * @return HTML
+     * @return \Illuminate\Contracts\View\View
      */
     public function getHtml($entry = null)
     {
@@ -315,10 +365,7 @@ class CrudButton
      */
     public function makeFirst()
     {
-        $this->remove();
-        $this->collection()->prepend($this);
-
-        return $this;
+        return $this->before($this->collection()->first()->name);
     }
 
     /**
@@ -328,10 +375,7 @@ class CrudButton
      */
     public function makeLast()
     {
-        $this->remove();
-        $this->collection()->push($this);
-
-        return $this;
+        return $this->after($this->collection()->last()->name);
     }
 
     /**
@@ -363,13 +407,11 @@ class CrudButton
     /**
      * Remove the button from the global button collection.
      *
-     * @return CrudButton
+     * @return void
      */
     public function remove()
     {
-        $this->collection()->pull($this->getKey());
-
-        return $this;
+        $this->crud()->removeButton($this->getKey());
     }
 
     // --------------
@@ -405,6 +447,8 @@ class CrudButton
      * Dump the current object to the screen,
      * so that the developer can see its contents.
      *
+     * @codeCoverageIgnore
+     *
      * @return CrudButton
      */
     public function dump()
@@ -418,6 +462,8 @@ class CrudButton
      * Dump and die. Duumps the current object to the screen,
      * so that the developer can see its contents, then stops
      * the execution.
+     *
+     * @codeCoverageIgnore
      *
      * @return CrudButton
      */
@@ -439,22 +485,34 @@ class CrudButton
      */
     private function save()
     {
+        if ($this->collection()->isEmpty()) {
+            $this->crud()->addCrudButton($this);
+
+            return $this;
+        }
+
         $itemExists = $this->collection()->contains('name', $this->name);
 
         if (! $itemExists) {
+            $this->crud()->addCrudButton($this);
             if ($this->position == 'beginning') {
-                $this->collection()->prepend($this);
+                $this->before($this->collection()->first()->name);
             } else {
-                $this->collection()->push($this);
+                $this->after($this->collection()->last()->name);
             }
 
             // clear the custom position, so that the next daisy chained method
             // doesn't move it yet again
             $this->position = null;
         } else {
-            $this->collection()->replace([$this->getKey() => $this]);
+            $this->crud()->modifyButton($this->name, $this->toArray());
         }
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        return (array) $this;
     }
 }

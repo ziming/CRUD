@@ -22,7 +22,7 @@ trait ResetsPasswords
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string|null  $token
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
     public function showResetForm(Request $request, $token = null)
     {

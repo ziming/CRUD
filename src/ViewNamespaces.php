@@ -55,7 +55,9 @@ class ViewNamespaces
      */
     private static function getFromConfigFor(string $domain, $customConfigKey = null)
     {
-        return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ?? [];
+        return config($customConfigKey ?? 'backpack.crud.view_namespaces.'.$domain) ??
+            [config('backpack.ui.view_namespace').$domain] ??
+            [config('backpack.ui.view_namespace_fallback').$domain];
     }
 
     /**
@@ -71,5 +73,20 @@ class ViewNamespaces
         $viewNamespacesFromConfig = self::getFromConfigFor($domain, $viewNamespacesFromConfigKey);
 
         return array_unique(array_merge($viewNamespacesFromConfig, self::getFor($domain)));
+    }
+
+    /**
+     * This is an helper function that returns the view namespace with the view name appended.
+     * It's usefull to use in blade templates with `@includeFirst(ViewNamespaces::getViewPathsFor('columns', 'some_column'))`.
+     *
+     * @param  string  $domain
+     * @param  string  $viewName
+     * @return array
+     */
+    public static function getViewPathsFor(string $domain, string $viewName)
+    {
+        return array_map(function ($item) use ($viewName) {
+            return $item.'.'.$viewName;
+        }, self::getFor($domain));
     }
 }

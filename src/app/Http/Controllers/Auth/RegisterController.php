@@ -6,10 +6,14 @@ use Backpack\CRUD\app\Library\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Validator;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+    protected ?string $redirectTo = null;
+
     protected $data = []; // the information we send to the view
 
     /*
@@ -36,8 +40,7 @@ class RegisterController extends Controller
         $this->middleware("guest:$guard");
 
         // Where to redirect users after login / registration.
-        $this->redirectTo = property_exists($this, 'redirectTo') ? $this->redirectTo
-            : config('backpack.base.route_prefix', 'dashboard');
+        $this->redirectTo ??= config('backpack.base.route_prefix', 'dashboard');
     }
 
     /**
@@ -54,9 +57,9 @@ class RegisterController extends Controller
         $email_validation = backpack_authentication_column() == 'email' ? 'email|' : '';
 
         return Validator::make($data, [
-            'name'                             => 'required|max:255',
-            backpack_authentication_column()   => 'required|'.$email_validation.'max:255|unique:'.$users_table,
-            'password'                         => 'required|min:6|confirmed',
+            'name' => 'required|max:255',
+            backpack_authentication_column() => 'required|'.$email_validation.'max:255|unique:'.$users_table,
+            'password' => 'required|min:6|confirmed',
         ]);
     }
 
@@ -64,7 +67,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return User
+     * @return \Illuminate\Contracts\Auth\Authenticatable
      */
     protected function create(array $data)
     {
@@ -72,16 +75,16 @@ class RegisterController extends Controller
         $user = new $user_model_fqn();
 
         return $user->create([
-            'name'                             => $data['name'],
-            backpack_authentication_column()   => $data[backpack_authentication_column()],
-            'password'                         => bcrypt($data['password']),
+            'name' => $data['name'],
+            backpack_authentication_column() => $data[backpack_authentication_column()],
+            'password' => Hash::make($data['password']),
         ]);
     }
 
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function showRegistrationForm()
     {
@@ -99,7 +102,7 @@ class RegisterController extends Controller
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\View\View
      */
     public function register(Request $request)
     {
@@ -113,6 +116,12 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
 
         event(new Registered($user));
+        if (config('backpack.base.setup_email_verification_routes')) {
+            Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+
+            return redirect(route('verification.notice'));
+        }
+
         $this->guard()->login($user);
 
         return redirect($this->redirectPath());

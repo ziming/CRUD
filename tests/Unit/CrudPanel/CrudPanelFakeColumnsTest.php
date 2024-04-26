@@ -2,48 +2,48 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Article;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FakeColumns
  */
-class CrudPanelFakeColumnsTest extends BaseDBCrudPanelTest
+class CrudPanelFakeColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $emptyFakeColumnsArray = ['extras'];
 
     private $fakeFieldsArray = [
         [
-            'name'  => 'field',
+            'name' => 'field',
             'label' => 'Normal Field',
         ],
         [
-            'name'     => 'meta_title',
-            'label'    => 'Meta Title',
-            'fake'     => true,
+            'name' => 'meta_title',
+            'label' => 'Meta Title',
+            'fake' => true,
             'store_in' => 'metas',
         ],
         [
-            'name'     => 'meta_description',
-            'label'    => 'Meta Description',
-            'fake'     => true,
+            'name' => 'meta_description',
+            'label' => 'Meta Description',
+            'fake' => true,
             'store_in' => 'metas',
         ],
         [
-            'name'     => 'meta_keywords',
-            'label'    => 'Meta Keywords',
-            'fake'     => true,
+            'name' => 'meta_keywords',
+            'label' => 'Meta Keywords',
+            'fake' => true,
             'store_in' => 'metas',
         ],
         [
-            'name'     => 'tags',
-            'label'    => 'Tags',
-            'fake'     => true,
+            'name' => 'tags',
+            'label' => 'Tags',
+            'fake' => true,
             'store_in' => 'tags',
         ],
         [
-            'name'  => 'extra_details',
+            'name' => 'extra_details',
             'label' => 'Extra Details',
-            'fake'  => true,
+            'fake' => true,
         ],
     ];
 

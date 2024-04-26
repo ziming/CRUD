@@ -2,24 +2,31 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
-use Backpack\CRUD\Tests\Unit\Models\Article;
-use Backpack\CRUD\Tests\Unit\Models\Bang;
-use Backpack\CRUD\Tests\Unit\Models\Comet;
-use Backpack\CRUD\Tests\Unit\Models\Planet;
-use Backpack\CRUD\Tests\Unit\Models\PlanetNonNullable;
-use Backpack\CRUD\Tests\Unit\Models\Universe;
-use Backpack\CRUD\Tests\Unit\Models\User;
+use Backpack\CRUD\Tests\config\Models\Article;
+use Backpack\CRUD\Tests\config\Models\Bang;
+use Backpack\CRUD\Tests\config\Models\Comet;
+use Backpack\CRUD\Tests\config\Models\Planet;
+use Backpack\CRUD\Tests\config\Models\PlanetNonNullable;
+use Backpack\CRUD\Tests\config\Models\Star;
+use Backpack\CRUD\Tests\config\Models\Universe;
+use Backpack\CRUD\Tests\config\Models\User;
 use Faker\Factory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Create
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Relationships
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsProtectedMethods
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\MorphRelationships
  */
-class CrudPanelCreateTest extends BaseDBCrudPanelTest
+class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {
     private $nonRelationshipField = [
-        'name'  => 'field1',
+        'name' => 'field1',
         'label' => 'Field1',
     ];
 
@@ -47,10 +54,10 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ], [
             'name' => 'tags',
         ], [
-            'label'     => 'Author',
-            'type'      => 'select',
-            'name'      => 'user_id',
-            'entity'    => 'user',
+            'label' => 'Author',
+            'type' => 'select',
+            'name' => 'user_id',
+            'entity' => 'user',
             'attribute' => 'name',
         ],
     ];
@@ -68,12 +75,12 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'name' => 'password',
             'type' => 'password',
         ], [
-            'label'     => 'Roles',
-            'type'      => 'select_multiple',
-            'name'      => 'roles',
-            'entity'    => 'roles',
+            'label' => 'Roles',
+            'type' => 'select_multiple',
+            'name' => 'roles',
+            'entity' => 'roles',
             'attribute' => 'name',
-            'pivot'     => true,
+            'pivot' => true,
         ],
     ];
 
@@ -90,15 +97,15 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             'name' => 'password',
             'type' => 'password',
         ], [
-            'label'     => 'Roles',
-            'type'      => 'relationship',
-            'name'      => 'roles',
-            'entity'    => 'roles',
+            'label' => 'Roles',
+            'type' => 'relationship',
+            'name' => 'roles',
+            'entity' => 'roles',
             'attribute' => 'name',
         ], [
-            'label'     => 'Street',
-            'name'      => 'street',
-            'entity'    => 'accountDetails.addresses',
+            'label' => 'Street',
+            'name' => 'street',
+            'entity' => 'accountDetails.addresses',
             'attribute' => 'street',
         ],
     ];
@@ -124,9 +131,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
         $faker = Factory::create();
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -144,9 +151,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
         $account_details_nickname = $faker->name;
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'accountDetails' => [
                 'nickname' => $account_details_nickname,
                 'profile_picture' => 'test.jpg',
@@ -176,9 +183,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
         $account_details_nickname = $faker->name;
         $inputData = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'password' => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'accountDetails' => [
                 ['nickname' => $account_details_nickname, 'profile_picture' => 'test.jpg'],
             ],
@@ -197,13 +204,13 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->articleInputBelongsToRelationName);
         $faker = Factory::create();
         $inputData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user'     => 1,
-            'metas'       => null,
-            'extras'      => null,
-            'cast_metas'  => null,
-            'cast_tags'   => null,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user' => 1,
+            'metas' => null,
+            'extras' => null,
+            'cast_metas' => null,
+            'cast_tags' => null,
             'cast_extras' => null,
         ];
         $entry = $this->crudPanel->create($inputData);
@@ -219,13 +226,13 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->articleInputFieldsOneToMany);
         $faker = Factory::create();
         $inputData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
-            'metas'       => null,
-            'extras'      => null,
-            'cast_metas'  => null,
-            'cast_tags'   => null,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
+            'metas' => null,
+            'extras' => null,
+            'cast_metas' => null,
+            'cast_tags' => null,
             'cast_extras' => null,
         ];
 
@@ -243,11 +250,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->addFields($this->userInputFieldsManyToMany);
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -315,7 +322,6 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         //get all fields with a relation
         $relationFields = $this->crudPanel->getRelationFields();
-        //var_dump($this->crudPanel->get('create.fields')['street']);
 
         $this->assertEquals($this->crudPanel->get('create.fields')['street'], Arr::last($relationFields));
     }
@@ -329,17 +335,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 'nickname' => 'i_have_has_one',
                 'profile_picture' => 'simple_picture.jpg',
             ],
         ];
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->nickname, 'i_have_has_one');
@@ -390,14 +397,16 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'bills'          => [1],
+            'bills' => [1],
         ];
 
         $entry = $this->crudPanel->create($inputData);
+
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(1, $entry->bills);
 
@@ -424,11 +433,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'recommends'          => [
+            'recommends' => [
                 [
                     'recommends' => 1,
                     'text' => 'my pivot recommend field',
@@ -437,6 +446,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(1, $entry->recommends);
 
@@ -473,19 +483,19 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $articleData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
         ];
 
         $article = Article::create($articleData);
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'superArticles'          => [
+            'superArticles' => [
                 [
                     'superArticles' => $article->id,
                     'notes' => 'my first article note',
@@ -494,6 +504,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(1, $entry->fresh()->superArticles);
         $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
@@ -548,11 +559,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 [
                     'nickname' => 'i_have_has_one',
@@ -580,6 +591,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->article, Article::find(1));
@@ -595,18 +607,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
     public function testCreateBelongsToFake()
     {
         $belongsToField = [   // select_grouped
-            'label'                      => 'Select_grouped',
-            'type'                       => 'select_grouped', //https://github.com/Laravel-Backpack/CRUD/issues/502
-            'name'                       => 'bang_relation_field',
-            'fake'                       => true,
-            'entity'                     => 'bang',
-            'model'                      => 'Backpack\CRUD\Tests\Unit\Models\Bang',
-            'attribute'                  => 'title',
-            'group_by'                   => 'category', // the relationship to entity you want to use for grouping
-            'group_by_attribute'         => 'name', // the attribute on related model, that you want shown
+            'label' => 'Select_grouped',
+            'type' => 'select_grouped', //https://github.com/Laravel-Backpack/CRUD/issues/502
+            'name' => 'bang_relation_field',
+            'fake' => true,
+            'entity' => 'bang',
+            'model' => 'Backpack\CRUD\Tests\config\Models\Bang',
+            'attribute' => 'title',
+            'group_by' => 'category', // the relationship to entity you want to use for grouping
+            'group_by_attribute' => 'name', // the attribute on related model, that you want shown
             'group_by_relationship_back' => 'articles', // relationship from related model back to this model
-            'tab'                        => 'Selects',
-            'wrapperAttributes'          => ['class' => 'form-group col-md-6'],
+            'tab' => 'Selects',
+            'wrapperAttributes' => ['class' => 'form-group col-md-6'],
         ];
 
         $this->crudPanel->setModel(User::class);
@@ -617,14 +629,15 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'bang_relation_field'          => 1,
+            'bang_relation_field' => 1,
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $this->crudPanel->entry = $entry->withFakes();
         $this->assertEquals($entry->bang_relation_field, 1);
     }
@@ -675,11 +688,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 'nickname' => 'i_have_has_one',
                 'profile_picture' => 'ohh my picture 1.jpg',
@@ -705,6 +718,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
         $account_details = $entry->accountDetails()->first();
 
         $this->assertEquals($account_details->article, Article::find(1));
@@ -719,11 +733,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         // Now test the remove process
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 'nickname' => 'i_have_has_one',
                 'profile_picture' => 'ohh my picture 1.jpg',
@@ -763,16 +777,17 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'comment'          => [
+            'comment' => [
                 'text' => 'some test comment text',
             ],
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertEquals($inputData['comment']['text'], $entry->comment->text);
 
@@ -788,7 +803,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'stars',
+            'name' => 'stars',
             'subfields' => [
                 [
                     'name' => 'title',
@@ -798,11 +813,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'stars'          => [
+            'stars' => [
                 [
                     'id' => null,
                     'title' => 'this is the star 1 title',
@@ -815,6 +830,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(2, $entry->stars);
 
@@ -840,7 +856,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'universes',
+            'name' => 'universes',
             'subfields' => [
                 [
                     'name' => 'title',
@@ -850,11 +866,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'universes'          => [
+            'universes' => [
                 [
                     'id' => null,
                     'title' => 'this is the star 1 title',
@@ -866,6 +882,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(2, $entry->universes);
 
@@ -927,21 +944,22 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'planets',
+            'name' => 'planets',
             'force_delete' => false,
             'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'planets'          => [1, 2],
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
 
         $this->assertCount(2, $entry->planets);
 
@@ -961,18 +979,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'planets',
+            'name' => 'planets',
             'force_delete' => false,
             'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'planets'          => [1, 2],
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -995,8 +1013,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'          => 'incomes',
-            'subfields'   => [
+            'name' => 'incomes',
+            'subfields' => [
                 [
                     'name' => 'label',
                     'type' => 'text',
@@ -1013,8 +1031,8 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
             ],
         ], 'both');
         $this->crudPanel->addField([
-            'name'          => 'expenses',
-            'subfields'   => [
+            'name' => 'expenses',
+            'subfields' => [
                 [
                     'name' => 'label',
                     'type' => 'text',
@@ -1033,9 +1051,9 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
             'incomes' => [
                 [
@@ -1115,18 +1133,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'planets',
+            'name' => 'planets',
             'fallback_id' => 0,
             'force_delete' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'planets'          => [1, 2],
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1149,18 +1167,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'planets',
+            'name' => 'planets',
             'force_delete' => true,
             'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'planets'          => [1, 2],
+            'planets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1182,18 +1200,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'comets',
+            'name' => 'comets',
             'force_delete' => false,
             'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'comets'          => [1, 2],
+            'comets' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1216,18 +1234,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'planetsNonNullable',
+            'name' => 'planetsNonNullable',
             'force_delete' => false,
             'fallback_id' => false,
         ], 'both');
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'planetsNonNullable'          => [1, 2],
+            'planetsNonNullable' => [1, 2],
         ];
 
         $entry = $this->crudPanel->create($inputData);
@@ -1244,18 +1262,18 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertCount(0, $planets);
     }
 
-    public function testCreateHasManyRelationWithArrayedNameSubfields()
+    public function testCreateHasManyRelationWithDelimitedNameSubfields()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships, 'both');
         $this->crudPanel->addField([
-            'name'    => 'universes',
+            'name' => 'universes',
             'subfields' => [
                 [
                     'name' => 'title',
                 ],
                 [
-                    'name' => ['start_date', 'end_date'],
+                    'name' => 'start_date,end_date',
                     'type' => 'date_range',
                 ],
             ],
@@ -1263,11 +1281,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
 
         $faker = Factory::create();
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'universes'          => [
+            'universes' => [
                 [
                     'id' => null,
                     'title' => 'this is the star 1 title',
@@ -1292,7 +1310,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($inputData['universes'][1]['start_date'], $entry->universes()->find(2)->start_date);
     }
 
-    public function testCreateHasOneRelationWithArrayedNameSubfields()
+    public function testCreateHasOneRelationWithDelimitedNameSubfields()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('create');
@@ -1305,7 +1323,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                         'name' => 'nickname',
                     ],
                     [
-                        'name' => ['start_date', 'end_date'],
+                        'name' => 'start_date,end_date',
                     ],
                     [
                         'name' => 'profile_picture',
@@ -1316,11 +1334,11 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $faker = Factory::create();
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'roles'          => [1, 2],
+            'roles' => [1, 2],
             'accountDetails' => [
                 [
                     'nickname' => 'i_have_has_one',
@@ -1338,7 +1356,7 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $this->assertEquals($account_details->end_date, '2091-01-26');
     }
 
-    public function testBelongsToManyWithArrayedNameSubfields()
+    public function testBelongsToManyWithDelimitedNameSubfields()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
@@ -1349,26 +1367,26 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
                     'name' => 'notes',
                 ],
                 [
-                    'name' => ['start_date', 'end_date'],
+                    'name' => 'start_date,end_date',
                 ],
             ],
         ]);
 
         $faker = Factory::create();
         $articleData = [
-            'content'     => $faker->text(),
-            'tags'        => $faker->words(3, true),
-            'user_id'     => 1,
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
         ];
 
         $article = Article::create($articleData);
 
         $inputData = [
-            'name'           => $faker->name,
-            'email'          => $faker->safeEmail,
-            'password'       => bcrypt($faker->password()),
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
             'remember_token' => null,
-            'superArticles'          => [
+            'superArticles' => [
                 [
                     'superArticles' => $article->id,
                     'notes' => 'my first article note',
@@ -1384,5 +1402,89 @@ class CrudPanelCreateTest extends BaseDBCrudPanelTest
         $superArticle = $entry->fresh()->superArticles->first();
         $this->assertEquals($superArticle->pivot->start_date, '2021-02-26');
         $this->assertEquals($superArticle->pivot->end_date, '2091-01-26');
+
+        $this->crudPanel->getUpdateFields($superArticle->id);
+    }
+
+    public function testItCanCreateMorphToFieldsStructure()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->crudPanel->addField([
+            'name' => 'starable',
+            'morphOptions' => [
+                ['Backpack\CRUD\Tests\config\Models\User', 'User'],
+            ],
+        ]);
+
+        $this->assertCount(2, $this->crudPanel->fields()['starable']['subfields']);
+
+        [$morphTypeField, $morphIdField] = $this->crudPanel->fields()['starable']['subfields'];
+
+        $this->assertTrue($morphTypeField['name'] === 'starable_type');
+        $this->assertTrue($morphIdField['name'] === 'starable_id');
+    }
+
+    public function testIPreventsAddingRepeateadMorphOptions()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+
+        $this->crudPanel->addField([
+            'name' => 'starable',
+            'morphOptions' => [
+                ['Backpack\CRUD\Tests\config\Models\User', 'User'],
+                ['Backpack\CRUD\Tests\config\Models\User', 'User'],
+            ],
+        ]);
+    }
+
+    public function testItThrowsErrorIfStringIsNotOnMorphMap()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+
+        $this->crudPanel->addField([
+            'name' => 'starable',
+            'morphOptions' => [
+                ['somethingThatDoesNotExist'],
+            ],
+        ]);
+    }
+
+    public function testItCanAddTheOptionsFromTheMorphMap()
+    {
+        $this->crudPanel->setModel(Star::class);
+
+        Relation::morphMap([
+            'user' => 'Backpack\CRUD\Tests\config\Models\User',
+        ]);
+
+        $this->crudPanel->addField([
+            'name' => 'starable',
+            'morphOptions' => [
+                ['user'],
+            ],
+        ]);
+
+        [$morphTypeField, $morphIdField] = $this->crudPanel->fields()['starable']['subfields'];
+        $this->assertEquals(['user' => 'Backpack\CRUD\Tests\config\Models\User'], $morphTypeField['morphMap']);
+    }
+
+    public function testItThrowsErrorIfDuplicateMorphMapName()
+    {
+        $this->crudPanel->setModel(Star::class);
+        $this->expectException(\Exception::class);
+
+        Relation::morphMap([
+            'user' => 'Backpack\CRUD\Tests\config\Models\User',
+        ]);
+
+        $this->crudPanel->addField([
+            'name' => 'starable',
+            'morphOptions' => [
+                ['user'],
+                ['user'],
+            ],
+        ]);
     }
 }

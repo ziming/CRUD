@@ -109,8 +109,15 @@ trait Search
                 $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
                 $column = $this->findColumnById($column_number);
                 if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
-                    // apply the current orderBy rules
-                    $this->orderByWithPrefix($column['name'], $column_direction);
+                    if (method_exists($this->model, 'translationEnabled') &&
+                        $this->model->translationEnabled() &&
+                        $this->model->isTranslatableAttribute($column['name']) &&
+                        $this->isJsonColumnType($column['name'])
+                    ) {
+                        $this->orderByWithPrefix($column['name'].'->'.app()->getLocale(), $column_direction);
+                    } else {
+                        $this->orderByWithPrefix($column['name'], $column_direction);
+                    }
                 }
 
                 // check for custom order logic in the column definition
@@ -387,10 +394,10 @@ trait Search
         }
 
         return [
-            'draw'            => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
-            'recordsTotal'    => $totalRows,
+            'draw' => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
+            'recordsTotal' => $totalRows,
             'recordsFiltered' => $filteredRows,
-            'data'            => $rows,
+            'data' => $rows,
         ];
     }
 
@@ -404,5 +411,10 @@ trait Search
     public function getColumnWithTableNamePrefixed($query, $column)
     {
         return $query->getModel()->getTable().'.'.$column;
+    }
+
+    private function isJsonColumnType(string $columnName)
+    {
+        return $this->model->getDbTableSchema()->getColumnType($columnName) === 'json';
     }
 }

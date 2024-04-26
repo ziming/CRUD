@@ -33,11 +33,10 @@ trait HasIdentifiableAttribute
     private static function guessIdentifiableColumnName()
     {
         $instance = new static();
-        $conn = $instance->getConnectionWithExtraTypeMappings();
+        $connection = $instance->getConnectionWithExtraTypeMappings();
         $table = $instance->getTableWithPrefix();
-        $columns = $conn->getDoctrineSchemaManager()->listTableColumns($table);
-        $indexes = $conn->getDoctrineSchemaManager()->listTableIndexes($table);
-        $columnsNames = array_keys($columns);
+        $columnNames = app('DatabaseSchema')->listTableColumnsNames($connection->getName(), $table);
+        $indexes = app('DatabaseSchema')->listTableIndexes($connection->getName(), $table);
 
         // these column names are sensible defaults for lots of use cases
         $sensibleDefaultNames = ['name', 'title', 'description', 'label'];
@@ -45,26 +44,16 @@ trait HasIdentifiableAttribute
         // if any of the sensibleDefaultNames column exists
         // that's probably a good choice
         foreach ($sensibleDefaultNames as $defaultName) {
-            if (in_array($defaultName, $columnsNames)) {
+            if (in_array($defaultName, $columnNames)) {
                 return $defaultName;
-            }
-        }
-
-        // get indexed columns in database table
-        $indexedColumns = [];
-        foreach ($indexes as $index) {
-            $indexColumns = $index->getColumns();
-            foreach ($indexColumns as $ic) {
-                array_push($indexedColumns, $ic);
             }
         }
 
         // if none of the sensible defaults exists
         // we get the first column from database
         // that is NOT indexed (usually primary, foreign keys)
-        foreach ($columns as $columnName => $columnProperties) {
-            if (! in_array($columnName, $indexedColumns)) {
-
+        foreach ($columnNames as $columnName) {
+            if (! in_array($columnName, $indexes)) {
                 //check for convention "field<_id>" in case developer didn't add foreign key constraints.
                 if (strpos($columnName, '_id') !== false) {
                     continue;
@@ -75,6 +64,6 @@ trait HasIdentifiableAttribute
         }
 
         // in case everything fails we just return the first column in database
-        return Arr::first($columnsNames);
+        return Arr::first($columnNames);
     }
 }

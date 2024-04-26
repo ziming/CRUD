@@ -5,6 +5,7 @@ namespace Backpack\CRUD\app\Library\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\ValidationException;
 
 trait AuthenticatesUsers
@@ -14,7 +15,7 @@ trait AuthenticatesUsers
     /**
      * Show the application's login form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function showLoginForm()
     {
@@ -47,6 +48,10 @@ trait AuthenticatesUsers
         }
 
         if ($this->attemptLogin($request)) {
+            if (config('backpack.base.setup_email_verification_routes', false)) {
+                return $this->logoutIfEmailNotVerified($request);
+            }
+
             return $this->sendLoginResponse($request);
         }
 
@@ -198,5 +203,26 @@ trait AuthenticatesUsers
     protected function guard()
     {
         return Auth::guard();
+    }
+
+    private function logoutIfEmailNotVerified(Request $request): Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+    {
+        $user = $this->guard()->user();
+
+        // if the user is already verified, do nothing
+        if ($user->email_verified_at) {
+            return $this->sendLoginResponse($request);
+        }
+        // user is not yet verified, log him out
+        $this->guard()->logout();
+
+        // add a cookie for 30m to remember the email address that needs to be verified
+        Cookie::queue('backpack_email_verification', $user->{config('backpack.base.email_column')}, 30);
+
+        if ($request->wantsJson()) {
+            return new Response('Email verification required', 403);
+        }
+
+        return redirect(route('verification.notice'));
     }
 }

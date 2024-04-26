@@ -47,7 +47,7 @@ trait SaveActions
      */
     public function getSaveActionByOrder($order)
     {
-        return array_filter($this->getOperationSetting('save_actions'), function ($arr) use ($order) {
+        return array_filter($this->getOperationSetting('save_actions') ?? [], function ($arr) use ($order) {
             return $arr['order'] == $order;
         });
     }
@@ -212,7 +212,7 @@ trait SaveActions
     /**
      * Return the ordered save actions to use in the crud panel.
      *
-     * @return void
+     * @return array
      */
     public function getOrderedSaveActions()
     {
@@ -228,7 +228,7 @@ trait SaveActions
     /**
      * Returns the save actions that passed the visible callback.
      *
-     * @return void
+     * @return array
      */
     public function getVisibleSaveActions()
     {
@@ -253,7 +253,6 @@ trait SaveActions
      */
     public function getCurrentSaveAction($saveOptions)
     {
-
         //get save action from session if exists, or get the developer defined order
         $saveAction = session($this->getCurrentOperation().'.saveAction', $this->getFallBackSaveAction());
         if (isset($saveOptions[$saveAction])) {
@@ -290,7 +289,7 @@ trait SaveActions
         }
 
         return [
-            'active'  => $saveCurrent,
+            'active' => $saveCurrent,
             'options' => $dropdownOptions,
         ];
     }
@@ -322,7 +321,7 @@ trait SaveActions
      * Redirect to the correct URL, depending on which save action has been selected.
      *
      * @param  string  $itemId
-     * @return array|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function performSaveAction($itemId = null)
     {
@@ -330,6 +329,7 @@ trait SaveActions
         $saveAction = $request->input('_save_action', $this->getFallBackSaveAction());
         $itemId = $itemId ?: $request->input('id');
         $actions = $this->getOperationSetting('save_actions');
+        $redirectUrl = $this->route;
 
         if (isset($actions[$saveAction])) {
             if (is_callable($actions[$saveAction]['redirect'])) {
@@ -346,12 +346,12 @@ trait SaveActions
 
         // if the request is AJAX, return a JSON response
         if ($this->getRequest()->ajax()) {
-            return [
-                'success'      => true,
-                'data'         => $this->entry,
+            return response()->json([
+                'success' => true,
+                'data' => $this->entry,
                 'redirect_url' => $redirectUrl,
                 'referrer_url' => $referrer_url ?? false,
-            ];
+            ]);
         }
 
         if (isset($referrer_url)) {

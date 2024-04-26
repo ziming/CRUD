@@ -41,9 +41,9 @@ trait Columns
                     $this->addColumn($column);
                 } else {
                     $this->addColumn([
-                        'name'  => $column,
+                        'name' => $column,
                         'label' => mb_ucfirst($column),
-                        'type'  => 'text',
+                        'type' => 'text',
                     ]);
                 }
             }
@@ -51,9 +51,9 @@ trait Columns
 
         if (is_string($columns)) {
             $this->addColumn([
-                'name'  => $columns,
+                'name' => $columns,
                 'label' => mb_ucfirst($columns),
-                'type'  => 'text',
+                'type' => 'text',
             ]);
         }
     }
@@ -66,10 +66,19 @@ trait Columns
      */
     public function addColumn($column)
     {
-        $column = $this->makeSureColumnHasNeededAttributes($column);
-        $this->addColumnToOperationSettings($column);
+        $this->prepareAttributesAndAddColumn($column);
 
         return $this;
+    }
+
+    /**
+     * Add a column at the end of the CRUD object's "columns" array and return it.
+     */
+    public function addAndReturnColumn(array|string $column): CrudColumn
+    {
+        $column = $this->prepareAttributesAndAddColumn($column);
+
+        return $column;
     }
 
     /**
@@ -364,19 +373,11 @@ trait Columns
         $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasEntity($column);
         $column = $this->makeSureColumnHasModel($column);
+        $column = $this->makeSureColumnHasAttribute($column);
         $column = $this->makeSureColumnHasRelationType($column);
         $column = $this->makeSureColumnHasType($column);
         $column = $this->makeSureColumnHasPriority($column);
-
-        if (isset($column['entity']) && $column['entity'] !== false) {
-            $column['relation_type'] = $this->inferRelationTypeFromRelationship($column);
-        }
-
-        // if there's a model defined, but no attribute
-        // guess an attribute using the identifiableAttribute functionality in CrudTrait
-        if (isset($column['model']) && ! isset($column['attribute']) && method_exists($column['model'], 'identifiableAttribute')) {
-            $column['attribute'] = (new $column['model'])->identifiableAttribute();
-        }
+        $column = $this->makeSureSubfieldsHaveNecessaryAttributes($column);
 
         // check if the column exists in the database (as a db column)
         $column_exists_in_db = $this->hasDatabaseColumn($this->model->getTable(), $column['name']);
@@ -411,15 +412,16 @@ trait Columns
      * in addition to the existing options:
      * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
      * - CRUD::column('price')->type('number');
+     * - CRUD::column(['name' => 'price', 'type' => 'number']);
      *
      * And if the developer uses the CrudColumn object as Column in their CrudController:
      * - Column::name('price')->type('number');
      *
-     * @param  string  $name  The name of the column in the db, or model attribute.
+     * @param  string|array  $name  The name of the column in the db, or model attribute.
      * @return CrudColumn
      */
-    public function column($name)
+    public function column($nameOrDefinition)
     {
-        return new CrudColumn($name);
+        return new CrudColumn($nameOrDefinition);
     }
 }

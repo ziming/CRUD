@@ -6,12 +6,14 @@
  @endphp
 
   {{-- DATA TABLES SCRIPT --}}
-  <script type="text/javascript" src="{{ asset('packages/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('packages/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.min.js') }}"></script>
+  @basset('https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js')
+  @basset('https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js')
+  @basset('https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js')
+  @basset('https://cdn.datatables.net/fixedheader/3.3.1/css/fixedHeader.dataTables.min.css')
+
+  @basset(base_path('vendor/backpack/crud/src/resources/assets/img/spinner.svg'), false)
 
   <script>
     // here we will check if the cached dataTables paginator length is conformable with current paginator settings.
@@ -123,7 +125,7 @@
         let tmpUrl = newUrl.split("?")[0],
         params_arr = [],
         queryString = (newUrl.indexOf("?") !== -1) ? newUrl.split("?")[1] : false;
-        
+
         // exclude the persistent-table parameter from url
         if (queryString !== false) {
             params_arr = queryString.split("&");
@@ -136,10 +138,12 @@
             newUrl = params_arr.length ? tmpUrl + "?" + params_arr.join("&") : tmpUrl;
         }
         window.history.pushState({}, '', newUrl);
-        localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', newUrl);
+        @if ($crud->getPersistentTable())
+            localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', newUrl);
+        @endif
       },
       dataTableConfiguration: {
-
+        bInfo: {{ var_export($crud->getOperationSetting('showEntryCount') ?? true) }},
         @if ($crud->getResponsiveTable())
         responsive: {
             details: {
@@ -232,15 +236,15 @@
               "thousands":      "{{ trans('backpack::crud.thousands') }}",
               "lengthMenu":     "{{ trans('backpack::crud.lengthMenu') }}",
               "loadingRecords": "{{ trans('backpack::crud.loadingRecords') }}",
-              "processing":     "<img src='{{ asset('packages/backpack/base/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
+              "processing":     "<img src='{{ Basset::getUrl('vendor/backpack/crud/src/resources/assets/img/spinner.svg') }}' alt='{{ trans('backpack::crud.processing') }}'>",
               "search": "_INPUT_",
               "searchPlaceholder": "{{ trans('backpack::crud.search') }}...",
               "zeroRecords":    "{{ trans('backpack::crud.zeroRecords') }}",
               "paginate": {
                   "first":      "{{ trans('backpack::crud.paginate.first') }}",
                   "last":       "{{ trans('backpack::crud.paginate.last') }}",
-                  "next":       ">",
-                  "previous":   "<"
+                  "next":       '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l5 5l-5 5"></path></svg>',
+                  "previous":   '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-5 5l5 5"></path></svg>'
               },
               "aria": {
                   "sortAscending":  "{{ trans('backpack::crud.aria.sortAscending') }}",
@@ -257,19 +261,24 @@
           },
           processing: true,
           serverSide: true,
+          @if($crud->getOperationSetting('showEntryCount') === false)
+            pagingType: "simple",
+          @endif
           searching: @json($crud->getOperationSetting('searchableTable') ?? true),
           ajax: {
               "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
-              "type": "POST"
+              "type": "POST",
+              "data": {
+                "totalEntryCount": "{{$crud->getOperationSetting('totalEntryCount') ?? false}}"
+            },
           },
           dom:
             "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row mt-2 d-print-none '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
+            "<'table-content row'<'col-sm-12'tr>>" +
+            "<'table-footer row mt-2 d-print-none align-items-center '<'col-sm-12 col-md-4'l><'col-sm-0 col-md-4 text-center'B><'col-sm-12 col-md-4 'p>>",
       }
   }
   </script>
-
   @include('crud::inc.export_buttons')
 
   <script type="text/javascript">
@@ -280,8 +289,16 @@
       window.crud.updateUrl(location.href);
 
       // move search bar
-      $("#crudTable_filter").appendTo($('#datatable_search_stack' ));
-      $("#crudTable_filter input").removeClass('form-control-sm');
+      $("#datatable_search_stack input").remove();
+      $("#crudTable_filter input").appendTo($('#datatable_search_stack .input-icon'));
+      $("#datatable_search_stack input").removeClass('form-control-sm');
+      $("#crudTable_filter").remove();
+
+      // remove btn-secondary from export and column visibility buttons
+      $("#crudTable_wrapper .table-footer .btn-secondary").removeClass('btn-secondary');
+
+      // remove forced overflow on load
+      $(".navbar.navbar-filters + div").css('overflow','initial');
 
       // move "showing x out of y" info to header
       @if($crud->getSubheading())
@@ -292,7 +309,7 @@
 
       @if($crud->getOperationSetting('resetButton') ?? true)
         // create the reset button
-        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
+        var crudTableResetButton = '<a href="{{url($crud->route)}}" class="ml-1 ms-1" id="crudTable_reset_button">{{ trans('backpack::crud.reset') }}</a>';
 
         $('#datatable_info_stack').append(crudTableResetButton);
 
@@ -333,16 +350,6 @@
             localStorage.setItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength', len);
         });
 
-        // make sure AJAX requests include XSRF token
-        $.ajaxPrefilter(function(options, originalOptions, xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-XSRF-TOKEN', token);
-            }
-        });
-
-
         $('#crudTable').on( 'page.dt', function () {
             localStorage.setItem('page_changed', true);
         });
@@ -353,7 +360,10 @@
          crud.functionsToRunOnDataTablesDrawEvent.forEach(function(functionName) {
             crud.executeFunctionByName(functionName);
          });
-      } ).dataTable();
+         if ($('#crudTable').data('has-line-buttons-as-dropdown')) {
+          formatActionColumnAsDropdown();
+         }
+      }).dataTable();
 
       // when datatables-colvis (column visibility) is toggled
       // rebuild the datatable using the datatable-responsive plugin
@@ -391,6 +401,28 @@
       @endif
 
     });
+
+    function formatActionColumnAsDropdown() {
+        // Get action column
+        const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
+        if (actionColumnIndex === -1) return;
+
+        $('#crudTable tbody tr').each(function (i, tr) {
+            const actionCell = $(tr).find('td').eq(actionColumnIndex);
+            if(actionCell.find('.actions-buttons-column').length) return;
+
+            // Wrap the cell with the component needed for the dropdown
+            actionCell.wrapInner('<div class="nav-item dropdown"></div>');
+            actionCell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
+            
+            // Prepare buttons as dropdown items
+            actionCell.find('a.btn.btn-link').each((index, action) => {
+                $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
+                $(action).find('i').addClass('me-2 text-primary');
+            });
+            actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
+        });
+    }
   </script>
 
   @include('crud::inc.details_row_logic')

@@ -1,11 +1,16 @@
 <?php
 
+use Backpack\Basset\Facades\Basset;
+use Creativeorange\Gravatar\Facades\Gravatar;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
 if (! function_exists('backpack_url')) {
     /**
      * Appends the configured backpack prefix and returns
      * the URL using the standard Laravel helpers.
      *
-     * @param $path
+     * @param  $path
      * @return string
      */
     function backpack_url($path = null, $parameters = [], $secure = null)
@@ -29,6 +34,19 @@ if (! function_exists('backpack_authentication_column')) {
     }
 }
 
+if (! function_exists('backpack_email_column')) {
+    /**
+     * Return the email column name.
+     * The Laravel default (and Backpack default) is 'email'.
+     *
+     * @return string
+     */
+    function backpack_email_column()
+    {
+        return config('backpack.base.email_column', 'email');
+    }
+}
+
 if (! function_exists('backpack_form_input')) {
     /**
      * Parse the submitted input in request('form') to an usable array.
@@ -48,6 +66,14 @@ if (! function_exists('backpack_form_input')) {
             // regular fields don't need any aditional parsing
             if (strpos($row['name'], '[') === false) {
                 $result[$row['name']] = $row['value'];
+
+                continue;
+            }
+
+            $isMultiple = substr($row['name'], -2, 2) === '[]';
+
+            if ($isMultiple && substr_count($row['name'], '[') === 1) {
+                $result[substr($row['name'], 0, -2)][] = $row['value'];
                 continue;
             }
 
@@ -73,10 +99,20 @@ if (! function_exists('backpack_form_input')) {
             $parentInputName = substr($row['name'], 0, strpos($row['name'], '['));
 
             if (isset($repeatableRowKey)) {
+                if ($isMultiple) {
+                    $result[$parentInputName][$repeatableRowKey][$inputName][] = $row['value'];
+                    continue;
+                }
+
                 $result[$parentInputName][$repeatableRowKey][$inputName] = $row['value'];
+
                 continue;
             }
 
+            if ($isMultiple) {
+                $result[$parentInputName][$inputName][] = $row['value'];
+                continue;
+            }
             $result[$parentInputName][$inputName] = $row['value'];
         }
 
@@ -95,7 +131,7 @@ if (! function_exists('backpack_users_have_email')) {
         $user_model_fqn = config('backpack.base.user_model_fqn');
         $user = new $user_model_fqn();
 
-        return \Schema::hasColumn($user->getTable(), 'email');
+        return \Schema::hasColumn($user->getTable(), config('backpack.base.email_column') ?? 'email');
     }
 }
 
@@ -103,7 +139,7 @@ if (! function_exists('backpack_avatar_url')) {
     /**
      * Returns the avatar URL of a user.
      *
-     * @param $user
+     * @param  $user
      * @return string
      */
     function backpack_avatar_url($user)
@@ -111,7 +147,14 @@ if (! function_exists('backpack_avatar_url')) {
         switch (config('backpack.base.avatar_type')) {
             case 'gravatar':
                 if (backpack_users_have_email() && ! empty($user->email)) {
-                    return Gravatar::fallback(config('backpack.base.gravatar_fallback'))->get($user->email);
+                    $avatarLink = Gravatar::fallback(config('backpack.base.gravatar_fallback'))->get($user->email, ['size' => 80]);
+
+                    // if we can save it locally, for safer loading, let's do it
+                    if (in_array(Basset::basset($avatarLink, false)->name, ['INTERNALIZED', 'IN_CACHE', 'LOADED'])) {
+                        return Basset::getUrl($avatarLink);
+                    }
+
+                    return $avatarLink;
                 }
                 break;
             default:
@@ -126,7 +169,7 @@ if (! function_exists('backpack_middleware')) {
      * Return the key of the middleware used across Backpack.
      * That middleware checks if the visitor is an admin.
      *
-     * @param $path
+     * @param  $path
      * @return string
      */
     function backpack_middleware()
@@ -193,28 +236,82 @@ if (! function_exists('mb_ucfirst')) {
 
 if (! function_exists('backpack_view')) {
     /**
-     * Returns a new displayable view based on the configured backpack view namespace.
-     * If that view doesn't exist, it will load the one from the original theme.
+     * Returns a new displayable view path, based on the configured backpack view namespace.
+     * If that view doesn't exist, it falls back to the fallback namespace.
+     * If that view doesn't exist, it falls back to the one from the Backpack UI directory.
      *
      * @param string (see config/backpack/base.php)
      * @return string
      */
     function backpack_view($view)
     {
-        $originalTheme = 'backpack::';
-        $theme = config('backpack.base.view_namespace');
+        $viewPaths = [
+            config('backpack.ui.view_namespace').$view,
+            backpack_theme_config('view_namespace_fallback').$view,
+            'backpack.ui::'.$view,
+        ];
 
-        if (is_null($theme)) {
-            $theme = $originalTheme;
+        foreach ($viewPaths as $view) {
+            if (view()->exists($view)) {
+                return $view;
+            }
         }
 
-        $returnView = $theme.$view;
+        $errorMessage = 'The view: ['.$view.'] was not found in any of the following view paths: ['.implode(' ], [ ', $viewPaths).']';
 
-        if (! view()->exists($returnView)) {
-            $returnView = $originalTheme.$view;
+        $errorDetails = (function () {
+            if (env('APP_ENV') === 'production' || ! env('APP_DEBUG')) {
+                return '';
+            }
+
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2) ?? [];
+            $functionCaller = $backtrace[1] ?? [];
+            $functionLine = $functionCaller['line'] ?? 'N/A';
+            $functionFile = $functionCaller['file'] ?? 'N/A';
+
+            return '- Called in: '.Str::after($functionFile, base_path()).' on line: '.$functionLine;
+        })();
+
+        abort(500, $errorMessage.$errorDetails);
+    }
+}
+
+if (! function_exists('backpack_theme_config')) {
+    /**
+     * Returns a config value from the current theme's config file.
+     * It assumes the theme's config namespace is the same as the view namespace.
+     *
+     * @param string
+     * @return string
+     */
+    function backpack_theme_config($key)
+    {
+        $namespacedKey = config('backpack.ui.view_namespace').$key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
+
+        // if the config exists in the theme config file, use it
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
         }
 
-        return $returnView;
+        // if not, fall back to a general the config in the fallback theme
+        $namespacedKey = config('backpack.ui.view_namespace_fallback').$key;
+        $namespacedKey = str_replace('::', '.', $namespacedKey);
+
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        // if not, fall back to the config in ui
+        $namespacedKey = 'backpack.ui.'.$key;
+
+        if (config()->has($namespacedKey)) {
+            return config($namespacedKey);
+        }
+
+        Log::error('Could not find config key: '.$key.'. Neither in the Backpack theme, nor in the fallback theme, nor in ui.');
+
+        return null;
     }
 }
 
@@ -223,7 +320,7 @@ if (! function_exists('square_brackets_to_dots')) {
      * Turns a string from bracket-type array to dot-notation array.
      * Ex: array[0][property] turns into array.0.property.
      *
-     * @param $path
+     * @param  $path
      * @return string
      */
     function square_brackets_to_dots($string)
@@ -268,20 +365,22 @@ if (! function_exists('old_empty_or_null')) {
 
 if (! function_exists('is_multidimensional_array')) {
     /**
-     * If any of the items inside a given array is an array, the array is considered multidimensional.
+     * Check if the array is multidimensional.
      *
-     * @param  array  $array
-     * @return bool
+     * If $strict is enabled, the array is considered multidimensional only if all elements of the array are arrays.
      */
-    function is_multidimensional_array(array $array)
+    function is_multidimensional_array(array $array, bool $strict = false): bool
     {
         foreach ($array as $item) {
-            if (is_array($item)) {
+            if ($strict && ! is_array($item)) {
+                return false;
+            }
+            if (! $strict && is_array($item)) {
                 return true;
             }
         }
 
-        return false;
+        return $strict;
     }
 }
 
@@ -293,10 +392,13 @@ if (! function_exists('backpack_pro')) {
      */
     function backpack_pro()
     {
+        if (app()->runningUnitTests()) {
+            return true;
+        }
         if (! \Composer\InstalledVersions::isInstalled('backpack/pro')) {
             return false;
         }
 
-        return \PackageVersions\Versions::getVersion('backpack/pro');
+        return \Composer\InstalledVersions::getVersion('backpack/pro');
     }
 }

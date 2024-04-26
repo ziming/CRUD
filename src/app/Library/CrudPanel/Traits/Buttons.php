@@ -77,6 +77,11 @@ trait Buttons
         return new CrudButton($name, $stack, $type, $content, $position);
     }
 
+    public function addCrudButton(CrudButton $crudButton)
+    {
+        $this->setOperationSetting('buttons', $this->buttons()->push($crudButton));
+    }
+
     public function addButtonFromModelFunction($stack, $name, $model_function_name, $position = false)
     {
         $this->addButton($stack, $name, 'model_function', $model_function_name, $position);
@@ -112,7 +117,7 @@ trait Buttons
         $button = $this->buttons()->firstWhere('name', $name);
 
         if (! $button) {
-            abort(500, 'CRUD Button "'.$name.'" not found. Please check the button exists before you modify it.');
+            abort(500, 'CRUD Button "'.$name.'" not found. Please ensure the button exists before you modify it.');
         }
 
         if (is_array($modifications)) {
@@ -180,9 +185,11 @@ trait Buttons
     public function moveButton($target, $where, $destination)
     {
         $targetButton = $this->firstButtonWhere('name', $target);
+
         $destinationButton = $this->firstButtonWhere('name', $destination);
         $destinationKey = $this->getButtonKey($destination);
         $newDestinationKey = ($where == 'before' ? $destinationKey : $destinationKey + 1);
+
         $newButtons = $this->buttons()->filter(function ($value, $key) use ($target) {
             return $value->name != $target;
         });
@@ -199,6 +206,7 @@ trait Buttons
         $lastSlice = $newButtons->slice($newDestinationKey, null);
 
         $newButtons = $firstSlice->push($targetButton);
+
         $lastSlice->each(function ($item, $key) use ($newButtons) {
             $newButtons->push($item);
         });
@@ -241,20 +249,25 @@ trait Buttons
         $array = $this->buttons()->toArray();
 
         foreach ($array as $key => $value) {
-            if ($value->name == $name) {
+            if ((is_object($value) ? $value->name : $value['name']) == $name) {
                 return $key;
             }
         }
     }
 
     /**
-     * Add a new button to the current CRUD operation.
-     *
-     * @param  string|array  $attributes  Button name or array that contains name, stack, type and content.
-     * @return \Backpack\CRUD\app\Library\CrudPanel\CrudButton
+     * Return the buttons for a given stack.
      */
-    public function button($attributes = null)
+    public function getButtonsForStack(string $stack): Collection
     {
-        return new CrudButton($attributes);
+        return $this->buttons()->where('stack', $stack);
+    }
+
+    /**
+     * Add a new button to the current CRUD operation.
+     */
+    public function button(string|array $nameOrAttributes): CrudButton
+    {
+        return new CrudButton($nameOrAttributes);
     }
 }

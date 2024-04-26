@@ -1,9 +1,13 @@
 {{-- Show the errors, if any --}}
-@if ($crud->groupedErrorsEnabled() && $errors->any())
-    <div class="alert alert-danger pb-0">
+@if ($crud->groupedErrorsEnabled() && session()->get('errors'))
+    <div class="alert alert-danger">
         <ul class="list-unstyled">
-            @foreach($errors->all() as $error)
-                <li><i class="la la-info-circle"></i> {{ $error }}</li>
+            @foreach(session()->get('errors')->getBags() as $bag => $errorMessages)
+                @foreach($errorMessages->getMessages() as $errorMessageForInput)
+                    @foreach($errorMessageForInput as $message)
+                        <li><i class="la la-info-circle"></i> {{ $message }}</li>
+                    @endforeach
+                @endforeach
             @endforeach
         </ul>
     </div>

@@ -55,8 +55,7 @@
 				@endif
 				<!-- Single button -->
 				<div class="btn-group @if($showTranslationNotice) col-md-4 text-right"  style="margin-top:0.8em; display:inline;" @else " @endif>
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
 				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)

@@ -190,4 +190,8 @@ return [
 
     // The pivot selector required validation message
     'pivot_selector_required_validation_message' => 'The pivot field is required.',
+
+    // translations
+    'no_attributes_translated' => 'This entry is not translated in ',
+    'no_attributes_translated_href_text' => 'Fill inputs value from ',
 ];

@@ -75,18 +75,6 @@ class CrudPanel
         }
     }
 
-    public function setLocaleOnModel($model, $useFallbackLocale = true)
-    {
-        if (method_exists($model, 'translationEnabled') && $model->translationEnabled()) {
-            $locale = $this->getRequest()->input('_locale', app()->getLocale());
-            if (in_array($locale, array_keys($model->getAvailableLocales()))) {
-                $model->setLocale($locale);
-                $model->useFallbackLocale = $useFallbackLocale;
-            }
-        }
-        return $model;
-    }
-
     /**
      * Set the request instance for this CRUD.
      *
@@ -473,6 +461,20 @@ class CrudPanel
         }
 
         return $value;
+    }
+
+    public function setLocaleOnModel(Model $model, null|bool $useFallbackLocale = null)
+    {
+        $useFallbackLocale = $useFallbackLocale ?? $this->shouldUseFallbackLocale();
+
+        if (method_exists($model, 'translationEnabled') && $model->translationEnabled()) {
+            $locale = $this->getRequest()->input('_locale', app()->getLocale());
+            if (in_array($locale, array_keys($model->getAvailableLocales()))) {
+                $model->setLocale($locale);
+                $model->useFallbackLocale = $useFallbackLocale;
+            }
+        }
+        return $model;
     }
 
     /**

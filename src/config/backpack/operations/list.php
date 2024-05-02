@@ -64,4 +64,9 @@ return [
     // Display the `Showing X of XX entries (filtered  from X entries)`?
     // Setting this to false will improve performance on big datasets.
     'showEntryCount' => true,
+
+    // In translatable cruds, when the user is viewing the list contents in a language that's not translated
+    // should Backpack show the original content in the default language or the empty value for the 
+    // current untranslated language ? By default, we show the original content.
+    'useFallbackLocale' => true,
 ];

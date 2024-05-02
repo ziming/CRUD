@@ -48,6 +48,18 @@ trait Read
         return $this->getEntry($id);
     }
 
+    public function getCurrentEntryWithLocale()
+    {
+        $entry = $this->getCurrentEntry();
+
+        if(! $entry) {
+            return false;
+        }
+
+        return $this->setLocaleOnModel($entry);
+
+    }
+
     /**
      * Find and retrieve an entry in the database or fail.
      *
@@ -61,9 +73,12 @@ trait Read
             $this->entry = $this->entry->withFakes();
         }
 
-        $this->entry = $this->setLocaleOnModel($this->entry);
-
         return $this->entry;
+    }
+
+    private function shouldUseFallbackLocale()
+    {
+        return $this->getRequest()->get('_use_fallback') === 'true' ? true : false;
     }
 
     /**
@@ -79,15 +94,7 @@ trait Read
             $this->entry = $this->getEntry($id);
         }
 
-        if ($this->entry->translationEnabled()) {
-            $locale = $this->getRequest()->input('_locale', app()->getLocale());
-            if (in_array($locale, array_keys($this->entry->getAvailableLocales()))) {
-                $this->entry->setLocale($locale);
-                $this->entry->useFallbackLocale = $this->getRequest()->input('_use_fallback') ? true : false;
-            }
-        }
-
-        return $this->entry;
+        return $this->setLocaleOnModel($this->entry);
     }
 
     /**
@@ -151,7 +158,6 @@ trait Read
 
         // add the fake columns for each entry
         foreach ($entries as $key => $entry) {
-            $entry = $this->setLocaleOnModel($entry);
             $entry->addFakes($this->getFakeColumnsAsArray());
         }
 

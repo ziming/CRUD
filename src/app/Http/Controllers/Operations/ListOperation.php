@@ -132,7 +132,7 @@ trait ListOperation
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
 
-        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
         $this->data['crud'] = $this->crud;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package

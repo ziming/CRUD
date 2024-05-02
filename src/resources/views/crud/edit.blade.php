@@ -48,14 +48,28 @@
 					});
 					$showTranslationNotice = empty($translatedAttributes) && ! empty($entry->getTranslatableAttributes()) && ! $crud->getRequest()->input('_use_fallback');
 		  		@endphp
-			  	<div @if($showTranslationNotice) class="mb-2 row" @else class="mb-2 text-right" @endif>
-				
+			  	<div @if($showTranslationNotice) class="mb-2 row text-center" @else class="mb-2 text-right text-end" @endif>
 				@if($showTranslationNotice)
-					<div class="alert text-dark alert-secondary ml-0 col-md-8" style="">{{ trans('backpack::crud.no_attributes_translated') }} {{ $crud->model->getAvailableLocales()[$editLocale]}}. <a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback=true" class="btn btn-primary btn-sm" role="button">{{trans('backpack::crud.no_attributes_translated_href_text') . $crud->model->getAvailableLocales()[$fallbackLocale]}}</a></div>
+					<div class="alert ml-0 col-md-10" role="alert">
+						{{ trans('backpack::crud.no_attributes_translated', ['locale' => $crud->model->getAvailableLocales()[$editLocale]]) }}
+						<a 
+							href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback=true" 
+							class="btn btn-outline-primary" 
+							role="button">
+							{{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => $crud->model->getAvailableLocales()[$fallbackLocale]]) }}
+						</a>
+					</div>
 				@endif
-				<!-- Single button -->
-				<div class="btn-group @if($showTranslationNotice) col-md-4 text-right"  style="margin-top:0.8em; display:inline;" @else " @endif>
-					<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
+					<!-- Single button -->
+				<div class="btn-group @if($showTranslationNotice) col-md-2 text-{{$showTranslationNotice ? 'center' : 'right text-end'}}"  style="margin-top:0.8em; display:inline;" @else " @endif>
+					<button 
+						type="button" 
+						class="btn btn-primary dropdown-toggle" 
+						data-toggle="dropdown" 
+						data-bs-toggle="dropdown" 
+						aria-haspopup="true" 
+						aria-expanded="false">
+						{{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale') ? request()->input('_locale') : app()->getLocale()] }} &nbsp; <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
 				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)

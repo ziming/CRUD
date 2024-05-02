@@ -75,6 +75,18 @@ class CrudPanel
         }
     }
 
+    public function setLocaleOnModel($model, $useFallbackLocale = true)
+    {
+        if (method_exists($model, 'translationEnabled') && $model->translationEnabled()) {
+            $locale = $this->getRequest()->input('_locale', app()->getLocale());
+            if (in_array($locale, array_keys($model->getAvailableLocales()))) {
+                $model->setLocale($locale);
+                $model->useFallbackLocale = $useFallbackLocale;
+            }
+        }
+        return $model;
+    }
+
     /**
      * Set the request instance for this CRUD.
      *
@@ -392,6 +404,7 @@ class CrudPanel
         $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
         foreach ($endModels as $model => $entries) {
+            /** @var \Illuminate\Database\Eloquent\Model $model_instance */
             $model_instance = new $model();
             $modelKey = $model_instance->getKeyName();
 
@@ -446,7 +459,7 @@ class CrudPanel
         }
 
         if (! is_array($value)) {
-            $decodedAttribute = json_decode($value, true);
+            $decodedAttribute = json_decode($value, true) ?? ($value !== null ? [$value] : []);
         } else {
             $decodedAttribute = $value;
         }

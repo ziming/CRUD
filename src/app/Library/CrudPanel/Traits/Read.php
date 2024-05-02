@@ -61,6 +61,8 @@ trait Read
             $this->entry = $this->entry->withFakes();
         }
 
+        $this->entry = $this->setLocaleOnModel($this->entry);
+
         return $this->entry;
     }
 
@@ -128,7 +130,7 @@ trait Read
                     try {
                         $model = $model->$part()->getRelated();
                     } catch (Exception $e) {
-                        $relation = join('.', array_slice($parts, 0, $i));
+                        $relation = implode('.', array_slice($parts, 0, $i));
                     }
                 }
             }
@@ -149,6 +151,7 @@ trait Read
 
         // add the fake columns for each entry
         foreach ($entries as $key => $entry) {
+            $entry = $this->setLocaleOnModel($entry);
             $entry->addFakes($this->getFakeColumnsAsArray());
         }
 

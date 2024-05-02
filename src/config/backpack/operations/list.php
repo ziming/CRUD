@@ -66,7 +66,7 @@ return [
     'showEntryCount' => true,
 
     // In translatable cruds, when the user is viewing the list contents in a language that's not translated
-    // should Backpack show the original content in the default language or the empty value for the 
+    // should Backpack show the original content in the default language or the empty value for the
     // current untranslated language ? By default, we show the original content.
     'useFallbackLocale' => true,
 ];

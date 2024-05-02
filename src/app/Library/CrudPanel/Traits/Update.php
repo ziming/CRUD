@@ -272,11 +272,11 @@ trait Update
                         $iterator = $iterator->$part;
                     }
 
-                    if(is_a($iterator, 'Illuminate\Database\Eloquent\Model', true)) {
+                    if (is_a($iterator, 'Illuminate\Database\Eloquent\Model', true)) {
                         $iterator = $this->setLocaleOnModel($iterator);
                         $iterator = $this->getModelWithFakes($iterator)->getAttributes();
                     }
-                    
+
                     Arr::set($result, $name, $iterator);
                 }
             }

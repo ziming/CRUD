@@ -52,12 +52,11 @@ trait Read
     {
         $entry = $this->getCurrentEntry();
 
-        if(! $entry) {
+        if (! $entry) {
             return false;
         }
 
         return $this->setLocaleOnModel($entry);
-
     }
 
     /**

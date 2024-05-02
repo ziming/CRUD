@@ -474,6 +474,7 @@ class CrudPanel
                 $model->useFallbackLocale = $useFallbackLocale;
             }
         }
+
         return $model;
     }
 

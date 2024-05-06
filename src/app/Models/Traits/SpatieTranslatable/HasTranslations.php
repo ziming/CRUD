@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
 
 trait HasTranslations
@@ -47,6 +48,11 @@ trait HasTranslations
         return $translation;
     }
 
+    public function getFallbackLocale()
+    {
+        return $this->getFallbackFromUrl() ?? Session::get('backpack_fallback_locale') ?? config('app.fallback_locale');
+    }
+
     public function getTranslation(string $key, string $locale, bool $useFallbackLocale = true)
     {
         $locale = $this->normalizeLocale($key, $locale, $useFallbackLocale);
@@ -60,6 +66,15 @@ trait HasTranslations
         }
 
         return $translation;
+    }
+
+    private function getFallbackFromUrl()
+    {
+        $fallback = app('crud')->getRequest()->get('_use_fallback');
+        if(isset($fallback) && in_array($fallback, array_keys(app('crud')->getModel()->getAvailableLocales()))) {
+            return $fallback;
+        }
+        return null;
     }
 
     /*

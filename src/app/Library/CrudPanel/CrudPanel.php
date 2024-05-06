@@ -463,7 +463,7 @@ class CrudPanel
         return $value;
     }
 
-    public function setLocaleOnModel(Model $model, null|bool $useFallbackLocale = null)
+    public function setLocaleOnModel(Model $model, null|bool|string $useFallbackLocale = null)
     {
         $useFallbackLocale = $useFallbackLocale ?? $this->shouldUseFallbackLocale();
 

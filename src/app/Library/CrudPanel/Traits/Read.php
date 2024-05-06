@@ -77,7 +77,9 @@ trait Read
 
     private function shouldUseFallbackLocale()
     {
-        return $this->getRequest()->get('_use_fallback') === 'true' ? true : false;
+        $fallbackRequestValue = $this->getRequest()->get('_use_fallback');
+
+        return $fallbackRequestValue === 'true' ? true : (in_array($fallbackRequestValue, array_keys($this->model->getAvailableLocales())) ? $fallbackRequestValue : false);
     }
 
     /**

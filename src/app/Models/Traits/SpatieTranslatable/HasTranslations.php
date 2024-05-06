@@ -71,9 +71,10 @@ trait HasTranslations
     private function getFallbackFromUrl()
     {
         $fallback = app('crud')->getRequest()->get('_use_fallback');
-        if(isset($fallback) && in_array($fallback, array_keys(app('crud')->getModel()->getAvailableLocales()))) {
+        if (isset($fallback) && in_array($fallback, array_keys(app('crud')->getModel()->getAvailableLocales()))) {
             return $fallback;
         }
+
         return null;
     }
 

@@ -3,7 +3,6 @@
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
 use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
 
 trait HasTranslations
@@ -50,7 +49,7 @@ trait HasTranslations
 
     public function getFallbackLocale()
     {
-        return $this->getFallbackFromUrl() ?? Session::get('backpack_fallback_locale') ?? config('app.fallback_locale');
+        return $this->getFallbackFromUrl() ?? config('app.fallback_locale');
     }
 
     public function getTranslation(string $key, string $locale, bool $useFallbackLocale = true)

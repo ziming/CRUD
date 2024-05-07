@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 trait ListOperation
 {
-        use \Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasTranslations;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasTranslations;
 
     /**
      * Define which routes are needed for this operation.
@@ -18,21 +18,21 @@ trait ListOperation
     protected function setupListRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/', [
-            'as'        => $routeName.'.index',
-            'uses'      => $controller.'@index',
+            'as' => $routeName.'.index',
+            'uses' => $controller.'@index',
             'operation' => 'list',
         ]);
 
         Route::post($segment.'/search', [
-            'as'        => $routeName.'.search',
-            'uses'      => $controller.'@search',
+            'as' => $routeName.'.search',
+            'uses' => $controller.'@search',
             'operation' => 'list',
         ]);
 
         if (! isset($this->setupDetailsRowRoute) || $this->setupDetailsRowRoute === true) {
             Route::get($segment.'/{id}/details', [
-                'as'        => $routeName.'.showDetailsRow',
-                'uses'      => $controller.'@showDetailsRow',
+                'as' => $routeName.'.showDetailsRow',
+                'uses' => $controller.'@showDetailsRow',
                 'operation' => 'list',
             ]);
         }

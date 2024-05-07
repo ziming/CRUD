@@ -15,13 +15,7 @@ if (! method_exists(__CLASS__, 'setupTranslatorInstance')) {
                 app(\Spatie\Translatable\Translatable::class)->fallback(
                     fallbackAny: true,
                 );
-
-                return;
             }
         }
-    }
-} else {
-    trait HasTranslations
-    {
     }
 }

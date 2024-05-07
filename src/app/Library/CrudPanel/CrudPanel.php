@@ -105,16 +105,16 @@ class CrudPanel
      *
      * @param  string  $model_namespace  Full model namespace. Ex: App\Models\Article
      *
-     * @throws \Exception in case the model does not exist
+     * @throws Exception in case the model does not exist
      */
     public function setModel($model_namespace)
     {
         if (! class_exists($model_namespace)) {
-            throw new \Exception('The model does not exist.', 500);
+            throw new Exception('The model does not exist.', 500);
         }
 
         if (! method_exists($model_namespace, 'hasCrudTrait')) {
-            throw new \Exception('Please use CrudTrait on the model.', 500);
+            throw new Exception('Please use CrudTrait on the model.', 500);
         }
 
         $this->model = new $model_namespace();
@@ -198,7 +198,7 @@ class CrudPanel
      * @param  string  $route  Route name.
      * @param  array  $parameters  Parameters.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setRouteName($route, $parameters = [])
     {
@@ -207,7 +207,7 @@ class CrudPanel
         $complete_route = $route.'.index';
 
         if (! \Route::has($complete_route)) {
-            throw new \Exception('There are no routes for this route name.', 404);
+            throw new Exception('There are no routes for this route name.', 404);
         }
 
         $this->route = route($complete_route, $parameters);
@@ -348,7 +348,7 @@ class CrudPanel
      * @param  int  $length  Optionally specify the number of relations to omit from the start of the relation string. If
      *                       the provided length is negative, then that many relations will be omitted from the end of the relation
      *                       string.
-     * @param  \Illuminate\Database\Eloquent\Model  $model  Optionally specify a different model than the one in the crud object.
+     * @param  Model  $model  Optionally specify a different model than the one in the crud object.
      * @return string Relation model name.
      */
     public function getRelationModel($relationString, $length = null, $model = null)
@@ -380,7 +380,7 @@ class CrudPanel
      * Get the given attribute from a model or models resulting from the specified relation string (eg: the list of streets from
      * the many addresses of the company of a given user).
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model  Model (eg: user).
+     * @param  Model  $model  Model (eg: user).
      * @param  string  $relationString  Model relation. Can be a string representing the name of a relation method in the given
      *                                  Model or one from a different Model through multiple relations. A dot notation can be used to specify
      *                                  multiple relations (eg: user.company.address).
@@ -392,7 +392,7 @@ class CrudPanel
         $endModels = $this->getRelatedEntries($model, $relationString);
         $attributes = [];
         foreach ($endModels as $model => $entries) {
-            /** @var \Illuminate\Database\Eloquent\Model $model_instance */
+            /** @var Model $model_instance */
             $model_instance = new $model();
             $modelKey = $model_instance->getKeyName();
 
@@ -431,7 +431,7 @@ class CrudPanel
     /**
      * Parse translatable attributes from a model or models resulting from the specified relation string.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model  Model (eg: user).
+     * @param  Model  $model  Model (eg: user).
      * @param  string  $attribute  The attribute from the relation model (eg: the street attribute from the address model).
      * @param  string  $value  Attribute value translatable or not
      * @return string A string containing the translated attributed based on app()->getLocale()
@@ -482,7 +482,7 @@ class CrudPanel
      * Traverse the tree of relations for the given model, defined by the given relation string, and return the ending
      * associated model instance or instances.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model  The CRUD model.
+     * @param  Model  $model  The CRUD model.
      * @param  string  $relationString  Relation string. A dot notation can be used to chain multiple relations.
      * @return array An array of the associated model instances defined by the relation string.
      */

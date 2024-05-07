@@ -70,19 +70,12 @@
 						}
 						$translatedLocales = array_unique($translatedLocales);
 					}
-					//dd($translatedLocales);
 					$showTranslationNotice = empty($translatedAttributes) && ! empty($entry->getTranslatableAttributes()) && ! $crud->getRequest()->input('_use_fallback');
 				@endphp
 			  	<div @if($showTranslationNotice) class="mb-2 row text-center" @else class="mb-2 text-right text-end" @endif>
 				@if($showTranslationNotice)
 					<div class="alert ml-0 col-md-10" role="alert">
 						{{ trans('backpack::crud.no_attributes_translated', ['locale' => $translatableLocales[$editLocale]]) }}
-						{{-- <a 
-							href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback=true" 
-							class="btn btn-outline-primary" 
-							role="button">
-							{{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => $crud->model->getAvailableLocales()[$fallbackLocale]]) }}
-						</a> --}}
 						@if(count($translatedLocales) === 1)
 						<a 
 						href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback={{current($translatedLocales)}}" 
@@ -91,7 +84,7 @@
 						{{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => $translatableLocales[current($translatedLocales)]]) }}
 					</a>
 					@else
-					{{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => '']) }}
+						{{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => '']) }}
 						<div class="btn-group @if($showTranslationNotice) col-md-2 text-{{$showTranslationNotice ? 'center' : 'right text-end'}}"  style="margin-top:0.8em; display:inline;" @else " @endif>
 							<button 
 								type="button" 
@@ -101,12 +94,16 @@
 								aria-haspopup="true" 
 								aria-expanded="false">
 								{{trans('backpack::crud.language')}}: &nbsp; <span class="caret"></span>
-						  </button>
-						  <ul class="dropdown-menu">
-							  @foreach ($translatedLocales as $locale)
-								  <a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback={{ $locale }}">{{ $translatableLocales[$locale] }}</a>
-							  @endforeach
-						  </ul>
+						  	</button>
+						  	<ul class="dropdown-menu">
+							 	@foreach ($translatedLocales as $locale)
+								<a 
+									class="dropdown-item" 
+									href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback={{ $locale }}">
+									{{ $translatableLocales[$locale] }}
+								</a>
+							 	@endforeach
+						  	</ul>
 						</div>
 						@endif
 					</div>
@@ -125,21 +122,26 @@
 				  </button>
 				  <ul class="dropdown-menu">
 				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $key }}">{{ $locale }}</a>
+					  	<a 
+							class="dropdown-item" 
+							href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $key }}">
+							{{ $locale }}
+						</a>
 				  	@endforeach
 				  </ul>
 				</div>
 		    </div>
 		    @endif
-		      {{-- load the view from the application if it exists, otherwise load the one in the package --}}
-		      @if(view()->exists('vendor.backpack.crud.form_content'))
-		      	@include('vendor.backpack.crud.form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
-		      @else
-		      	@include('crud::form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
-              @endif
-              {{-- This makes sure that all field assets are loaded. --}}
-            <div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
-            @include('crud::inc.form_save_buttons')
+
+			{{-- load the view from the application if it exists, otherwise load the one in the package --}}
+			@if(view()->exists('vendor.backpack.crud.form_content'))
+				@include('vendor.backpack.crud.form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
+			@else
+				@include('crud::form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
+			@endif
+			{{-- This makes sure that all field assets are loaded. --}}
+			<div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
+			@include('crud::inc.form_save_buttons')
 		  </form>
 	</div>
 </div>

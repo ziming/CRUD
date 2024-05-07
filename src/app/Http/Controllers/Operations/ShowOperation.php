@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 trait ShowOperation
 {
+    use \Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasTranslations;
+    
     /**
      * Define which routes are needed for this operation.
      *
@@ -32,6 +34,7 @@ trait ShowOperation
 
         $this->crud->operation('show', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+            $this->setupTranslatorInstance();
 
             if (! method_exists($this, 'setupShowOperation')) {
                 $this->autoSetupShowOperation();

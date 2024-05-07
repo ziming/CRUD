@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Properties and methods used by the List operation.
@@ -21,7 +22,7 @@ trait Read
             return $this->entry->getKey();
         }
 
-        $params = \Route::current()->parameters();
+        $params = Route::current()?->parameters() ?? [];
 
         return  // use the entity name to get the current entry
                 // this makes sure the ID is corrent even for nested resources
@@ -77,9 +78,13 @@ trait Read
 
     private function shouldUseFallbackLocale()
     {
+        if($this->getOperationSetting('useFallbackLocale') !== null) {
+            return $this->getOperationSetting('useFallbackLocale');
+        }
+        
         $fallbackRequestValue = $this->getRequest()->get('_use_fallback');
 
-        return $fallbackRequestValue === 'true' ? true : (in_array($fallbackRequestValue, array_keys($this->model->getAvailableLocales())) ? $fallbackRequestValue : false);
+        return $fallbackRequestValue === 'true' ? true : (in_array($fallbackRequestValue, array_keys(config('backpack.crud.locales'))) ? $fallbackRequestValue : false);
     }
 
     /**

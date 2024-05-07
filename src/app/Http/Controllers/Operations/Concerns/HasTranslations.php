@@ -13,6 +13,7 @@ if (! method_exists(__CLASS__, 'setupTranslatorInstance')) {
 
             if (app('crud')->getOperationSetting('useFallbackLocale')) {
                 app(\Spatie\Translatable\Translatable::class)->fallback(
+                    fallbackLocale: app()->getLocale(),
                     fallbackAny: true,
                 );
             }

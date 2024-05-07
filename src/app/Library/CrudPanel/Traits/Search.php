@@ -390,7 +390,7 @@ trait Search
         $rows = [];
 
         foreach ($entries as $row) {
-            $row = $this->setLocaleOnModel($row, $this->get('list.useFallbackLocale'));
+            $row = $this->setLocaleOnModel($row);
             $rows[] = $this->getRowViews($row, $startIndex === false ? false : ++$startIndex);
         }
 

@@ -58,7 +58,7 @@
 					// if translated locales are empty, we need to cycle through all available locales and check if they are translated
 					if(empty($translatedLocales)) {
 						foreach ($translatableLocales as $locale => $localeName) {
-							if($locale == $editLocale) continue;
+							if($locale === $editLocale) continue;
 
 							array_filter($translatableAttributes, function($attribute) use ($entry, $locale, &$translatedLocales) {
 								$translation = $entry->getTranslation($attribute, $locale, false) ?? false;

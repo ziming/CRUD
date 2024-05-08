@@ -6,6 +6,7 @@ final class Table
 {
     private string $name;
     private array $columns = [];
+    private array $indexes = [];
 
     public function __construct(string $name, array $columns = [])
     {
@@ -73,5 +74,15 @@ final class Table
     public function getColumn(string $columnName)
     {
         return $this->columns[$columnName];
+    }
+
+    public function getIndexes()
+    {
+        return $this->indexes;
+    }
+
+    public function setIndexes(array $indexes)
+    {
+        $this->indexes = $indexes;
     }
 }

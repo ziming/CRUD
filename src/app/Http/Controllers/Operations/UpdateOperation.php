@@ -63,14 +63,16 @@ trait UpdateOperation
     public function edit($id)
     {
         $this->crud->hasAccessOrFail('update');
+
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
-        // get the info for that entry
 
         // register any Model Events defined on fields
         $this->crud->registerFieldEvents();
-
+        
+        // get the info for that entry
         $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+
         $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
 
         $this->data['crud'] = $this->crud;

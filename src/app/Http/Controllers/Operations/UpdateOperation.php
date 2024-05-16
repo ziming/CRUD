@@ -69,7 +69,7 @@ trait UpdateOperation
 
         // register any Model Events defined on fields
         $this->crud->registerFieldEvents();
-        
+
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntryWithLocale($id);
 

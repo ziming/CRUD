@@ -6,7 +6,11 @@
 @includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_start'))
 
 <div class="{{ $widget['class'] ?? 'card' }}" @foreach($widget['attributes'] ?? [] as $key => $value) {{ $key }}="{{ $value }}" @endforeach>
-    @livewire($widget['content'], $widget['parameters'] ?? [])
+    @if(isset($widget['key']))
+        @livewire($widget['content'], $widget['parameters'] ?? [], key($widget['key']))
+    @else
+        @livewire($widget['content'], $widget['parameters'] ?? [])
+    @endif
 </div>
 
 @includeWhen(!empty($widget['wrapper']), backpack_view('widgets.inc.wrapper_end'))
@@ -15,7 +19,7 @@
     @pushOnce('after_styles')
         @livewireStyles
     @endPushOnce
-    
+
     @pushOnce('after_scripts')
         @livewireScripts
     @endpushOnce

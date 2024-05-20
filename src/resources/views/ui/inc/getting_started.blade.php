@@ -38,7 +38,9 @@
                       CRUD::field('name')->validationRules('required|min:5');
                       CRUD::field('email')->validationRules('required|email|unique:users,email');
                       CRUD::field('password')->validationRules('required');
-
+                      
+                      // if you are using Laravel 10+ your User model should already include the password hashing in the model casts.
+                      // if that's the case, you can skip this step. You can check your model $casts property or `casts()` method.
                       \App\Models\User::creating(function ($entry) {
                           $entry->password = \Hash::make($entry->password);
                       });
@@ -54,13 +56,23 @@
                       CRUD::field('email')->validationRules('required|email|unique:users,email,'.CRUD::getCurrentEntryId());
                       CRUD::field('password')->hint('Type a password to change it.');
 
+                      // if you are using Laravel 10+ your User model should already include the password hashing in the model casts.
+                      // if that's the case, you just need to keep the old password unchanged when the user is updated.
                       \App\Models\User::updating(function ($entry) {
                           if (request('password') == null) {
-                              $entry->password = $entry->getOriginal('password');
-                          } else {
-                              $entry->password = \Hash::make(request('password'));
+                            $entry->password = $entry->getOriginal('password');
                           }
                       });
+
+                      // in case you are using an older version of Laravel, or you are not casting your password in the model, you need
+                      // to manually hash the password when it's updated by the user
+                      \App\Models\User::updating(function ($entry) {
+                        if (request('password') == null) {
+                            $entry->password = $entry->getOriginal('password');
+                        } else {
+                            $entry->password = \Hash::make(request('password'));
+                        }
+                    });
                   }
                 </code></pre>
               </p>

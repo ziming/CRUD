@@ -73,43 +73,16 @@
 			      url: route,
 			      type: $(button).attr('data-method'),
 			      success: function(result) {
-			          if (result) {
-			          	  // Show a success notification bubble
-			              new Noty({
-		                    type: "success",
-							text: '<strong>'+$(button).attr('data-success-title')+'</strong><br>'+$(button).attr('data-success-message'),
-		                  }).show();
-
-			          } else {
-			              // if the result is an array, it means
-			              // we have notification bubbles to show
-			          	  if (result instanceof Object) {
-			          	  	// trigger one or more bubble notifications
-			          	  	Object.entries(result).forEach(function(entry, index) {
-			          	  	  var type = entry[0];
-			          	  	  entry[1].forEach(function(message, i) {
-					          	  new Noty({
-				                    type: type,
-				                    text: message
-				                  }).show();
-			          	  	  });
-			          	  	});
-			          	  } else {// Show an error alert
-				              swal({
-				              	title: $(button).attr('data-error-title'),
-	                            text: $(button).attr('data-error-message'),
-				              	icon: "error",
-				              	timer: 4000,
-				              	buttons: false,
-				              });
-			          	  }
-			          }
+			        new Noty({
+		            	type: "success",
+						text: result.message?result.message:'<strong>'+$(button).attr('data-success-title')+'</strong><br>'+$(button).attr('data-success-message'),
+		            }).show();
 			      },
 			      error: function(result) {
 			          // Show an alert with the result
 			          swal({
 						title: $(button).attr('data-error-title'),
-	                    text: $(button).attr('data-error-message'),
+	                    text: result.responseJSON.message?result.responseJSON.message:$(button).attr('data-error-message'),
 		              	icon: "error",
 		              	timer: 4000,
 		              	buttons: false,

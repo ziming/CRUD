@@ -30,7 +30,7 @@
 		$wrapper['data-method'] = $button->meta['ajax']['method'] ?? 'POST';
 
         $wrapper['href'] = 'javascript:void(0)';
-        $wrapper['onclick'] = 'sendQuickRequest(this)';
+        $wrapper['onclick'] = 'sendQuickButtonAjaxRequest(this)';
 		$wrapper['data-button-type'] = 'quick';
 
         //success message
@@ -59,15 +59,14 @@
 
 @if($ajax_enabled)
 {{-- Button Javascript --}}
-{{-- - used right away in AJAX operations (ex: List) --}}
-{{-- - pushed to the end of the page, after jQuery is loaded, for non-AJAX operations (ex: Show) --}}
+{{-- Pushed to the end of the page, after jQuery is loaded --}}
 @push('after_scripts') @if (request()->ajax()) @endpush @endif
-@bassetBlock('backpack/crud/buttons/quick-button-'.app()->getLocale().'.js')
+@bassetBlock('backpack/crud/buttons/quick-button.js')
 <script>
-	if (typeof sendQuickRequest != 'function') {
+	if (typeof sendQuickButtonAjaxRequest != 'function') {
 	  $("[data-button-type=quick]").unbind('click');
 
-	  function sendQuickRequest(button) {
+	  function sendQuickButtonAjaxRequest(button) {
 		// e.preventDefault();
 		var route = $(button).attr('data-route');
 				$.ajax({
@@ -120,9 +119,6 @@
 
       }
 	}
-
-	// make it so that the function above is run after each DataTable draw event
-	// crud.addFunctionToDataTablesDrawEventQueue('sendQuickRequest');
 </script>
 @endBassetBlock
 @if (!request()->ajax()) @endpush @endif

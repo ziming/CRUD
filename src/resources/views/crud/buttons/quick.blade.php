@@ -28,6 +28,7 @@
     if($ajax_enabled) {
         $wrapper['data-route'] = $wrapper['href'];
 		$wrapper['data-method'] = $button->meta['ajax']['method'] ?? 'POST';
+        $wrapper['data-refresh-table'] = $button->meta['ajax']['removesEntryFromTable'] ?? false;
 
         $wrapper['href'] = 'javascript:void(0)';
         $wrapper['onclick'] = 'sendQuickButtonAjaxRequest(this)';
@@ -67,12 +68,14 @@
 	  $("[data-button-type=quick]").unbind('click');
 
 	  function sendQuickButtonAjaxRequest(button) {
-		// e.preventDefault();
 		var route = $(button).attr('data-route');
 				$.ajax({
 			      url: route,
 			      type: $(button).attr('data-method'),
 			      success: function(result) {
+                    if($(button).attr('data-refresh-table') && typeof crud != 'undefined' && typeof crud.table != 'undefined'){
+                        crud.table.draw(false);
+                    }
 			        new Noty({
 		            	type: "success",
 						text: result.message?result.message:'<strong>'+$(button).attr('data-success-title')+'</strong><br>'+$(button).attr('data-success-message'),

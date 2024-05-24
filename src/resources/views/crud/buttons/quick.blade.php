@@ -24,15 +24,15 @@
     }
     $wrapper['class'] = $wrapper['class'] ?? $defaultClass;
     //if ajax enabled
-    $ajax_enabled = $button->meta['ajax'] ?? false;
-    if($ajax_enabled) {
+    $buttonAjaxConfiguration = $button->meta['ajax'] ?? false;
+    if($buttonAjaxConfiguration) {
         $wrapper['data-route'] = $wrapper['href'];
 		$wrapper['data-method'] = $button->meta['ajax']['method'] ?? 'POST';
-        $wrapper['data-refresh-table'] = $button->meta['ajax']['removesEntryFromTable'] ?? false;
+        $wrapper['data-refresh-table'] = $button->meta['ajax']['refreshCrudTable'] ?? false;
 
         $wrapper['href'] = 'javascript:void(0)';
         $wrapper['onclick'] = 'sendQuickButtonAjaxRequest(this)';
-		$wrapper['data-button-type'] = 'quick';
+		$wrapper['data-button-type'] = 'quick-ajax';
 
         //success message
         $wrapper['data-success-title'] = $button->meta['ajax']['success_title'] ?? trans('backpack::crud.quick_button_ajax_success_title');
@@ -58,14 +58,14 @@
 @endif
 
 
-@if($ajax_enabled)
+@if($buttonAjaxConfiguration)
 {{-- Button Javascript --}}
 {{-- Pushed to the end of the page, after jQuery is loaded --}}
 @push('after_scripts') @if (request()->ajax()) @endpush @endif
 @bassetBlock('backpack/crud/buttons/quick-button.js')
 <script>
 	if (typeof sendQuickButtonAjaxRequest != 'function') {
-	  $("[data-button-type=quick]").unbind('click');
+	  $("[data-button-type=quick-ajax]").unbind('click');
 
 	  function sendQuickButtonAjaxRequest(button) {
 		var route = $(button).attr('data-route');
@@ -76,9 +76,19 @@
                     if($(button).attr('data-refresh-table') && typeof crud != 'undefined' && typeof crud.table != 'undefined'){
                         crud.table.draw(false);
                     }
+                    let message;
+                    if(result.message){
+                        //if message is returned from the API
+                        message = result.message;
+                    }else{
+                        //if message is not returned from the API
+                        let buttonSuccessTitle = button.getAttribute('data-success-title');
+                        let buttonSuccessMessage =  button.getAttribute('data-success-message');
+                        message = `<strong>${buttonSuccessTitle}</strong><br/>${buttonSuccessMessage}`;
+                    }
 			        new Noty({
 		            	type: "success",
-						text: result.message?result.message:'<strong>'+$(button).attr('data-success-title')+'</strong><br>'+$(button).attr('data-success-message'),
+						text: message,
 		            }).show();
 			      },
 			      error: function(result) {

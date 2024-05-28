@@ -77,15 +77,20 @@
                         crud.table.draw(false);
                     }
                     let message;
-                    if(result.message){
-                        //if message is returned from the API
-                        message = result.message;
-                    }else{
-                        //if message is not returned from the API
+                    let defaultMessage = function(button) {
+                        // since this is inside a closure, we don't execute until we manually call it.
                         let buttonSuccessTitle = button.getAttribute('data-success-title');
                         let buttonSuccessMessage =  button.getAttribute('data-success-message');
-                        message = `<strong>${buttonSuccessTitle}</strong><br/>${buttonSuccessMessage}`;
+                        return `<strong>${buttonSuccessTitle}</strong><br/>${buttonSuccessMessage}`;
                     }
+                    
+                    //if message is returned from the API use that message
+                    if(result.message){
+                        message = result.message;
+                    }
+                    
+                    // if message variable has no value, we build the default message, otherwise use the previous set value without calling defaultMessage()
+                    message ??= defaultMessage(button);
 			        new Noty({
 		            	type: "success",
 						text: message,

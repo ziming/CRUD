@@ -97,10 +97,12 @@
 		            }).show();
 			      },
 			      error: function(result) {
+                      let buttonErrorMessage = button.getAttribute('data-error-message');
+                      buttonErrorMessage = result.responseJSON.message ? result.responseJSON.message : buttonErrorMessage;
 			          // Show an alert with the result
 			          swal({
-						title: $(button).attr('data-error-title'),
-	                    text: result.responseJSON.message?result.responseJSON.message:$(button).attr('data-error-message'),
+						title: button.getAttribute('data-error-title'),
+	                    text: buttonErrorMessage,
 		              	icon: "error",
 		              	timer: 4000,
 		              	buttons: false,

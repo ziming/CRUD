@@ -27,7 +27,7 @@
     $buttonAjaxConfiguration = $button->meta['ajax'] ?? false;
     if($buttonAjaxConfiguration) {
         $wrapper['data-route'] = $wrapper['href'];
-		$wrapper['data-method'] = $button->meta['ajax']['method'] ?? 'POST';
+		$wrapper['data-method'] = $button->meta['ajax']['method'] ?? 'GET';
         $wrapper['data-refresh-table'] = $button->meta['ajax']['refreshCrudTable'] ?? false;
 
         $wrapper['href'] = 'javascript:void(0)';

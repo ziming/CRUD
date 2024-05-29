@@ -192,8 +192,8 @@ return [
     'pivot_selector_required_validation_message' => 'The pivot field is required.',
 
     // Quick button messages
-    'quick_button_ajax_error_title' => 'Request failed!',
-    'quick_button_ajax_error_message' => 'There was an error while executing request. Please retry.',
-    'quick_button_ajax_success_title' => 'Request successful!',
-    'quick_button_ajax_success_message' => 'The action request is submited successfully.',
+    'quick_button_ajax_error_title' => 'Request Failed!',
+    'quick_button_ajax_error_message' => 'There was an error processing your request.',
+    'quick_button_ajax_success_title' => 'Request Completed!',
+    'quick_button_ajax_success_message' => 'Your request was completed with success.',
 ];

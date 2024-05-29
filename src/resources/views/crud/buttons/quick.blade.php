@@ -83,12 +83,12 @@
                         let buttonSuccessMessage =  button.getAttribute('data-success-message');
                         return `<strong>${buttonSuccessTitle}</strong><br/>${buttonSuccessMessage}`;
                     }
-                    
+
                     //if message is returned from the API use that message
                     if(result.message){
                         message = result.message;
                     }
-                    
+
                     // if message variable has no value, we build the default message, otherwise use the previous set value without calling defaultMessage()
                     message ??= defaultMessage(button);
 			        new Noty({
@@ -97,16 +97,25 @@
 		            }).show();
 			      },
 			      error: function(result) {
-                      let buttonErrorMessage = button.getAttribute('data-error-message');
-                      buttonErrorMessage = result.responseJSON.message ? result.responseJSON.message : buttonErrorMessage;
-			          // Show an alert with the result
-			          swal({
-						title: button.getAttribute('data-error-title'),
-	                    text: buttonErrorMessage,
-		              	icon: "error",
-		              	timer: 4000,
-		              	buttons: false,
-		              });
+                    let errorMessage;
+                    let defaultErrorMessage = function(button) {
+                        // since this is inside a closure, we don't execute until we manually call it.
+                        let buttonErrorTitle = button.getAttribute('data-error-title');
+                        let buttonErrorMessage =  button.getAttribute('data-error-message');
+                        return `<strong>${buttonErrorTitle}</strong><br/>${buttonErrorMessage}`;
+                    }
+
+                    //if message is returned from the API use that message
+                    if(result.responseJSON.message){
+                        errorMessage = result.responseJSON.message;
+                    }
+
+                    // if errorMessage variable has no value, we build the default error message, otherwise use the previous set value without calling defaultErrorMessage()
+                    errorMessage ??= defaultErrorMessage(button);
+			        new Noty({
+		            	type: "error",
+						text: errorMessage,
+		            }).show();
 			      }
 			  });
 

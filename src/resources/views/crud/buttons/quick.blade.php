@@ -65,61 +65,56 @@
 @bassetBlock('backpack/crud/buttons/quick-button.js')
 <script>
 	if (typeof sendQuickButtonAjaxRequest != 'function') {
-	  $("[data-button-type=quick-ajax]").unbind('click');
+        $("[data-button-type=quick-ajax]").unbind('click');
 
-	  function sendQuickButtonAjaxRequest(button) {
-		var route = $(button).attr('data-route');
-				$.ajax({
-			      url: route,
-			      type: $(button).attr('data-method'),
-			      success: function(result) {
+        function sendQuickButtonAjaxRequest(button) {
+            let route = $(button).attr('data-route');
+
+            const defaultButtonMessage = function(button, type) {
+                let buttonTitle = button.getAttribute(`data-${type}-title`);
+                let buttonMessage =  button.getAttribute(`data-${type}-message`);
+                return `<strong>${buttonTitle}</strong><br/>${buttonMessage}`;
+            }
+
+            $.ajax({
+                url: route,
+                type: $(button).attr('data-method'),
+                success: function(result) {
+
                     if($(button).attr('data-refresh-table') && typeof crud != 'undefined' && typeof crud.table != 'undefined'){
                         crud.table.draw(false);
                     }
                     let message;
-                    let defaultMessage = function(button) {
-                        // since this is inside a closure, we don't execute until we manually call it.
-                        let buttonSuccessTitle = button.getAttribute('data-success-title');
-                        let buttonSuccessMessage =  button.getAttribute('data-success-message');
-                        return `<strong>${buttonSuccessTitle}</strong><br/>${buttonSuccessMessage}`;
-                    }
-
                     //if message is returned from the API use that message
                     if(result.message){
                         message = result.message;
                     }
 
-                    // if message variable has no value, we build the default message, otherwise use the previous set value without calling defaultMessage()
-                    message ??= defaultMessage(button);
-			        new Noty({
-		            	type: "success",
-						text: message,
-		            }).show();
-			      },
-			      error: function(result) {
-                    let errorMessage;
-                    let defaultErrorMessage = function(button) {
-                        // since this is inside a closure, we don't execute until we manually call it.
-                        let buttonErrorTitle = button.getAttribute('data-error-title');
-                        let buttonErrorMessage =  button.getAttribute('data-error-message');
-                        return `<strong>${buttonErrorTitle}</strong><br/>${buttonErrorMessage}`;
-                    }
+                    message ??= defaultButtonMessage(button, 'success');
+
+                    new Noty({
+                        type: "success",
+                        text: message,
+                    }).show();
+                },
+                error: function(result) {
+
+                    let message;
 
                     //if message is returned from the API use that message
                     if(result.responseJSON.message){
-                        errorMessage = result.responseJSON.message;
+                        message = result.responseJSON.message;
                     }
 
-                    // if errorMessage variable has no value, we build the default error message, otherwise use the previous set value without calling defaultErrorMessage()
-                    errorMessage ??= defaultErrorMessage(button);
-			        new Noty({
-		            	type: "error",
-						text: errorMessage,
-		            }).show();
-			      }
-			  });
+                    message ??= defaultButtonMessage(button, 'error');
 
-      }
+                    new Noty({
+                        type: "error",
+                        text: message,
+                    }).show();
+                }
+            });
+        }
 	}
 </script>
 @endBassetBlock

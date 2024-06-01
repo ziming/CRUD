@@ -459,7 +459,7 @@ class CrudButton implements Arrayable
     }
 
     /**
-     * Dump and die. Duumps the current object to the screen,
+     * Dump and die. Dumps the current object to the screen,
      * so that the developer can see its contents, then stops
      * the execution.
      *

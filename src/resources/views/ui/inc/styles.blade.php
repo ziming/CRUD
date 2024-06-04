@@ -19,7 +19,7 @@
         @if(is_array($path))
             @basset(...$path)
         @else
-            @basset($path, true, [], 'css')
+            @basset($path)
         @endif
     @endforeach
 @endif

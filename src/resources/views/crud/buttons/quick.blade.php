@@ -23,6 +23,25 @@
         $wrapper['href'] = ($wrapper['href'])($entry, $crud);
     }
     $wrapper['class'] = $wrapper['class'] ?? $defaultClass;
+    //if ajax enabled
+    $buttonAjaxConfiguration = $button->meta['ajax'] ?? false;
+    if($buttonAjaxConfiguration) {
+        $wrapper['data-route'] = $wrapper['href'];
+		$wrapper['data-method'] = $button->meta['ajax']['method'] ?? 'GET';
+        $wrapper['data-refresh-table'] = $button->meta['ajax']['refreshCrudTable'] ?? false;
+
+        $wrapper['href'] = 'javascript:void(0)';
+        $wrapper['onclick'] = 'sendQuickButtonAjaxRequest(this)';
+		$wrapper['data-button-type'] = 'quick-ajax';
+
+        //success message
+        $wrapper['data-success-title'] = $button->meta['ajax']['success_title'] ?? trans('backpack::crud.quick_button_ajax_success_title');
+        $wrapper['data-success-message'] = $button->meta['ajax']['success_message'] ?? trans('backpack::crud.quick_button_ajax_success_message');
+        //error message
+        $wrapper['data-error-title'] = $button->meta['ajax']['error_title'] ?? trans('backpack::crud.quick_button_ajax_error_title');
+        $wrapper['data-error-message']  = $button->meta['ajax']['error_message'] ?? trans('backpack::crud.quick_button_ajax_error_message');
+    }
+    //endif ajax enabled
 @endphp
 
 @if ($access === true || $crud->hasAccess($access, isset($entry) ? $entry : null))
@@ -36,4 +55,68 @@
         @if ($icon) <i class="{{ $icon }}"></i> @endif
         {{ $label }}
     </{{ $wrapper['element'] }}>
+@endif
+
+
+@if($buttonAjaxConfiguration)
+{{-- Button Javascript --}}
+{{-- Pushed to the end of the page, after jQuery is loaded --}}
+@push('after_scripts') @if (request()->ajax()) @endpush @endif
+@bassetBlock('backpack/crud/buttons/quick-button.js')
+<script>
+	if (typeof sendQuickButtonAjaxRequest != 'function') {
+        $("[data-button-type=quick-ajax]").unbind('click');
+
+        function sendQuickButtonAjaxRequest(button) {
+            let route = $(button).attr('data-route');
+
+            const defaultButtonMessage = function(button, type) {
+                let buttonTitle = button.getAttribute(`data-${type}-title`);
+                let buttonMessage =  button.getAttribute(`data-${type}-message`);
+                return `<strong>${buttonTitle}</strong><br/>${buttonMessage}`;
+            }
+
+            $.ajax({
+                url: route,
+                type: $(button).attr('data-method'),
+                success: function(result) {
+
+                    if($(button).attr('data-refresh-table') && typeof crud != 'undefined' && typeof crud.table != 'undefined'){
+                        crud.table.draw(false);
+                    }
+                    let message;
+                    //if message is returned from the API use that message
+                    if(result.message){
+                        message = result.message;
+                    }
+
+                    message ??= defaultButtonMessage(button, 'success');
+
+                    new Noty({
+                        type: "success",
+                        text: message,
+                    }).show();
+                },
+                error: function(result) {
+
+                    let message;
+
+                    //if message is returned from the API use that message
+                    if(result.responseJSON.message){
+                        message = result.responseJSON.message;
+                    }
+
+                    message ??= defaultButtonMessage(button, 'error');
+
+                    new Noty({
+                        type: "error",
+                        text: message,
+                    }).show();
+                }
+            });
+        }
+	}
+</script>
+@endBassetBlock
+@if (!request()->ajax()) @endpush @endif
 @endif

@@ -512,29 +512,29 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     public function testBelongsToManyWithMultipleSameRelationIdAndPivotDataRelationship()
     {
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my first article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my second article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 2,
-                    'notes' => 'my first article2 note',
-                    'id' => null,
-                ],
-            ]
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my first article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my second article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 2,
+                'notes' => 'my first article2 note',
+                'id' => null,
+            ],
+        ],
         ], true, true);
 
         $entry = $this->crudPanel->create($inputData);
         $relationField = $this->crudPanel->getUpdateFields($entry->id)['superArticlesDuplicates'];
 
         $this->assertCount(3, $relationField['value']);
-        
+
         $entry = $entry->fresh();
 
         $this->assertCount(3, $entry->superArticlesDuplicates);
@@ -543,22 +543,22 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals('my first article2 note', $entry->superArticles[2]->pivot->notes);
 
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my first article note updated',
-                    'id' => 1,
-                ],
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my second article note updated',
-                    'id' => 2,
-                ],
-                [
-                    'superArticlesDuplicates' => 2,
-                    'notes' => 'my first article2 note updated',
-                    'id' => 3,
-                ],
-            ]
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my first article note updated',
+                'id' => 1,
+            ],
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my second article note updated',
+                'id' => 2,
+            ],
+            [
+                'superArticlesDuplicates' => 2,
+                'notes' => 'my first article2 note updated',
+                'id' => 3,
+            ],
+        ],
         ], false, true);
 
         $entry = $this->crudPanel->update($entry->id, $inputData);
@@ -576,29 +576,29 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     public function testBelongsToManyAlwaysSaveSinglePivotWhenMultipleNotAllowed()
     {
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my first article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my second article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 2,
-                    'notes' => 'my first article2 note',
-                    'id' => null,
-                ],
-            ]
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my first article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my second article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 2,
+                'notes' => 'my first article2 note',
+                'id' => null,
+            ],
+        ],
         ]);
 
         $entry = $this->crudPanel->create($inputData);
         $relationField = $this->crudPanel->getUpdateFields($entry->id)['superArticlesDuplicates'];
 
         $this->assertCount(2, $relationField['value']);
-        
+
         $entry = $entry->fresh();
 
         $this->assertCount(2, $entry->superArticlesDuplicates);
@@ -609,46 +609,46 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     public function testBelongsToManyDeletesPivotData()
     {
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my first article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my second article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 2,
-                    'notes' => 'my first article2 note',
-                    'id' => null,
-                ],
-            ]
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my first article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my second article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 2,
+                'notes' => 'my first article2 note',
+                'id' => null,
+            ],
+        ],
         ], true, true);
 
         $entry = $this->crudPanel->create($inputData);
         $relationField = $this->crudPanel->getUpdateFields($entry->id)['superArticlesDuplicates'];
 
         $this->assertCount(3, $relationField['value']);
-        
+
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'new first article note',
-                    'id' => null,
-                ],
-                [
-                    'superArticlesDuplicates' => 1,
-                    'notes' => 'my second article note updated',
-                    'id' => 2,
-                ],
-                [
-                    'superArticlesDuplicates' => 3,
-                    'notes' => 'my first article2 note updated',
-                    'id' => 3,
-                ],
-            ]
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'new first article note',
+                'id' => null,
+            ],
+            [
+                'superArticlesDuplicates' => 1,
+                'notes' => 'my second article note updated',
+                'id' => 2,
+            ],
+            [
+                'superArticlesDuplicates' => 3,
+                'notes' => 'my first article2 note updated',
+                'id' => 3,
+            ],
+        ],
         ], false, true);
 
         $entry = $this->crudPanel->update($entry->id, $inputData);
@@ -1645,7 +1645,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     {
         $faker = Factory::create();
 
-        if($initCrud) {
+        if ($initCrud) {
             $this->crudPanel->setModel(User::class);
             $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
             $this->crudPanel->addField([
@@ -1656,10 +1656,10 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
                     [
                         'name' => 'notes',
                     ],
-                    
+
                 ],
             ]);
-        
+
             $article = Article::create([
                 'content' => $faker->text(),
                 'tags' => $faker->words(3, true),
@@ -1680,6 +1680,5 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ];
 
         return array_merge($inputData, $pivotRelationData);
-
     }
 }

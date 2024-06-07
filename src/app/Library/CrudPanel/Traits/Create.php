@@ -145,16 +145,16 @@ trait Create
                             $toDelete = array_diff($dbValues, $sentIds);
 
                             if (! empty($toDelete)) {
-                                foreach($toDelete as $id) {
+                                foreach ($toDelete as $id) {
                                     $relation->newPivot()->where($keyName, $id)->delete();
                                 }
                             }
-                            foreach($values as $value) { 
+                            foreach ($values as $value) {
                                 // if it's an existing pivot, update it
-                                if(isset($value[$keyName])) {
+                                if (isset($value[$keyName])) {
                                     $relation->newPivot()->where($keyName, $value[$keyName])->update($this->preparePivotAttributesForUpdate($value, $relation));
                                 } else {
-                                   $relation->newPivot()->create($this->preparePivotAttributesForCreate($value, $relation, $item->getKey()));
+                                    $relation->newPivot()->create($this->preparePivotAttributesForCreate($value, $relation, $item->getKey()));
                                 }
                             }
                             break;
@@ -169,10 +169,10 @@ trait Create
                         }
 
                         $item->{$relationMethod}()->sync($belongsToManyValues);
-                       
+
                         break;
                     }
-                  
+
                     // if there is no relation data, and the values array is single dimensional we have
                     // an array of keys with no additional pivot data. sync those.
                     if (empty($belongsToManyValues)) {
@@ -184,16 +184,20 @@ trait Create
         }
     }
 
-    private function preparePivotAttributesForCreate(array $attributes, BelongsToMany $relation, string|int $relatedItemKey) {
+    private function preparePivotAttributesForCreate(array $attributes, BelongsToMany $relation, string|int $relatedItemKey)
+    {
         $attributes[$relation->getForeignPivotKeyName()] = $relatedItemKey;
         $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
         $pivotKeyName = $attributes['pivot_key_name'] ?? 'id';
+
         return Arr::except($attributes, [$relation->getRelationName(), 'pivot_key_name', $pivotKeyName]);
     }
 
-    private function preparePivotAttributesForUpdate(array $attributes, BelongsToMany $relation) {
+    private function preparePivotAttributesForUpdate(array $attributes, BelongsToMany $relation)
+    {
         $pivotKeyName = $attributes['pivot_key_name'] ?? 'id';
         $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
+
         return Arr::except($attributes, [$relation->getRelationName(), 'pivot_key_name', $pivotKeyName, $relation->getForeignPivotKeyName()]);
     }
 

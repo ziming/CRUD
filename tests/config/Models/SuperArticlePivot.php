@@ -1,4 +1,5 @@
 <?php
+
 namespace Backpack\CRUD\Tests\Config\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;

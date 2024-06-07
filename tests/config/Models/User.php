@@ -67,6 +67,13 @@ class User extends Model
         return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Article', 'articles_user')->withPivot(['notes', 'start_date', 'end_date']);
     }
 
+    public function superArticlesDuplicates()
+    {
+        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Article', 'articles_user')
+                        ->withPivot(['notes', 'start_date', 'end_date', 'id'])
+                        ->using('Backpack\CRUD\Tests\config\Models\SuperArticlePivot');
+    }
+
     public function universes()
     {
         return $this->hasMany('Backpack\CRUD\Tests\config\Models\Universe');

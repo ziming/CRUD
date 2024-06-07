@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,7 @@ trait Create
      * Insert a row in the database.
      *
      * @param  array  $input  All input values to be inserted.
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     public function create($input)
     {
@@ -95,7 +96,7 @@ trait Create
     /**
      * Create relations for the provided model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $item  The current CRUD model.
+     * @param  Model  $item  The current CRUD model.
      * @param  array  $formattedRelations  The form data.
      * @return bool|null
      */
@@ -131,32 +132,69 @@ trait Create
                 case 'BelongsToMany':
                 case 'MorphToMany':
                     $values = $relationDetails['values'][$relationMethod] ?? [];
-                    $values = is_string($values) ? json_decode($values, true) : $values;
+                    $values = is_string($values) ? (json_decode($values, true) ?? []) : $values;
+                    $field = $relationDetails['crudFields'][0] ?? [];
 
-                    // disabling ConvertEmptyStringsToNull middleware may return null from json_decode() if an empty string is used.
-                    // we need to make sure no null value can go foward so we reassure that values is not null after json_decode()
-                    $values = $values ?? [];
-
-                    $relationValues = [];
-
+                    // if the values are multidimensional, we have additional pivot data.
                     if (is_array($values) && is_multidimensional_array($values)) {
+                        // if the field allow duplicated pivots, we can't use sync or attach from laravel, we need to manually handle the pivot data.
+                        if ($field['allow_duplicate_pivots'] ?? false) {
+                            $keyName = $field['pivot_key_name'] ?? 'id';
+                            $sentIds = array_filter(array_column($values, $keyName));
+                            $dbValues = $relation->get()->pluck($keyName)->all();
+                            $toDelete = array_diff($dbValues, $sentIds);
+
+                            if (! empty($toDelete)) {
+                                foreach($toDelete as $id) {
+                                    $relation->newPivot()->where($keyName, $id)->delete();
+                                }
+                            }
+                            foreach($values as $value) { 
+                                // if it's an existing pivot, update it
+                                if(isset($value[$keyName])) {
+                                    $relation->newPivot()->where($keyName, $value[$keyName])->update($this->preparePivotAttributesForUpdate($value, $relation));
+                                } else {
+                                   $relation->newPivot()->create($this->preparePivotAttributesForCreate($value, $relation, $item->getKey()));
+                                }
+                            }
+                            break;
+                        }
+
+                        $belongsToManyValues = [];
+
                         foreach ($values as $value) {
                             if (isset($value[$relationMethod])) {
-                                $relationValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
+                                $belongsToManyValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
                             }
                         }
-                    }
 
+                        $item->{$relationMethod}()->sync($belongsToManyValues);
+                       
+                        break;
+                    }
+                  
                     // if there is no relation data, and the values array is single dimensional we have
-                    // an array of keys with no aditional pivot data. sync those.
-                    if (empty($relationValues)) {
-                        $relationValues = array_values($values);
+                    // an array of keys with no additional pivot data. sync those.
+                    if (empty($belongsToManyValues)) {
+                        $belongsToManyValues = array_values($values);
                     }
-
-                    $item->{$relationMethod}()->sync($relationValues);
+                    $item->{$relationMethod}()->sync($belongsToManyValues);
                     break;
             }
         }
+    }
+
+    private function preparePivotAttributesForCreate(array $attributes, BelongsToMany $relation, string|int $relatedItemKey) {
+        $attributes[$relation->getForeignPivotKeyName()] = $relatedItemKey;
+        $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
+        $pivotKeyName = $attributes['pivot_key_name'] ?? 'id';
+        return Arr::except($attributes, [$relation->getRelationName(), 'pivot_key_name', $pivotKeyName]);
+    }
+
+    private function preparePivotAttributesForUpdate(array $attributes, BelongsToMany $relation) {
+        $pivotKeyName = $attributes['pivot_key_name'] ?? 'id';
+        $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
+        return Arr::except($attributes, [$relation->getRelationName(), 'pivot_key_name', $pivotKeyName, $relation->getForeignPivotKeyName()]);
     }
 
     /**

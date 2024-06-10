@@ -468,6 +468,64 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals('I changed the recommend and the pivot text', $entry->fresh()->recommends->first()->pivot->text);
     }
 
+    public function testMorphToManyCreatableRelationshipWithMultiple()
+    {
+        $inputData = $this->getPivotInputData(['recommendsDuplicate' => [
+                [
+                    'recommendsDuplicate' => 1,
+                    'text' => 'my pivot recommend field 1',
+                ],
+                [
+                    'recommendsDuplicate' => 2,
+                    'text' => 'my pivot recommend field 2',
+                ],
+                [
+                    'recommendsDuplicate' => 1,
+                    'text' => 'my pivot recommend field 1x1',
+                ],
+            ]
+            ], true, true);
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $entry = $entry->fresh();
+
+        $this->assertCount(3, $entry->recommendsDuplicate);
+        
+        $this->assertEquals(1, $entry->recommendsDuplicate[0]->id);
+        $this->assertEquals(1, $entry->recommendsDuplicate[2]->id);
+
+        $inputData['recommendsDuplicate'] = [
+            [
+                'recommendsDuplicate' => 1,
+                'text' => 'I changed the recommend and the pivot text',
+                'id' => 1,
+            ],
+            [
+                'recommendsDuplicate' => 2,
+                'text' => 'I changed the recommend and the pivot text 2',
+                'id' => 2
+            ],
+            [
+                'recommendsDuplicate' => 3,
+                'text' => 'new recommend and the pivot text 3',
+                'id' => null,
+            ],
+        ];
+
+        $this->crudPanel->update($entry->id, $inputData);
+        
+        $entry = $entry->fresh();
+   
+        $this->assertCount(3, $entry->recommendsDuplicate);
+        $this->assertDatabaseCount('recommendables', 3);
+      
+        $this->assertEquals('I changed the recommend and the pivot text', $entry->recommendsDuplicate[0]->pivot->text);
+        $this->assertEquals('I changed the recommend and the pivot text 2', $entry->recommendsDuplicate[1]->pivot->text);
+        $this->assertEquals('new recommend and the pivot text 3', $entry->recommendsDuplicate[2]->pivot->text);
+
+    }
+
     public function testBelongsToManyWithPivotDataRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -1649,7 +1707,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             $this->crudPanel->setModel(User::class);
             $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
             $this->crudPanel->addField([
-                'name' => 'superArticlesDuplicates',
+                'name' => array_key_first($pivotRelationData),
                 'allow_duplicate_pivots' => $allowDuplicates,
                 'pivot_key_name' => 'id',
                 'subfields' => [

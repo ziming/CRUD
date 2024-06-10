@@ -319,12 +319,6 @@ trait FieldsProtectedMethods
                             'name' => $field['pivot_key_name'] ?? 'id',
                             'type' => 'hidden',
                         ]);
-
-                        $field['subfields'] = Arr::prepend($field['subfields'], [
-                            'name' => 'pivot_key_name',
-                            'type' => 'hidden',
-                            'value' => $field['pivot_key_name'] ?? 'id',
-                        ]);
                     }
 
                     $this->setupFieldValidation($pivotSelectorField, $field['name']);

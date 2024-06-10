@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -141,9 +142,10 @@ trait Create
                         if ($field['allow_duplicate_pivots'] ?? false) {
                             $keyName = $field['pivot_key_name'] ?? 'id';
                             $sentIds = array_filter(array_column($values, $keyName));
-                            $dbValues = $relation->get()->pluck($keyName)->all();
+                            $dbValues = $relation->newPivotQuery()->pluck($keyName)->toArray();
+                            
                             $toDelete = array_diff($dbValues, $sentIds);
-
+                            
                             if (! empty($toDelete)) {
                                 foreach ($toDelete as $id) {
                                     $relation->newPivot()->where($keyName, $id)->delete();
@@ -151,10 +153,11 @@ trait Create
                             }
                             foreach ($values as $value) {
                                 // if it's an existing pivot, update it
+                                $attributes = $this->preparePivotAttributesForSave($value, $relation, $item->getKey(), $keyName);
                                 if (isset($value[$keyName])) {
-                                    $relation->newPivot()->where($keyName, $value[$keyName])->update($this->preparePivotAttributesForUpdate($value, $relation));
+                                    $relation->newPivot()->where($keyName, $value[$keyName])->update($attributes);
                                 } else {
-                                    $relation->newPivot()->create($this->preparePivotAttributesForCreate($value, $relation, $item->getKey()));
+                                    $relation->newPivot()->create($attributes);
                                 }
                             }
                             break;
@@ -184,21 +187,16 @@ trait Create
         }
     }
 
-    private function preparePivotAttributesForCreate(array $attributes, BelongsToMany $relation, string|int $relatedItemKey)
+    private function preparePivotAttributesForSave(array $attributes, BelongsToMany|MorphToMany $relation, string|int $relatedItemKey, $pivotKeyName)
     {
         $attributes[$relation->getForeignPivotKeyName()] = $relatedItemKey;
         $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
-        $pivotKeyName = $attributes['pivot_key_name'] ?? 'id';
 
-        return Arr::except($attributes, [$relation->getRelationName(), 'pivot_key_name', $pivotKeyName]);
-    }
+        if ($relation instanceof MorphToMany) {
+            $attributes[$relation->getMorphType()] = $relation->getMorphClass();
+        }
 
-    private function preparePivotAttributesForUpdate(array $attributes, BelongsToMany $relation)
-    {
-        $pivotKeyName = $attributes['pivot_key_name'] ?? 'id';
-        $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
-
-        return Arr::except($attributes, [$relation->getRelationName(), 'pivot_key_name', $pivotKeyName, $relation->getForeignPivotKeyName()]);
+        return Arr::except($attributes, [$relation->getRelationName(), $pivotKeyName]);
     }
 
     /**

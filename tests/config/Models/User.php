@@ -51,6 +51,7 @@ class User extends Model
     {
         return $this->morphToMany('Backpack\CRUD\Tests\config\Models\Recommend', 'recommendable')->withPivot('text');
     }
+
     public function recommendsDuplicate()
     {
         return $this->morphToMany('Backpack\CRUD\Tests\config\Models\Recommend', 'recommendable')->withPivot(['text', 'id']);

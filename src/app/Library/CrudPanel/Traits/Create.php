@@ -143,9 +143,9 @@ trait Create
                             $keyName = $field['pivot_key_name'] ?? 'id';
                             $sentIds = array_filter(array_column($values, $keyName));
                             $dbValues = $relation->newPivotQuery()->pluck($keyName)->toArray();
-                            
+
                             $toDelete = array_diff($dbValues, $sentIds);
-                            
+
                             if (! empty($toDelete)) {
                                 foreach ($toDelete as $id) {
                                     $relation->newPivot()->where($keyName, $id)->delete();

@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 trait ShowOperation
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasTranslations;
-
     /**
      * Define which routes are needed for this operation.
      *
@@ -18,8 +16,8 @@ trait ShowOperation
     protected function setupShowRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/{id}/show', [
-            'as' => $routeName.'.show',
-            'uses' => $controller.'@show',
+            'as'        => $routeName.'.show',
+            'uses'      => $controller.'@show',
             'operation' => 'show',
         ]);
     }
@@ -34,7 +32,6 @@ trait ShowOperation
 
         $this->crud->operation('show', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
-            $this->setupTranslatorInstance();
 
             if (! method_exists($this, 'setupShowOperation')) {
                 $this->autoSetupShowOperation();
@@ -47,7 +44,7 @@ trait ShowOperation
 
         $this->crud->operation(['create', 'update'], function () {
             $this->crud->addSaveAction([
-                'name' => 'save_and_preview',
+                'name'    => 'save_and_preview',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('show');
                 },
@@ -81,7 +78,6 @@ trait ShowOperation
         // get the info for that entry (include softDeleted items if the trait is used)
         if ($this->crud->get('show.softDeletes') && in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->crud->model))) {
             $this->data['entry'] = $this->crud->getModel()->withTrashed()->findOrFail($id);
-            $this->data['entry'] = $this->crud->setLocaleOnModel($this->data['entry'], $this->crud->get('show.useFallbackLocale'));
         } else {
             $this->data['entry'] = $this->crud->getEntryWithLocale($id);
         }

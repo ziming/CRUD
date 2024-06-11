@@ -48,11 +48,6 @@ trait HasTranslations
         return $translation;
     }
 
-    public function getFallbackLocale()
-    {
-        return $this->getFallbackFromUrl() ?? app(Translatable::class)->fallbackLocale ?? config('app.fallback_locale');
-    }
-
     public function getTranslation(string $key, string $locale, bool $useFallbackLocale = true)
     {
         $locale = $this->normalizeLocale($key, $locale, $useFallbackLocale);

@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 trait ListOperation
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\Concerns\HasTranslations;
 
     /**
      * Define which routes are needed for this operation.

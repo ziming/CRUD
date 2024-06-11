@@ -390,15 +390,14 @@ trait Search
         $rows = [];
 
         foreach ($entries as $row) {
-            $row = $this->setLocaleOnModel($row);
             $rows[] = $this->getRowViews($row, $startIndex === false ? false : ++$startIndex);
         }
 
         return [
-            'draw' => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
-            'recordsTotal' => $totalRows,
+            'draw'            => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
+            'recordsTotal'    => $totalRows,
             'recordsFiltered' => $filteredRows,
-            'data' => $rows,
+            'data'            => $rows,
         ];
     }
 

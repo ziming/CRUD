@@ -35,33 +35,33 @@
         <div class="alert ml-0 col-md-10" role="alert">
             {{ trans('backpack::crud.no_attributes_translated', ['locale' => $translatableLocales[$editLocale]]) }}
             @if(count($translatedLocales) === 1)
-            <a 
-            href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback={{current($translatedLocales)}}" 
-            class="btn btn-outline-primary" 
-            role="button">
-            {{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => $translatableLocales[current($translatedLocales)]]) }}
-        </a>
+                <a 
+                    href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback={{current($translatedLocales)}}" 
+                    class="btn btn-outline-primary" 
+                    role="button">
+                    {{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => $translatableLocales[current($translatedLocales)]]) }}
+                </a>
         @else
-            {{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => '']) }}
+            {{trans('backpack::crud.no_attributes_translated_href_text', ['locale' => '']) }}:
             <div class="btn-group @if($showTranslationNotice) col-md-2 text-{{$showTranslationNotice ? 'center' : 'right text-end'}}"  style="margin-top:0.8em; display:inline;" @else " @endif>
-                <button 
+                <a 
                     type="button" 
-                    class="btn btn-primary dropdown-toggle" 
-                    data-toggle="dropdown" 
-                    data-bs-toggle="dropdown" 
-                    aria-haspopup="true" 
-                    aria-expanded="false">
-                    {{trans('backpack::crud.language')}}: &nbsp; <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach ($translatedLocales as $locale)
+                    class="btn btn-sm btn-link pr-0" 
+                    href="#"
+                    ><span> {{trans('backpack::crud.language')}} </span>
+                </a>
+            <a class="btn btn-sm btn-link dropdown-toggle text-primary pl-1" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+                @foreach ($translatedLocales as $locale)
                     <a 
                         class="dropdown-item" 
                         href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $editLocale }}&_use_fallback={{ $locale }}">
                         {{ $translatableLocales[$locale] }}
                     </a>
-                    @endforeach
-                </ul>
+                @endforeach
+            </ul>
             </div>
             @endif
         </div>

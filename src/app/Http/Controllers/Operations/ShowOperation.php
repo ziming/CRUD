@@ -16,8 +16,8 @@ trait ShowOperation
     protected function setupShowRoutes($segment, $routeName, $controller)
     {
         Route::get($segment.'/{id}/show', [
-            'as'        => $routeName.'.show',
-            'uses'      => $controller.'@show',
+            'as' => $routeName.'.show',
+            'uses' => $controller.'@show',
             'operation' => 'show',
         ]);
     }
@@ -44,7 +44,7 @@ trait ShowOperation
 
         $this->crud->operation(['create', 'update'], function () {
             $this->crud->addSaveAction([
-                'name'    => 'save_and_preview',
+                'name' => 'save_and_preview',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('show');
                 },

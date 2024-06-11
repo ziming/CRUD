@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 trait ListOperation
 {
-
     /**
      * Define which routes are needed for this operation.
      *

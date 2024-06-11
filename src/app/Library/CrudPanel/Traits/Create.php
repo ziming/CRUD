@@ -163,25 +163,25 @@ trait Create
                             break;
                         }
 
-                        $belongsToManyValues = [];
+                        $relationToManyValues = [];
 
                         foreach ($values as $value) {
                             if (isset($value[$relationMethod])) {
-                                $belongsToManyValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
+                                $relationToManyValues[$value[$relationMethod]] = Arr::except($value, $relationMethod);
                             }
                         }
 
-                        $item->{$relationMethod}()->sync($belongsToManyValues);
+                        $item->{$relationMethod}()->sync($relationToManyValues);
 
                         break;
                     }
 
                     // if there is no relation data, and the values array is single dimensional we have
                     // an array of keys with no additional pivot data. sync those.
-                    if (empty($belongsToManyValues)) {
-                        $belongsToManyValues = array_values($values);
+                    if (empty($relationToManyValues)) {
+                        $relationToManyValues = array_values($values);
                     }
-                    $item->{$relationMethod}()->sync($belongsToManyValues);
+                    $item->{$relationMethod}()->sync($relationToManyValues);
                     break;
             }
         }

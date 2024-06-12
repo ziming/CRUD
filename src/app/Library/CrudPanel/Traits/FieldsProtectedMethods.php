@@ -318,6 +318,9 @@ trait FieldsProtectedMethods
                         $field['subfields'] = Arr::prepend($field['subfields'], [
                             'name' => $field['pivot_key_name'] ?? 'id',
                             'type' => 'hidden',
+                            'wrapper' => [
+                                'class' => 'd-none'
+                            ]
                         ]);
                     }
 

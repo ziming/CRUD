@@ -313,6 +313,17 @@ trait FieldsProtectedMethods
                         break;
                     }
 
+                    if ($field['allow_duplicate_pivots'] ?? false) {
+                        $pivotSelectorField['allow_duplicate_pivots'] = true;
+                        $field['subfields'] = Arr::prepend($field['subfields'], [
+                            'name' => $field['pivot_key_name'] ?? 'id',
+                            'type' => 'hidden',
+                            'wrapper' => [
+                                'class' => 'd-none',
+                            ],
+                        ]);
+                    }
+
                     $this->setupFieldValidation($pivotSelectorField, $field['name']);
                     $field['subfields'] = Arr::prepend($field['subfields'], $pivotSelectorField);
 

@@ -172,7 +172,7 @@ trait Create
                         }
 
                         $item->{$relationMethod}()->sync($relationToManyValues);
-
+                        unset($relationToManyValues);
                         break;
                     }
 
@@ -182,6 +182,7 @@ trait Create
                         $relationToManyValues = array_values($values);
                     }
                     $item->{$relationMethod}()->sync($relationToManyValues);
+                    unset($relationToManyValues);
                     break;
             }
         }

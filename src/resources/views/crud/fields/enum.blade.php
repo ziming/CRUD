@@ -6,7 +6,7 @@
 
     $possible_values = (function() use ($entity_model, $field) {
         $fieldName = $field['baseFieldName'] ?? $field['name'];
-        // if developer provided the options, use them, no ned to guess.
+        // if developer provided the options, use them, no need to guess.
         if(isset($field['options'])) {
             return $field['options'];
         }

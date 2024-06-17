@@ -59,7 +59,7 @@ class CrudControllerTest extends BaseTestClass
         app()->handle($secondRequest);
         $secondRequest = app()->request;
 
-        // see if the second global requesst has been passed to the CRUD object
+        // see if the second global request has been passed to the CRUD object
         $this->assertSame($this->crudPanel->getRequest(), $secondRequest);
 
         // the CRUD object's request should no longer hold the first request, but the second one

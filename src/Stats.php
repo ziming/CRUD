@@ -81,7 +81,7 @@ trait Stats
     /**
      * Make a request using CURL.
      *
-     * It spins up a separate process for this, and doesn't listen for a reponse,
+     * It spins up a separate process for this, and doesn't listen for a response,
      * so it has minimal to no impact on pageload.
      *
      * @param  string  $method  HTTP Method to use for the request.

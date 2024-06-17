@@ -155,7 +155,7 @@ trait Settings
     /**
      * Get the current CRUD operations loaded.
      *
-     * @return array operaiton names
+     * @return array operation names
      */
     private function getAvailableOperationsList(): array
     {

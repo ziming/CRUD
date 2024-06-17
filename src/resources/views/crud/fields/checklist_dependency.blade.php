@@ -252,7 +252,7 @@
             if(checkbox.is(':checked')){
                handleCheckInput(checkbox, thisField, dependencyJson);
             }
-            // register the change event to handle subsquent checkbox state changes.
+            // register the change event to handle subsequent checkbox state changes.
             checkbox.change(function(){
               if(checkbox.is(':checked')){
                 handleCheckInput(checkbox, thisField, dependencyJson);

@@ -31,7 +31,7 @@ class RequireThemeCoreuiv2 extends Command
     public static $addon = [
         'name' => 'CoreUIv2',
         'description' => [
-            'UI provided by CoreUIv2, a Boostrap 4 template. Considered legacy, but useful for IE support.',
+            'UI provided by CoreUIv2, a Bootstrap 4 template. Considered legacy, but useful for IE support.',
             '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv2/</>',
         ],
         'repo' => 'backpack/theme-coreuiv2',

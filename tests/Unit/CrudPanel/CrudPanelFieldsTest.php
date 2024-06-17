@@ -626,7 +626,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     {
         $this->crudPanel->setOperationSetting(
             'strippedRequest',
-            Invokable::class,
+            Invocable::class,
             'update'
         );
         $this->crudPanel->setOperation('update');
@@ -634,7 +634,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $request = request()->create('/users/1/edit', 'POST', ['name' => 'john']);
         $result = $this->crudPanel->getStrippedSaveRequest($request);
         $this->assertIsArray($result);
-        $this->assertSame(['invokable' => 'invokable'], $result);
+        $this->assertSame(['invocable' => 'invocable'], $result);
     }
 
     public function testItDoesNotUseProtectedMethodsAsRelationshipMethods()
@@ -889,7 +889,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         );
     }
 
-    public function testCheckReturnTypesForWhenInferingRelation()
+    public function testCheckReturnTypesForWhenInferringRelation()
     {
         $this->crudPanel->setModel(\Backpack\CRUD\Tests\config\Models\UserWithReturnTypes::class);
         $this->crudPanel->addField('isAnAttribute');
@@ -900,10 +900,10 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     }
 }
 
-class Invokable
+class Invocable
 {
     public function __invoke(): array
     {
-        return ['invokable' => 'invokable'];
+        return ['invocable' => 'invocable'];
     }
 }

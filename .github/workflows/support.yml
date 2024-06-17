@@ -27,7 +27,7 @@ jobs:
             
             - Long questions (_I have done X and Y and it won't do Z wtf_): [Stackoverflow](https://stackoverflow.com/questions/tagged/backpack-for-laravel), using the ```backpack-for-laravel``` tag; this is recommended for most questions, since other developers can then find the answer on a simple Google search; also, people get points for answering - and who doesn't like StackOverflow points?!
             - Quick help (_How do I do X_): [Gitter Chatroom](https://gitter.im/BackpackForLaravel/Lobby);
-            - Bug Reports, Feature Requests: Github Issues (here);
+            - Bug Reports, Feature Requests: GitHub Issues (here);
             
             
             Thank you for understanding. 

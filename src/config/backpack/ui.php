@@ -2,7 +2,7 @@
 
 return [
 
-    // IMPORTANT NOTE: The configurations here get overriden by theme config files.
+    // IMPORTANT NOTE: The configurations here get overridden by theme config files.
     //
     // Eg. If you're using theme-tabler and config/backpack/theme-tabler.php
     // has "breadcrumbs" set as false, then THAT value will be used instead
@@ -28,7 +28,7 @@ return [
     |
     | To make the UI feel yours.
     |
-    | Note that values set here might be overriden by theme config files
+    | Note that values set here might be overridden by theme config files
     | (eg. config/backpack/theme-tabler.php) when that theme is in use.
     |
     */

@@ -111,7 +111,7 @@ trait Input
             $key = Str::before($this->getOnlyRelationEntity(['entity' => $fieldName]), '.');
 
             // if the field entity contains the attribute we want to add that attribute in the correct relation key.
-            // eg: adress.street, we want to add `street` as an attribute in `address` relation, `street` is not
+            // eg: address.street, we want to add `street` as an attribute in `address` relation, `street` is not
             // a relation of `address`
             if ($this->getOnlyRelationEntity($field) !== $field['entity']) {
                 if (Str::before($field['entity'], '.') === $relationMethod) {

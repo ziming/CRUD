@@ -344,7 +344,7 @@ class CrudPanelReadTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
         $this->assertEquals([1 => 'admin', 2 => 'user'], $entries);
     }
 
-    public function testGetRelatedEntriesAttributesFromBelongsToManyWithAcessor()
+    public function testGetRelatedEntriesAttributesFromBelongsToManyWithAccessor()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('list');
@@ -362,7 +362,7 @@ class CrudPanelReadTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
         $this->assertCount(1, $entries);
     }
 
-    public function testGetRelatedEntriesAttributesFromHasManyWithAcessor()
+    public function testGetRelatedEntriesAttributesFromHasManyWithAccessor()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('list');
@@ -380,7 +380,7 @@ class CrudPanelReadTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
         $this->assertCount(1, $entries);
     }
 
-    public function testGetRelatedEntriesAttributesFromBelongsToWithAcessor()
+    public function testGetRelatedEntriesAttributesFromBelongsToWithAccessor()
     {
         $this->crudPanel->setModel(Article::class);
         $this->crudPanel->setOperation('list');
@@ -398,7 +398,7 @@ class CrudPanelReadTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
         $this->assertCount(1, $entries);
     }
 
-    public function testGetRelatedEntriesAttributesFromHasOneWithAcessor()
+    public function testGetRelatedEntriesAttributesFromHasOneWithAccessor()
     {
         $this->crudPanel->setModel(User::class);
         $this->crudPanel->setOperation('list');

@@ -29,7 +29,7 @@
         localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
     }
 
-    // in this page we allways pass the alerts to localStorage because we can be redirected with
+    // in this page we always pass the alerts to localStorage because we can be redirected with
     // persistent table, and this way we guarantee non-duplicate alerts.
     $oldAlerts = JSON.parse(localStorage.getItem('backpack_alerts'))
         ? JSON.parse(localStorage.getItem('backpack_alerts')) : {};

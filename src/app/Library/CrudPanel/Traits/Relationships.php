@@ -97,7 +97,7 @@ trait Relationships
     }
 
     /**
-     * Parse the field name back to the related entity after the form is submited.
+     * Parse the field name back to the related entity after the form is submitted.
      * Its called in getAllFieldNames().
      *
      * @param  array  $fields

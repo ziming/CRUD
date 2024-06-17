@@ -397,15 +397,15 @@ class CrudPanel
 
             if (is_array($entries)) {
                 //if attribute does not exist in main array we have more than one entry OR the attribute
-                //is an acessor that is not in $appends property of model.
+                //is an accessor that is not in $appends property of model.
                 if (! isset($entries[$attribute])) {
-                    //we first check if we don't have the attribute because it's an acessor that is not in appends.
+                    //we first check if we don't have the attribute because it's an accessor that is not in appends.
                     if ($model_instance->hasGetMutator($attribute) && isset($entries[$modelKey])) {
                         $entry_in_database = $model_instance->find($entries[$modelKey]);
                         $attributes[$entry_in_database->{$modelKey}] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry_in_database->{$attribute});
                     } else {
                         //we have multiple entries
-                        //for each entry we check if $attribute exists in array or try to check if it's an acessor.
+                        //for each entry we check if $attribute exists in array or try to check if it's an accessor.
                         foreach ($entries as $entry) {
                             if (isset($entry[$attribute])) {
                                 $attributes[$entry[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entry[$attribute]);
@@ -418,7 +418,7 @@ class CrudPanel
                         }
                     }
                 } else {
-                    //if we have the attribute we just return it, does not matter if it is direct attribute or an acessor added in $appends.
+                    //if we have the attribute we just return it, does not matter if it is direct attribute or an accessor added in $appends.
                     $attributes[$entries[$modelKey]] = $this->parseTranslatableAttributes($model_instance, $attribute, $entries[$attribute]);
                 }
             }

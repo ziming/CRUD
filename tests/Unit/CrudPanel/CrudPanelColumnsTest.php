@@ -638,7 +638,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     public function testColumnLinkToThrowsExceptionWhenNotAllRequiredParametersAreFilled()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Route [article.show.detail] expects parameters [id, detail]. Insuficient parameters provided in column: [articles].');
+        $this->expectExceptionMessage('Route [article.show.detail] expects parameters [id, detail]. Insufficient parameters provided in column: [articles].');
         $this->crudPanel->column('articles')->entity('articles')->linkTo('article.show.detail', ['test' => 'testing']);
     }
 

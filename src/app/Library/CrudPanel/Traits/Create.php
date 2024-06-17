@@ -350,7 +350,7 @@ trait Create
      * @param  $entry  - eg: story
      * @param  $relation  - eg  story HasMany monsters
      * @param  $relationMethod  - eg: monsters
-     * @param  $relationDetails  - eg: info about relation including submited values
+     * @param  $relationDetails  - eg: info about relation including submitted values
      * @return void
      */
     private function createManyEntries($entry, $relation, $relationMethod, $relationDetails)

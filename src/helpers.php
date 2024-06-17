@@ -63,7 +63,7 @@ if (! function_exists('backpack_form_input')) {
         foreach ($input as $row) {
             $repeatableRowKey = null;
 
-            // regular fields don't need any aditional parsing
+            // regular fields don't need any additional parsing
             if (strpos($row['name'], '[') === false) {
                 $result[$row['name']] = $row['value'];
 
@@ -79,11 +79,11 @@ if (! function_exists('backpack_form_input')) {
 
             // dot notation fields
             if (substr_count($row['name'], '[') === 1) {
-                // start in the first occurence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
+                // start in the first occurrence since it's HasOne/MorphOne with dot notation (address[street] in request) to get the input name (address)
                 $inputNameStart = strpos($row['name'], '[') + 1;
             } else {
                 // repeatable fields, we need to get the input name and the row number
-                // start on the second occurence since it's a repeatable and we want to bypass the row number (repeatableName[rowNumber][inputName])
+                // start on the second occurrence since it's a repeatable and we want to bypass the row number (repeatableName[rowNumber][inputName])
                 $inputNameStart = strpos($row['name'], '[', strpos($row['name'], '[') + 1) + 1;
 
                 // get the array key (aka repeatable row) from field name

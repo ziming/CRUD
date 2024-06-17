@@ -11,7 +11,7 @@
             this.name = name;
             // get the current input
             this.$input = this.activeInput;
-            // get the field wraper
+            // get the field wrapper
             this.wrapper = this.inputWrapper;
 
             // in case `bp-field-main-input` is specified on a field input, use that one as input

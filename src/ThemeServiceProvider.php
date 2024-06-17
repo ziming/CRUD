@@ -23,7 +23,7 @@ class ThemeServiceProvider extends ServiceProvider
      */
 
     /**
-     * Boot method may be overrided by AddonServiceProvider.
+     * Boot method may be overridden by AddonServiceProvider.
      *
      * @return void
      */

@@ -38,7 +38,7 @@ If you've never submitted a PR before, don't worry, it's not that difficult. Rea
 Thank you, thank you, thank you! You can:
 - [add a StackOverflow filter](https://stackexchange.com/filters) to receive emails for backpack-for-laravel questions;
 - [install Gitter](https://gitter.im/BackpackForLaravel/Lobby) and help people out in real-time;
-- [star Backpack\CRUD on Github](https://github.com/laravel-backpack/crud) so the repository can get more views;
+- [star Backpack\CRUD on GitHub](https://github.com/laravel-backpack/crud) so the repository can get more views;
 - [purchase a commercial license](https://www.backpackforlaravel.com/commercial-license/form), if you use Backpack to make money;
 - ALL OF THE ABOVE. Groundbreaking, I know, right? :-)
 
@@ -52,7 +52,7 @@ Thank you, thank you, thank you! You can:
 
 ### Rules for writing effectively
 
-This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MOR framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community.
+This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MORE framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community.
 
 
 Thank you for contributing. 

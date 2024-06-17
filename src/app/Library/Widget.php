@@ -112,7 +112,7 @@ class Widget extends Fluent
     }
 
     // TODO: add ability to push a widget right before another widget
-    public function before($destionation)
+    public function before($destination)
     {
     }
 
@@ -298,7 +298,7 @@ class Widget extends Fluent
 
     /**
      * Overwritten methods to prevent BC in Laravel 11, since they introduced the `value()` method
-     * in their Fluent class. Altough the Widget class is Fluent, it does not behave the same
+     * in their Fluent class. Although the Widget class is Fluent, it does not behave the same
      * in regards to `value()`, since we use it as a key in widget definition.
      */
     public function value($value, $default = null)

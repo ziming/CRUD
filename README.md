@@ -124,7 +124,7 @@ When we release a new Backpack\CRUD version, all premium addons receive support 
 
 ## Contributing Guidelines
 
-This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MOR framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community. 
+This project stands by [The Whole Fruit Manifesto](https://github.com/the-whole-fruit/manifesto). We believe that “_writing good code_” is not only about “_writing good code_”. It’s also about the words around it. That’s why, to make sure your contribution is well received, we ask you to [read and keep in mind the ONE=MORE framework and guidelines](https://github.com/the-whole-fruit/manifesto) when writing comment blocks, PR titles, PR descriptions, and in general, when writing to our community. 
 
 For tasks & details about how you can help our project, please see [CONTRIBUTING](CONTRIBUTING.md).
 

@@ -143,7 +143,7 @@ final class RegisterUploadEvents
     }
 
     /**
-     * Return the uploader for the object beeing configured.
+     * Return the uploader for the object being configured.
      * We will give priority to any uploader provided by `uploader => App\SomeUploaderClass` on upload definition.
      *
      * If none provided, we will use the Backpack defaults for the given object type.

@@ -7,11 +7,11 @@ newIssueWelcomeComment: >
   Hello there! Thanks for opening your first issue on this repo!
 
 
-  Just a heads-up: **Here at Backpack we use Github Issues only for tracking bugs**. Talk about new features is also acceptable. This helps _a lot_ in keeping our focus on improving Backpack. **If you issue is not a bug/feature, please help us out by closing the issue yourself and posting in the appropriate medium (see below)**. If you're not sure where it fits, it's ok, a community member will probably reply to help you with that.
+  Just a heads-up: **Here at Backpack we use GitHub Issues only for tracking bugs**. Talk about new features is also acceptable. This helps _a lot_ in keeping our focus on improving Backpack. **If you issue is not a bug/feature, please help us out by closing the issue yourself and posting in the appropriate medium (see below)**. If you're not sure where it fits, it's ok, a community member will probably reply to help you with that.
 
 
   Backpack communication channels:
-   - Bug Reports, Feature Requests - Github Issues (here);
+   - Bug Reports, Feature Requests - GitHub Issues (here);
    - Quick help (_How do I do X_) - [Gitter Chatroom](https://gitter.im/BackpackForLaravel/Lobby);
    - Long questions (_I have done X and Y and it won't do Z wtf_) - [Stackoverflow](https://stackoverflow.com/questions/tagged/backpack-for-laravel), using the ```backpack-for-laravel``` tag;
    - Showing off something you've made, asking for opinion on Backpack/Laravel matters - [Reddit](https://www.reddit.com/r/BackpackForLaravel/);
@@ -55,18 +55,18 @@ newPRWelcomeComment: >
 
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: >
-  WHOOP-WHOOP! Congrats, your first PR on this repo has officialy been merged.
+  WHOOP-WHOOP! Congrats, your first PR on this repo has officially been merged.
 
 
   ![party](https://media1.giphy.com/media/3KC2jD2QcBOSc/giphy.gif "Party!!!")
 
 
 
-  You should also receive an email inviting you to [the Community Members team](https://github.com/orgs/Laravel-Backpack/teams/community-members). That's where we, commited community members, debate new features and decide what's in the Backpack roadmap. Feel free to ignore the invitation if you're not interested :-)
+  You should also receive an email inviting you to [the Community Members team](https://github.com/orgs/Laravel-Backpack/teams/community-members). That's where we, committed community members, debate new features and decide what's in the Backpack roadmap. Feel free to ignore the invitation if you're not interested :-)
 
 
   If you want to help out the community in other ways, you can:
-   - **give your opinion on other Github Issues & PRs**;
+   - **give your opinion on other GitHub Issues & PRs**;
    - **chat with others** in the [Gitter Chatroom](https://gitter.im/BackpackForLaravel/Lobby) (usually for quick help: _How do I do X_);
    - **answer Backpack questions on [Stackoverflow](https://stackoverflow.com/questions/tagged/backpack-for-laravel)**; you get points, people get help; you can subscribe to the ```backpack-for-laravel``` tag by [adding a new filter](https://stackexchange.com/filters/256210/my-filter-3); that will send you emails when new questions come up with our tag;
 

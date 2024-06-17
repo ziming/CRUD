@@ -626,7 +626,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     {
         $this->crudPanel->setOperationSetting(
             'strippedRequest',
-            Invocable::class,
+            Invokable::class,
             'update'
         );
         $this->crudPanel->setOperation('update');
@@ -634,7 +634,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $request = request()->create('/users/1/edit', 'POST', ['name' => 'john']);
         $result = $this->crudPanel->getStrippedSaveRequest($request);
         $this->assertIsArray($result);
-        $this->assertSame(['invocable' => 'invocable'], $result);
+        $this->assertSame(['invokable' => 'invokable'], $result);
     }
 
     public function testItDoesNotUseProtectedMethodsAsRelationshipMethods()
@@ -900,10 +900,10 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     }
 }
 
-class Invocable
+class Invokable
 {
     public function __invoke(): array
     {
-        return ['invocable' => 'invocable'];
+        return ['invokable' => 'invokable'];
     }
 }

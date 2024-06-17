@@ -505,12 +505,12 @@ trait Fields
             return $setting($request);
         }
 
-        // if an invocable class was passed
+        // if an invokable class was passed
         // eg. \App\Http\Requests\BackpackStrippedRequest
         if (is_string($setting) && class_exists($setting)) {
             $setting = new $setting();
 
-            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invocable.');
+            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.');
         }
 
         return $request->only($this->getAllFieldNames());

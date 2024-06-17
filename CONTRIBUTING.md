@@ -38,7 +38,7 @@ If you've never submitted a PR before, don't worry, it's not that difficult. Rea
 Thank you, thank you, thank you! You can:
 - [add a StackOverflow filter](https://stackexchange.com/filters) to receive emails for backpack-for-laravel questions;
 - [install Gitter](https://gitter.im/BackpackForLaravel/Lobby) and help people out in real-time;
-- [star Backpack\CRUD on Github](https://github.com/laravel-backpack/crud) so the repository can get more views;
+- [star Backpack\CRUD on GitHub](https://github.com/laravel-backpack/crud) so the repository can get more views;
 - [purchase a commercial license](https://www.backpackforlaravel.com/commercial-license/form), if you use Backpack to make money;
 - ALL OF THE ABOVE. Groundbreaking, I know, right? :-)
 

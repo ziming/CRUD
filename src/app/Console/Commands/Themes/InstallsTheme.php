@@ -29,7 +29,7 @@ trait InstallsTheme
     // public static $addon = [
     // 'name'        => 'CoreUIv2',
     // 'description' => [
-        //     'UI provided by CoreUIv2, a Boostrap 4 template.',
+        //     'UI provided by CoreUIv2, a Bootstrap 4 template.',
         //     '<fg=blue>https://github.com/laravel-backpack/theme-coreuiv2/</>',
     // ],
     // 'repo'    => 'backpack/theme-coreuiv2',
@@ -74,7 +74,7 @@ trait InstallsTheme
         if (! $this->isInstalled()) {
             $this->errorProgressBlock();
             $this->note('For further information please check the log file.');
-            $this->note('You can also follow the manual installation process documented on Github.');
+            $this->note('You can also follow the manual installation process documented on GitHub.');
             $this->newLine();
 
             return;

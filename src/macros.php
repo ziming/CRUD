@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 /**
- * This macro adds the ability to convert a dot.notation string into a [braket][notation] with some special
+ * This macro adds the ability to convert a dot.notation string into a [bracket][notation] with some special
  * options that helps us in our usecases.
  *
- * - $ignore: usefull when you want to convert a laravel validator rule for nested items and you
+ * - $ignore: useful when you want to convert a laravel validator rule for nested items and you
  *   would like to ignore the `*` element from the string.
  *
  * - $keyFirst: when true, we will use the first part of the string as key and only bracket the remaining elements.
@@ -90,17 +90,17 @@ if (! CrudColumn::hasMacro('linkTo')) {
                 return $parameters;
             }
 
-            $autoInferedParameter = array_diff($expectedParameters, array_keys($parameters));
-            if (count($autoInferedParameter) > 1) {
-                throw new \Exception("Route [{$route}] expects parameters [".implode(', ', $expectedParameters)."]. Insuficient parameters provided in column: [{$this->attributes['name']}].");
+            $autoInferredParameter = array_diff($expectedParameters, array_keys($parameters));
+            if (count($autoInferredParameter) > 1) {
+                throw new \Exception("Route [{$route}] expects parameters [".implode(', ', $expectedParameters)."]. Insufficient parameters provided in column: [{$this->attributes['name']}].");
             }
-            $autoInferedParameter = current($autoInferedParameter) ? [current($autoInferedParameter) => function ($entry, $related_key, $column, $crud) {
+            $autoInferredParameter = current($autoInferredParameter) ? [current($autoInferredParameter) => function ($entry, $related_key, $column, $crud) {
                 $entity = $crud->isAttributeInRelationString($column) ? Str::before($column['entity'], '.') : $column['entity'];
 
                 return $related_key ?? $entry->{$entity}?->getKey();
             }] : [];
 
-            return array_merge($autoInferedParameter, $parameters);
+            return array_merge($autoInferredParameter, $parameters);
         })();
 
         // set up the wrapper href attribute

@@ -28,7 +28,7 @@ trait HasIdentifiableAttribute
     /**
      * Get the most likely column in the db table that could be used as an identifiable attribute.
      *
-     * @return string The name of the column in the database that is most likely to be a good indentifying attribute.
+     * @return string The name of the column in the database that is most likely to be a good identifying attribute.
      */
     private static function guessIdentifiableColumnName()
     {

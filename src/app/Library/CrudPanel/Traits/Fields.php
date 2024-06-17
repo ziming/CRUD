@@ -257,7 +257,7 @@ trait Fields
 
     /**
      * Check if field is the first of its type in the given fields array.
-     * It's used in each field_type.blade.php to determine wether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
+     * It's used in each field_type.blade.php to determine whether to push the css and js content or not (we only need to push the js and css for a field the first time it's loaded in the form, not any subsequent times).
      *
      * @param  array  $field  The current field being tested if it's the first of its type.
      * @return bool true/false

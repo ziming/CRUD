@@ -889,7 +889,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         );
     }
 
-    public function testCheckReturnTypesForWhenInferingRelation()
+    public function testCheckReturnTypesForWhenInferringRelation()
     {
         $this->crudPanel->setModel(\Backpack\CRUD\Tests\config\Models\UserWithReturnTypes::class);
         $this->crudPanel->addField('isAnAttribute');

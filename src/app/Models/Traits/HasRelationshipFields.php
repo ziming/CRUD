@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 trait HasRelationshipFields
 {
     /**
-     * Register aditional types in doctrine schema manager for the current connection.
+     * Register additional types in doctrine schema manager for the current connection.
      *
      * @return DB
      */

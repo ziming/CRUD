@@ -147,7 +147,7 @@ trait ShowOperation
             }
         }
 
-        // remove bulk actions colums
+        // remove bulk actions columns
         $this->crud->removeColumns(['blank_first_column', 'bulk_actions']);
     }
 }

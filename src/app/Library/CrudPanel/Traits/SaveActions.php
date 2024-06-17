@@ -60,7 +60,7 @@ trait SaveActions
      */
     public function addSaveActions($saveActions)
     {
-        // count vs count recursive will be diferent when counting single dimension vs multiple dimension arrays.
+        // count vs count recursive will be different when counting single dimension vs multiple dimension arrays.
         // count([1,2]) = 2, count([1,[2,3]]) = 2 with recursive it's 3. so if counts are different we have a
         // multi dimensional array
         if (count($saveActions) != count($saveActions, COUNT_RECURSIVE)) {

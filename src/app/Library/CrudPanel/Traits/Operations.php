@@ -9,7 +9,7 @@ trait Operations
     |                               OPERATIONS
     |--------------------------------------------------------------------------
     | Helps developers set and get the current CRUD operation, as defined by
-    | the contoller method being run.
+    | the controller method being run.
     */
     protected $currentOperation;
 

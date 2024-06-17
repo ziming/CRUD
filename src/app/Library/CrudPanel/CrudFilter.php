@@ -222,7 +222,7 @@ class CrudFilter
 
     /**
      * Remove an attribute from one field's definition array.
-     * (ununsed function).
+     * (unused function).
      *
      * @param  string  $field  The name of the field.
      * @param  string  $attribute  The name of the attribute being removed.

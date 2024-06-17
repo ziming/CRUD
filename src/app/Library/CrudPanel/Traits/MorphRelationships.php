@@ -110,7 +110,7 @@ trait MorphRelationships
         // set the morphable_id field options with the same key as morphable_type field above.
         $morphIdField['morphOptions'][$key] = $options;
 
-        // merge aditional options with the fields with setup above.
+        // merge additional options with the fields with setup above.
         $morphTypeField = isset($morphField['morphTypeField']) ? array_merge($morphTypeField, $morphField['morphTypeField']) : $morphTypeField;
         $morphIdField = isset($morphField['morphIdField']) ? array_merge($morphIdField, $morphField['morphIdField']) : $morphIdField;
 
@@ -126,7 +126,7 @@ trait MorphRelationships
     }
 
     /**
-     * Return the provided morphable_type field with the options infered from key.
+     * Return the provided morphable_type field with the options inferred from key.
      *
      * @param  array  $morphTypeField
      * @param  string  $key

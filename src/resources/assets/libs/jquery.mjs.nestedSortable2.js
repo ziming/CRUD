@@ -287,7 +287,7 @@
 				// currentContainer is switched before the placeholder is moved.
 				//
 				// Without this moving items in "sub-sortables" can cause the placeholder to jitter
-				// beetween the outer and inner container.
+				// between the outer and inner container.
 				if (item.instance !== this.currentContainer) {
 					continue;
 				}
@@ -407,7 +407,7 @@
 						break;
 					}
 
-					// Clear emtpy ul's/ol's
+					// Clear empty ul's/ol's
 					this._clearEmpty(itemElement);
 
 					this._trigger("change", event, this._uiHash());

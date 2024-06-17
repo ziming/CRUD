@@ -24,7 +24,7 @@ trait Read
         $params = \Route::current()->parameters();
 
         return  // use the entity name to get the current entry
-                // this makes sure the ID is corrent even for nested resources
+                // this makes sure the ID is current even for nested resources
                 $this->getRequest()->input($this->entity_name) ??
                 // otherwise use the next to last parameter
                 array_values($params)[count($params) - 1] ??
@@ -178,7 +178,7 @@ trait Read
     }
 
     /**
-     * Add two more columns at the beginning of the ListEntrie table:
+     * Add two more columns at the beginning of the ListEntries table:
      * - one shows the checkboxes needed for bulk actions
      * - one is blank, in order for evenual detailsRow or expand buttons
      * to be in a separate column.

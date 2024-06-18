@@ -3,9 +3,9 @@
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Illuminate\Support\Arr;
-use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Request;
+use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
 
 trait HasTranslations
 {

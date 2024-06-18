@@ -76,7 +76,7 @@ trait Read
         return $this->entry;
     }
 
-    private function shouldUseFallbackLocale()
+    private function shouldUseFallbackLocale(): bool|string
     {
         $fallbackRequestValue = $this->getRequest()->get('_fallback_locale');
 

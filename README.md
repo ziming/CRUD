@@ -133,10 +133,8 @@ For tasks & details about how you can help our project, please see [CONTRIBUTING
 - [Cristian Tabacitu](http://tabacitu.ro) - founder & lead maintainer;
 - [Pedro Martins](https://github.com/pxpm) - senior maintainer;
 - [António Almeida](https://github.com/promatik) - senior maintainer;
-- [Mauro Martinez](https://github.com/maurohmartinez) - maintainer & educator;
 - [Karan Datwani](https://github.com/karandatwani92) - maintainer & social media manager;
 - [Jorge Castro](https://github.com/jorgetwgroup) - maintainer;
-- [Mohammad Emran](https://github.com/phpfour) - maintainer;
 - [290+ wonderful contributors][link-contributors]
 
 Special thanks go to:

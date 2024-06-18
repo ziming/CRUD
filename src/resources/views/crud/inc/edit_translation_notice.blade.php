@@ -46,8 +46,8 @@
             }
         }
     @endphp
-<div class="mb-2 text-right text-end">
-    <div class="btn-group col-md-2 text-right text-end"  style="margin-top:0.8em; display:inline;">
+<div class="mb-2 text-left text-start">
+    <div class="btn-group col-md-2 text-left text-start"  style="margin-top:0.8em; display:inline;">
         <button 
             type="button" 
             class="btn btn-primary dropdown-toggle" 

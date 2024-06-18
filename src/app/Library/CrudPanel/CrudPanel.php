@@ -463,9 +463,9 @@ class CrudPanel
         return $value;
     }
 
-    public function setLocaleOnModel(Model $model, null|bool|string $useFallbackLocale = null)
+    public function setLocaleOnModel(Model $model)
     {
-        $useFallbackLocale = $useFallbackLocale ?? $this->shouldUseFallbackLocale();
+        $useFallbackLocale = $this->shouldUseFallbackLocale();
 
         if (method_exists($model, 'translationEnabled') && $model->translationEnabled()) {
             $locale = $this->getRequest()->input('_locale', app()->getLocale());

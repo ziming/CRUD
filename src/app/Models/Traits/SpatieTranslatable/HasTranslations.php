@@ -4,7 +4,8 @@ namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Illuminate\Support\Arr;
 use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
-use Spatie\Translatable\Translatable;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 
 trait HasTranslations
 {
@@ -15,10 +16,7 @@ trait HasTranslations
      */
     public $locale = false;
 
-    /**
-     * @var bool
-     */
-    public $useFallbackLocale = true;
+    public bool $useFallbackLocale = true;
 
     /*
     |--------------------------------------------------------------------------
@@ -63,16 +61,6 @@ trait HasTranslations
         return $translation;
     }
 
-    private function getFallbackFromUrl()
-    {
-        $fallback = app('crud')->getRequest()->get('_use_fallback');
-        if (isset($fallback) && in_array($fallback, array_keys(app('crud')->getModel()->getAvailableLocales()))) {
-            return $fallback;
-        }
-
-        return null;
-    }
-
     /*
     |--------------------------------------------------------------------------
     |                            ELOQUENT OVERWRITES
@@ -87,7 +75,7 @@ trait HasTranslations
      */
     public static function create(array $attributes = [])
     {
-        $locale = $attributes['locale'] ?? \App::getLocale();
+        $locale = $attributes['locale'] ?? App::getLocale();
         $attributes = Arr::except($attributes, ['locale']);
         $non_translatable = [];
 
@@ -119,7 +107,7 @@ trait HasTranslations
             return false;
         }
 
-        $locale = $attributes['_locale'] ?? \App::getLocale();
+        $locale = $attributes['_locale'] ?? App::getLocale();
         $attributes = Arr::except($attributes, ['_locale']);
         $non_translatable = [];
 
@@ -184,7 +172,7 @@ trait HasTranslations
             return $this->locale;
         }
 
-        return \Request::input('_locale', \App::getLocale());
+        return Request::input('_locale', App::getLocale());
     }
 
     /**
@@ -203,7 +191,7 @@ trait HasTranslations
             case 'findMany':
             case 'findBySlug':
             case 'findBySlugOrFail':
-                $translation_locale = \Request::input('_locale', \App::getLocale());
+                $translation_locale = Request::input('_locale', App::getLocale());
 
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);

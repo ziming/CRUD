@@ -199,5 +199,5 @@ return [
 
     // translations
     'no_attributes_translated' => 'This entry is not translated in :locale.',
-    'no_attributes_translated_href_text' => 'Fill inputs value from :locale',
+    'no_attributes_translated_href_text' => 'Fill inputs from :locale',
 ];

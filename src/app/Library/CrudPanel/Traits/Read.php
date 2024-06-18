@@ -78,7 +78,7 @@ trait Read
 
     private function shouldUseFallbackLocale()
     {
-        $fallbackRequestValue = $this->getRequest()->get('_use_fallback');
+        $fallbackRequestValue = $this->getRequest()->get('_fallback_locale');
 
         return $fallbackRequestValue === 'true' ? true : (in_array($fallbackRequestValue, array_keys(config('backpack.crud.locales'))) ? $fallbackRequestValue : false);
     }

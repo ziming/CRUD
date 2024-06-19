@@ -16,8 +16,6 @@ trait HasTranslations
      */
     public $locale = false;
 
-    public bool $useFallbackLocale = true;
-
     /*
     |--------------------------------------------------------------------------
     |                 SPATIE/LARAVEL-TRANSLATABLE OVERWRITES
@@ -36,7 +34,9 @@ trait HasTranslations
             return parent::getAttributeValue($key);
         }
 
-        $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'), $this->useFallbackLocale);
+        $useFallbackLocale = property_exists($this, 'useFallbackLocale') ? $this->useFallbackLocale : true;
+
+        $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'), $useFallbackLocale);
 
         // if it's a fake field, json_encode it
         if (is_array($translation)) {

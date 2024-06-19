@@ -3,6 +3,8 @@
 namespace Backpack\CRUD\app\Models\Traits\SpatieTranslatable;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Request;
 use Spatie\Translatable\HasTranslations as OriginalHasTranslations;
 
 trait HasTranslations
@@ -32,7 +34,9 @@ trait HasTranslations
             return parent::getAttributeValue($key);
         }
 
-        $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'));
+        $useFallbackLocale = property_exists($this, 'useFallbackLocale') ? $this->useFallbackLocale : true;
+
+        $translation = $this->getTranslation($key, $this->locale ?: config('app.locale'), $useFallbackLocale);
 
         // if it's a fake field, json_encode it
         if (is_array($translation)) {
@@ -71,7 +75,7 @@ trait HasTranslations
      */
     public static function create(array $attributes = [])
     {
-        $locale = $attributes['locale'] ?? \App::getLocale();
+        $locale = $attributes['locale'] ?? App::getLocale();
         $attributes = Arr::except($attributes, ['locale']);
         $non_translatable = [];
 
@@ -103,7 +107,7 @@ trait HasTranslations
             return false;
         }
 
-        $locale = $attributes['_locale'] ?? \App::getLocale();
+        $locale = $attributes['_locale'] ?? App::getLocale();
         $attributes = Arr::except($attributes, ['_locale']);
         $non_translatable = [];
 
@@ -168,7 +172,7 @@ trait HasTranslations
             return $this->locale;
         }
 
-        return \Request::input('_locale', \App::getLocale());
+        return Request::input('_locale', App::getLocale());
     }
 
     /**
@@ -187,7 +191,7 @@ trait HasTranslations
             case 'findMany':
             case 'findBySlug':
             case 'findBySlugOrFail':
-                $translation_locale = \Request::input('_locale', \App::getLocale());
+                $translation_locale = Request::input('_locale', App::getLocale());
 
                 if ($translation_locale) {
                     $item = parent::__call($method, $parameters);

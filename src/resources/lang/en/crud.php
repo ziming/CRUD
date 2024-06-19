@@ -196,4 +196,8 @@ return [
     'quick_button_ajax_error_message' => 'There was an error processing your request.',
     'quick_button_ajax_success_title' => 'Request Completed!',
     'quick_button_ajax_success_message' => 'Your request was completed with success.',
+
+    // translations
+    'no_attributes_translated' => 'This entry is not translated in :locale.',
+    'no_attributes_translated_href_text' => 'Fill inputs from :locale',
 ];

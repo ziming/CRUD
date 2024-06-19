@@ -4,6 +4,7 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Properties and methods used by the List operation.
@@ -21,7 +22,7 @@ trait Read
             return $this->entry->getKey();
         }
 
-        $params = \Route::current()->parameters();
+        $params = Route::current()?->parameters() ?? [];
 
         return  // use the entity name to get the current entry
                 // this makes sure the ID is current even for nested resources
@@ -48,6 +49,17 @@ trait Read
         return $this->getEntry($id);
     }
 
+    public function getCurrentEntryWithLocale()
+    {
+        $entry = $this->getCurrentEntry();
+
+        if (! $entry) {
+            return false;
+        }
+
+        return $this->setLocaleOnModel($entry);
+    }
+
     /**
      * Find and retrieve an entry in the database or fail.
      *
@@ -64,6 +76,13 @@ trait Read
         return $this->entry;
     }
 
+    private function shouldUseFallbackLocale(): bool|string
+    {
+        $fallbackRequestValue = $this->getRequest()->get('_fallback_locale');
+
+        return $fallbackRequestValue === 'true' ? true : (in_array($fallbackRequestValue, array_keys(config('backpack.crud.locales'))) ? $fallbackRequestValue : false);
+    }
+
     /**
      * Find and retrieve an entry in the database or fail.
      * When found, make sure we set the Locale on it.
@@ -77,14 +96,7 @@ trait Read
             $this->entry = $this->getEntry($id);
         }
 
-        if ($this->entry->translationEnabled()) {
-            $locale = request('_locale', \App::getLocale());
-            if (in_array($locale, array_keys($this->entry->getAvailableLocales()))) {
-                $this->entry->setLocale($locale);
-            }
-        }
-
-        return $this->entry;
+        return $this->setLocaleOnModel($this->entry);
     }
 
     /**
@@ -127,7 +139,7 @@ trait Read
                     try {
                         $model = $model->$part()->getRelated();
                     } catch (Exception $e) {
-                        $relation = join('.', array_slice($parts, 0, $i));
+                        $relation = implode('.', array_slice($parts, 0, $i));
                     }
                 }
             }

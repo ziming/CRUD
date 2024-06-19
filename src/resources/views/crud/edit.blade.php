@@ -39,30 +39,17 @@
 		  {!! csrf_field() !!}
 		  {!! method_field('PUT') !!}
 
-		  	@if ($crud->model->translationEnabled())
-		    <div class="mb-2 text-right">
-		    	{{-- Single button --}}
-				<div class="btn-group">
-				  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    {{trans('backpack::crud.language')}}: {{ $crud->model->getAvailableLocales()[request()->input('_locale')?request()->input('_locale'):App::getLocale()] }} &nbsp; <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				  	@foreach ($crud->model->getAvailableLocales() as $key => $locale)
-					  	<a class="dropdown-item" href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}?_locale={{ $key }}">{{ $locale }}</a>
-				  	@endforeach
-				  </ul>
-				</div>
-		    </div>
-		    @endif
-		      {{-- load the view from the application if it exists, otherwise load the one in the package --}}
-		      @if(view()->exists('vendor.backpack.crud.form_content'))
-		      	@include('vendor.backpack.crud.form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
-		      @else
-		      	@include('crud::form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
-              @endif
-              {{-- This makes sure that all field assets are loaded. --}}
-            <div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
-            @include('crud::inc.form_save_buttons')
+		  	@includeWhen($crud->model->translationEnabled(), 'crud::inc.edit_translation_notice')
+
+			{{-- load the view from the application if it exists, otherwise load the one in the package --}}
+			@if(view()->exists('vendor.backpack.crud.form_content'))
+				@include('vendor.backpack.crud.form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
+			@else
+				@include('crud::form_content', ['fields' => $crud->fields(), 'action' => 'edit'])
+			@endif
+			{{-- This makes sure that all field assets are loaded. --}}
+			<div class="d-none" id="parentLoadedAssets">{{ json_encode(Basset::loaded()) }}</div>
+			@include('crud::inc.form_save_buttons')
 		  </form>
 	</div>
 </div>

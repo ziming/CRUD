@@ -36,7 +36,7 @@ return [
     'warnBeforeLeaving' => false,
 
     // when viewing the update form of an entry in a language that's not translated should Backpack show a notice
-    // that allow the user to fill the translation from a translated language?
+    // that allows the user to fill the form from another language?
     'showTranslationNotice' => true,
 
     // Before saving the entry, how would you like the request to be stripped?

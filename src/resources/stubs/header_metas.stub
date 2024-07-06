@@ -1,0 +1,9 @@
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('__PATH_PREFIX__apple-touch-icon.png') }}">
+<link rel="icon" type="image/png" href="{{ asset('__PATH_PREFIX__favicon-32x32.png') }}" sizes="32x32">
+<link rel="icon" type="image/png" href="{{ asset('__PATH_PREFIX__favicon-16x16.png') }}" sizes="16x16">
+<link rel="manifest" href="{{ asset('__PATH_PREFIX__manifest.json') }}">
+<link rel="mask-icon" href="{{ asset('__PATH_PREFIX__safari-pinned-tab.svg') }}" color="__APP_COLOR__">
+<link rel="shortcut icon" href="{{ asset('__PATH_PREFIX__favicon.ico') }}">
+<meta name="theme-color" content="__APP_COLOR__">

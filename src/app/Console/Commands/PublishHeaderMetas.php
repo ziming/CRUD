@@ -33,14 +33,14 @@ class PublishHeaderMetas extends Command
         $appColor = $this->ask('Whats the application color ?', '#605ca8');
         $pathPrefix = $this->ask('Where should icon files be published relative to public folder?');
 
-        if ( $pathPrefix) {
+        if ($pathPrefix) {
             $pathPrefix = Str::finish($pathPrefix, '/');
         }
 
         $fileToPublish = [
-            public_path($pathPrefix.'manifest.json')                                                 => __DIR__.'/../../../resources/stubs/manifest.stub',
-            public_path($pathPrefix.'site.webmanifest')                                              => __DIR__.'/../../../resources/stubs/manifest.stub',
-            resource_path('views/vendor/backpack/ui/inc/header_metas.blade.php')              => __DIR__.'/../../../resources/stubs/header_metas.stub',
+            public_path($pathPrefix.'manifest.json') => __DIR__.'/../../../resources/stubs/manifest.stub',
+            public_path($pathPrefix.'site.webmanifest') => __DIR__.'/../../../resources/stubs/manifest.stub',
+            resource_path('views/vendor/backpack/ui/inc/header_metas.blade.php') => __DIR__.'/../../../resources/stubs/header_metas.stub',
             public_path($pathPrefix.'android-chrome-192x192.png'),
             public_path($pathPrefix.'android-chrome-512x512.png'),
             public_path($pathPrefix.'apple-touch-icon.png'),

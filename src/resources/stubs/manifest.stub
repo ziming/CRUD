@@ -2,17 +2,18 @@
 	"name": "__APP_NAME__",
 	"icons": [
 		{
-			"src": "__APP_URL__/__PATH_PREFIX__android-chrome-192x192.png",
+			"src": "__PATH_PREFIX__android-chrome-192x192.png",
 			"sizes": "192x192",
 			"type": "image/png"
 		},
 		{
-			"src": "__APP_URL__/__PATH_PREFIX__android-chrome-512x512.png",
+			"src": "__PATH_PREFIX__android-chrome-512x512.png",
 			"sizes": "512x512",
 			"type": "image/png"
 		}
 	],
 	"theme_color": "__APP_COLOR__",
+	"background_color": "__APP_COLOR__",
 	"start_url": "/__BACKPACK_PREFIX__",
 	"display": "standalone"
 }

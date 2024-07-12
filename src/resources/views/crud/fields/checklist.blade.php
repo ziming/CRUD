@@ -1,8 +1,9 @@
 {{-- checklist --}}
 @php
   $key_attribute = (new $field['model'])->getKeyName();
-  $field['attribute'] = $field['attribute'] ?? (new $field['model'])->identifiableAttribute();
-  $field['number_of_columns'] = $field['number_of_columns'] ?? 3;
+  $field['attribute'] ??= (new $field['model'])->identifiableAttribute();
+  $field['number_of_columns'] ??= 3;
+  $field['show_select_all'] ??= false;
 
   // calculate the checklist options
   if (!isset($field['options'])) {
@@ -26,24 +27,23 @@
   }
 
   // define the init-function on the wrapper
-  $field['wrapper']['data-init-function'] =  $field['wrapper']['data-init-function'] ?? 'bpFieldInitChecklist';
+  $field['wrapper']['data-init-function'] ??= 'bpFieldInitChecklist';
 @endphp
 
 @include('crud::fields.inc.wrapper_start')
+
     <label>{!! $field['label'] !!}</label>
-    <div class="row">
-        <div class="col-sm-4">
-            <label class="font-weight-normal">
-                <input type="checkbox"  id="select-all" {{ count($field['options']) == count($field['value']) ? 'checked' : '' }}> 
-                <strong> Select all </strong>
-            </label>
-        </div>
+    @if($field['show_select_all'] ?? false)
+    <div class="row checklist-select-all-inputs">
+        <a href="javascript:void(0)" href="#" class="select-all-inputs">{{trans('backpack::crud.select_all')}}</a>
+        <a href="javascript:void(0)" href="#" class="unselect-all-inputs d-none">{{trans('backpack::crud.unselect_all')}}</a> 
     </div>
+    @endif
     @include('crud::fields.inc.translatable_icon')
 
-    <input type="hidden" value='@json($field['value'])' name="{{ $field['name'] }}">
+    <input type="hidden" data-show-select-all="{{var_export($field['show_select_all'])}}" value='@json($field['value'])' name="{{ $field['name'] }}">
 
-    <div class="row" id="checkbox-wrapper">
+    <div class="row checklist-options-container">
         @foreach ($field['options'] as $key => $option)
             <div class="col-sm-{{ intval(12/$field['number_of_columns']) }}">
                 <div class="checkbox">
@@ -70,10 +70,13 @@
         @bassetBlock('backpack/crud/fields/checklist-field.js')
         <script>
             function bpFieldInitChecklist(element) {
-                var hidden_input = element.find('input[type=hidden]');
-                var selected_options = JSON.parse(hidden_input.val() || '[]');
-                var checkboxes = element.find('#checkbox-wrapper :input[type=checkbox]');
-                var container = element.find('.row');
+                let hidden_input = element.find('input[type=hidden]');
+                let selected_options = JSON.parse(hidden_input.val() || '[]');
+                let container = element.find('.row.checklist-options-container');
+                let checkboxes = container.find(':input[type=checkbox]');                
+                let showSelectAll = hidden_input.data('show-select-all');
+                let selectAllAnchor = element.find('.row.checklist-select-all-inputs').find('a.select-all-inputs');
+                let unselectAllAnchor = element.find('.row.checklist-select-all-inputs').find('a.unselect-all-inputs');
 
                 // set the default checked/unchecked states on checklist options
                 checkboxes.each(function(key, option) {
@@ -100,8 +103,40 @@
 
                   hidden_input.val(JSON.stringify(newValue)).trigger('change');
 
-                  toggleAllSelectCheckbox();
+                  toggleAllSelectAnchor();
                 });
+                  
+                let selectAll = function() {
+                  checkboxes.prop('checked', 'checked');
+                  hidden_input.val(JSON.stringify(checkboxes.map(function() { return $(this).val(); }).get())).trigger('change');
+                  selectAllAnchor.toggleClass('d-none');
+                  unselectAllAnchor.toggleClass('d-none');
+                };
+
+                let unselectAll = function() {
+                  checkboxes.prop('checked', false);
+                  hidden_input.val(JSON.stringify([])).trigger('change');
+                  selectAllAnchor.toggleClass('d-none');
+                  unselectAllAnchor.toggleClass('d-none');
+                };
+
+                let toggleAllSelectAnchor = function() {
+                  if(showSelectAll === false) {
+                    return;
+                  }
+
+                  if (checkboxes.length === selected_options.length) {
+                    selectAllAnchor.toggleClass('d-none');
+                    unselectAllAnchor.toggleClass('d-none');
+                  }
+                };
+
+                if(showSelectAll) {
+                  selectAllAnchor.click(selectAll);
+                  unselectAllAnchor.click(unselectAll);
+
+                  toggleAllSelectAnchor();
+                }
 
                 hidden_input.on('CrudField:disable', function(e) {
                       checkboxes.attr('disabled', 'disabled');
@@ -111,64 +146,6 @@
                     checkboxes.removeAttr('disabled');
                 });
 
-            }
-
-            document.getElementById("select-all").addEventListener("click", selectAll);
-
-            function selectAll() {
-                var allCheckbox = $('#checkbox-wrapper :input[type=checkbox]');
-
-                if ($("#select-all").is(':checked')) {
-                  allCheckbox.each(function(){
-                    if ($(this).is(':checked') == false) {
-                      $(this).click();
-                    }
-                  });
-                } else {
-                  allCheckbox.each(function(){
-                    $(this).click();
-                  });
-                }
-            };
-
-            function toggleAllSelectCheckbox() {
-              var selectedItems = JSON.parse(document.getElementsByName("{{ $field['name'] }}")['0'].value);
-              var allItems = "{{ count($field['options']) }}";
-
-              if(selectedItems.length == allItems) {
-                $('#select-all').prop('checked', 'checked');
-              } else {
-                $('#select-all').prop('checked', false);
-              }
-            }
-
-            document.getElementById("select-all").addEventListener("click", selectAll);
-
-            function selectAll() {
-                var allCheckbox = $('#checkbox-wrapper :input[type=checkbox]');
-
-                if ($("#select-all").is(':checked')) {
-                  allCheckbox.each(function(){
-                    if ($(this).is(':checked') == false) {
-                      $(this).click();
-                    }
-                  });
-                } else {
-                  allCheckbox.each(function(){
-                    $(this).click();
-                  });
-                }
-            };
-
-            function toggleAllSelectCheckbox() {
-              var selectedItems = JSON.parse(document.getElementsByName("{{ $field['name'] }}")['0'].value);
-              var allItems = "{{ count($field['options']) }}";
-
-              if(selectedItems.length == allItems) {
-                $('#select-all').prop('checked', 'checked');
-              } else {
-                $('#select-all').prop('checked', false);
-              }
             }
         </script>
         @endBassetBlock

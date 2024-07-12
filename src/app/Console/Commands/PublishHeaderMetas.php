@@ -27,16 +27,15 @@ class PublishHeaderMetas extends Command
      */
     public function handle()
     {
-        $appName = $this->ask('What is the application name ?', config('app.name') . ' Backoffice');
+        $appName = $this->ask('What is the application name ?', config('app.name').' Backoffice');
         $backpackPrefix = config('backpack.base.route_prefix');
         $appColor = $this->ask('What is the application color ?', '#161c2d');
         $pathPrefix = $this->ask('Where should icon files be published relative to public folder?');
 
-        
         $pathPrefix = Str::finish($pathPrefix ?? '', '/');
-        
-        // laravel adds a dummy favicon with 0 bytes. we need to remove it otherwise our script would skip publishing the favicon on new Laravel installations. 
-        // we will check the favicon file size, to make sure it's not a "valid" favicon. we will only delete the favicon if it has 0 bytes in size. 
+
+        // laravel adds a dummy favicon with 0 bytes. we need to remove it otherwise our script would skip publishing the favicon on new Laravel installations.
+        // we will check the favicon file size, to make sure it's not a "valid" favicon. we will only delete the favicon if it has 0 bytes in size.
         $this->checkIfFaviconIsLaravelDefault($pathPrefix);
 
         $stubPath = __DIR__.'/../../../resources/stubs/';
@@ -97,15 +96,14 @@ class PublishHeaderMetas extends Command
         $this->comment('[DONE] Metas and favicon assets published successfully.');
     }
 
-    
     private function checkIfFaviconIsLaravelDefault(string $path)
     {
         if (File::exists(public_path($path.'favicon.ico'))) {
-            // check the file size. if it's 0 it's the laravel dummy favicon, remove it. 
+            // check the file size. if it's 0 it's the laravel dummy favicon, remove it.
             if (filesize(public_path($path.'favicon.ico')) === 0) {
                 File::delete(public_path($path.'favicon.ico'));
                 $this->comment('[INFO] We deleted the Laravel dummy favicon. Publishing assets now.');
-            } 
+            }
         }
     }
 }

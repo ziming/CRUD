@@ -101,7 +101,7 @@
       // Retrieves the current form data
       function getFormData() {
         let formData = new FormData(document.querySelector("main form"));
-        // remove entries from formData that start with "_"
+        // remove internal inputs from formData, the ones that start with "_", like _token, _http_referrer, etc.
         let pairs = [...formData].map(pair => pair[0]);
         for (let pair of pairs) {
           if (pair.startsWith('_')) {
@@ -122,8 +122,8 @@
       }
 
       @if($crud->getOperationSetting('warnBeforeLeaving'))
-      const initData = getFormData();
-      window.addEventListener('beforeunload', preventUnload);
+        const initData = getFormData();
+        window.addEventListener('beforeunload', preventUnload);
       @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new

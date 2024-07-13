@@ -100,7 +100,15 @@
 
       // Retrieves the current form data
       function getFormData() {
-        return new URLSearchParams(new FormData(document.querySelector("main form"))).toString();
+        let formData = new FormData(document.querySelector("main form"));
+        // remove entries from formData that start with "_"
+        let pairs = [...formData].map(pair => pair[0]);
+        for (let pair of pairs) {
+          if (pair.startsWith('_')) {
+            formData.delete(pair);
+          }
+        }
+        return new URLSearchParams(formData).toString();
       }
 
       // Prevents unloading of page if form data was changed

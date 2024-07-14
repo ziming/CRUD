@@ -9,6 +9,10 @@
       $field['options'] = $field['model']::all()->pluck($field['attribute'], $key_attribute)->toArray();
   } else {
       $field['options'] = call_user_func($field['options'], $field['model']::query());
+
+      if(is_a($field['options'], \Illuminate\Contracts\Database\Query\Builder::class, true)) {
+          $field['options'] = $field['options']->pluck($field['attribute'], $key_attribute)->toArray();
+      }
   }
 
   // calculate the value of the hidden input

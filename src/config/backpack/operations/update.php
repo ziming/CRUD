@@ -39,7 +39,7 @@ return [
     // that allows the user to fill the form from another language?
     'showTranslationNotice' => true,
 
-    // when loading an update form, should Backpack eager load the relationship information from database? 
+    // when loading an update form, should Backpack eager load the relationship information from database?
     // this is generally a good thing to enable, as it helps to reduce the number of queries.
     'eagerLoadRelationships' => false,
 

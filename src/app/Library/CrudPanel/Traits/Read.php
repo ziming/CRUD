@@ -5,8 +5,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+
 /**
  * Properties and methods used by the List operation.
  */
@@ -70,8 +70,8 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
-            if($this->getOperationSetting('eagerLoadRelationships')) {
-            	$this->eagerLoadRelationshipFields();
+            if ($this->getOperationSetting('eagerLoadRelationships')) {
+                $this->eagerLoadRelationshipFields();
             }
             $this->entry = $this->getModelWithCrudPanelQuery()->findOrFail($id);
             $this->entry = $this->entry->withFakes();
@@ -146,8 +146,8 @@ trait Read
 
         foreach ($crudObjects as $crudObjectName => $attributes) {
             $relationString = isset($attributes['entity']) && $attributes['entity'] !== false ? $attributes['entity'] : '';
-            
-            if(!$relationString) {
+
+            if (! $relationString) {
                 continue;
             }
 
@@ -156,7 +156,6 @@ trait Read
             }
 
             $relationAttribute = $attributes['attribute'] ?? null;
-
 
             if ($relationAttribute) {
                 $relationString = Str::endsWith($relationString, $relationAttribute) ? Str::beforeLast($relationString, '.') : $relationString;

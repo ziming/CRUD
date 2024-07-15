@@ -21,20 +21,21 @@ class BackpackServiceProvider extends ServiceProvider
     use Stats;
 
     protected $commands = [
-        \Backpack\CRUD\app\Console\Commands\Install::class,
-        \Backpack\CRUD\app\Console\Commands\AddMenuContent::class,
-        \Backpack\CRUD\app\Console\Commands\AddCustomRouteContent::class,
-        \Backpack\CRUD\app\Console\Commands\Version::class,
-        \Backpack\CRUD\app\Console\Commands\CreateUser::class,
-        \Backpack\CRUD\app\Console\Commands\PublishBackpackMiddleware::class,
-        \Backpack\CRUD\app\Console\Commands\PublishView::class,
-        \Backpack\CRUD\app\Console\Commands\Addons\RequireDevTools::class,
-        \Backpack\CRUD\app\Console\Commands\Addons\RequireEditableColumns::class,
-        \Backpack\CRUD\app\Console\Commands\Addons\RequirePro::class,
-        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeTabler::class,
-        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv2::class,
-        \Backpack\CRUD\app\Console\Commands\Themes\RequireThemeCoreuiv4::class,
-        \Backpack\CRUD\app\Console\Commands\Fix::class,
+        app\Console\Commands\Install::class,
+        app\Console\Commands\AddMenuContent::class,
+        app\Console\Commands\AddCustomRouteContent::class,
+        app\Console\Commands\Version::class,
+        app\Console\Commands\CreateUser::class,
+        app\Console\Commands\PublishBackpackMiddleware::class,
+        app\Console\Commands\PublishView::class,
+        app\Console\Commands\Addons\RequireDevTools::class,
+        app\Console\Commands\Addons\RequireEditableColumns::class,
+        app\Console\Commands\Addons\RequirePro::class,
+        app\Console\Commands\Themes\RequireThemeTabler::class,
+        app\Console\Commands\Themes\RequireThemeCoreuiv2::class,
+        app\Console\Commands\Themes\RequireThemeCoreuiv4::class,
+        app\Console\Commands\Fix::class,
+        app\Console\Commands\PublishHeaderMetas::class,
     ];
 
     // Indicates if loading of the provider is deferred.

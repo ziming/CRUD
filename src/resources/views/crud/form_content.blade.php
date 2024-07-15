@@ -100,7 +100,15 @@
 
       // Retrieves the current form data
       function getFormData() {
-        return new URLSearchParams(new FormData(document.querySelector("main form"))).toString();
+        let formData = new FormData(document.querySelector("main form"));
+        // remove internal inputs from formData, the ones that start with "_", like _token, _http_referrer, etc.
+        let pairs = [...formData].map(pair => pair[0]);
+        for (let pair of pairs) {
+          if (pair.startsWith('_')) {
+            formData.delete(pair);
+          }
+        }
+        return new URLSearchParams(formData).toString();
       }
 
       // Prevents unloading of page if form data was changed
@@ -114,8 +122,8 @@
       }
 
       @if($crud->getOperationSetting('warnBeforeLeaving'))
-      const initData = getFormData();
-      window.addEventListener('beforeunload', preventUnload);
+        const initData = getFormData();
+        window.addEventListener('beforeunload', preventUnload);
       @endif
 
       // Save button has multiple actions: save and exit, save and edit, save and new

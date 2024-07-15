@@ -151,16 +151,23 @@
       @if( $crud->getAutoFocusOnFirstField() )
         @php
           $focusField = Arr::first($fields, function($field) {
-              return isset($field['auto_focus']) && $field['auto_focus'] == true;
+              return isset($field['auto_focus']) && $field['auto_focus'] === true;
           });
         @endphp
 
-        let focusField;
+        let focusField, focusFieldTab;
 
         @if ($focusField)
           @php
             $focusFieldName = isset($focusField['value']) && is_iterable($focusField['value']) ? $focusField['name'] . '[]' : $focusField['name'];
+            $focusFieldTab = $focusField['tab'] ?? null;
           @endphp
+            focusFieldTab = '{{ Str::slug($focusFieldTab) }}';
+
+            // if focus is not 'null' navigate to that tab before focusing.
+            if(focusFieldTab !== 'null'){
+              $('#form_tabs a[tab_name="'+focusFieldTab+'"]').tab('show');
+            }
             focusField = $('[name="{{ $focusFieldName }}"]').eq(0);
         @else
             focusField = getFirstFocusableField($('form'));

@@ -5,7 +5,8 @@ namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 use Backpack\CRUD\app\Exceptions\BackpackProRequiredException;
 use Exception;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 /**
  * Properties and methods used by the List operation.
  */
@@ -69,6 +70,9 @@ trait Read
     public function getEntry($id)
     {
         if (! $this->entry) {
+            if($this->getOperationSetting('eagerLoadRelationships')) {
+            	$this->eagerLoadRelationshipFields();
+            }
             $this->entry = $this->getModelWithCrudPanelQuery()->findOrFail($id);
             $this->entry = $this->entry->withFakes();
         }
@@ -126,25 +130,61 @@ trait Read
      */
     public function autoEagerLoadRelationshipColumns()
     {
-        $relationships = $this->getColumnsRelationships();
+        $this->with($this->getRelationshipsFromCrudObjects('columns'));
+    }
 
-        foreach ($relationships as $relation) {
-            if (strpos($relation, '.') !== false) {
-                $parts = explode('.', $relation);
-                $model = $this->model;
+    public function eagerLoadRelationshipFields()
+    {
+        $this->with($this->getRelationshipsFromCrudObjects('fields'));
+    }
 
-                // Iterate over each relation part to find the valid relations without attributes
-                // We should eager load the relation but not the attribute
-                foreach ($parts as $i => $part) {
-                    try {
-                        $model = $model->$part()->getRelated();
-                    } catch (Exception $e) {
-                        $relation = implode('.', array_slice($parts, 0, $i));
-                    }
+    private function getRelationshipsFromCrudObjects(string $crudObjectType): array
+    {
+        $crudObjects = $this->{$crudObjectType}();
+
+        $relationStrings = [];
+
+        foreach ($crudObjects as $crudObjectName => $attributes) {
+            $relationString = isset($attributes['entity']) && $attributes['entity'] !== false ? $attributes['entity'] : '';
+            
+            if(!$relationString) {
+                continue;
+            }
+
+            if (strpos($attributes['entity'], '.') === false) {
+                $relationStrings[] = $relationString;
+            }
+
+            $relationAttribute = $attributes['attribute'] ?? null;
+
+
+            if ($relationAttribute) {
+                $relationString = Str::endsWith($relationString, $relationAttribute) ? Str::beforeLast($relationString, '.') : $relationString;
+
+                $relationStrings[] = $relationString;
+
+                continue;
+            }
+
+            $parts = explode('.', $relationString);
+            $model = $this->model;
+
+            // Iterate over each relation part to find the valid relations without attributes
+            // We should eager load the relation but not the attribute
+            foreach ($parts as $i => $part) {
+                try {
+                    $model = $model->$part()->getRelated();
+                } catch (Exception $e) {
+                    $relationString = implode('.', array_slice($parts, 0, $i));
                 }
             }
-            $this->with($relation);
+
+            $relationStrings[] = $relationString;
+
+            continue;
         }
+
+        return array_unique($relationStrings);
     }
 
     /**

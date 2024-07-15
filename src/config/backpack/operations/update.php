@@ -39,6 +39,10 @@ return [
     // that allows the user to fill the form from another language?
     'showTranslationNotice' => true,
 
+    // when loading an update form, should Backpack eager load the relationship information from database? 
+    // this is generally a good thing to enable, as it helps to reduce the number of queries.
+    'eagerLoadRelationships' => false,
+
     // Before saving the entry, how would you like the request to be stripped?
     //  - false - use Backpack's default (ONLY save inputs that have fields)
     //  - invokable class - custom stripping (the return should be an array with input names)

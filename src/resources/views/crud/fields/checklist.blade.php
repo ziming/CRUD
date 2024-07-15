@@ -32,13 +32,16 @@
 
 @include('crud::fields.inc.wrapper_start')
 
-    <label>{!! $field['label'] !!}</label>
+    <label>{!! $field['label'] !!}
+
     @if($field['show_select_all'] ?? false)
-    <div class="row checklist-select-all-inputs">
+    <span class="fs-6 small checklist-select-all-inputs">
         <a href="javascript:void(0)" href="#" class="select-all-inputs">{{trans('backpack::crud.select_all')}}</a>
         <a href="javascript:void(0)" href="#" class="unselect-all-inputs d-none">{{trans('backpack::crud.unselect_all')}}</a> 
-    </div>
+    </span>
     @endif
+    </label>
+    
     @include('crud::fields.inc.translatable_icon')
 
     <input type="hidden" data-show-select-all="{{var_export($field['show_select_all'])}}" value='@json($field['value'])' name="{{ $field['name'] }}">
@@ -75,8 +78,8 @@
                 let container = element.find('.row.checklist-options-container');
                 let checkboxes = container.find(':input[type=checkbox]');                
                 let showSelectAll = hidden_input.data('show-select-all');
-                let selectAllAnchor = element.find('.row.checklist-select-all-inputs').find('a.select-all-inputs');
-                let unselectAllAnchor = element.find('.row.checklist-select-all-inputs').find('a.unselect-all-inputs');
+                let selectAllAnchor = element.find('.checklist-select-all-inputs').find('a.select-all-inputs');
+                let unselectAllAnchor = element.find('.checklist-select-all-inputs').find('a.unselect-all-inputs');
 
                 // set the default checked/unchecked states on checklist options
                 checkboxes.each(function(key, option) {

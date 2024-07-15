@@ -156,6 +156,7 @@ return [
     // Fields
     'browse_uploads' => 'Browse uploads',
     'select_all' => 'Select All',
+    'unselect_all' => 'Unselect All',
     'select_files' => 'Select files',
     'select_file' => 'Select file',
     'clear' => 'Clear',

@@ -49,7 +49,7 @@ Among the FREE features of each admin interface:
 - [Reorder](https://backpackforlaravel.com/docs/crud-operation-reorder) operation
 - [Revise](https://backpackforlaravel.com/docs/crud-operation-revisions) operation (aka. audit log)
 
-But professionals don't love Backpack just because it's feature-packed. They also love it because it's **ridiculously easy to override a functionality**. Generally, you just need to create a function (or blade file) with the right name. Yes, it can be _that_ easy.
+But professionals love it not only because it is feature-packed. They also love it because it's **ridiculously easy to override a functionality**. Generally, you just need to create a function (or blade file) with the right name. Yes, it can be _that_ easy.
 
 > Need more complex features? Purchase [Backpack PRO](https://backpackforlaravel.com/pricing), our closed-source paid add-on. It will add **5 more operations, 10 filters, 28 more fields, 6 more columns and 1 more widget**. For more info, see our [FREE vs PRO comparison table](https://backpackforlaravel.com/docs/features-free-vs-paid). We believe it's everything you need to build admin panels of _any_ complexity.
 

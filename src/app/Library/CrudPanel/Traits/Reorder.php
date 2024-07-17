@@ -38,6 +38,7 @@ trait Reorder
 
             // unset mapped items properties.
             unset($item['item_id'], $item['left'], $item['right']);
+
             return $item;
         })->toArray();
 
@@ -46,7 +47,7 @@ trait Reorder
             $primaryKey,
             ['parent_id', 'depth', 'lft', 'rgt']
         );
-       
+
         return count($reorderItems);
     }
 

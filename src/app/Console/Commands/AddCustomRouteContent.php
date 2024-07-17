@@ -3,8 +3,6 @@
 namespace Backpack\CRUD\app\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
 
 class AddCustomRouteContent extends Command
 {
@@ -16,7 +14,8 @@ class AddCustomRouteContent extends Command
      * @var string
      */
     protected $signature = 'backpack:add-custom-route
-                                {code : HTML/PHP code that registers a route. Use either single quotes or double quotes. Never both. }';
+                                {code : HTML/PHP code that registers a route. Use either single quotes or double quotes. Never both. }
+                                {--route-file=routes/backpack/custom.php : The file where the code should be added relative to the root of the project. }';
 
     /**
      * The console command description.
@@ -24,6 +23,7 @@ class AddCustomRouteContent extends Command
      * @var string
      */
     protected $description = 'Add HTML/PHP code to the routes/backpack/custom.php file';
+
 
     /**
      * Create a new command instance.
@@ -42,68 +42,78 @@ class AddCustomRouteContent extends Command
      */
     public function handle()
     {
-        $path = 'routes/backpack/custom.php';
-        $disk_name = config('backpack.base.root_disk_name');
-        $disk = Storage::disk($disk_name);
-        $code = $this->argument('code');
+        $routeFilePath = base_path($this->option('route-file'));
+        // check if the file exists
+        if (!file_exists($routeFilePath)) {
+            $this->line("The route file  <fg=blue>$routeFilePath</> does not exist.");
+            $createRouteFile = $this->confirm('Should we create the file in  <fg=blue>'.  $routeFilePath . '</> ?', 'yes');
+            if($createRouteFile) {
+                $this->call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
+            }else{
+                $this->error('The route file does not exist. Please create it first.');
+            }
 
-        $this->progressBlock("Adding route to <fg=blue>$path</>");
-
-        // Validate file exists
-        if (! $disk->exists($path)) {
-            Artisan::call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
-            $this->handle();
-
-            return;
         }
 
-        // insert the given code before the file's last line
-        $old_file_path = $disk->path($path);
-        $file_lines = file($old_file_path, FILE_IGNORE_NEW_LINES);
+        $code = $this->argument('code');
 
-        // if the code already exists in the file, abort
-        if ($this->getLastLineNumberThatContains($code, $file_lines)) {
+        $this->progressBlock("Adding route to <fg=blue>$routeFilePath</>");
+
+        $originalContent = file($routeFilePath);
+
+        // clean the content from comments etc
+        $cleanContent = $this->cleanContentArray($originalContent);
+
+        // if the content contains code, don't add it again.
+        if (array_search($code, $cleanContent, true) !== false) {
             $this->closeProgressBlock('Already existed', 'yellow');
 
             return;
         }
 
-        $end_line_number = $this->customRoutesFileEndLine($file_lines);
-        $file_lines[$end_line_number + 1] = $file_lines[$end_line_number];
-        $file_lines[$end_line_number] = '    '.$code;
-        $new_file_content = implode(PHP_EOL, $file_lines);
+        // get the last element of the array contains '}'
+        $lastLine = $this->getLastLineNumberThatContains('}', $cleanContent);
 
-        if (! $disk->put($path, $new_file_content)) {
-            $this->errorProgressBlock();
-            $this->note('Could not write to file.', 'red');
-
+        if($lastLine === false) {
+            $this->closeProgressBlock('Could not find the last line, file ' . $routeFilePath . ' may be corrupted.', 'red');
             return;
         }
 
-        $this->closeProgressBlock();
+        // add the code to the line before the last line
+        array_splice($originalContent, $lastLine, 0, '    ' . $code.PHP_EOL);
+
+        // write the new content to the file
+        if(file_put_contents($routeFilePath, implode('', $originalContent)) === false) {
+            $this->closeProgressBlock('Failed to add route. Failed writing the modified route file. Maybe check file permissions?', 'red');
+            return;
+        }
+
+        $this->closeProgressBlock('done', 'green');
     }
 
-    private function customRoutesFileEndLine($file_lines)
+    private function cleanContentArray(array $content)
     {
-        // in case the last line has not been modified at all
-        $end_line_number = array_search('}); // this should be the absolute last line of this file', $file_lines);
-
-        if ($end_line_number) {
-            return $end_line_number;
-        }
-
-        // otherwise, in case the last line HAS been modified
-        // return the last line that has an ending in it
-        $possible_end_lines = array_filter($file_lines, function ($k) {
-            return strpos($k, '});') === 0;
-        });
-
-        if ($possible_end_lines) {
-            end($possible_end_lines);
-            $end_line_number = key($possible_end_lines);
-
-            return $end_line_number;
-        }
+        return array_filter(array_map(function ($line) {
+            $lineText = trim($line);
+            if  ($lineText === '' ||
+                $lineText === '\n' ||
+                $lineText === '\r' ||
+                $lineText === '\r\n' ||
+                $lineText === PHP_EOL ||
+                str_starts_with($lineText, '<?php') ||
+                str_starts_with($lineText, '?>') ||
+                str_starts_with($lineText, '//') ||
+                str_starts_with($lineText, '/*') ||
+                str_starts_with($lineText, '*/') ||
+                str_ends_with($lineText, '*/') ||
+                str_starts_with($lineText, '*') ||
+                str_starts_with($lineText, 'use ') ||
+                str_starts_with($lineText, 'return ') ||
+                str_starts_with($lineText, 'namespace ')) {
+                    return null;
+            }
+            return $lineText;
+        }, $content));
     }
 
     /**

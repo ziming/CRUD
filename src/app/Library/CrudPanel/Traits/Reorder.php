@@ -21,27 +21,32 @@ trait Reorder
         // it has the drawback of creating new entries when the id is not found
         // for that reason we get a list of all the ids and filter the ones
         // sent in the request that are not in the database
-        $itemKeys = $this->model->all()->pluck('id');
+        $itemKeys = $this->model->query()->select($primaryKey)->get()->pluck($primaryKey);
 
         $reorderItems = collect($request)->filter(function ($item) use ($itemKeys) {
-            return $item['item_id'] != '' && $item['item_id'] != null && $itemKeys->contains($item['item_id']);
+            return $item['item_id'] !== '' && $item['item_id'] !== null && $itemKeys->contains($item['item_id']);
         })->map(function ($item) use ($primaryKey) {
-            $item[$primaryKey] = $item['item_id'];
-            $item['parent_id'] = empty($item['parent_id']) ? null : $item['parent_id'];
-            $item['depth'] = empty($item['depth']) ? null : $item['depth'];
-            $item['lft'] = empty($item['left']) ? null : $item['left'];
-            $item['rgt'] = empty($item['right']) ? null : $item['right'];
-            unset($item['item_id']);
+            $item[$primaryKey] = (int) $item['item_id'];
+            $item['parent_id'] = empty($item['parent_id']) ? null : (int) $item['parent_id'];
+            $item['depth'] = empty($item['depth']) ? null : (int) $item['depth'];
+            $item['lft'] = empty($item['left']) ? null : (int) $item['left'];
+            $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];
+            // we are not touching those two columns on update, but we need them to be present
+            // for the upsert query to work. they will just be ignored and not touched.
+            $item['name'] = '';
+            $item['slug'] = '';
 
+            // unset mapped items properties.
+            unset($item['item_id'], $item['left'], $item['right']);
             return $item;
         })->toArray();
 
         $this->model->upsert(
             $reorderItems,
-            [$primaryKey],
+            $primaryKey,
             ['parent_id', 'depth', 'lft', 'rgt']
         );
-
+       
         return count($reorderItems);
     }
 

@@ -24,7 +24,6 @@ class AddCustomRouteContent extends Command
      */
     protected $description = 'Add HTML/PHP code to the routes/backpack/custom.php file';
 
-
     /**
      * Create a new command instance.
      *
@@ -44,15 +43,14 @@ class AddCustomRouteContent extends Command
     {
         $routeFilePath = base_path($this->option('route-file'));
         // check if the file exists
-        if (!file_exists($routeFilePath)) {
+        if (! file_exists($routeFilePath)) {
             $this->line("The route file  <fg=blue>$routeFilePath</> does not exist.");
-            $createRouteFile = $this->confirm('Should we create the file in  <fg=blue>'.  $routeFilePath . '</> ?', 'yes');
-            if($createRouteFile) {
+            $createRouteFile = $this->confirm('Should we create the file in  <fg=blue>'.$routeFilePath.'</> ?', 'yes');
+            if ($createRouteFile) {
                 $this->call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
-            }else{
+            } else {
                 $this->error('The route file does not exist. Please create it first.');
             }
-
         }
 
         $code = $this->argument('code');
@@ -74,17 +72,19 @@ class AddCustomRouteContent extends Command
         // get the last element of the array contains '}'
         $lastLine = $this->getLastLineNumberThatContains('}', $cleanContent);
 
-        if($lastLine === false) {
-            $this->closeProgressBlock('Could not find the last line, file ' . $routeFilePath . ' may be corrupted.', 'red');
+        if ($lastLine === false) {
+            $this->closeProgressBlock('Could not find the last line, file '.$routeFilePath.' may be corrupted.', 'red');
+
             return;
         }
 
         // add the code to the line before the last line
-        array_splice($originalContent, $lastLine, 0, '    ' . $code.PHP_EOL);
+        array_splice($originalContent, $lastLine, 0, '    '.$code.PHP_EOL);
 
         // write the new content to the file
-        if(file_put_contents($routeFilePath, implode('', $originalContent)) === false) {
+        if (file_put_contents($routeFilePath, implode('', $originalContent)) === false) {
             $this->closeProgressBlock('Failed to add route. Failed writing the modified route file. Maybe check file permissions?', 'red');
+
             return;
         }
 
@@ -95,7 +95,7 @@ class AddCustomRouteContent extends Command
     {
         return array_filter(array_map(function ($line) {
             $lineText = trim($line);
-            if  ($lineText === '' ||
+            if ($lineText === '' ||
                 $lineText === '\n' ||
                 $lineText === '\r' ||
                 $lineText === '\r\n' ||
@@ -110,8 +110,9 @@ class AddCustomRouteContent extends Command
                 str_starts_with($lineText, 'use ') ||
                 str_starts_with($lineText, 'return ') ||
                 str_starts_with($lineText, 'namespace ')) {
-                    return null;
+                return null;
             }
+
             return $lineText;
         }, $content));
     }

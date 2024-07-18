@@ -283,7 +283,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $button1->makeLast();
         $this->assertEquals($button2->toArray(), $this->crudPanel->buttons()->first()->toArray());
     }
-    
+
     public function testItThrowsExceptionWhenModifyingUnknownButton()
     {
         $this->addDefaultButtons();
@@ -294,13 +294,13 @@ class CrudPanelButtonsTest extends BaseCrudPanel
             $button->name = 'newName';
         });
     }
-    
+
     public function testItCanAddAButtonFromAModelFunction()
     {
         $this->crudPanel->addButtonFromModelFunction('line', 'buttonModelFunction', 'buttonModelFunction');
         $this->assertEquals('buttonModelFunction', $this->crudPanel->buttons()->first()->content);
     }
-    
+
     public function testItDoesNotMoveFieldWhenTargetIsUnknown()
     {
         $this->addDefaultButtons();
@@ -308,7 +308,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $firstButtonName = $this->crudPanel->buttons()->first()->name;
 
         $this->crudPanel->moveButton('unknownButton', 'before', 'topViewButton');
-        
+
         $this->assertCount(4, $this->crudPanel->buttons());
         $this->assertEquals($firstButtonName, $this->crudPanel->buttons()->first()->name);
     }

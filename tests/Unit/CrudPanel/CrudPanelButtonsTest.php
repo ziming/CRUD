@@ -340,6 +340,12 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->assertFalse($this->crudPanel->hasButtonWhere('name', 'unknownButton'));
     }
 
+    public function testItGenerateARandomButtonNameIfOneNotProvided()
+    {
+        $button = $this->crudPanel->button(['stack' => 'line', 'type' => 'view', 'content' => 'crud::buttons.test']);
+        $this->assertTrue(str_starts_with($button->name, 'button_'));
+    }
+
     private function getButtonByName($name)
     {
         return $this->crudPanel->buttons()->first(function ($value) use ($name) {

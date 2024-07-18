@@ -42,7 +42,10 @@ class CrudButton implements Arrayable
             extract($nameOrAttributes);
         }
 
-        $this->name = $nameOrAttributes ?? 'button_'.rand(1, 999999999);
+        // if $name was not extracted and there is no string to use as name, generate a random one
+        $name ??= is_string($nameOrAttributes) ? $nameOrAttributes : 'button_'.rand(1, 999999999);
+
+        $this->name = $name;
         $this->stack = $stack ?? 'top';
         $this->type = $type ?? 'view';
         $this->content = $content;

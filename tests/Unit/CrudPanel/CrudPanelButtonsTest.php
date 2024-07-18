@@ -255,6 +255,24 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->assertEquals(['show', 'test', 'update'], $this->crudPanel->buttons()->pluck('name')->toArray());
     }
 
+    public function testOrderButtonsInStack()
+    {
+        $this->addDefaultButtons();
+
+        $this->crudPanel->orderButtons('top', ['topModelFunctionButton']);
+
+        $this->assertEquals(['topModelFunctionButton', 'topViewButton'], $this->crudPanel->getButtonsForStack('top')->pluck('name')->toArray());
+    }
+
+    public function testOrderThrowExceptionIfButtonDoesNotExist()
+    {
+        $this->addDefaultButtons();
+
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+
+        $this->crudPanel->orderButtons('top', ['unknownButton']);
+    }
+
     public function testAddButtonFluently()
     {
         $button1 = CrudButton::name('lineTest')->to('line')->view('crud::buttons.test')->type('view');
@@ -266,6 +284,68 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->assertEquals($button2->toArray(), $this->crudPanel->buttons()->first()->toArray());
     }
 
+    public function testItThrowsExceptionWhenModifyingUnknownButton()
+    {
+        $this->addDefaultButtons();
+
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+
+        $this->crudPanel->modifyButton('unknownButton', function ($button) {
+            $button->name = 'newName';
+        });
+    }
+
+    public function testItCanAddAButtonFromAModelFunction()
+    {
+        $this->crudPanel->addButtonFromModelFunction('line', 'buttonModelFunction', 'buttonModelFunction');
+        $this->assertEquals('buttonModelFunction', $this->crudPanel->buttons()->first()->content);
+    }
+
+    public function testItDoesNotMoveFieldWhenTargetIsUnknown()
+    {
+        $this->addDefaultButtons();
+
+        $firstButtonName = $this->crudPanel->buttons()->first()->name;
+
+        $this->crudPanel->moveButton('unknownButton', 'before', 'topViewButton');
+
+        $this->assertCount(4, $this->crudPanel->buttons());
+        $this->assertEquals($firstButtonName, $this->crudPanel->buttons()->first()->name);
+    }
+
+    public function testItDoesNotMoveButtonWhenDestinationIsUnknown()
+    {
+        $this->addDefaultButtons();
+
+        $firstButtonName = $this->crudPanel->buttons()->first()->name;
+
+        $this->crudPanel->moveButton('topViewButton', 'before', 'unknownButton');
+
+        $this->assertCount(4, $this->crudPanel->buttons());
+        $this->assertEquals($firstButtonName, $this->crudPanel->buttons()->first()->name);
+    }
+
+    public function testItCanCreateANewCrudButtonInstance()
+    {
+        $button = $this->crudPanel->button(['name' => 'testButton', 'stack' => 'line', 'type' => 'view', 'content' => 'crud::buttons.test']);
+        $this->assertEquals($button->toArray(), $this->crudPanel->buttons()->last()->toArray());
+        $this->assertInstanceOf(\Backpack\CRUD\app\Library\CrudPanel\CrudButton::class, $button);
+    }
+
+    public function testItCanCheckIfAnyOfTheButtonsHasTheDeterminedKayValuePair()
+    {
+        $this->addDefaultButtons();
+
+        $this->assertTrue($this->crudPanel->hasButtonWhere('name', 'topViewButton'));
+        $this->assertFalse($this->crudPanel->hasButtonWhere('name', 'unknownButton'));
+    }
+
+    public function testItGenerateARandomButtonNameIfOneNotProvided()
+    {
+        $button = $this->crudPanel->button(['stack' => 'line', 'type' => 'view', 'content' => 'crud::buttons.test']);
+        $this->assertTrue(str_starts_with($button->name, 'button_'));
+    }
+
     private function getButtonByName($name)
     {
         return $this->crudPanel->buttons()->first(function ($value) use ($name) {
@@ -275,15 +355,15 @@ class CrudPanelButtonsTest extends BaseCrudPanel
 
     private function addDefaultButtons()
     {
-        CrudButton::name($this->topViewButton);
-        CrudButton::name($this->lineViewButton);
-        CrudButton::name($this->bottomViewButton);
-        CrudButton::name($this->topModelFunctionButton);
+        $this->crudPanel->button($this->topViewButton);
+        $this->crudPanel->button($this->lineViewButton);
+        $this->crudPanel->button($this->bottomViewButton);
+        $this->crudPanel->button($this->topModelFunctionButton);
     }
 
     private function addTestButton($buttonName)
     {
-        CrudButton::name(array_values($this->{$buttonName}));
+        $this->crudPanel->button(array_values($this->{$buttonName}));
     }
 
     public function testMovingTheButtonUsingPosition()

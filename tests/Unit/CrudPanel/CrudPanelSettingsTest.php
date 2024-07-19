@@ -6,7 +6,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Settings
  */
 class CrudPanelSettingsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
-{   
+{
     public function testItCanAddASettingToCrudPanel()
     {
         $this->crudPanel->set('create.test', 'value');
@@ -64,7 +64,7 @@ class CrudPanelSettingsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCr
         $this->assertTrue('value', $this->crudPanel->hasOperationSetting('test', 'list'));
     }
 
-    public function testItGetsTheOperationListFromSettings() 
+    public function testItGetsTheOperationListFromSettings()
     {
         $this->crudPanel->set('create.access', 'value');
         $this->crudPanel->set('list.access', 'value2');

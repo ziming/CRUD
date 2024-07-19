@@ -46,7 +46,7 @@ class AddCustomRouteContent extends Command
         if (! file_exists($routeFilePath)) {
             $this->line("The route file  <fg=blue>$routeFilePath</> does not exist.");
             $createRouteFile = $this->confirm('Should we create the file in  <fg=blue>'.$routeFilePath.'</> ?', 'yes');
-            if ($createRouteFile) {
+            if ($createRouteFile === 'yes') {
                 $this->call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
             } else {
                 $this->error('The route file does not exist. Please create it first.');

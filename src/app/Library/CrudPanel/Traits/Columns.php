@@ -116,9 +116,9 @@ trait Columns
     }
 
     /**
-     * Move this column to be first in the columns list.
+     * Move the most recently added column to the first column.
      *
-     * @return bool|null
+     * @return bool|void
      */
     public function makeFirstColumn()
     {
@@ -290,6 +290,7 @@ trait Columns
 
     /**
      * Get a column by the id, from the associative array.
+     * The array is 0-indexed, so the first column has id 0.
      *
      * @param  int  $column_number  Placement inside the columns array.
      * @return array Column details.
@@ -309,7 +310,11 @@ trait Columns
      */
     public function getActionsColumnPriority()
     {
-        return (int) $this->getOperationSetting('actionsColumnPriority') ?? 1;
+        if($this->getOperationSetting('actionsColumnPriority') === null) {
+            return 1;
+        }
+
+        return (int) $this->getOperationSetting('actionsColumnPriority');
     }
 
     /**

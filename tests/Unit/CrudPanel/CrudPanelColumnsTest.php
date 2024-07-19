@@ -500,11 +500,9 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->crudPanel->setColumns(['column7', [
             'name' => 'column8',
         ]]);
-        $this->assertEquals(2, count($this->crudPanel->columns())) ;
+        $this->assertEquals(2, count($this->crudPanel->columns()));
         $this->assertEquals(['column7', 'column8'], array_keys($this->crudPanel->columns()));
     }
-
-
 
     public function testRemoveUnknownColumnName()
     {

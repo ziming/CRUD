@@ -310,7 +310,7 @@ trait Columns
      */
     public function getActionsColumnPriority()
     {
-        if($this->getOperationSetting('actionsColumnPriority') === null) {
+        if ($this->getOperationSetting('actionsColumnPriority') === null) {
             return 1;
         }
 

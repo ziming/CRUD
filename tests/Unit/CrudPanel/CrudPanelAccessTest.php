@@ -105,7 +105,7 @@ class CrudPanelAccessTest extends BaseCrudPanel
 
     public function testItCanUseAClosureToResolveAccess()
     {
-        $this->crudPanel->setAccessCondition('list', function() {
+        $this->crudPanel->setAccessCondition('list', function () {
             return true;
         });
 
@@ -114,20 +114,20 @@ class CrudPanelAccessTest extends BaseCrudPanel
         $this->assertTrue($this->crudPanel->hasAccess('list'));
     }
 
-     public function testItCanUseAClosureToResolveAccessForMultipleOperations()
-     {
-         $this->crudPanel->setAccessCondition(['list','create'], function() {
-             return true;
-         });
- 
-         $this->assertTrue($this->crudPanel->getAccessCondition('list') instanceof \Closure);
- 
-         $this->assertTrue($this->crudPanel->hasAccess('list'));
-     }
+    public function testItCanUseAClosureToResolveAccessForMultipleOperations()
+    {
+        $this->crudPanel->setAccessCondition(['list', 'create'], function () {
+            return true;
+        });
+
+        $this->assertTrue($this->crudPanel->getAccessCondition('list') instanceof \Closure);
+
+        $this->assertTrue($this->crudPanel->hasAccess('list'));
+    }
 
     public function testItCanCheckIfAnOperationHasAccessConditions()
     {
-        $this->crudPanel->setAccessCondition(['list','create'], function() {
+        $this->crudPanel->setAccessCondition(['list', 'create'], function () {
             return true;
         });
 
@@ -137,7 +137,7 @@ class CrudPanelAccessTest extends BaseCrudPanel
 
     public function testItCanCheckAccessToAll()
     {
-        $this->crudPanel->allowAccess(['list', 'create'], function() {
+        $this->crudPanel->allowAccess(['list', 'create'], function () {
             return true;
         });
 
@@ -147,7 +147,7 @@ class CrudPanelAccessTest extends BaseCrudPanel
 
     public function testItCanAllowAccessToSomeSpecificOperationWhileDenyingOthers()
     {
-        $this->crudPanel->allowAccess(['list', 'create'], function() {
+        $this->crudPanel->allowAccess(['list', 'create'], function () {
             return true;
         });
 

@@ -443,6 +443,67 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->assertNotContains($this->oneColumnArray, $this->crudPanel->columns());
     }
 
+    public function testItCanRemoveAllColumns()
+    {
+        $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
+
+        $this->crudPanel->removeAllColumns();
+
+        $this->assertEmpty($this->crudPanel->columns());
+    }
+
+    public function testItCanSetColumnDetails()
+    {
+        $this->crudPanel->addColumns(['column1', 'column2', 'column3', 'column4', 'column5']);
+
+        $this->crudPanel->setColumnsDetails(['column1', 'column2'], ['label' => 'New Label']);
+        $this->crudPanel->setColumnDetails('column3', ['label' => 'Old Label']);
+        $this->crudPanel->modifyColumn('column4', ['label' => 'Alias Label']);
+        $this->crudPanel->setColumnLabel('column5', 'Setting Label');
+
+        $this->assertEquals('New Label', $this->crudPanel->columns()['column1']['label']);
+        $this->assertEquals('New Label', $this->crudPanel->columns()['column2']['label']);
+        $this->assertEquals('Old Label', $this->crudPanel->columns()['column3']['label']);
+        $this->assertEquals('Alias Label', $this->crudPanel->columns()['column4']['label']);
+        $this->assertEquals('Setting Label', $this->crudPanel->columns()['column5']['label']);
+    }
+
+    public function testItCanFindAColumnById()
+    {
+        $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
+
+        $column = $this->crudPanel->findColumnById(1);
+
+        $this->assertEquals('column2', $column['name']);
+    }
+
+    public function testItCanGetAndSetActionsColumnPriority()
+    {
+        $this->assertEquals(1, $this->crudPanel->getActionsColumnPriority());
+        $this->crudPanel->setActionsColumnPriority(2);
+        $this->assertEquals(2, $this->crudPanel->getActionsColumnPriority());
+    }
+
+    public function testItCanGetAndSetColumnsRemovingPreviouslySet()
+    {
+        $this->crudPanel->addColumns(['column1', 'column2', 'column3']);
+
+        $this->crudPanel->setColumns('column4');
+
+        $this->assertEquals(1, count($this->crudPanel->columns()));
+        $this->assertEquals(['column4'], array_keys($this->crudPanel->columns()));
+
+        $this->crudPanel->setColumns(['column5', 'column6']);
+        $this->assertEquals(2, count($this->crudPanel->columns()));
+        $this->assertEquals(['column5', 'column6'], array_keys($this->crudPanel->columns()));
+
+        $this->crudPanel->setColumns(['column7', [
+            'name' => 'column8',
+        ]]);
+        $this->assertEquals(2, count($this->crudPanel->columns()));
+        $this->assertEquals(['column7', 'column8'], array_keys($this->crudPanel->columns()));
+    }
+
     public function testRemoveUnknownColumnName()
     {
         $unknownColumnName = 'column4';
@@ -535,6 +596,27 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->crudPanel->orderColumns(['column2', 'column5', 'column6']);
 
         $this->assertEquals(['column2', 'column1', 'column3'], array_keys($this->crudPanel->columns()));
+    }
+
+    public function testMakeFirstColumnReturnFalseWhenNoColumnsExist()
+    {
+        $this->assertEmpty($this->crudPanel->columns());
+        $column = $this->crudPanel->makeFirstColumn();
+        $this->assertFalse($column);
+    }
+
+    public function testItCanAddADefaultTypeToTheColumn()
+    {
+        $column = $this->crudPanel->addDefaultTypeToColumn(['name' => 'name']);
+
+        $this->assertEquals('text', $column['type']);
+    }
+
+    public function testItReturnFalseWhenTryingToAddTypeToAColumnWithoutName()
+    {
+        $column = $this->crudPanel->addDefaultTypeToColumn(['attribute' => 'name']);
+
+        $this->assertFalse($column);
     }
 
     public function testItCanChangeTheColumnKey()

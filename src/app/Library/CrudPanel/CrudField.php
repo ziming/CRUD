@@ -418,8 +418,8 @@ class CrudField
     /**
      * Set the value for a certain attribute on the CrudField object.
      *
-     * @param string $attribute Name of the attribute.
-     * @param string $value     Value of that attribute.
+     * @param  string  $attribute  Name of the attribute.
+     * @param  string  $value  Value of that attribute.
      */
     private function setAttributeValue($attribute, $value)
     {
@@ -448,7 +448,7 @@ class CrudField
      * Replace all field attributes on the CrudField object
      * with the given array of attribute-value pairs.
      *
-     * @param array $array Array of attributes and their values.
+     * @param  array  $array  Array of attributes and their values.
      */
     private function setAllAttributeValues($array)
     {

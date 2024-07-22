@@ -30,9 +30,8 @@ class CrudObjectGroup
     /**
      * We foward any call to the corresponding class passed by developer (Field, Columns, Filters etc ..).
      *
-     * @param  string $method     The method being called that doesn't exist.
-     * @param  array $parameters  The arguments when that method was called.
-     *
+     * @param  string  $method  The method being called that doesn't exist.
+     * @param  array  $parameters  The arguments when that method was called.
      * @return CrudObjectGroup
      */
     public function __call($method, $parameter)

@@ -6,21 +6,17 @@ class CrudObjectGroup
 {
     protected $objects;
 
-    // init objects in group, supports multiple parameters or array as input.
-    //
-    // eg: CRUD::group(CRUD::field('field1'), CRUD::field('field2')); OR
-    //     CRUD::group([
-    //                   CRUD::field('field1'),
-    //                   CRUD::field('field2'),
-    //                 ]);
-
+    /**
+     * Add CrudObjects (fields, columns etc) to the group
+     */
     public function __construct(...$objects)
     {
         if (is_array($objects[0])) {
             $objects = $objects[0];
         }
-
+       
         $this->objects = $objects;
+        
     }
 
     // -------------
@@ -28,13 +24,9 @@ class CrudObjectGroup
     // -------------
 
     /**
-     * We foward any call to the corresponding class passed by developer (Field, Columns, Filters etc ..).
-     *
-     * @param  string  $method  The method being called that doesn't exist.
-     * @param  array  $parameters  The arguments when that method was called.
-     * @return CrudObjectGroup
+     * We forward any call to the corresponding class passed by developer (Field, Columns, Filters etc ..).
      */
-    public function __call($method, $parameter)
+    public function __call(string $method, array $parameter)
     {
         foreach ($this->objects as $object) {
             $object->{$method}($parameter[0]);

@@ -7,16 +7,15 @@ class CrudObjectGroup
     protected $objects;
 
     /**
-     * Add CrudObjects (fields, columns etc) to the group
+     * Add CrudObjects (fields, columns etc) to the group.
      */
     public function __construct(...$objects)
     {
         if (is_array($objects[0])) {
             $objects = $objects[0];
         }
-       
+
         $this->objects = $objects;
-        
     }
 
     // -------------

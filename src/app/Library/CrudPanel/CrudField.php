@@ -366,12 +366,16 @@ class CrudField
         return $this->attributes;
     }
 
-    /**
+    // ---------------
+    // PRIVATE METHODS
+    // ---------------
+
+     /**
      * Update the global CrudPanel object with the current field attributes.
      *
      * @return CrudField
      */
-    public function save()
+    private function save()
     {
         $key = $this->attributes['name'];
 
@@ -383,10 +387,6 @@ class CrudField
 
         return $this;
     }
-
-    // ---------------
-    // PRIVATE METHODS
-    // ---------------
 
     /**
      * Set the value for a certain attribute on the CrudField object.

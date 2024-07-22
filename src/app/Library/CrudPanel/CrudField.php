@@ -365,6 +365,7 @@ class CrudField
     {
         return $this->attributes;
     }
+
     // ---------------
     // PRIVATE METHODS
     // ---------------

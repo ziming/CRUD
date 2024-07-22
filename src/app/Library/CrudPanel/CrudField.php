@@ -411,50 +411,6 @@ class CrudField
         return $this;
     }
 
-    // ---------------
-    // PRIVATE METHODS
-    // ---------------
-
-    /**
-     * Set the value for a certain attribute on the CrudField object.
-     *
-     * @param  string  $attribute  Name of the attribute.
-     * @param  string  $value  Value of that attribute.
-     */
-    private function setAttributeValue($attribute, $value)
-    {
-        $this->attributes[$attribute] = $value;
-    }
-
-    /**
-     * Update the global CrudPanel object with the current field attributes.
-     *
-     * @return CrudField
-     */
-    private function save()
-    {
-        $key = $this->attributes['name'];
-
-        if ($this->crud()->hasFieldWhere('name', $key)) {
-            $this->crud()->modifyField($key, $this->attributes);
-        } else {
-            $this->crud()->addField($this->attributes);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Replace all field attributes on the CrudField object
-     * with the given array of attribute-value pairs.
-     *
-     * @param  array  $array  Array of attributes and their values.
-     */
-    private function setAllAttributeValues($array)
-    {
-        $this->attributes = $array;
-    }
-
     // -----------------
     // DEBUGGING METHODS
     // -----------------

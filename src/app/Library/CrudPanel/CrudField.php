@@ -370,7 +370,7 @@ class CrudField
     // PRIVATE METHODS
     // ---------------
 
-     /**
+    /**
      * Update the global CrudPanel object with the current field attributes.
      *
      * @return CrudField

@@ -39,7 +39,7 @@ trait Reorder
 
             return $item;
         })->toArray();
-        
+
         // wrap the queries in a transaction to avoid partial updates
         DB::transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
             // create a string of ?,?,?,? to use as bind placeholders for item keys
@@ -47,9 +47,9 @@ trait Reorder
 
             // each of this properties will be updated using a single query with a CASE statement
             // this ensures that only 4 queries are run, no matter how many items are reordered
-            foreach(['parent_id', 'depth', 'lft', 'rgt'] as $column) {
+            foreach (['parent_id', 'depth', 'lft', 'rgt'] as $column) {
                 $query = '';
-                $bindings = [];  
+                $bindings = [];
                 $query .= "UPDATE {$this->model->getTable()} SET {$column} = CASE ";
                 foreach ($reorderItems as $item) {
                     $query .= "WHEN {$primaryKey} = ? THEN ? ";
@@ -58,14 +58,14 @@ trait Reorder
                 }
                 // add the bind placeholders for the item keys at the end the array of bindings
                 array_push($bindings, ...$itemKeys->toArray());
-                
+
                 // add the where clause to the query to help match the items
                 $query .= "ELSE {$column} END WHERE {$primaryKey} IN ({$reorderItemsBindString})";
-                
+
                 DB::statement($query, $bindings);
             }
         });
-        
+
         return count($reorderItems);
     }
 

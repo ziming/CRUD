@@ -32,18 +32,18 @@ trait Reorder
             $item['parent_id'] = empty($item['parent_id']) ? null : (int) $item['parent_id'];
             $item['depth'] = empty($item['depth']) ? null : (int) $item['depth'];
             $item['lft'] = empty($item['left']) ? null : (int) $item['left'];
-            $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];            
+            $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];
             // unset mapped items properties.
             unset($item['item_id'], $item['left'], $item['right']);
 
             return $item;
         })->toArray();
-        
+
         DB::transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
             $reorderItemsBindString = implode(',', array_fill(0, count($reorderItems), '?'));
-            foreach(['parent_id', 'depth', 'lft', 'rgt'] as $column) {
+            foreach (['parent_id', 'depth', 'lft', 'rgt'] as $column) {
                 $query = '';
-                $bindings = [];  
+                $bindings = [];
                 $query .= "UPDATE {$this->model->getTable()} SET {$column} = CASE ";
                 foreach ($reorderItems as $item) {
                     $query .= "WHEN {$primaryKey} = ? THEN ? ";
@@ -55,7 +55,7 @@ trait Reorder
                 DB::statement($query, $bindings);
             }
         });
-        
+
         return count($reorderItems);
     }
 

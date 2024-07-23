@@ -25,6 +25,7 @@ trait Reorder
         // sent in the request that are not in the database
         $itemKeys = $this->model->query()->select($primaryKey)->get()->pluck($primaryKey);
 
+        // filter the items that are not in the database and map the request
         $reorderItems = collect($request)->filter(function ($item) use ($itemKeys) {
             return $item['item_id'] !== '' && $item['item_id'] !== null && $itemKeys->contains($item['item_id']);
         })->map(function ($item) use ($primaryKey) {
@@ -39,8 +40,13 @@ trait Reorder
             return $item;
         })->toArray();
 
+        // wrap the queries in a transaction to avoid partial updates
         DB::transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
+            // create a string of ?,?,?,? to use as bind placeholders for item keys
             $reorderItemsBindString = implode(',', array_fill(0, count($reorderItems), '?'));
+
+            // each of this properties will be updated using a single query with a CASE statement
+            // this ensures that only 4 queries are run, no matter how many items are reordered
             foreach (['parent_id', 'depth', 'lft', 'rgt'] as $column) {
                 $query = '';
                 $bindings = [];
@@ -50,8 +56,12 @@ trait Reorder
                     $bindings[] = $item[$primaryKey];
                     $bindings[] = $item[$column];
                 }
+                // add the bind placeholders for the item keys at the end the array of bindings
                 array_push($bindings, ...$itemKeys->toArray());
+
+                // add the where clause to the query to help match the items
                 $query .= "ELSE {$column} END WHERE {$primaryKey} IN ({$reorderItemsBindString})";
+
                 DB::statement($query, $bindings);
             }
         });

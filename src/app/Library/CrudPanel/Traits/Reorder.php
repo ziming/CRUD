@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel\Traits;
 
+use Illuminate\Support\Facades\DB;
+
 /**
  * Properties and methods for the Reorder operation.
  */
@@ -30,24 +32,30 @@ trait Reorder
             $item['parent_id'] = empty($item['parent_id']) ? null : (int) $item['parent_id'];
             $item['depth'] = empty($item['depth']) ? null : (int) $item['depth'];
             $item['lft'] = empty($item['left']) ? null : (int) $item['left'];
-            $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];
-            // we are not touching those two columns on update, but we need them to be present
-            // for the upsert query to work. they will just be ignored and not touched.
-            $item['name'] = '';
-            $item['slug'] = '';
-
+            $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];            
             // unset mapped items properties.
             unset($item['item_id'], $item['left'], $item['right']);
 
             return $item;
         })->toArray();
-
-        $this->model->upsert(
-            $reorderItems,
-            $primaryKey,
-            ['parent_id', 'depth', 'lft', 'rgt']
-        );
-
+        
+        DB::transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
+            $reorderItemsBindString = implode(',', array_fill(0, count($reorderItems), '?'));
+            foreach(['parent_id', 'depth', 'lft', 'rgt'] as $column) {
+                $query = '';
+                $bindings = [];  
+                $query .= "UPDATE {$this->model->getTable()} SET {$column} = CASE ";
+                foreach ($reorderItems as $item) {
+                    $query .= "WHEN {$primaryKey} = ? THEN ? ";
+                    $bindings[] = $item[$primaryKey];
+                    $bindings[] = $item[$column];
+                }
+                array_push($bindings, ...$itemKeys->toArray());
+                $query .= "ELSE {$column} END WHERE {$primaryKey} IN ({$reorderItemsBindString})";
+                DB::statement($query, $bindings);
+            }
+        });
+        
         return count($reorderItems);
     }
 

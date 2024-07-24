@@ -127,6 +127,7 @@
 
 		.backstrap-file-label[has-selected-files=true] .badge {
 			margin-right: 5px;
+			margin-bottom: 5px;
 		}
 
 		.backstrap-file-label::after {

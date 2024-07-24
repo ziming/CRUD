@@ -120,6 +120,15 @@
 			font-weight: 400!important;
 		}
 
+		.backstrap-file-label[has-selected-files=true] {
+			display: inline-table;
+			width: 100%;
+		}
+
+		.backstrap-file-label[has-selected-files=true] .badge {
+			margin-right: 5px;
+		}
+
 		.backstrap-file-label::after {
 			position: absolute;
 			top: 0;
@@ -201,14 +210,12 @@
 					}
 		        	// if the file container is empty, remove it
 		        	if ($.trim(container.html())=='') {
-						//$('<input type="hidden" name="'+fieldName+'[]" value="">').insertBefore(fileInput);
 		        		container.remove();
 		        	}
 		        	$("<input type='hidden' class='clear-files' name='clear_"+fieldName+"[]' value='"+$(this).data('filename')+"'>").insertAfter(fileInput);
 		        });
 
 		        fileInput.change(function() {
-	                inputLabel.html("{{trans('backpack::crud.upload_multiple_files_selected')}}");
 					let selectedFiles = [];
 
 					Array.from($(this)[0].files).forEach(file => {
@@ -216,6 +223,32 @@
 					});
 
 					element.find('input').first().val(JSON.stringify(selectedFiles)).trigger('change');
+
+					// create a bunch of span elements with the selected files names to display in the label
+					let files = '';
+					selectedFiles.forEach(file => {
+						files += '<span class="badge text-bg-secondary badge-primary">'+file.name+'</span> ';
+					});
+					
+					if(selectedFiles.length > 0) {
+						inputLabel.attr('has-selected-files', 'true');
+						// register a click event on the label that will trigger the file input click event
+						// this allow the user to open the file dialog again when they click on the labels
+						// the reason for this is that when you have a lot of select files, or files
+						// with big names, the input will resize to fit the content, but wont open
+						// the file dialog when user clicks on labels or in the "expanded" input
+						inputLabel.on('click', function() {
+							fileInput.click();
+						});
+					}else{
+						inputLabel.removeAttr('has-selected-files');
+
+						// remove the click event we registered
+						inputLabel.off('click');
+					}
+					
+					inputLabel.html(files);
+
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
 					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();
 		        });

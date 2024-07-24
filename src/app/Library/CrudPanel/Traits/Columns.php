@@ -258,11 +258,7 @@ trait Columns
      */
     public function getColumnsRelationships()
     {
-        $columns = $this->columns();
-
-        return collect($columns)->pluck('entity')->reject(function ($value, $key) {
-            return ! $value;
-        })->toArray();
+        return $this->getRelationshipsFromCrudObjects('columns');
     }
 
     /**

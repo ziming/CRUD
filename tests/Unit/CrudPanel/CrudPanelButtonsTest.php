@@ -381,7 +381,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
 
         $this->assertCount(3, $this->crudPanel->buttons());
     }
-    
+
     public function testItCanAddButtonsToAnHiddenStack()
     {
         $button = CrudButton::make('lineTest')->content('crud::buttons.test')->type('view');
@@ -409,7 +409,6 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         $this->crudPanel->button('test')->stack('line')->type('view')->content('backpack.theme-coreuiv2::buttons.test');
 
         $this->assertEquals('<a href="test" class="btn btn-secondary">Test</a>', $this->crudPanel->buttons()->last()->getHtml());
-
     }
 
     public function testItThrowsErrorWhenAttemptingToRenderUnknowButtonView()

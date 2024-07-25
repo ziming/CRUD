@@ -2,9 +2,9 @@
 
 namespace Backpack\CRUD\Tests;
 
-use Backpack\CRUD\Tests\config\TestsServiceProvider;
 use Backpack\Basset\BassetServiceProvider;
 use Backpack\CRUD\BackpackServiceProvider;
+use Backpack\CRUD\Tests\config\TestsServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase;
 

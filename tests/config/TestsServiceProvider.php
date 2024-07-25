@@ -1,6 +1,7 @@
 <?php
 
 namespace Backpack\CRUD\Tests\config;
+
 use Backpack\CRUD\ViewNamespaces;
 
 class TestsServiceProvider extends \Illuminate\Support\ServiceProvider

@@ -63,6 +63,14 @@ class CrudPanelSettingsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCr
         $this->assertTrue($this->crudPanel->hasOperationSetting('test'));
         $this->assertTrue($this->crudPanel->hasOperationSetting('test', 'list'));
     }
+
+    public function testItCanSetOperationSettingsForCurrentOperation()
+    {
+        $this->crudPanel->setOperation('create');
+
+        $this->crudPanel->operationSetting('test', 'value');
+
+        $this->assertEquals('value', $this->crudPanel->get('create.test'));
     }
 
     public function testItGetsTheOperationListFromSettings()

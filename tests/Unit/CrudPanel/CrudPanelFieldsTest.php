@@ -300,7 +300,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
 
         $this->assertEquals(3, count($this->crudPanel->fields()));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->getCreateFields());
     }
 
     public function testAddFieldsForUpdateForm()
@@ -789,6 +789,20 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
             ],
 
         ], $this->crudPanel->fields()['my_field']);
+    }
+
+    public function testAddFieldFluentClassUsingArrayDefinition()
+    {
+        $this->crudPanel->field($this->oneTextFieldArray);
+
+        $this->assertEquals(1, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedOneTextFieldArray, $this->crudPanel->fields());
+    }
+
+    public function testItCanFluentlyAddUploadAttribute()
+    {
+        $this->crudPanel->field('avatar')->upload();
+        $this->assertEquals(true, $this->crudPanel->fields()['avatar']['upload']);
     }
 
     public function testItCanMakeAFieldFirstFluently()

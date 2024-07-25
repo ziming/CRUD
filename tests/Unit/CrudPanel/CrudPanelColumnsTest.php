@@ -539,18 +539,17 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->assertNotContains($this->otherOneColumnArray, $this->crudPanel->columns());
     }
 
-    public function testSetColumnDetails()
+    public function testItThrowsAnErrorWhenAttemptingToChangeTheKeyInAColumnWithoutName()
     {
-        $this->markTestIncomplete('Not correctly implemented');
-
-        // TODO: refactor crud panel sync method
+        $this->expectException(\Exception::class);
+        $this->crudPanel->addColumn(['type' => 'text'])->key('new_key');
     }
 
-    public function testSetColumnsDetails()
+    public function itCanSetTheUploadAttributeOnColumn()
     {
-        $this->markTestIncomplete('Not correctly implemented');
+        $this->crudPanel->addColumn('column1')->upload();
 
-        // TODO: refactor crud panel sync method
+        $this->assertEquals(true, $this->crudPanel->columns()['column1']['upload']);
     }
 
     public function testOrderColumns()

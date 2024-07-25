@@ -31,4 +31,26 @@ abstract class BaseCrudPanel extends BaseTestClass
         $this->crudPanel->setModel(TestModel::class);
         $this->model = $this->crudPanel->getModel();
     }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('backpack.base.route_prefix', 'admin');
+
+        $app->bind('App\Http\Middleware\CheckIfAdmin', function () {
+            return new class
+            {
+                public function handle($request, $next)
+                {
+                    return $next($request);
+                }
+            };
+        });
+    }
 }

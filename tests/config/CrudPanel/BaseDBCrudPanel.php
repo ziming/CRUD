@@ -38,17 +38,6 @@ abstract class BaseDBCrudPanel extends BaseCrudPanel
     }
 
     /**
-     * Define environment setup.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app)
-    {
-        $app['config']->set('database.default', 'testing');
-    }
-
-    /**
      * Assert that the attributes of a model entry are equal to the expected array of attributes.
      *
      * @param  array  $expected  attributes

@@ -552,7 +552,6 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $this->assertEquals(true, $this->crudPanel->columns()['column1']['upload']);
     }
 
-
     public function testOrderColumns()
     {
         $this->crudPanel->addColumns($this->threeColumnsArray);

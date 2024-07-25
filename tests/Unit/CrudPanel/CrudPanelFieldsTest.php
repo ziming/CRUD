@@ -300,7 +300,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->crudPanel->addFields($this->threeTextFieldsArray, 'create');
 
         $this->assertEquals(3, count($this->crudPanel->fields()));
-        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->fields());
+        $this->assertEquals($this->expectedThreeTextFieldsArray, $this->crudPanel->getCreateFields());
     }
 
     public function testAddFieldsForUpdateForm()

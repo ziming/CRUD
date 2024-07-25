@@ -791,6 +791,20 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ], $this->crudPanel->fields()['my_field']);
     }
 
+    public function testAddFieldFluentClassUsingArrayDefinition()
+    {
+        $this->crudPanel->field($this->oneTextFieldArray);
+
+        $this->assertEquals(1, count($this->crudPanel->fields()));
+        $this->assertEquals($this->expectedOneTextFieldArray, $this->crudPanel->fields());
+    }
+
+    public function testItCanFluentlyAddUploadAttribute()
+    {
+        $this->crudPanel->field('avatar')->upload();
+        $this->assertEquals(true, $this->crudPanel->fields()['avatar']['upload']);
+    }
+
     public function testItCanMakeAFieldFirstFluently()
     {
         $this->crudPanel->field('test1');

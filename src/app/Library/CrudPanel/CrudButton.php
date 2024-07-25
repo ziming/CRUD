@@ -185,7 +185,6 @@ class CrudButton implements Arrayable
 
             default:
                 abort(500, "Unknown button position - please use 'beginning' or 'end'.");
-                break;
         }
 
         return $this;
@@ -235,7 +234,7 @@ class CrudButton implements Arrayable
 
     /**
      * Unserts an property that is set on the current button.
-     * Possible properties: name, stack, type, content.
+     * Possible properties: name, stack, type, content, meta.
      *
      * @param  string  $property  Name of the property that should be cleared.
      * @return CrudButton
@@ -414,7 +413,7 @@ class CrudButton implements Arrayable
      */
     public function remove()
     {
-        $this->crud()->removeButton($this->getKey());
+        $this->crud()->removeButton($this->collection()[$this->getKey()]->name);
     }
 
     // --------------

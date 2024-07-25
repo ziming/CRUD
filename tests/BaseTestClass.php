@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\Tests;
 
+use Backpack\CRUD\Tests\config\TestsServiceProvider;
 use Backpack\Basset\BassetServiceProvider;
 use Backpack\CRUD\BackpackServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,7 @@ abstract class BaseTestClass extends TestCase
         return [
             BassetServiceProvider::class,
             BackpackServiceProvider::class,
+            TestsServiceProvider::class,
         ];
     }
 

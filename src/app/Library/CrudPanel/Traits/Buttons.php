@@ -249,7 +249,7 @@ trait Buttons
         $array = $this->buttons()->toArray();
 
         foreach ($array as $key => $value) {
-            if ((is_object($value) ? $value->name : $value['name']) == $name) {
+            if ((is_object($value) ? $value->name : $value['name']) === $name) {
                 return $key;
             }
         }

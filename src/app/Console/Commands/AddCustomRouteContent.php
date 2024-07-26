@@ -46,6 +46,7 @@ class AddCustomRouteContent extends Command
         if (! file_exists($routeFilePath)) {
             if ($routeFilePath !== base_path($this->backpackCustomRouteFile)) {
                 $this->info('The route file <fg=blue>'.$routeFilePath.'</> does not exist. Please create it first.');
+
                 return 1;
             }
 
@@ -54,6 +55,7 @@ class AddCustomRouteContent extends Command
                 $this->call('vendor:publish', ['--provider' => \Backpack\CRUD\BackpackServiceProvider::class, '--tag' => 'custom_routes']);
             } else {
                 $this->info('The route file <fg=blue>'.$routeFilePath.'</> does not exist. Please create it first.');
+
                 return 1;
             }
         }

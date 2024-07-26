@@ -85,8 +85,6 @@ class AddCustomRouteContent extends Command
             return;
         }
 
-       
-
         // in case the last line contains the last } but also the last {, we need to split them
         // so that we can create a space between them and add the new code
         if (strpos($cleanContent[$lastLine], '{') !== false) {
@@ -94,16 +92,16 @@ class AddCustomRouteContent extends Command
             $originalContent[$lastLine] = $lastLineContent[0].'{'.PHP_EOL;
             // push all other elements one line down creating space for the new code
             for ($i = count($originalContent) - 1; $i > $lastLine; $i--) {
-                $originalContent[$i+1] = $originalContent[$i];
+                $originalContent[$i + 1] = $originalContent[$i];
             }
-            $originalContent[$lastLine+1] = $lastLineContent[1];
+            $originalContent[$lastLine + 1] = $lastLineContent[1];
             $lastLine++;
         }
 
         $sliceLength = 0;
 
-         // in case there is already an empty line at the end of the route file, we don't need to add another one
-         if(trim($originalContent[$lastLine - 1]) === '') {
+        // in case there is already an empty line at the end of the route file, we don't need to add another one
+        if (trim($originalContent[$lastLine - 1]) === '') {
             $lastLine--;
             $sliceLength = 1;
         }

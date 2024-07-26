@@ -35,6 +35,7 @@
               </div>
             @endif
           </div>
+          @if($crud->getOperationSetting('searchableTable'))
           <div class="col-sm-3">
             <div id="datatable_search_stack" class="mt-sm-0 mt-2 d-print-none">
               <div class="input-icon">
@@ -45,6 +46,7 @@
               </div>
             </div>
           </div>
+          @endif
         </div>
 
         {{-- Backpack List Filters --}}

@@ -98,6 +98,27 @@ class AddCustomRouteContent extends Command
             $lastLine++;
         }
 
+        // in case the last line contains more than one ";" it means that line closes more than one group
+        // we need to split the line and create space for the new code
+        if (substr_count($cleanContent[$lastLine], ';') > 1) {
+            $lastLineContent = explode(';', $originalContent[$lastLine]);
+
+            // find in lastLineContent array the last element that contains the }
+            $lastElement = $this->getLastLineNumberThatContains('}', $lastLineContent);
+
+            // merge the first part of the lastLineContent up to the lastElement
+            $originalContent[$lastLine] = implode(';', array_slice($lastLineContent, 0, $lastElement)).';'.PHP_EOL;
+
+            // push all other elements one line down creating space for the new code
+            for ($i = count($originalContent) - 1; $i > $lastLine; $i--) {
+                $originalContent[$i+1] = $originalContent[$i];
+            }
+            
+            // merge the second part of the lastLineContent starting from the lastElement
+            $originalContent[$lastLine+1] = implode(';', array_slice($lastLineContent, $lastElement));
+            $lastLine++;
+        }
+
         $sliceLength = 0;
 
         // in case there is already an empty line at the end of the route file, we don't need to add another one

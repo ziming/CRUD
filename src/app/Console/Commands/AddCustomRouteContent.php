@@ -111,11 +111,11 @@ class AddCustomRouteContent extends Command
 
             // push all other elements one line down creating space for the new code
             for ($i = count($originalContent) - 1; $i > $lastLine; $i--) {
-                $originalContent[$i+1] = $originalContent[$i];
+                $originalContent[$i + 1] = $originalContent[$i];
             }
-            
+
             // merge the second part of the lastLineContent starting from the lastElement
-            $originalContent[$lastLine+1] = implode(';', array_slice($lastLineContent, $lastElement));
+            $originalContent[$lastLine + 1] = implode(';', array_slice($lastLineContent, $lastElement));
             $lastLine++;
         }
 

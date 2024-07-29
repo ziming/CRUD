@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\config\Models\Article;
+use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -173,14 +174,30 @@ class CrudPanelFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->assertEquals($this->noFakeFieldsInputData, $compactedFakeFields);
     }
 
-    public function testCompactFakeFieldsFromUnknownForm()
+    public function testCompactRelationshipSubfields()
     {
-        $this->markTestIncomplete('Not correctly implemented');
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addField([
+            'name' => 'articles',
+            'subfields' => [
+                [
+                    'name' => 'content',
+                    'fake' => true,
+                ],
+                [
+                    'name' => 'metas',
+                    'fake' => true,
+                ],
+            ],
+        ]);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $compactedFakeFields = $this->crudPanel->compactFakeFields([
+            'content' => 'Content Value',
+            'metas' => ['meta1', 'meta2', 'meta3'],
+        ], Article::class);
 
-        // TODO: this should throw an invalid argument exception but doesn't because of the getFields method in the
-        //       read trait, which returns the create fields in case of an unknown form type.
-        $this->crudPanel->compactFakeFields($this->fakeFieldsInputData, 'unknownForm');
+        $this->assertEquals([
+            'extras' => '{"content":"Content Value","metas":["meta1","meta2","meta3"]}',
+        ], $compactedFakeFields);
     }
 }

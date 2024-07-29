@@ -158,10 +158,11 @@
         		var clearFileButton = element.find(".file-clear-button");
         		var fileInput = element.find("input[type=file]");
         		var inputLabel = element.find("label.backstrap-file-label");
+				let existingFiles = fileInput.parent().siblings('.existing-file');
 
 				if(fileInput.attr('data-row-number')) {
 					let selectedFiles = [];
-					fileInput.parent().siblings('.existing-file').find('a.file-clear-button').each(function(item) {
+					existingFiles.find('a.file-clear-button').each(function(item) {
 						selectedFiles.push($(this).data('filename'));
 					});
 
@@ -228,27 +229,18 @@
 					// create a bunch of span elements with the selected files names to display in the label
 					let files = '';
 					selectedFiles.forEach(file => {
-						files += '<span class="badge text-bg-secondary badge-primary">'+file.name+'</span> ';
+						files += '<span class="badge mt-1 mb-1 text-bg-secondary badge-primary">'+file.name+'</span> ';
 					});
-					
-					if(selectedFiles.length > 0) {
-						inputLabel.attr('has-selected-files', 'true');
-						// register a click event on the label that will trigger the file input click event
-						// this allow the user to open the file dialog again when they click on the labels
-						// the reason for this is that when you have a lot of select files, or files
-						// with big names, the input will resize to fit the content, but wont open
-						// the file dialog when user clicks on labels or in the "expanded" input
-						inputLabel.on('click', function() {
-							fileInput.click();
-						});
-					}else{
-						inputLabel.removeAttr('has-selected-files');
-
-						// remove the click event we registered
-						inputLabel.off('click');
+				
+					// if existing files is not on the page, create a new div a prepend it to the fileInput
+					if(existingFiles.length === 0) {
+						existingFiles = $('<div class="well well-sm existing-file"></div>');
+						existingFiles.insertBefore(element.find('input[type=hidden]'));
+						existingFiles.html(files);
+					}else {
+						// if existing files is on page show the added files after the uploaded ones
+						existingFiles.append(files);
 					}
-					
-					inputLabel.html(files);
 
 		        	// remove the hidden input, so that the setXAttribute method is no longer triggered
 					$(this).next("input[type=hidden]:not([name='clear_"+fieldName+"[]'])").remove();

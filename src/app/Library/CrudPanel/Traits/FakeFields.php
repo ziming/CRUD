@@ -15,7 +15,6 @@ trait FakeFields
      * @param  array  $requestInput  The request input.
      * @param  string|bool|Model  $model
      * @param  array  $fields  The fields that should be compacted.
-     *
      * @return array The updated request input.
      */
     public function compactFakeFields($requestInput, $model = false, $fields = [])

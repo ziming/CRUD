@@ -173,7 +173,7 @@ class CrudPanelFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
 
         $this->assertEquals($this->noFakeFieldsInputData, $compactedFakeFields);
     }
-    
+
     public function testCompactRelationshipSubfields()
     {
         $this->crudPanel->setModel(User::class);
@@ -191,13 +191,13 @@ class CrudPanelFakeFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
             ],
         ]);
 
-        $compactedFakeFields = $this->crudPanel->compactFakeFields([     
+        $compactedFakeFields = $this->crudPanel->compactFakeFields([
             'content' => 'Content Value',
             'metas' => ['meta1', 'meta2', 'meta3'],
         ], Article::class);
 
         $this->assertEquals([
-            'extras' => "{\"content\":\"Content Value\",\"metas\":[\"meta1\",\"meta2\",\"meta3\"]}"
-          ], $compactedFakeFields);
+            'extras' => '{"content":"Content Value","metas":["meta1","meta2","meta3"]}',
+        ], $compactedFakeFields);
     }
 }

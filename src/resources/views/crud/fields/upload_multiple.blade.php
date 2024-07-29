@@ -19,7 +19,7 @@
 		}
 	@endphp
 	@if (count($values))
-    <div class="well well-sm existing-file">
+    <div class="well well-sm existing-file mb-2">
     	@foreach($values as $key => $file_path)
     		<div class="file-preview">
     			@if (isset($field['temporary']))
@@ -234,7 +234,7 @@
 				
 					// if existing files is not on the page, create a new div a prepend it to the fileInput
 					if(existingFiles.length === 0) {
-						existingFiles = $('<div class="well well-sm existing-file"></div>');
+						existingFiles = $('<div class="well well-sm existing-file mb-2"></div>');
 						existingFiles.insertBefore(element.find('input[type=hidden]'));
 						existingFiles.html(files);
 					}else {

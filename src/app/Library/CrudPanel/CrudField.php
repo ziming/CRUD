@@ -405,9 +405,23 @@ class CrudField
             $this->crud()->modifyField($key, $this->attributes);
         } else {
             $this->crud()->addField($this->attributes);
+            $this->attributes = $this->getFreshAttributes();
         }
 
         return $this;
+    }
+
+    /**
+     * Get the fresh attributes for the current field.
+     *
+     * @return array
+     */
+    private function getFreshAttributes()
+    {
+        $key = isset($this->attributes['key']) ? 'key' : 'name';
+        $search = $this->attributes['key'] ?? $this->attributes['name'];
+
+        return $this->crud()->firstFieldWhere($key, $search);
     }
 
     // -----------------

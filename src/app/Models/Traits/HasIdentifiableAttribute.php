@@ -29,6 +29,8 @@ trait HasIdentifiableAttribute
      * Get the most likely column in the db table that could be used as an identifiable attribute.
      *
      * @return string The name of the column in the database that is most likely to be a good identifying attribute.
+     * 
+     * @throws \Exception
      */
     private static function guessIdentifiableColumnName()
     {
@@ -64,6 +66,13 @@ trait HasIdentifiableAttribute
         }
 
         // in case everything fails we just return the first column in database
-        return Arr::first($columnNames);
+        $firstColumnInTable = Arr::first($columnNames);
+        if(! empty($firstColumnInTable)) {
+            return $firstColumnInTable;
+        }
+
+        // if there are no columns in the table, we need to throw an exception as there is nothing we can use to
+        // correlate with the entry. Developer need to tell Backpack what attribute to use as identifier.
+        throw new \Exception("There are no columns in the table «{$table}». Please add a column to the table or define a 'public function identifiableAttribute()' in the model.");
     }
 }

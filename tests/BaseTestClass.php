@@ -6,6 +6,7 @@ use Backpack\Basset\BassetServiceProvider;
 use Backpack\CRUD\BackpackServiceProvider;
 use Backpack\CRUD\Tests\config\TestsServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Route as RouteInstance;
 use Orchestra\Testbench\TestCase;
 
 abstract class BaseTestClass extends TestCase
@@ -45,7 +46,7 @@ abstract class BaseTestClass extends TestCase
     {
         $request = request()->create('/admin/users/create', 'POST', ['name' => 'foo']);
         $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'admin/users/create', ['UserCrudController', 'create']))->bind($request);
+            return (new RouteInstance('POST', 'admin/users/create', ['UserCrudController', 'create']))->bind($request);
         });
         $this->crudPanel->setRequest($request);
     }

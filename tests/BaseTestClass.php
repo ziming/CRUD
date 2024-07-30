@@ -41,6 +41,15 @@ abstract class BaseTestClass extends TestCase
         ];
     }
 
+    private function setupUserCreateRequest()
+    {
+        $request = request()->create('/admin/users/create', 'POST', ['name' => 'foo']);
+        $request->setRouteResolver(function () use ($request) {
+            return (new Route('POST', 'admin/users/create', ['UserCrudController', 'create']))->bind($request);
+        });
+        $this->crudPanel->setRequest($request);
+    }
+
     // allow us to run crud panel private/protected methods like `inferFieldTypeFromDbColumnType`
     public function invokeMethod(&$object, $methodName, array $parameters = [])
     {

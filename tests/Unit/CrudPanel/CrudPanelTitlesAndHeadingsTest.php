@@ -35,7 +35,7 @@ class CrudPanelTitlesAndHeadingsTest extends \Backpack\CRUD\Tests\config\CrudPan
     public function testItCanSetAndGetTheSubheading()
     {
         $this->crudPanel->setModel(User::class);
-        $this->setCrudPanelRequest();
+        $this->setupUserCreateRequest();
 
         $this->crudPanel->setOperation('create');
         $this->crudPanel->setSubheading('test');
@@ -46,7 +46,7 @@ class CrudPanelTitlesAndHeadingsTest extends \Backpack\CRUD\Tests\config\CrudPan
     public function testItCanSetAndGetTheHeading()
     {
         $this->crudPanel->setModel(User::class);
-        $this->setCrudPanelRequest();
+        $this->setupUserCreateRequest();
 
         $this->crudPanel->setOperation('create');
         $this->crudPanel->setHeading('test');
@@ -57,21 +57,12 @@ class CrudPanelTitlesAndHeadingsTest extends \Backpack\CRUD\Tests\config\CrudPan
     public function testItCanSetAndGetTheTitle()
     {
         $this->crudPanel->setModel(User::class);
-        $this->setCrudPanelRequest();
+        $this->setupUserCreateRequest();
 
         $this->crudPanel->setOperation('create');
         $this->crudPanel->setTitle('test');
 
         $this->assertEquals('test', $this->crudPanel->getTitle());
         $this->assertEquals($this->crudPanel->get('create.title'), $this->crudPanel->getTitle());
-    }
-
-    private function setCrudPanelRequest()
-    {
-        $request = request()->create('/admin/users/create', 'POST', ['name' => 'foo']);
-        $request->setRouteResolver(function () use ($request) {
-            return (new Route('POST', 'admin/users/create', ['UserCrudController', 'create']))->bind($request);
-        });
-        $this->crudPanel->setRequest($request);
     }
 }

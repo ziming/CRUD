@@ -8,7 +8,7 @@ use Config;
 
 /**
  * @covers Backpack\CRUD\ViewNamespaces
- * 
+ *
  * There is already one registered view namespace `backpack.theme-coreuiv2::` in the `TestsServiceProvider` class.
  */
 class ViewNamespacesTest extends BaseCrudPanel

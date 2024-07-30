@@ -129,6 +129,8 @@ trait Tabs
     /**
      * @deprecated Do not use this method as it will be removed in future versions!
      * Instead, use $this->getTabItems($tabLabel, 'fields')
+     * 
+     * @codeCoverageIgnore
      *
      * @return array|\Illuminate\Support\Collection
      */

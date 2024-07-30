@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  */
 class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {

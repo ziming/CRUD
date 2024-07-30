@@ -84,7 +84,7 @@ final class DatabaseSchema
             return $table;
         }
 
-        if(empty($table)) {
+        if (empty($table)) {
             return new Table($tableName, []);
         }
 

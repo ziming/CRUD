@@ -29,7 +29,7 @@ trait HasIdentifiableAttribute
      * Get the most likely column in the db table that could be used as an identifiable attribute.
      *
      * @return string The name of the column in the database that is most likely to be a good identifying attribute.
-     * 
+     *
      * @throws \Exception
      */
     private static function guessIdentifiableColumnName()
@@ -67,7 +67,7 @@ trait HasIdentifiableAttribute
 
         // in case everything fails we just return the first column in database
         $firstColumnInTable = Arr::first($columnNames);
-        if(! empty($firstColumnInTable)) {
+        if (! empty($firstColumnInTable)) {
             return $firstColumnInTable;
         }
 

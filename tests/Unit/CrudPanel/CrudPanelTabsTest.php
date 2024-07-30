@@ -264,6 +264,5 @@ class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPa
         $tabItems = $this->crudPanel->getTabItems($this->expectedTabNames[0], 'columns');
 
         $this->assertCount(2, $tabItems);
-
     }
 }

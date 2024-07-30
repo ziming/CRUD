@@ -110,6 +110,7 @@ trait Tabs
      * Instead, use $this->getElementsWithoutATab($this->getCurrentFields())
      *
      * @return \Illuminate\Support\Collection
+     *
      * @codeCoverageIgnore
      */
     public function getFieldsWithoutATab()

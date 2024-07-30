@@ -5,8 +5,8 @@ namespace Backpack\CRUD\Tests;
 use Backpack\Basset\BassetServiceProvider;
 use Backpack\CRUD\BackpackServiceProvider;
 use Backpack\CRUD\Tests\config\TestsServiceProvider;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Route as RouteInstance;
+use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase;
 
 abstract class BaseTestClass extends TestCase

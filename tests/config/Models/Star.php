@@ -19,7 +19,7 @@ class Star extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = ['title'];
-  
+
     public function starable()
     {
         return $this->morphTo();

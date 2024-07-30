@@ -19,7 +19,6 @@ class Bang extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $fillable = ['name'];
-   
 
     public function accountDetails()
     {

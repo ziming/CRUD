@@ -72,7 +72,7 @@ trait HasIdentifiableAttribute
         }
 
         // if there are no columns in the table, we need to throw an exception as there is nothing we can use to
-        // correlate with the entry. Developer need to tell Backpack what attribute to use as identifier.
+        // correlate with the entry. Developer need to tell Backpack what attribute to use.
         throw new \Exception("There are no columns in the table «{$table}». Please add a column to the table or define a 'public function identifiableAttribute()' in the model.");
     }
 }

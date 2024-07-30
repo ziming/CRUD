@@ -246,4 +246,24 @@ class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPa
         $tabNames = $this->crudPanel->getTabs();
         $this->assertEquals($this->expectedTabNames, $tabNames);
     }
+
+    public function testGetFieldsWithoutTab()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $fieldsWithoutTab = $this->crudPanel->getElementsWithoutATab($this->crudPanel->fields());
+        $fieldWithoutTab = $this->threeTextFieldsArray[0];
+        $this->assertCount(1, $fieldsWithoutTab);
+        $this->assertEquals('field1', $fieldWithoutTab['name']);
+    }
+
+    public function testItCanGetTabItemsForDifferentSources()
+    {
+        $this->crudPanel->addColumns($this->threeTextFieldsArray);
+
+        $tabItems = $this->crudPanel->getTabItems($this->expectedTabNames[0], 'columns');
+
+        $this->assertCount(2, $tabItems);
+
+    }
 }

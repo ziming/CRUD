@@ -41,7 +41,7 @@ abstract class BaseTestClass extends TestCase
         ];
     }
 
-    private function setupUserCreateRequest()
+    protected function setupUserCreateRequest()
     {
         $request = request()->create('/admin/users/create', 'POST', ['name' => 'foo']);
         $request->setRouteResolver(function () use ($request) {

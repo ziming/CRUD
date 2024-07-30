@@ -52,7 +52,7 @@ class UsersTableSeeder extends Seeder
             [
                 'user_id' => 2,
                 'role_id' => 2,
-            ]
+            ],
         ]);
 
         DB::table('account_details')->insert([

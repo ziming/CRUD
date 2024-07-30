@@ -414,13 +414,13 @@ class CrudPanelButtonsTest extends BaseCrudPanel
     public function testItThrowsErrorWhenAttemptingToRenderUnknowButtonView()
     {
         $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
-        $this->crudPanel->button('test')->type('view')->content('unknown_view')->getHtml();
+        $this->crudPanel->button('dontexist')->type('view')->content('unknown_view')->getHtml();
     }
 
     public function testItThrowsErrorWhenAttemptingToRenderUnknowButtonType()
     {
         $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
-        $this->crudPanel->button('test')->type('unknown')->getHtml();
+        $this->crudPanel->button('dontexist')->type('unknown')->getHtml();
     }
 
     private function getButtonByName($name)

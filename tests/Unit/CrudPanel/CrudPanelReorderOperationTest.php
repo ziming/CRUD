@@ -3,14 +3,14 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel;
-use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\Tests\config\Models\Reorder;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder
  */
 class CrudPanelReorderOperationTest extends BaseDBCrudPanel
-{   
+{
     public function testSaveReorderTree()
     {
         $this->createReorderItems();
@@ -49,7 +49,6 @@ class CrudPanelReorderOperationTest extends BaseDBCrudPanel
             'rgt' => 7,
             'depth' => 1,
         ]);
-        
     }
 
     private function createReorderItems()

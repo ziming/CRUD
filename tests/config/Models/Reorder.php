@@ -18,5 +18,4 @@ class Reorder extends Model
     protected $table = 'reorders';
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'lft', 'rgt', 'depth', 'parent_id'];
-
 }

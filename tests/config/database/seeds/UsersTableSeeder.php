@@ -40,7 +40,6 @@ class UsersTableSeeder extends Seeder
             ],
         ]);
 
-
         DB::table('user_role')->insert(
             [
                 'user_id' => 1,

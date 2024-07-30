@@ -8,7 +8,7 @@ use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Reorder
  */
 class CrudPanelReorderTest extends BaseCrudPanel
-{   
+{
     public function testEnableReorder()
     {
         $this->crudPanel->enableReorder();
@@ -23,7 +23,7 @@ class CrudPanelReorderTest extends BaseCrudPanel
         $this->crudPanel->enableReorder();
 
         $this->assertTrue($this->crudPanel->isReorderEnabled());
-    
+
         $this->crudPanel->disableReorder();
 
         $this->assertFalse($this->crudPanel->isReorderEnabled());

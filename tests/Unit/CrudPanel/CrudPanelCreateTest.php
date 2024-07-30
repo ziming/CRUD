@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Hash;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Update
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\MorphRelationships
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Fields
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsValidation
+ * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
  */
 class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
 {

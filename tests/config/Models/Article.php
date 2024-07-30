@@ -29,4 +29,9 @@ class Article extends Model
     {
         return $this->content.'++';
     }
+
+    public function identifiableAttribute()
+    {
+        return 'content';
+    }
 }

@@ -4,12 +4,11 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\config\Models\Article;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Tabs
  */
-class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
+class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
     private $horizontalTabsType = 'horizontal';
     private $verticalTabsType = 'vertical';
@@ -215,9 +214,9 @@ class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
 
         // TODO: the method returns an eloquent collection in case fields for a given label are found, array if
         //       otherwise. the return type should be either one or the other.
-        $firstTabFields = $this->crudPanel->getTabFields($this->expectedTabNames[0]);
-        $secondTabFields = $this->crudPanel->getTabFields($this->expectedTabNames[1]);
-        $thirdTabFields = $this->crudPanel->getTabFields($this->expectedTabNames[2]);
+        $firstTabFields = $this->crudPanel->getTabItems($this->expectedTabNames[0]);
+        $secondTabFields = $this->crudPanel->getTabItems($this->expectedTabNames[1]);
+        $thirdTabFields = $this->crudPanel->getTabItems($this->expectedTabNames[2]);
 
         $this->assertEquals($this->expectedFieldsInFirstTab, $firstTabFields);
         $this->assertEquals($this->expectedFieldsInSecondTab, $secondTabFields);
@@ -226,7 +225,7 @@ class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
 
     public function testGetTabFieldsUnknownLabel()
     {
-        $tabFields = $this->crudPanel->getTabFields('someLabel');
+        $tabFields = $this->crudPanel->getTabItems('someLabel', 'fields');
 
         $this->assertEmpty($tabFields);
     }
@@ -243,15 +242,27 @@ class CrudPanelTabsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrud
     public function testGetTabsEntryExists()
     {
         $this->crudPanel->setModel(Article::class);
-        $article = DB::table('articles')->where('id', 1)->first();
-
-        // manually call this method to set the crud panel entry attribute used in the getTabs method to get the current
-        // fields from the update form.
-        $this->crudPanel->getEntry($article->id);
-
-        $this->crudPanel->addFields($this->threeTextFieldsArray, 'update');
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
         $tabNames = $this->crudPanel->getTabs();
-
         $this->assertEquals($this->expectedTabNames, $tabNames);
+    }
+
+    public function testGetFieldsWithoutTab()
+    {
+        $this->crudPanel->addFields($this->threeTextFieldsArray);
+
+        $fieldsWithoutTab = $this->crudPanel->getElementsWithoutATab($this->crudPanel->fields());
+        $fieldWithoutTab = $this->threeTextFieldsArray[0];
+        $this->assertCount(1, $fieldsWithoutTab);
+        $this->assertEquals('field1', $fieldWithoutTab['name']);
+    }
+
+    public function testItCanGetTabItemsForDifferentSources()
+    {
+        $this->crudPanel->addColumns($this->threeTextFieldsArray);
+
+        $tabItems = $this->crudPanel->getTabItems($this->expectedTabNames[0], 'columns');
+
+        $this->assertCount(2, $tabItems);
     }
 }

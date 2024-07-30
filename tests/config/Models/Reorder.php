@@ -5,7 +5,7 @@ namespace Backpack\CRUD\Tests\Config\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Bang extends Model
+class Reorder extends Model
 {
     use CrudTrait;
 
@@ -15,18 +15,7 @@ class Bang extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'bangs';
+    protected $table = 'reorders';
     protected $primaryKey = 'id';
-    public $timestamps = false;
-    protected $fillable = ['name'];
-
-    public function accountDetails()
-    {
-        return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\AccountDetails');
-    }
-
-    public function identifiableAttribute()
-    {
-        return 'name';
-    }
+    protected $fillable = ['name', 'lft', 'rgt', 'depth', 'parent_id'];
 }

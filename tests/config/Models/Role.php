@@ -24,4 +24,9 @@ class Role extends Model
     {
         return $this->name.'++';
     }
+
+    public function identifiableAttribute()
+    {
+        return 'name';
+    }
 }

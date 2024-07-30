@@ -14,8 +14,9 @@ use Illuminate\Http\Request;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\FieldsPrivateMethods
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudField
+ * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  */
-class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
+class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
     private $oneTextFieldArray = [
         'name' => 'field1',
@@ -912,6 +913,22 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $this->assertEquals(false, $this->crudPanel->fields()['isAnAttribute']['entity']);
         $this->assertEquals('isARelation', $this->crudPanel->fields()['isARelation']['entity']);
+    }
+
+    public function testItCanGetTheFirstFieldViewWithoutProvidingNamespace()
+    {
+        $this->assertEquals('backpack.theme-coreuiv2::fields.test', $this->crudPanel->getFirstFieldView('test'));
+    }
+
+    public function testItCanGetTheFirstFieldViewInProvidedNamespace()
+    {
+        $this->assertEquals('backpack.theme-coreuiv2::fields.custom_namespace.test', $this->crudPanel->getFirstFieldView('test', 'backpack.theme-coreuiv2::fields.custom_namespace'));
+    }
+
+    public function testItThrowExceptionWhenViewNotFound()
+    {
+        $this->expectException(\Exception::class);
+        $this->crudPanel->getFirstFieldView('test2');
     }
 }
 

@@ -914,6 +914,22 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->assertEquals(false, $this->crudPanel->fields()['isAnAttribute']['entity']);
         $this->assertEquals('isARelation', $this->crudPanel->fields()['isARelation']['entity']);
     }
+
+    public function testItCanGetTheFirstFieldViewWithoutProvidingNamespace()
+    {
+        $this->assertEquals('backpack.theme-coreuiv2::fields.test', $this->crudPanel->getFirstFieldView('test'));
+    }
+
+    public function testItCanGetTheFirstFieldViewInProvidedNamespace()
+    {
+        $this->assertEquals('backpack.theme-coreuiv2::fields.custom_namespace.test', $this->crudPanel->getFirstFieldView('test', 'backpack.theme-coreuiv2::fields.custom_namespace'));
+    }
+
+    public function testItThrowExceptionWhenViewNotFound()
+    {
+        $this->expectException(\Exception::class);
+        $this->crudPanel->getFirstFieldView('test2');
+    }
 }
 
 class Invokable

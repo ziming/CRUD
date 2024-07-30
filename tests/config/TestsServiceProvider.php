@@ -11,7 +11,9 @@ class TestsServiceProvider extends \Illuminate\Support\ServiceProvider
         // register theme views as coreuiv2, the default ui.namespace.
         $this->loadViewsFrom(__DIR__.'/views', 'backpack.theme-coreuiv2');
 
-        ViewNamespaces::addFor('buttons', 'backpack.theme-coreuiv2');
+        foreach(['buttons', 'fields', 'columns'] as $domain) {
+            ViewNamespaces::addFor($domain, 'backpack.theme-coreuiv2::'.$domain);
+        }
 
         // Register the  facade alias for basset, alert and crud
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();

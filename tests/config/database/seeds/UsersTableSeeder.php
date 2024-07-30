@@ -40,7 +40,7 @@ class UsersTableSeeder extends Seeder
             ],
         ]);
 
-        DB::table('user_role')->insert(
+        DB::table('user_role')->insert([
             [
                 'user_id' => 1,
                 'role_id' => 1,
@@ -53,7 +53,7 @@ class UsersTableSeeder extends Seeder
                 'user_id' => 2,
                 'role_id' => 2,
             ]
-        );
+        ]);
 
         DB::table('account_details')->insert([
             'user_id' => 1,

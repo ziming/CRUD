@@ -105,7 +105,7 @@ trait Query
 
         $orderLogic = $column['orderLogic'];
 
-        if (is_callable($orderLogic)) {
+        if ($orderLogic instanceof \Closure) {
             return $orderLogic($this->query, $column, $columnDirection);
         }
 
@@ -173,10 +173,12 @@ trait Query
      * @param  string  $column_direction
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function orderByWithPrefix($column_name, $column_direction = 'ASC')
+    public function orderByWithPrefix($column_name, $column_direction = 'asc')
     {
+        $column_direction = strtolower($column_direction);
+
         if ($this->query->getQuery()->joins !== null) {
-            return $this->query->orderByRaw($this->model->getTableWithPrefix().'.'.$column_name.' '.$column_direction);
+            return $this->query->orderByRaw("\"{$this->model->getTableWithPrefix()}\".\"{$column_name}\" {$column_direction}");
         }
 
         return $this->query->orderBy($column_name, $column_direction);

@@ -156,10 +156,9 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
 
     public function testItCanHideSaveActions()
     {
-        $this->crudPanel->allowAccess(['create', 'update', 'list']);
+        $this->setupDefaultSaveActionsOnCrudPanel();
         $saveAction = $this->singleSaveAction;
         $saveAction['visible'] = false;
-        $this->crudPanel->setupDefaultSaveActions();
         $this->crudPanel->addSaveAction($saveAction);
         $this->assertCount(4, $this->crudPanel->getOperationSetting('save_actions'));
         $this->assertCount(3, $this->crudPanel->getVisibleSaveActions());
@@ -167,9 +166,11 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
 
     public function testItCanGetSaveActionFromSession()
     {
-        $this->crudPanel->allowAccess(['create', 'update', 'list']);
+        $this->setupDefaultSaveActionsOnCrudPanel();  
         $this->crudPanel->addSaveAction($this->singleSaveAction);
-        $this->crudPanel->setupDefaultSaveActions();
+
+        session()->put('create.saveAction', 'save_action_one');
+
         $saveActions = $this->crudPanel->getSaveAction();
 
         $expected = [

@@ -166,7 +166,7 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
 
     public function testItCanGetSaveActionFromSession()
     {
-        $this->setupDefaultSaveActionsOnCrudPanel();  
+        $this->setupDefaultSaveActionsOnCrudPanel();
         $this->crudPanel->addSaveAction($this->singleSaveAction);
 
         session()->put('create.saveAction', 'save_action_one');
@@ -197,7 +197,7 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
     public function testItCanSetTheSaveActionInSessionFromRequest()
     {
         $this->setupDefaultSaveActionsOnCrudPanel();
-        
+
         $this->setupUserCreateRequest();
 
         $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);

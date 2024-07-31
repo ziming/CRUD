@@ -301,7 +301,7 @@ trait SaveActions
     public function setSaveAction($forceSaveAction = null)
     {
         $saveAction = $forceSaveAction ?:
-            \Request::input('_save_action', $this->getFallBackSaveAction());
+            $this->getRequest()->input('_save_action', $this->getFallBackSaveAction());
 
         $showBubble = $this->getOperationSetting('showSaveActionChange') ?? config('backpack.crud.operations.'.$this->getCurrentOperation().'.showSaveActionChange') ?? true;
 
@@ -323,7 +323,7 @@ trait SaveActions
      */
     public function performSaveAction($itemId = null)
     {
-        $request = \Request::instance();
+        $request = $this->getRequest();
         $saveAction = $request->input('_save_action', $this->getFallBackSaveAction());
         $itemId = $itemId ?: $request->input('id');
         $actions = $this->getOperationSetting('save_actions');

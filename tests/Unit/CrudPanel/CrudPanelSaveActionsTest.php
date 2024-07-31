@@ -194,6 +194,19 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
         $this->assertEquals('save_and_back', $this->crudPanel->getSaveAction()['active']['value']);
     }
 
+    public function testItCanSetTheSaveActionInSessionFromRequest()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+        
+        $this->setupUserCreateRequest();
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
+
+        $this->crudPanel->setSaveAction();
+
+        $this->assertEquals('save_action_one', session()->get('create.saveAction'));
+    }
+
     private function setupDefaultSaveActionsOnCrudPanel()
     {
         $this->crudPanel->allowAccess(['create', 'update', 'list']);

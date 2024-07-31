@@ -37,7 +37,7 @@ class CrudPanelQueryDatabaseTest extends BaseDBCrudPanel
 
     public function testRawExpressionsDontGetRemovedFromCount()
     {
-        $this->crudPanel->addClause(fn($query) => $query->raw('WHERE id = 1'));
+        $this->crudPanel->addClause(fn ($query) => $query->raw('WHERE id = 1'));
 
         $this->assertEquals(User::query()->where(DB::raw('id = 1'))->count(), $this->crudPanel->getFilteredQueryCount());
     }

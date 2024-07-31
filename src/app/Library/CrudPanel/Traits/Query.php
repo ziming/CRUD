@@ -173,8 +173,10 @@ trait Query
      * @param  string  $column_direction
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function orderByWithPrefix($column_name, $column_direction = 'ASC')
+    public function orderByWithPrefix($column_name, $column_direction = 'asc')
     {
+        $column_direction = strtolower($column_direction);
+        
         if ($this->query->getQuery()->joins !== null) {
             return $this->query->orderByRaw("\"{$this->model->getTableWithPrefix()}\".\"{$column_name}\" {$column_direction}");
         }

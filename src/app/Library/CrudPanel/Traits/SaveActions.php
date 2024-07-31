@@ -81,9 +81,7 @@ trait SaveActions
         $orderCounter = $this->getOperationSetting('save_actions') !== null ? (count($this->getOperationSetting('save_actions')) + 1) : 1;
         //check for some mandatory fields
         $saveAction['name'] ?? abort(500, 'Please define save action name.');
-        $saveAction['redirect'] = $saveAction['redirect'] ?? function ($crud, $request, $itemId) {
-            return $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
-        };
+        $saveAction['redirect'] = $saveAction['redirect'] ?? fn ($crud, $request, $itemId) => $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
         $saveAction['visible'] = $saveAction['visible'] ?? true;
         $saveAction['button_text'] = $saveAction['button_text'] ?? $saveAction['name'];
         $saveAction['order'] = isset($saveAction['order']) ? $this->orderSaveAction($saveAction['name'], $saveAction['order']) : $orderCounter;
@@ -235,7 +233,7 @@ trait SaveActions
         $actions = $this->getOrderedSaveActions();
         foreach ($actions as $actionName => $action) {
             $visible = $action['visible'];
-            if (is_callable($visible)) {
+            if ($visible instanceof \Closure) {
                 $actions[$actionName]['visible'] = $visible($this);
             }
         }
@@ -332,13 +330,13 @@ trait SaveActions
         $redirectUrl = $this->route;
 
         if (isset($actions[$saveAction])) {
-            if (is_callable($actions[$saveAction]['redirect'])) {
+            if ($actions[$saveAction]['redirect'] instanceof \Closure) {
                 $redirectUrl = $actions[$saveAction]['redirect']($this, $request, $itemId);
             }
 
             //allow the save action to define default http_referrer (url for the save_and_back button)
             if (isset($actions[$saveAction]['referrer_url'])) {
-                if (is_callable($actions[$saveAction]['referrer_url'])) {
+                if ($actions[$saveAction]['referrer_url'] instanceof \Closure) {
                     $referrer_url = $actions[$saveAction]['referrer_url']($this, $request, $itemId);
                 }
             }

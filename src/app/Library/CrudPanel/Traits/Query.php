@@ -105,7 +105,7 @@ trait Query
 
         $orderLogic = $column['orderLogic'];
 
-        if (is_callable($orderLogic)) {
+        if ($orderLogic instanceof \Closure) {
             return $orderLogic($this->query, $column, $columnDirection);
         }
 

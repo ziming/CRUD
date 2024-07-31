@@ -4,19 +4,19 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 use Backpack\CRUD\Tests\config\Models\User;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Query
  */
 class CrudPanelQueryTest extends BaseCrudPanel
 {
-    public function setUp(): void 
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->crudPanel->setModel(User::class);
     }
+
     public function testItHasABaseQuery()
     {
         $this->assertEquals(User::query()->toSql(), $this->crudPanel->query->toSql());

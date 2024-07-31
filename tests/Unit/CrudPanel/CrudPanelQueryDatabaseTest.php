@@ -5,7 +5,6 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 use Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel;
 use Backpack\CRUD\Tests\config\CrudPanel\NoSqlDriverCrudPanel;
 use Backpack\CRUD\Tests\config\Models\User;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Query

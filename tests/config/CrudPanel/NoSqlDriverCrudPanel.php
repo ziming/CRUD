@@ -4,7 +4,7 @@ namespace Backpack\CRUD\Tests\config\CrudPanel;
 
 class NoSqlDriverCrudPanel extends \Backpack\CRUD\app\Library\CrudPanel\CrudPanel
 {
-    public function isSqlDriver()
+    public function driverIsSql()
     {
         return false;
     }

@@ -69,6 +69,18 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         $this->assertEquals(['email'], array_keys($this->crudPanel->getOperationSetting('validationRules')));
     }
 
+    public function testItCanGetTheValidationAttributesFromFields()
+    {
+        $this->crudPanel->addField([
+            'name' => 'email',
+            'validationAttribute' => 'emailed',
+        ]);
+
+        $this->crudPanel->setValidation();
+
+        $this->assertEquals(['email' => 'emailed'], $this->crudPanel->getOperationSetting('validationAttributes'));
+    }
+
     public function testItMergesAllKindsOfValidation()
     {
         $this->crudPanel->setModel(User::class);

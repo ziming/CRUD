@@ -213,7 +213,7 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
     public function testItCanPerformTheSaveActionAndReturnTheRedirect()
     {
         $this->setupDefaultSaveActionsOnCrudPanel();
-        
+
         $redirect = $this->crudPanel->performSaveAction();
         $this->assertEquals(url('/'), $redirect->getTargetUrl());
     }
@@ -221,13 +221,13 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
     public function testItCanPerformTheSaveActionAndReturnTheRedirectFromTheRequest()
     {
         $this->setupDefaultSaveActionsOnCrudPanel();
-        
+
         $this->setupUserCreateRequest();
 
         $this->crudPanel->addSaveAction($this->singleSaveAction);
 
         $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
-        
+
         $redirect = $this->crudPanel->performSaveAction();
 
         $this->assertEquals('https://backpackforlaravel.com', $redirect->getTargetUrl());
@@ -236,13 +236,13 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
     public function testItCanSetGetTheRefeererFromSaveAction()
     {
         $this->setupDefaultSaveActionsOnCrudPanel();
-        
+
         $this->crudPanel->addSaveAction($this->singleSaveAction);
 
         $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
 
         $this->crudPanel->performSaveAction();
-        
+
         $referer = session('referrer_url_override');
 
         $this->assertEquals('https://backpackforlaravel.com', $referer);
@@ -264,7 +264,7 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
             'success' => true,
             'redirect_url' => null,
             'referrer_url' => false,
-            'data' => null
+            'data' => null,
         ], json_decode($response->getContent(), true));
     }
 

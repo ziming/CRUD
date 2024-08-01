@@ -26,7 +26,10 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
             'name' => 'save_action_one',
             'button_text' => 'custom',
             'redirect' => function ($crud, $request, $itemId) {
-                return $crud->route;
+                return 'https://backpackforlaravel.com';
+            },
+            'referrer_url' => function ($crud, $request, $itemId) {
+                return 'https://backpackforlaravel.com';
             },
             'visible' => function ($crud) {
                 return true;
@@ -205,6 +208,64 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
         $this->crudPanel->setSaveAction();
 
         $this->assertEquals('save_action_one', session()->get('create.saveAction'));
+    }
+
+    public function testItCanPerformTheSaveActionAndReturnTheRedirect()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+        
+        $redirect = $this->crudPanel->performSaveAction();
+        $this->assertEquals(url('/'), $redirect->getTargetUrl());
+    }
+
+    public function testItCanPerformTheSaveActionAndReturnTheRedirectFromTheRequest()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+        
+        $this->setupUserCreateRequest();
+
+        $this->crudPanel->addSaveAction($this->singleSaveAction);
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
+        
+        $redirect = $this->crudPanel->performSaveAction();
+
+        $this->assertEquals('https://backpackforlaravel.com', $redirect->getTargetUrl());
+    }
+
+    public function testItCanSetGetTheRefeererFromSaveAction()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+        
+        $this->crudPanel->addSaveAction($this->singleSaveAction);
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
+
+        $this->crudPanel->performSaveAction();
+        
+        $referer = session('referrer_url_override');
+
+        $this->assertEquals('https://backpackforlaravel.com', $referer);
+    }
+
+    public function testItCanPerformTheSaveActionAndRespondWithJson()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->crudPanel->getRequest()->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_and_back']);
+
+        $response = $this->crudPanel->performSaveAction();
+
+        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
+
+        $this->assertEquals([
+            'success' => true,
+            'redirect_url' => null,
+            'referrer_url' => false,
+            'data' => null
+        ], json_decode($response->getContent(), true));
     }
 
     private function setupDefaultSaveActionsOnCrudPanel()

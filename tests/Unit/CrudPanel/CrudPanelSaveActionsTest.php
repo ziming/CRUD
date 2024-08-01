@@ -270,7 +270,6 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
         ], json_decode($response->getContent(), true));
     }
 
-    
     #[DataProvider('saveActionsDataProvider')]
     public function testSaveActionsRedirectAndRefererUrl($action, $redirect, $referrer)
     {
@@ -283,7 +282,6 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
         $this->assertEquals($redirect, $redirectUrl->getTargetUrl());
 
         $this->assertEquals($referrer, session('referrer_url_override') ?? false);
-       
     }
 
     public static function saveActionsDataProvider()

@@ -163,7 +163,7 @@ trait Validation
     {
         $rules = $rules ?? $this->getOperationSetting('validationRules') ?? [];
         $messages = $messages ?? $this->getOperationSetting('validationMessages') ?? [];
-        $attributes = $messages ?? $this->getOperationSetting('validationAttributes') ?? [];
+        $attributes = $attributes ?? $this->getOperationSetting('validationAttributes') ?? [];
 
         $request = (new $request)->createFrom($this->getRequest());
         $extendedRules = $this->mergeRules($request, $rules);

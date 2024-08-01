@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions
  */
@@ -266,6 +268,43 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
             'referrer_url' => false,
             'data' => null,
         ], json_decode($response->getContent(), true));
+    }
+
+    
+    #[DataProvider('saveActionsDataProvider')]
+    public function testSaveActionsRedirectAndRefererUrl($action, $redirect, $referrer)
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => $action, 'id' => 1, '_locale' => 'pt', '_current_tab' => 'tab1']);
+
+        $redirectUrl = $this->crudPanel->performSaveAction();
+
+        $this->assertEquals($redirect, $redirectUrl->getTargetUrl());
+
+        $this->assertEquals($referrer, session('referrer_url_override') ?? false);
+       
+    }
+
+    public static function saveActionsDataProvider()
+    {
+        return [
+            [
+                'action' => 'save_and_back',
+                'redirect' => 'http://localhost',
+                'referrer' => false,
+            ],
+            [
+                'action' => 'save_and_edit',
+                'redirect' => 'http://localhost/1/edit?_locale=pt#tab1',
+                'referrer' => 'http://localhost/1/edit',
+            ],
+            [
+                'action' => 'save_and_new',
+                'redirect' => 'http://localhost/create',
+                'referrer' => false,
+            ],
+        ];
     }
 
     private function setupDefaultSaveActionsOnCrudPanel()

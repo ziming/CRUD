@@ -2,6 +2,8 @@
 
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\SaveActions
  */
@@ -26,7 +28,10 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
             'name' => 'save_action_one',
             'button_text' => 'custom',
             'redirect' => function ($crud, $request, $itemId) {
-                return $crud->route;
+                return 'https://backpackforlaravel.com';
+            },
+            'referrer_url' => function ($crud, $request, $itemId) {
+                return 'https://backpackforlaravel.com';
             },
             'visible' => function ($crud) {
                 return true;
@@ -156,10 +161,9 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
 
     public function testItCanHideSaveActions()
     {
-        $this->crudPanel->allowAccess(['create', 'update', 'list']);
+        $this->setupDefaultSaveActionsOnCrudPanel();
         $saveAction = $this->singleSaveAction;
         $saveAction['visible'] = false;
-        $this->crudPanel->setupDefaultSaveActions();
         $this->crudPanel->addSaveAction($saveAction);
         $this->assertCount(4, $this->crudPanel->getOperationSetting('save_actions'));
         $this->assertCount(3, $this->crudPanel->getVisibleSaveActions());
@@ -167,9 +171,11 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
 
     public function testItCanGetSaveActionFromSession()
     {
-        $this->crudPanel->allowAccess(['create', 'update', 'list']);
+        $this->setupDefaultSaveActionsOnCrudPanel();
         $this->crudPanel->addSaveAction($this->singleSaveAction);
-        $this->crudPanel->setupDefaultSaveActions();
+
+        session()->put('create.saveAction', 'save_action_one');
+
         $saveActions = $this->crudPanel->getSaveAction();
 
         $expected = [
@@ -184,5 +190,124 @@ class CrudPanelSaveActionsTest extends \Backpack\CRUD\Tests\config\CrudPanel\Bas
             ],
         ];
         $this->assertEquals($expected, $saveActions);
+    }
+
+    public function testItGetsTheFirstSaveActionIfTheRequiredActionIsNotASaveAction()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+        session()->put('create.saveAction', 'not_a_save_action');
+        $this->assertEquals('save_and_back', $this->crudPanel->getSaveAction()['active']['value']);
+    }
+
+    public function testItCanSetTheSaveActionInSessionFromRequest()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->setupUserCreateRequest();
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
+
+        $this->crudPanel->setSaveAction();
+
+        $this->assertEquals('save_action_one', session()->get('create.saveAction'));
+    }
+
+    public function testItCanPerformTheSaveActionAndReturnTheRedirect()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $redirect = $this->crudPanel->performSaveAction();
+        $this->assertEquals(url('/'), $redirect->getTargetUrl());
+    }
+
+    public function testItCanPerformTheSaveActionAndReturnTheRedirectFromTheRequest()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->setupUserCreateRequest();
+
+        $this->crudPanel->addSaveAction($this->singleSaveAction);
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
+
+        $redirect = $this->crudPanel->performSaveAction();
+
+        $this->assertEquals('https://backpackforlaravel.com', $redirect->getTargetUrl());
+    }
+
+    public function testItCanSetGetTheRefeererFromSaveAction()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->crudPanel->addSaveAction($this->singleSaveAction);
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_action_one']);
+
+        $this->crudPanel->performSaveAction();
+
+        $referer = session('referrer_url_override');
+
+        $this->assertEquals('https://backpackforlaravel.com', $referer);
+    }
+
+    public function testItCanPerformTheSaveActionAndRespondWithJson()
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->crudPanel->getRequest()->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => 'save_and_back']);
+
+        $response = $this->crudPanel->performSaveAction();
+
+        $this->assertEquals('application/json', $response->headers->get('Content-Type'));
+
+        $this->assertEquals([
+            'success' => true,
+            'redirect_url' => null,
+            'referrer_url' => false,
+            'data' => null,
+        ], json_decode($response->getContent(), true));
+    }
+
+    #[DataProvider('saveActionsDataProvider')]
+    public function testSaveActionsRedirectAndRefererUrl($action, $redirect, $referrer)
+    {
+        $this->setupDefaultSaveActionsOnCrudPanel();
+
+        $this->crudPanel->getRequest()->merge(['_save_action' => $action, 'id' => 1, '_locale' => 'pt', '_current_tab' => 'tab1']);
+
+        $redirectUrl = $this->crudPanel->performSaveAction();
+
+        $this->assertEquals($redirect, $redirectUrl->getTargetUrl());
+
+        $this->assertEquals($referrer, session('referrer_url_override') ?? false);
+    }
+
+    public static function saveActionsDataProvider()
+    {
+        return [
+            [
+                'action' => 'save_and_back',
+                'redirect' => 'http://localhost',
+                'referrer' => false,
+            ],
+            [
+                'action' => 'save_and_edit',
+                'redirect' => 'http://localhost/1/edit?_locale=pt#tab1',
+                'referrer' => 'http://localhost/1/edit',
+            ],
+            [
+                'action' => 'save_and_new',
+                'redirect' => 'http://localhost/create',
+                'referrer' => false,
+            ],
+        ];
+    }
+
+    private function setupDefaultSaveActionsOnCrudPanel()
+    {
+        $this->crudPanel->allowAccess(['create', 'update', 'list']);
+        $this->crudPanel->setupDefaultSaveActions();
     }
 }

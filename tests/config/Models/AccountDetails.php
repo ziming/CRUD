@@ -12,6 +12,11 @@ class AccountDetails extends Model
     protected $table = 'account_details';
     protected $fillable = ['user_id', 'nickname', 'profile_picture', 'article_id', 'start_date', 'end_date'];
 
+    public function identifiableAttribute()
+    {
+        return 'nickname';
+    }
+
     /**
      * Get the user for the account details.
      */

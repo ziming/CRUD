@@ -13,6 +13,11 @@ class User extends Model
 
     protected $fillable = ['name', 'email', 'password', 'extras'];
 
+    public function identifiableAttribute()
+    {
+        return 'name';
+    }
+
     /**
      * Get the account details associated with the user.
      */

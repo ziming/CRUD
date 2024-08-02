@@ -371,8 +371,8 @@ trait Columns
     {
         $column = $this->makeSureColumnHasName($column);
         $column = $this->makeSureColumnHasKey($column);
-        $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasEntity($column);
+        $column = $this->makeSureColumnHasLabel($column);
         $column = $this->makeSureColumnHasModel($column);
         $column = $this->makeSureColumnHasAttribute($column);
         $column = $this->makeSureColumnHasRelationType($column);

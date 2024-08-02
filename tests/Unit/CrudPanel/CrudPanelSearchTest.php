@@ -12,7 +12,7 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
 {
     private string $expectedDefaultColumnValue = "<span>\n                        user\n            </span>";
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->crudPanel->setModel(User::class);
@@ -27,7 +27,7 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
             'searchLogic' => $columnType,
             'tableColumn' => true,
             'entity' => $columnType === 'select' ? 'accountDetails' : ($columnType === 'select_multiple' ? 'articles' : false),
-            'relation_type' =>  $columnType === 'select' ? 'HasOne' : ($columnType === 'select_multiple' ? 'HasMany' : false),
+            'relation_type' => $columnType === 'select' ? 'HasOne' : ($columnType === 'select_multiple' ? 'HasMany' : false),
         ]);
 
         $this->crudPanel->applySearchTerm($searchTerm);
@@ -176,7 +176,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $rowColumnsHtml = str_replace($this->expectedDefaultColumnValue, '', $rowColumnsHtml);
 
         $this->assertStringContainsString('details-row-button', $rowColumnsHtml);
-
     }
 
     public function testItRendersTheBulkActions()
@@ -194,7 +193,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $rowColumnsHtml = str_replace($this->expectedDefaultColumnValue, '', $rowColumnsHtml);
 
         $this->assertStringContainsString('crud_bulk_actions_line_checkbox', $rowColumnsHtml);
-
     }
 
     public function testItRendersTheLineStackButtons()
@@ -210,9 +208,8 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][1];
 
         $this->assertStringContainsString('btn-secondary', $rowColumnsHtml);
-
     }
-    
+
     public static function columnsDefaultSearchLogic()
     {
         return [
@@ -222,7 +219,7 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
             ['2023-12-24', 'date', 'select * from "users" where (strftime(\'%Y-%m-%d\', "users"."test") = cast(\'2023-12-24\' as text))'],
             ['2023-12-24', 'datetime', 'select * from "users" where (strftime(\'%Y-%m-%d\', "users"."test") = cast(\'2023-12-24\' as text))'],
             ['test', 'select', 'select * from "users" where (exists (select * from "account_details" where "users"."id" = "account_details"."user_id" and "account_details"."nickname" like \'%test%\'))'],
-            ['test', 'select_multiple', 'select * from "users" where (exists (select * from "articles" where "users"."id" = "articles"."user_id" and "articles"."content" like \'%test%\'))']
+            ['test', 'select_multiple', 'select * from "users" where (exists (select * from "articles" where "users"."id" = "articles"."user_id" and "articles"."content" like \'%test%\'))'],
         ];
     }
 }

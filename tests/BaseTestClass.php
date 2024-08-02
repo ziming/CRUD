@@ -68,7 +68,7 @@ abstract class BaseTestClass extends TestCase
         $attributes = array_merge([
             'id' => 1,
             'name' => 'user',
-            'email' => 'user@email.com'
+            'email' => 'user@email.com',
         ], $attributes);
 
         return \Backpack\CRUD\Tests\config\Models\User::make($attributes);

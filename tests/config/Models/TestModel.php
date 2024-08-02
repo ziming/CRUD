@@ -14,7 +14,7 @@ class TestModel extends \Illuminate\Database\Eloquent\Model
         'dateCast' => 'date',
         'booleanCast' => 'boolean',
         'datetimeCast' => 'datetime',
-        'numberCast' => 'int',
+        'numberCast' => 'timestamp',
     ];
 
     protected $dates = [

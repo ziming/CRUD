@@ -9,8 +9,8 @@ class TestModelWithTranslations extends TestModel
         return true;
     }
 
-   public function getTranslations()
-   {
-         return ['translatableColumn' => null];
-   }
+    public function getTranslations()
+    {
+        return ['translatableColumn' => null];
+    }
 }

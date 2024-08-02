@@ -10,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
-    private string $expectedDefaultColumnValue = "<span>\n                        user\n            </span>";
+    private string $expectedDefaultColumnValue = "<span>".PHP_EOL."                        user".PHP_EOL."            </span>";
 
     public function setUp(): void
     {

@@ -90,7 +90,6 @@ trait Search
                     break;
 
                 default:
-                    return;
                     break;
             }
         }
@@ -101,13 +100,14 @@ trait Search
      */
     public function applyDatatableOrder()
     {
-        if (request()->input('order')) {
+        if ($this->getRequest()->input('order')) {
             // clear any past orderBy rules
             $this->query->getQuery()->orders = null;
-            foreach ((array) request()->input('order') as $order) {
+            foreach ((array) $this->getRequest()->input('order') as $order) {
                 $column_number = (int) $order['column'];
                 $column_direction = (strtolower((string) $order['dir']) == 'asc' ? 'ASC' : 'DESC');
                 $column = $this->findColumnById($column_number);
+
                 if ($column['tableColumn'] && ! isset($column['orderLogic'])) {
                     if (method_exists($this->model, 'translationEnabled') &&
                         $this->model->translationEnabled() &&

@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Backpack\CRUD\Tests\config\Models\User;
+use Backpack\CRUD\Tests\config\Models\UserWithTranslations;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
@@ -208,6 +209,65 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][1];
 
         $this->assertStringContainsString('btn-secondary', $rowColumnsHtml);
+    }
+
+    public function testItAppliesCustomOrderByPrimaryKeyForDatatables()
+    {
+        $this->crudPanel->applyDatatableOrder();
+
+        $this->assertEquals('select * from "users" order by "id" desc', $this->crudPanel->query->toRawSql());
+    }
+
+    public function testItCanApplyDatatableOrderFromRequest()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'test',
+            'tableColumn' => true,
+        ]);
+        $this->setupUserCreateRequest();
+        $this->crudPanel->getRequest()->merge(['order' => [['column' => 0, 'dir' => 'asc']]]);
+
+        $this->crudPanel->applyDatatableOrder();
+
+        $this->assertEquals('select * from "users" order by "name" asc, "id" desc', $this->crudPanel->query->toRawSql());
+
+    }
+
+    public function testItCanApplySearchLogicForTranslatableJsonColumns()
+    {
+        $this->crudPanel->setModel(UserWithTranslations::class);
+
+        $this->crudPanel->addColumn([
+            'name' => 'json',
+            'type' => 'json',
+            'tableColumn' => true,
+        ]);
+        $this->setupUserCreateRequest();
+        $this->crudPanel->getRequest()->merge(['order' => [['column' => 0, 'dir' => 'asc']]]);
+
+        $this->crudPanel->applyDatatableOrder();
+
+        $this->assertEquals('select * from "users" order by json_extract("json", \'$."en"\') asc, "id" desc', $this->crudPanel->query->toRawSql());
+
+    }
+
+    public function testItCanApplySearchLogicForTranslatableColumns()
+    {
+        $this->crudPanel->setModel(UserWithTranslations::class);
+
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'text',
+            'tableColumn' => true,
+        ]);
+        $this->setupUserCreateRequest();
+        $this->crudPanel->getRequest()->merge(['order' => [['column' => 0, 'dir' => 'asc']]]);
+
+        $this->crudPanel->applyDatatableOrder();
+
+        $this->assertEquals('select * from "users" order by "name" asc, "id" desc', $this->crudPanel->query->toRawSql());
+
     }
 
     public static function columnsDefaultSearchLogic()

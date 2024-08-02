@@ -8,8 +8,26 @@ class TestModel extends \Illuminate\Database\Eloquent\Model
 {
     use CrudTrait;
 
+    protected $casts = [
+        'arrayCast' => 'array',
+        'jsonCast' => 'json',
+        'dateCast' => 'date',
+        'booleanCast' => 'boolean',
+        'datetimeCast' => 'datetime',
+        'numberCast' => 'int',
+    ];
+
+    protected $dates = [
+        'someDate',
+    ];
+
     public function buttonModelFunction()
     {
         return 'model function button test';
+    }
+
+    public function article()
+    {
+        return $this->belongsTo('Backpack\CRUD\Tests\Config\Models\Article');
     }
 }

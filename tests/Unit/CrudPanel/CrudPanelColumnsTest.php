@@ -12,7 +12,7 @@ use Backpack\CRUD\Tests\config\Models\User;
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudColumn
  * @covers Backpack\CRUD\app\Library\CrudPanel\CrudPanel
  */
-class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCrudPanel
+class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
     private $oneColumnArray = [
         'name' => 'column1',
@@ -737,7 +737,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $columnArray = $this->crudPanel->columns()['articles'];
         $reflection = new \ReflectionFunction($columnArray['wrapper']['href']);
         $arguments = $reflection->getClosureUsedVariables();
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('articles.show', $arguments['route']);
         $this->assertCount(1, $arguments['parameters']);
@@ -752,7 +752,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $arguments = $reflection->getClosureUsedVariables();
         $this->assertEquals('articles.show', $arguments['route']);
         $this->assertCount(3, $arguments['parameters']);
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=testing2', $url);
     }
@@ -761,7 +761,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
     {
         $this->crudPanel->column('articles')->entity('articles')->linkTo('article.show.detail', ['detail' => 'testing', 'otherParam' => 'test']);
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show/testing?otherParam=test', $url);
     }
@@ -772,7 +772,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
                         ->entity('articles')
                         ->linkTo('article.show.detail', ['detail' => fn ($entry, $related_key) => $related_key, 'otherParam' => fn ($entry) => $entry->content]);
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show/1?otherParam=Some%20Content', $url);
     }
@@ -783,7 +783,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
                         ->entity('articles')
                         ->linkTo('article.show.detail', ['id' => 123, 'detail' => fn ($entry, $related_key) => $related_key, 'otherParam' => fn ($entry) => $entry->content]);
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/123/show/1?otherParam=Some%20Content', $url);
     }
@@ -794,7 +794,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
                         ->entity('articles')
                         ->linkTo('article.show.detail', ['id' => 123, 'otherParam' => fn ($entry) => $entry->content]);
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/123/show/1?otherParam=Some%20Content', $url);
     }
@@ -805,7 +805,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
                         ->entity('articles')
                         ->linkTo(fn ($entry) => route('articles.show', $entry->content));
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/Some%20Content/show', $url);
     }
@@ -819,7 +819,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
             'linkTo' => fn ($entry) => route('articles.show', ['id' => $entry->id, 'test' => 'testing']),
         ]);
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show?test=testing', $url);
     }
@@ -833,7 +833,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
             'linkTo' => 'articles.show',
         ]);
         $columnArray = $this->crudPanel->columns()['articles'];
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show', $url);
     }
@@ -857,7 +857,7 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBC
         $arguments = $reflection->getClosureUsedVariables();
         $this->assertEquals('articles.show', $arguments['route']);
         $this->assertCount(3, $arguments['parameters']);
-        $this->crudPanel->entry = Article::first();
+        $this->crudPanel->entry = $this->makeAnArticleModel();
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=Some%20Content', $url);
     }

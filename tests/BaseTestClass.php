@@ -53,6 +53,15 @@ abstract class BaseTestClass extends TestCase
         $this->crudPanel->setRequest($request);
     }
 
+    protected function makeAnArticleModel(array $attributes = [])
+    {
+        $attributes = array_merge([
+            'id' => 1,
+            'content' => 'Some Content',
+        ], $attributes);
+        return \Backpack\CRUD\Tests\config\Models\Article::make($attributes);
+    }
+
     // allow us to run crud panel private/protected methods like `inferFieldTypeFromDbColumnType`
     public function invokeMethod(&$object, $methodName, array $parameters = [])
     {

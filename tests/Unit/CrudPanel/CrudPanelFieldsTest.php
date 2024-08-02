@@ -4,6 +4,7 @@ namespace Backpack\CRUD\Tests\Unit\CrudPanel;
 
 use Arr;
 use Backpack\CRUD\app\Library\CrudPanel\CrudField;
+use Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel;
 use Backpack\CRUD\Tests\config\Models\Star;
 use Backpack\CRUD\Tests\config\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Input
  * @covers Backpack\CRUD\app\Library\CrudPanel\Traits\Views
  */
-class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
+class CrudPanelFieldsTest extends BaseCrudPanel
 {
     private $oneTextFieldArray = [
         'name' => 'field1',
@@ -721,6 +722,7 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
     {
         $this->crudPanel->addField(['name' => 'test', 'view_namespace' => 'test_namespace']);
         $this->assertEquals('test_namespace.text', $this->crudPanel->getFieldTypeWithNamespace($this->crudPanel->fields()['test']));
+        $this->assertEquals('test', $this->crudPanel->getFieldTypeWithNamespace('test'));
     }
 
     public function testItCanGetAllFieldNames()
@@ -926,10 +928,56 @@ class CrudPanelFieldsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->assertEquals('backpack.theme-coreuiv2::fields.custom_namespace.test', $this->crudPanel->getFirstFieldView('test', 'backpack.theme-coreuiv2::fields.custom_namespace'));
     }
 
+    public function testItDoesntAttemptToMoveFieldsIfTheyDontExist()
+    {
+        $this->assertFalse($this->crudPanel->makeFirstField());
+    }
+   
     public function testItThrowExceptionWhenViewNotFound()
     {
         $this->expectException(\Exception::class);
         $this->crudPanel->getFirstFieldView('test2');
+    }
+
+    public function testItCanGetUploadFieldsFromSubfields()
+    {
+        $this->crudPanel->addField([
+            'name' => 'test1',
+            'subfields' => [
+                ['name' => 'test1_1', 'upload' => true],
+                ['name' => 'test1_2'],
+            ],
+        ]);
+        $this->crudPanel->addField([
+            'name' => 'test2',
+            'subfields' => [
+                ['name' => 'test2_1'],
+                ['name' => 'test2_2'],
+            ],
+        ]);
+
+        $this->assertCount(2, $this->crudPanel->getFields());
+        $this->assertTrue($this->crudPanel->hasUploadFields());
+    }
+
+    public function testItCanMarkAFieldTypeAsLoaded()
+    {
+        $this->crudPanel->addField([
+            'name' => 'test1',
+            'type' => 'text',
+        ]);
+        $field = $this->crudPanel->fields()['test1'];
+        $this->assertTrue($this->crudPanel->markFieldTypeAsLoaded($field));
+        $this->assertFalse($this->crudPanel->markFieldTypeAsLoaded($field));
+        $this->assertTrue($this->crudPanel->fieldTypeLoaded($field));
+        $this->assertTrue($this->crudPanel->fieldTypeNotLoaded(['type' => 'test']));
+        $this->assertEquals(['text'], $this->crudPanel->getLoadedFieldTypes());
+    }
+
+    public function testItCanGetFieldNamesFromNamesWithCommas()
+    {
+        $this->crudPanel->addField('test1, test2');
+        $this->assertEquals(['test1', 'test2'], $this->crudPanel->getAllFieldNames());
     }
 }
 

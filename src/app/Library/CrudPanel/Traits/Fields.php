@@ -92,7 +92,7 @@ trait Fields
         foreach ($this->getCleanStateFields() as $key => $field) {
             if (isset($field['events'])) {
                 foreach ($field['events'] as $event => $closure) {
-                    $this->model->{$event}($closure);
+                    $this->model->getEventDispatcher()->listen("eloquent.{$event}: ".get_class($this->model), $closure);
                 }
             }
         }

@@ -10,6 +10,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
  */
 class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrudPanel
 {
+    private string $expectedDefaultColumnValue = "<span>\n                        user\n            </span>";
+
     public function setUp():void
     {
         parent::setUp();
@@ -145,8 +147,72 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->assertTrue($this->crudPanel->getResponsiveTable());
     }
 
+    public function testItCanGetTheRenderedViewsForTheColumns()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'test',
+        ]);
 
+        $entries = [$this->makeAUserModel()];
 
+        $rowColumnsHtml = trim($this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][0]);
+
+        $this->assertEquals($this->expectedDefaultColumnValue, $rowColumnsHtml);
+    }
+
+    public function testItRendersTheDetailsRow()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'test',
+        ]);
+
+        $this->crudPanel->setOperationSetting('detailsRow', true);
+        $entries = [$this->makeAUserModel()];
+
+        $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][0];
+
+        $rowColumnsHtml = str_replace($this->expectedDefaultColumnValue, '', $rowColumnsHtml);
+
+        $this->assertStringContainsString('details-row-button', $rowColumnsHtml);
+
+    }
+
+    public function testItRendersTheBulkActions()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'test',
+        ]);
+
+        $this->crudPanel->setOperationSetting('bulkActions', true);
+        $entries = [$this->makeAUserModel()];
+
+        $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][0];
+
+        $rowColumnsHtml = str_replace($this->expectedDefaultColumnValue, '', $rowColumnsHtml);
+
+        $this->assertStringContainsString('crud_bulk_actions_line_checkbox', $rowColumnsHtml);
+
+    }
+
+    public function testItRendersTheLineStackButtons()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'test',
+        ]);
+
+        $this->crudPanel->button('test')->stack('line')->type('view')->content('backpack.theme-coreuiv2::buttons.test');
+        $entries = [$this->makeAUserModel()];
+
+        $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][1];
+
+        $this->assertStringContainsString('btn-secondary', $rowColumnsHtml);
+
+    }
+    
     public static function columnsDefaultSearchLogic()
     {
         return [

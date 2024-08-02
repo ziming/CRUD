@@ -63,6 +63,17 @@ abstract class BaseTestClass extends TestCase
         return \Backpack\CRUD\Tests\config\Models\Article::make($attributes);
     }
 
+    protected function makeAUserModel(array $attributes = [])
+    {
+        $attributes = array_merge([
+            'id' => 1,
+            'name' => 'user',
+            'email' => 'user@email.com'
+        ], $attributes);
+
+        return \Backpack\CRUD\Tests\config\Models\User::make($attributes);
+    }
+
     // allow us to run crud panel private/protected methods like `inferFieldTypeFromDbColumnType`
     public function invokeMethod(&$object, $methodName, array $parameters = [])
     {

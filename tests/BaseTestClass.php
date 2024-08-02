@@ -59,6 +59,7 @@ abstract class BaseTestClass extends TestCase
             'id' => 1,
             'content' => 'Some Content',
         ], $attributes);
+
         return \Backpack\CRUD\Tests\config\Models\Article::make($attributes);
     }
 

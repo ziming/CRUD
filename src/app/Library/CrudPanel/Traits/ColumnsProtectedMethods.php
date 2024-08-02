@@ -162,8 +162,10 @@ trait ColumnsProtectedMethods
 
     /**
      * @deprecated Never used. Will be removed in a future version.
+     *
      * @param  array  $column  Column definition array.
      * @return array Column definition array with wrapper.
+     *
      * @codeCoverageIgnore
      */
     protected function makeSureColumnHasWrapper($column)

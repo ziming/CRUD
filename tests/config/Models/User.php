@@ -17,6 +17,7 @@ class User extends Model
     {
         return 'name';
     }
+
     /**
      * Get the account details associated with the user.
      */

@@ -112,6 +112,11 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->assertFalse($this->crudPanel->getPersistentTable());
     }
 
+    public function testItCanGetPersistentTableFromConfig()
+    {
+        $this->assertNull($this->crudPanel->getPersistentTable());
+    }
+
     public function testItCanGetAndSetTheResponsiveTable()
     {
         $this->crudPanel->enableResponsiveTable(true);
@@ -212,6 +217,44 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->crudPanel->applyDatatableOrder();
 
         $this->assertEquals('select * from "users" order by "id" desc', $this->crudPanel->query->toRawSql());
+    }
+
+    public function testItCanApplyACustomSearchLogic()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'text',
+            'tableColumn' => true,
+            'orderLogic' => function ($query, $column, $searchTerm) {
+                $query->orderBy('name', 'asc');
+            },
+        ]);
+
+        $this->setupUserCreateRequest();
+        $this->crudPanel->getRequest()->merge(['order' => [['column' => 0, 'dir' => 'asc']]]);
+
+        $this->crudPanel->applyDatatableOrder();
+
+        $this->assertEquals('select * from "users" order by "name" asc, "id" desc', $this->crudPanel->query->toRawSql());
+    }
+
+    public function testItDoesNotReplacePrimaryKeyIfItAlreadyExists()
+    {
+        $this->crudPanel->addColumn([
+            'name' => 'name',
+            'type' => 'text',
+            'tableColumn' => true,
+            'orderLogic' => function ($query, $column, $searchTerm) {
+                $query->orderBy('id', 'asc');
+            },
+        ]);
+
+        $this->setupUserCreateRequest();
+        $this->crudPanel->getRequest()->merge(['order' => [['column' => 0, 'dir' => 'asc']]]);
+
+        $this->crudPanel->applyDatatableOrder();
+
+        $this->assertEquals('select * from "users" order by "id" asc', $this->crudPanel->query->toRawSql());
     }
 
     public function testItCanApplyDatatableOrderFromRequest()

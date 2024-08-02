@@ -174,8 +174,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
 
         $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][0];
 
-        $rowColumnsHtml = str_replace($this->expectedDefaultColumnValue, '', $rowColumnsHtml);
-
         $this->assertStringContainsString('details-row-button', $rowColumnsHtml);
     }
 
@@ -190,8 +188,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $entries = [$this->makeAUserModel()];
 
         $rowColumnsHtml = $this->crudPanel->getEntriesAsJsonForDatatables($entries, 1, 0)['data'][0][0];
-
-        $rowColumnsHtml = str_replace($this->expectedDefaultColumnValue, '', $rowColumnsHtml);
 
         $this->assertStringContainsString('crud_bulk_actions_line_checkbox', $rowColumnsHtml);
     }

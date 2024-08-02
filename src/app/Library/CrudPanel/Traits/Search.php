@@ -45,7 +45,7 @@ trait Search
             $searchLogic = $column['searchLogic'];
 
             // if a closure was passed, execute it
-            if (is_callable($searchLogic)) {
+            if ($searchLogic instanceof \Closure) {
                 return $searchLogic($query, $column, $searchTerm);
             }
 
@@ -55,7 +55,7 @@ trait Search
             }
 
             // if false was passed, don't search this column
-            if ($searchLogic == false) {
+            if ($searchLogic === false) {
                 return;
             }
         }

@@ -6,10 +6,12 @@ class UserWithTranslations extends User
 {
     use Traits\HasTranslationsFake;
 
-    public static function getDbTableSchema() 
+    public static function getDbTableSchema()
     {
-        return new class {
-            public function getColumnType($column) {
+        return new class
+        {
+            public function getColumnType($column)
+            {
                 return $column;
             }
         };

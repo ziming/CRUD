@@ -231,7 +231,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->crudPanel->applyDatatableOrder();
 
         $this->assertEquals('select * from "users" order by "name" asc, "id" desc', $this->crudPanel->query->toRawSql());
-
     }
 
     public function testItCanApplySearchLogicForTranslatableJsonColumns()
@@ -249,7 +248,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->crudPanel->applyDatatableOrder();
 
         $this->assertEquals('select * from "users" order by json_extract("json", \'$."en"\') asc, "id" desc', $this->crudPanel->query->toRawSql());
-
     }
 
     public function testItCanApplySearchLogicForTranslatableColumns()
@@ -267,7 +265,6 @@ class CrudPanelSearchTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCrud
         $this->crudPanel->applyDatatableOrder();
 
         $this->assertEquals('select * from "users" order by "name" asc, "id" desc', $this->crudPanel->query->toRawSql());
-
     }
 
     public static function columnsDefaultSearchLogic()

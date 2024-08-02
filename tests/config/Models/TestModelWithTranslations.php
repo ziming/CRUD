@@ -1,16 +1,8 @@
 <?php
 
-namespace Backpack\CRUD\Tests\Config\Models;
+namespace Backpack\CRUD\Tests\config\Models;
 
 class TestModelWithTranslations extends TestModel
 {
-    public function translationEnabledForModel()
-    {
-        return true;
-    }
-
-    public function getTranslations()
-    {
-        return ['translatableColumn' => null];
-    }
+    use Traits\HasTranslationsFake;
 }

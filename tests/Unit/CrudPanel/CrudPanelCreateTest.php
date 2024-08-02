@@ -1703,7 +1703,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     public function testItCanRegisterModelEventsInTheFields()
     {
         $this->crudPanel->setModel(User::class);
-    
+
         $this->crudPanel->addField([
             'name' => 'name',
             'events' => [
@@ -1729,7 +1729,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         ]);
 
         $this->crudPanel->registerFieldEvents();
-    
+
         $this->assertNotEmpty($this->crudPanel->getModel()->getEventDispatcher()->getListeners('eloquent.created: Backpack\CRUD\Tests\Config\Models\User'));
         $this->assertNotEmpty($this->crudPanel->getModel()->getEventDispatcher()->getListeners('eloquent.creating: Backpack\CRUD\Tests\Config\Models\User'));
         $this->assertNotEmpty($this->crudPanel->getModel()->getEventDispatcher()->getListeners('eloquent.saving: Backpack\CRUD\Tests\Config\Models\User'));
@@ -1740,10 +1740,9 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertNotEmpty($this->crudPanel->getModel()->getEventDispatcher()->getListeners('eloquent.deleted: Backpack\CRUD\Tests\Config\Models\User'));
 
         $this->crudPanel->getModel()->create(['name' => 'test']);
-    
-        $this->assertEquals('backpack@laravel.com', User::latest('id')->first()->email);  
+
+        $this->assertEquals('backpack@laravel.com', User::latest('id')->first()->email);
     }
-     
 
     private function getPivotInputData(array $pivotRelationData, bool $initCrud = true, bool $allowDuplicates = false)
     {

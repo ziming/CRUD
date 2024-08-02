@@ -932,7 +932,7 @@ class CrudPanelFieldsTest extends BaseCrudPanel
     {
         $this->assertFalse($this->crudPanel->makeFirstField());
     }
-   
+
     public function testItThrowExceptionWhenViewNotFound()
     {
         $this->expectException(\Exception::class);

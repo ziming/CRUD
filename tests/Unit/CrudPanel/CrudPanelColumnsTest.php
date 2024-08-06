@@ -732,6 +732,10 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCru
         $this->crudPanel->column('test4')->before('test1');
         $crudColumnsNames = array_column($this->crudPanel->columns(), 'name');
         $this->assertEquals($crudColumnsNames, ['test4', 'test1', 'test3', 'test2']);
+
+        $this->crudPanel->column('test5')->afterColumn('test1');
+        $crudColumnsNames = array_column($this->crudPanel->columns(), 'name');
+        $this->assertEquals($crudColumnsNames, ['test4', 'test1', 'test5', 'test3', 'test2']);
     }
 
     public function testItCanRemoveColumnAttributesFluently()

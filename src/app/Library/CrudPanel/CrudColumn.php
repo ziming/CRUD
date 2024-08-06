@@ -143,6 +143,12 @@ class CrudColumn
         return $this;
     }
 
+    /** Alias of after() */
+    public function afterColumn(string $destinationColumn)
+    {
+        $this->after($destinationColumn);
+    }
+
     /**
      * Move the current column before another column.
      *

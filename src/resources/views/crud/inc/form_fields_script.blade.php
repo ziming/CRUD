@@ -85,7 +85,8 @@
             if(this.isSubfield) {
                 window.crud.subfieldsCallbacks[this.parent.name] ??= [];
                 window.crud.subfieldsCallbacks[this.parent.name].push({ closure, field: this });
-                this.wrapper.trigger('CrudField:subfieldCallbacksUpdated');
+
+                this.parent.wrapper.trigger('CrudField:subfieldCallbacksUpdated');
                 return this;
             }
 
@@ -99,7 +100,11 @@
 
         change() {
             if(this.isSubfield) {
-                window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
+                window.crud.subfieldsCallbacks[this.parent.name]?.forEach(function(callback) {
+                    if(callback.field.name === this.name) {
+                        callback.triggerChange = true;
+                    }
+                }, this);
             } else {
                 let event = new Event('change');
                 this.input?.dispatchEvent(event);
@@ -153,11 +158,12 @@
         subfield(name, rowNumber = false) {
             let subfield = new CrudField(this.name);
             subfield.name = name;
+            subfield.parent = this;                
+            
 
             if(!rowNumber) {
                 subfield.isSubfield = true;
                 subfield.subfieldHolder = this.name; // deprecated
-                subfield.parent = this;
             } else {
                 subfield.rowNumber = rowNumber;
                 subfield.wrapper = $(`[data-repeatable-identifier="${this.name}"][data-row-number="${rowNumber}"]`).find(`[bp-field-wrapper][bp-field-name$="${name}"]`);

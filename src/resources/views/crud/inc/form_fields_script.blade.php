@@ -100,7 +100,11 @@
 
         change() {
             if(this.isSubfield) {
-                window.crud.subfieldsCallbacks[this.parent.name]?.forEach(callback => callback.triggerChange = true);
+                window.crud.subfieldsCallbacks[this.parent.name]?.forEach(function(callback) {
+                    if(callback.field.name === this.name) {
+                        callback.triggerChange = true;
+                    }
+                }, this);
             } else {
                 let event = new Event('change');
                 this.input?.dispatchEvent(event);

@@ -134,7 +134,7 @@ For tasks & details about how you can help our project, please see [CONTRIBUTING
 - [Pedro Martins](https://github.com/pxpm) - senior maintainer;
 - [António Almeida](https://github.com/promatik) - senior maintainer;
 - [Karan Datwani](https://github.com/karandatwani92) - maintainer & social media manager;
-- [Jorge Castro](https://github.com/jorgetwgroup) - maintainer;
+- [Jorge Castro](https://github.com/jcastroa87) - maintainer;
 - [290+ wonderful contributors][link-contributors]
 
 Special thanks go to:

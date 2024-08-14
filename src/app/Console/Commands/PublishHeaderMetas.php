@@ -32,7 +32,7 @@ class PublishHeaderMetas extends Command
         $appColor = $this->ask('What is the application color ?', '#161c2d');
         $pathPrefix = $this->ask('Where should icon files be published relative to public folder?');
 
-        $pathPrefix = Str::finish($pathPrefix ?? '', '/');
+        $pathPrefix = Str::start(Str::finish($pathPrefix ?? '', '/'), '/');
 
         // laravel adds a dummy favicon with 0 bytes. we need to remove it otherwise our script would skip publishing the favicon on new Laravel installations.
         // we will check the favicon file size, to make sure it's not a "valid" favicon. we will only delete the favicon if it has 0 bytes in size.

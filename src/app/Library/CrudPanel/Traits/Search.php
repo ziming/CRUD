@@ -134,13 +134,14 @@ trait Search
         $orderBy = $this->query->toBase()->orders;
         $table = $this->model->getTable();
         $key = $this->model->getKeyName();
+        $groupBy = $this->query->toBase()->groups;
 
         $hasOrderByPrimaryKey = collect($orderBy)->some(function ($item) use ($key, $table) {
             return (isset($item['column']) && $item['column'] === $key)
                 || (isset($item['sql']) && str_contains($item['sql'], "$table.$key"));
         });
 
-        if (! $hasOrderByPrimaryKey) {
+        if (! $hasOrderByPrimaryKey && empty($groupBy)) {
             $this->orderByWithPrefix($key, 'DESC');
         }
     }

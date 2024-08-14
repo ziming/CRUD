@@ -2,8 +2,8 @@
 	@if (!$crud->model->translationEnabled())
 
 	{{-- Single edit button --}}
-	<a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}" class="btn btn-sm btn-link">
-		<span><i class="la la-edit"></i> <span class="update-button-text-span">{{ trans('backpack::crud.edit') }}</span></span>
+	<a href="{{ url($crud->route.'/'.$entry->getKey().'/edit') }}" bp-button="update" class="btn btn-sm btn-link">
+		<i class="la la-edit"></i> <span>{{ trans('backpack::crud.edit') }}</span>
 	</a>
 
 	@else

@@ -57,7 +57,7 @@ class CrudField
         }
 
         if (is_array($name)) {
-            $name = implode(',', $name);
+            abort(500, 'Field name can\'t be an array. It should be a string. Error in field: '.json_encode($name));
         }
 
         $field = $this->crud()->firstFieldWhere('name', $name);

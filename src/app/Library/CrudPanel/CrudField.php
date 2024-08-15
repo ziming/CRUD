@@ -56,6 +56,10 @@ class CrudField
             $name = $nameOrDefinitionArray;
         }
 
+        if(is_array($name)) {
+            $name = implode(',', $name);
+        }
+        
         $field = $this->crud()->firstFieldWhere('name', $name);
 
         // if field exists

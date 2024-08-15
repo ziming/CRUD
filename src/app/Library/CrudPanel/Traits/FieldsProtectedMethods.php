@@ -119,6 +119,10 @@ trait FieldsProtectedMethods
             abort(500, 'All fields must have their name defined');
         }
 
+        if(is_array($field['name'])) {
+            $field['name'] = implode(',', $field['name']);
+        }
+
         $field['name'] = Str::replace(' ', '', $field['name']);
 
         return $field;

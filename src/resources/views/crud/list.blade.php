@@ -67,45 +67,32 @@
               <tr>
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
+                  @php
+                  $exportOnlyColumn = $column['exportOnlyColumn'] ?? false;
+                  $visibleInTable = $column['visibleInTable'] ?? ($exportOnlyColumn ? false : true);
+                  $visibleInModal = $column['visibleInModal'] ?? ($exportOnlyColumn ? false : true);
+                  $visibleInExport = $column['visibleInExport'] ?? true;
+                  $forceExport = $column['forceExport'] ?? (isset($column['exportOnlyColumn']) ? true : false);
+                  @endphp
                   <th
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     data-column-name="{{ $column['name'] }}"
                     {{--
-                    data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
-                    data-visible => regular visibility of the field
-                    data-can-be-visible-in-table => prevents the column to be loaded into the table (export-only)
+                    data-visible-in-table => if developer forced column to be in the table with 'visibleInTable => true'
+                    data-visible => regular visibility of the column
+                    data-can-be-visible-in-table => prevents the column to be visible into the table (export-only)
                     data-visible-in-modal => if column appears on responsive modal
-                    data-visible-in-export => if this field is exportable
-                    data-force-export => force export even if field are hidden
+                    data-visible-in-export => if this column is exportable
+                    data-force-export => force export even if columns are hidden
                     --}}
 
-                    {{-- If it is an export field only, we are done. --}}
-                    @if(isset($column['exportOnlyField']) && $column['exportOnlyField'] === true)
-                      data-visible="false"
-                      data-visible-in-table="false"
-                      data-can-be-visible-in-table="false"
-                      data-visible-in-modal="false"
-                      data-visible-in-export="true"
-                      data-force-export="true"
-                    @else
-                      data-visible-in-table="{{var_export($column['visibleInTable'] ?? false)}}"
-                      data-visible="{{var_export($column['visibleInTable'] ?? true)}}"
-                      data-can-be-visible-in-table="true"
-                      data-visible-in-modal="{{var_export($column['visibleInModal'] ?? true)}}"
-                      @if(isset($column['visibleInExport']))
-                         @if($column['visibleInExport'] === false)
-                           data-visible-in-export="false"
-                           data-force-export="false"
-                         @else
-                           data-visible-in-export="true"
-                           data-force-export="true"
-                         @endif
-                       @else
-                         data-visible-in-export="true"
-                         data-force-export="false"
-                       @endif
-                    @endif
+                    data-visible="{{ $exportOnlyColumn ? 'false' : var_export($visibleInTable) }}"
+                    data-visible-in-table="{{ var_export($visibleInTable) }}"
+                    data-can-be-visible-in-table="{{ $exportOnlyColumn ? 'false' : 'true' }}"
+                    data-visible-in-modal="{{ var_export($visibleInModal) }}"
+                    data-visible-in-export="{{ $exportOnlyColumn ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
+                    data-force-export="{{ var_export($forceExport) }}"
                   >
                     {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))

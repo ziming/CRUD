@@ -87,10 +87,10 @@
                     data-force-export => force export even if columns are hidden
                     --}}
 
-                    data-visible="{{ $exportOnlyColumn ? 'false' : var_export($visibleInTable, true) }}"
-                    data-visible-in-table="{{ var_export($visibleInTable, true) }}"
+                    data-visible="{{ $exportOnlyColumn ? 'false' : var_export($visibleInTable) }}"
+                    data-visible-in-table="{{ var_export($visibleInTable) }}"
                     data-can-be-visible-in-table="{{ $exportOnlyColumn ? 'false' : 'true' }}"
-                    data-visible-in-modal="{{ var_export($visibleInModal, true) }}"
+                    data-visible-in-modal="{{ var_export($visibleInModal) }}"
                     data-visible-in-export="{{ $exportOnlyColumn ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
                     data-force-export="{{ var_export($forceExport) }}"
                   >

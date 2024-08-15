@@ -69,8 +69,8 @@
                 @foreach ($crud->columns() as $column)
                   @php
                   $exportOnlyColumn = $column['exportOnlyColumn'] ?? false;
-                  $visibleInTable = $column['visibleInTable'] ?? true;
-                  $visibleInModal = $column['visibleInModal'] ?? true;
+                  $visibleInTable = $column['visibleInTable'] ?? ($exportOnlyColumn ? false : true);
+                  $visibleInModal = $column['visibleInModal'] ?? ($exportOnlyColumn ? false : true);
                   $visibleInExport = $column['visibleInExport'] ?? true;
                   $forceExport = $column['forceExport'] ?? (isset($column['exportOnlyColumn']) ? true : false);
                   @endphp
@@ -79,21 +79,20 @@
                     data-priority="{{ $column['priority'] }}"
                     data-column-name="{{ $column['name'] }}"
                     {{--
-                    data-visible-in-table => if developer forced field in table with 'visibleInTable => true'
-                    data-visible => regular visibility of the field
-                    data-can-be-visible-in-table => prevents the column to be loaded into the table (export-only)
+                    data-visible-in-table => if developer forced column to be in the table with 'visibleInTable => true'
+                    data-visible => regular visibility of the column
+                    data-can-be-visible-in-table => prevents the column to be visible into the table (export-only)
                     data-visible-in-modal => if column appears on responsive modal
-                    data-visible-in-export => if this field is exportable
-                    data-force-export => force export even if field are hidden
+                    data-visible-in-export => if this column is exportable
+                    data-force-export => force export even if columns are hidden
                     --}}
 
-                    {{-- If it is an export field only, we are done. --}}
                     data-visible="{{ $exportOnlyColumn ? 'false' : var_export($visibleInTable, true) }}"
                     data-visible-in-table="{{ var_export($visibleInTable, true) }}"
                     data-can-be-visible-in-table="{{ $exportOnlyColumn ? 'false' : 'true' }}"
                     data-visible-in-modal="{{ var_export($visibleInModal, true) }}"
                     data-visible-in-export="{{ $exportOnlyColumn ? 'true' : ($visibleInExport ? 'true' : 'false') }}"
-                    data-force-export="{{ var_export($forceExport, true) }}"
+                    data-force-export="{{ var_export($forceExport) }}"
                   >
                     {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))

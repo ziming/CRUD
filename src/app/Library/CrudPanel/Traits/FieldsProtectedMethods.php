@@ -119,6 +119,10 @@ trait FieldsProtectedMethods
             abort(500, 'All fields must have their name defined');
         }
 
+        if (is_array($field['name'])) {
+            abort(500, 'Field name can\'t be an array. It should be a string. Error in field: '.json_encode($field['name']));
+        }
+
         $field['name'] = Str::replace(' ', '', $field['name']);
 
         return $field;

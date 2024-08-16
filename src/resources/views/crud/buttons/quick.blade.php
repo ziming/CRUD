@@ -46,6 +46,7 @@
 
 @if ($access === true || $crud->hasAccess($access, isset($entry) ? $entry : null))
     <{{ $wrapper['element'] }}
+        bp-button="{{ $button->name }}"
         @foreach ($wrapper as $attribute => $value)
             @if (is_string($attribute))
             {{ $attribute }}="{{ $value }}"
@@ -53,7 +54,7 @@
         @endforeach
         >
         @if ($icon) <i class="{{ $icon }}"></i> @endif
-        {{ $label }}
+        <span>{{ $label }}</span>
     </{{ $wrapper['element'] }}>
 @endif
 

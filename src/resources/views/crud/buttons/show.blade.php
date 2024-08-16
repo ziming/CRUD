@@ -2,13 +2,13 @@
 	@if (!$crud->model->translationEnabled())
 
 	{{-- Single edit button --}}
-	<a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" class="btn btn-sm btn-link">
-		<span><i class="la la-eye"></i> {{ trans('backpack::crud.preview') }}</span>
+	<a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" bp-button="show" class="btn btn-sm btn-link">
+		<i class="la la-eye"></i> <span>{{ trans('backpack::crud.preview') }}</span>
 	</a>
 
 	@else
 
-	{{-- Edit button group --}}
+	{{-- show button group --}}
 	<div class="btn-group">
 	  <a href="{{ url($crud->route.'/'.$entry->getKey().'/show') }}" class="btn btn-sm btn-link pr-0">
 	  	<span><i class="la la-eye"></i> {{ trans('backpack::crud.preview') }}</span>

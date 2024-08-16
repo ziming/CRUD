@@ -244,7 +244,7 @@ class Install extends Command
 
         $total = 0;
         while (! $this->isEveryAddonInstalled()) {
-            $input = (int) $this->listChoice('Would you like to install a premium Backpack add-on? <fg=gray>(enter option number: 1, 2 or 3)</>', $this->addons->toArray());
+            $input = (int) $this->listChoice('Would you like to install a premium Backpack add-on? <fg=gray>(enter an option number from above or press any other key to continue the installation)</>', $this->addons->toArray());
 
             if ($input < 1 || $input > $this->addons->count()) {
                 $this->deleteLines(3);

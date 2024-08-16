@@ -296,6 +296,13 @@ trait ColumnsProtectedMethods
                 array_search($targetColumnName, array_keys($columnsArray)) + 1;
 
             $element = array_pop($columnsArray);
+
+            if ($element['priority'] === count($columnsArray)) {
+                // the priority was most likely auto-set as it corresponds to the column array count
+                // update the priority to the target column position
+                $element['priority'] = $targetColumnPosition;
+            }
+
             $beginningPart = array_slice($columnsArray, 0, $targetColumnPosition, true);
             $endingArrayPart = array_slice($columnsArray, $targetColumnPosition, null, true);
 

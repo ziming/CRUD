@@ -141,7 +141,6 @@ class BackpackServiceProvider extends ServiceProvider
     public function publishFiles()
     {
         $backpack_views = [__DIR__.'/resources/views' => resource_path('views/vendor/backpack')];
-        $backpack_public_assets = [__DIR__.'/public' => public_path()];
         $backpack_lang_files = [__DIR__.'/resources/lang' => app()->langPath().'/vendor/backpack'];
         $backpack_config_files = [__DIR__.'/config' => config_path()];
 
@@ -159,7 +158,6 @@ class BackpackServiceProvider extends ServiceProvider
         $minimum = array_merge(
             // $backpack_views,
             // $backpack_lang_files,
-            $backpack_public_assets,
             $backpack_config_files,
             $backpack_menu_contents_view,
             $backpack_custom_routes_file,
@@ -171,7 +169,6 @@ class BackpackServiceProvider extends ServiceProvider
         $this->publishes($backpack_lang_files, 'lang');
         $this->publishes($backpack_views, 'views');
         $this->publishes($backpack_menu_contents_view, 'menu_contents');
-        $this->publishes($backpack_public_assets, 'public');
         $this->publishes($backpack_custom_routes_file, 'custom_routes');
         $this->publishes($gravatar_assets, 'gravatar');
         $this->publishes($minimum, 'minimum');

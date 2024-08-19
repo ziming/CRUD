@@ -398,8 +398,17 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCru
         $this->crudPanel->beforeColumn('column1');
 
         $keys = array_keys($this->crudPanel->columns());
-        $this->assertEquals($this->expectedTwoColumnsArray['column2'], $this->crudPanel->columns()[$keys[0]]);
+        $expected = $this->expectedTwoColumnsArray['column2'];
+        $expected['priority'] = 0;
+        $this->assertEquals($expected, $this->crudPanel->columns()[$keys[0]]);
         $this->assertEquals(['column2', 'column1'], $keys);
+    }
+
+    public function testItDoesNotChangeThePriorityIfDeveloperDefinedIt()
+    {
+        $this->crudPanel->addColumn('column1');
+        $this->crudPanel->addColumn(['name' => 'column2', 'priority' => 5])->beforeColumn('column1');
+        $this->assertEquals(5, $this->crudPanel->firstColumnWhere('name', 'column2')['priority']);
     }
 
     public function testMoveColumnBeforeUnknownColumnName()
@@ -418,7 +427,9 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCru
         $this->crudPanel->afterColumn('column1');
 
         $keys = array_keys($this->crudPanel->columns());
-        $this->assertEquals($this->expectedThreeColumnsArray['column3'], $this->crudPanel->columns()[$keys[1]]);
+        $expected = $this->expectedThreeColumnsArray['column3'];
+        $expected['priority'] = 1;
+        $this->assertEquals($expected, $this->crudPanel->columns()[$keys[1]]);
         $this->assertEquals(['column1', 'column3', 'column2'], $keys);
     }
 

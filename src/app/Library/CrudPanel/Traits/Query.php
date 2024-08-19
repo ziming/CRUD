@@ -178,7 +178,7 @@ trait Query
         $column_direction = strtolower($column_direction);
 
         if ($this->query->getQuery()->joins !== null) {
-            return $this->query->orderByRaw("\"{$this->model->getTableWithPrefix()}\".\"{$column_name}\" {$column_direction}");
+            return $this->query->orderBy("{$this->model->getTableWithPrefix()}.{$column_name}", $column_direction);
         }
 
         return $this->query->orderBy($column_name, $column_direction);

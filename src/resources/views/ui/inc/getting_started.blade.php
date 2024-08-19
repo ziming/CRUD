@@ -106,7 +106,8 @@
         </div>
         <div class="collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="">
           <div class="card-body">
-            <p>If you decide to use Backpack, please <strong><a target="_blank" href="https://backpackforlaravel.com/register?ref=getting-started-widget">create a Backpack account</a> and stay subscribed to the Security Newsletter</strong> (1-2 emails per year). That way, we can let you know if your admin panel becomes vulnerable in any way.</p>
+            <p>If you like Backpack, please <a target="_blank" href="https://github.com/laravel-backpack/crud">give us a star on Gitub</a> - it could help other developer like us find Backpack and join our community.</p>
+            <p>If you decide to use Backpack in production, please <strong><a target="_blank" href="https://backpackforlaravel.com/register?ref=getting-started-widget">create a Backpack account</a> and stay subscribed to the Security Newsletter</strong> (1-2 emails per year). That way, we can let you know if your admin panel becomes vulnerable in any way.</p>
             <p>Of course, if you like our free & open-source core, you might also enjoy our premium add-ons:</p>
             <ul>
               <li><strong><a target="_blank" href="https://backpackforlaravel.com/products/pro-for-unlimited-projects?ref=getting-started-widget">PRO</a></strong> - adds 28 fields, 10 filters, 6 columns, 5 operations, 1 widget</li>

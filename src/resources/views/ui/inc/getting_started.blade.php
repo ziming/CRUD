@@ -102,7 +102,7 @@
 
       <div class="card mb-1">
         <div class="card-header bg-light" id="headingThree" role="tab">
-          <h5 class="mb-0 w-100"><a class="collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><span class="badge bg-warning me-2">4</span>Subscribe or purchase <small class="float-end float-right">1-3 min</small></a></h5>
+          <h5 class="mb-0 w-100"><a class="collapsed" data-bs-toggle="collapse" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><span class="badge bg-warning me-2">3</span>Subscribe or purchase <small class="float-end float-right">1-3 min</small></a></h5>
         </div>
         <div class="collapse" id="collapseThree" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion" style="">
           <div class="card-body">

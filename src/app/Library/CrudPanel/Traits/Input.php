@@ -126,6 +126,14 @@ trait Input
                     // when it's a nested belongsTo relation we want to make sure
                     // the key used to store the values is the main relation key
                     $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');
+                    dump($field);
+                    if (! isset($field['parentFieldName'])) {
+                        $mainField = $field;
+                        $mainField['entity'] = Str::beforeLast($field['entity'], '.');
+
+                        $inferredRelation = $this->inferRelationTypeFromRelationship($mainField);
+                        dump($inferredRelation);
+                    }
 
                     break;
             }
@@ -134,12 +142,11 @@ trait Input
             if ($key === $relationMethod) {
                 continue;
             }
-
+            dump('inferred shouldn be set', $inferredRelation ?? 'not set');
             $fieldDetails = Arr::get($relationDetails, $key, []);
-
             $fieldDetails['values'][$attributeName] = Arr::get($input, $fieldName);
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
-            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
+            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $inferredRelation ?? $field['relation_type'];
             $fieldDetails['crudFields'][] = $field;
             $fieldDetails['entity'] = $this->getOnlyRelationEntity($field);
 
@@ -151,7 +158,9 @@ trait Input
             }
 
             Arr::set($relationDetails, $key, $fieldDetails);
+            //unset($inferredRelation);
         }
+        //dd($relationDetails);
 
         return $relationDetails;
     }

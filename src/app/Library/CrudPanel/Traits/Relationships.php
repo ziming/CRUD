@@ -325,7 +325,7 @@ trait Relationships
      */
     private function modelMethodIsRelationship($model, $method)
     {
-        if(! method_exists($model, $method) && $model->isRelation($method)) {
+        if (! method_exists($model, $method) && $model->isRelation($method)) {
             return $method;
         }
 

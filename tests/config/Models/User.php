@@ -11,7 +11,7 @@ class User extends Model
 
     protected $table = 'users';
 
-    protected $fillable = ['name', 'email', 'password', 'extras'];
+    protected $fillable = ['name', 'email', 'password', 'extras', 'bang_relation_field'];
 
     public function identifiableAttribute()
     {

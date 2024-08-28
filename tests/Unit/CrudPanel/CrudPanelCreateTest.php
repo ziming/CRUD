@@ -167,6 +167,38 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals($account_details->nickname, $account_details_nickname);
     }
 
+    public function testCreateWithOneToOneDynamicRelationship()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->hasOne(\Backpack\CRUD\Tests\config\Models\AccountDetails::class);
+        });
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addFields([
+            [
+                'name' => 'dynamicRelation.nickname',
+            ],
+            [
+                'name' => 'dynamicRelation.profile_picture',
+            ],
+        ]);
+        $faker = Factory::create();
+        $account_details_nickname = $faker->name;
+        $inputData = [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'dynamicRelation' => [
+                'nickname' => $account_details_nickname,
+                'profile_picture' => 'test.jpg',
+            ],
+        ];
+        $entry = $this->crudPanel->create($inputData);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->nickname, $account_details_nickname);
+    }
+
     public function testCreateWithOneToOneRelationshipUsingRepeatableInterface()
     {
         $this->crudPanel->setModel(User::class);
@@ -246,6 +278,50 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals($article->id, $entry->id);
     }
 
+    public function testCreateWithOneToManyDynamicRelationship()
+    {   
+        Article::resolveRelationUsing('dynamicRelation', function ($article) {
+            return $article->belongsTo(\Backpack\CRUD\Tests\config\Models\User::class, 'user_id');
+        });
+
+        $this->crudPanel->setModel(Article::class);
+        $this->crudPanel->addFields([
+            [
+                'name' => 'id',
+                'type' => 'hidden',
+            ], [
+                'name' => 'content',
+            ], [
+                'name' => 'tags',
+            ], [
+                'name' => 'dynamicRelation',
+            ],
+        ]);
+        $faker = Factory::create();
+        $inputData = [
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'dynamicRelation' => 1,
+            'metas' => null,
+            'extras' => null,
+            'cast_metas' => null,
+            'cast_tags' => null,
+            'cast_extras' => null,
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        unset($inputData['dynamicRelation']);
+        $inputData['user_id'] = 1;
+
+        $userEntry = User::find(1);
+        $article = Article::where('user_id', 1)->with('dynamicRelation')->get()->last();
+        $this->assertEntryEquals($inputData, $entry);
+        $this->assertEquals($article->user_id, $entry->user_id);
+        $this->assertEquals($article->id, $entry->id);
+        $this->assertEquals($article->user_id, $entry->dynamicRelation->id);
+    }
+
     public function testCreateWithManyToManyRelationship()
     {
         $this->crudPanel->setModel(User::class);
@@ -263,6 +339,45 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $this->assertInstanceOf(User::class, $entry);
         $this->assertEntryEquals($inputData, $entry);
+    }
+
+    public function testCreateWithManyToManyDynamicRelationship()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->belongsToMany(\Backpack\CRUD\Tests\config\Models\Role::class, 'user_role');
+        });
+
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields([
+            [
+                'name' => 'id',
+                'type' => 'hidden',
+            ], [
+                'name' => 'name',
+            ], [
+                'name' => 'email',
+                'type' => 'email',
+            ], [
+                'name' => 'password',
+                'type' => 'password',
+            ], [
+                'name' => 'dynamicRelation',
+            ],
+        ]);
+        $faker = Factory::create();
+        $inputData = [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'dynamicRelation' => [1, 2],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertInstanceOf(User::class, $entry);
+        $this->assertEntryEquals($inputData, $entry);
+        $this->assertCount(2, $entry->dynamicRelation);
     }
 
     public function testGetRelationFields()
@@ -1782,6 +1897,35 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $this->assertEquals('backpack@laravel.com', User::latest('id')->first()->email);
     }
+
+    public function testItCanCreateDynamicRelationships()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->belongsTo(\Backpack\CRUD\Tests\config\Models\Bang::class, 'bang_relation_field');
+        });
+
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField([
+            'name' => 'dynamicRelation',
+        ]);
+
+        $faker = Factory::create();
+
+        $inputData = [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'dynamicRelation' => 1,
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertEquals($entry->dynamicRelation()->first()->name, Bang::find(1)->name);
+    }
+
+
 
     private function getPivotInputData(array $pivotRelationData, bool $initCrud = true, bool $allowDuplicates = false)
     {

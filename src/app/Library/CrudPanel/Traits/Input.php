@@ -160,6 +160,7 @@ trait Input
             Arr::set($relationDetails, $key, $fieldDetails);
             unset($inferredRelation);
         }
+
         return $relationDetails;
     }
 

@@ -319,19 +319,16 @@ trait Relationships
      * If the return type extends the Relation class is for sure a relation
      * Otherwise we just assume it's a relation.
      *
-     * DEV NOTE: In future versions we will return `false` when no return type is set and make the return type mandatory for relationships.
-     *           This function should be refactored to only check if $returnType is a subclass of Illuminate\Database\Eloquent\Relations\Relation.
-     *
      * @param  $model
      * @param  $method
      * @return bool|string
      */
     private function modelMethodIsRelationship($model, $method)
     {
-        if($model->isRelation($method)) {
+        if(! method_exists($model, $method) && $model->isRelation($method)) {
             return $method;
         }
-        
+
         $methodReflection = new \ReflectionMethod($model, $method);
 
         // relationship methods function does not have parameters

@@ -110,7 +110,7 @@ trait Update
     {
         [$relatedModel, $relationMethod] = $this->getModelAndMethodFromEntity($model, $field);
 
-        if (! method_exists($relatedModel, $relationMethod)) {
+        if (! method_exists($relatedModel, $relationMethod) && ! $relatedModel->isRelation($relationMethod)) {
             return $relatedModel->{$relationMethod};
         }
 
@@ -157,7 +157,7 @@ trait Update
                 break;
             case 'HasOne':
             case 'MorphOne':
-                if (! method_exists($relatedModel, $relationMethod)) {
+                if (! method_exists($relatedModel, $relationMethod) && ! $relatedModel->isRelation($relationMethod)) {
                     return;
                 }
 

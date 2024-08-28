@@ -928,4 +928,21 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCru
         $url = $columnArray['wrapper']['href']($this->crudPanel, $columnArray, $this->crudPanel->entry, 1);
         $this->assertEquals('http://localhost/admin/articles/1/show?test=testing&test2=Some%20Content', $url);
     }
+
+    public function testItCanInferFieldAttributesFromADynamicRelation()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->belongsTo(\Backpack\CRUD\Tests\config\Models\Bang::class);
+        });
+
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addColumn('dynamicRelation');
+
+        $column = $this->crudPanel->columns()['dynamicRelation'];
+
+        $this->assertEquals('dynamicRelation', $column['name']);
+        $this->assertEquals('name', $column['attribute']);
+        $this->assertEquals('relationship', $column['type']);
+        $this->assertEquals('BelongsTo', $column['relation_type']);
+    }
 }

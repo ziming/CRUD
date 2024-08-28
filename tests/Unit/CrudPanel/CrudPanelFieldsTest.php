@@ -640,7 +640,7 @@ class CrudPanelFieldsTest extends BaseCrudPanel
         $this->assertIsArray($result);
         $this->assertSame(['invokable' => 'invokable'], $result);
     }
-    
+
     public function testItDoesNotUseProtectedMethodsAsRelationshipMethods()
     {
         $this->crudPanel->setModel(User::class);

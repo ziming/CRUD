@@ -279,7 +279,7 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
     }
 
     public function testCreateWithOneToManyDynamicRelationship()
-    {   
+    {
         Article::resolveRelationUsing('dynamicRelation', function ($article) {
             return $article->belongsTo(\Backpack\CRUD\Tests\config\Models\User::class, 'user_id');
         });
@@ -1924,8 +1924,6 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
 
         $this->assertEquals($entry->dynamicRelation()->first()->name, Bang::find(1)->name);
     }
-
-
 
     private function getPivotInputData(array $pivotRelationData, bool $initCrud = true, bool $allowDuplicates = false)
     {

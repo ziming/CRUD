@@ -979,6 +979,28 @@ class CrudPanelFieldsTest extends BaseCrudPanel
         $this->crudPanel->addField('test1, test2');
         $this->assertEquals(['test1', 'test2'], $this->crudPanel->getAllFieldNames());
     }
+
+    public function testItCanInferFieldAttributesFromADynamicRelation()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->hasOne(\Backpack\CRUD\Tests\config\Models\AccountDetails::class);
+        });
+
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addField('dynamicRelation.nickname');
+
+        $this->assertEquals([
+            'name' => 'dynamicRelation[nickname]',
+            'type' => 'relationship',
+            'entity' => 'dynamicRelation.nickname',
+            'relation_type' => 'HasOne',
+            'attribute' => 'nickname',
+            'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            'multiple' => false,
+            'pivot' => false,
+            'label' => 'DynamicRelation.nickname',
+        ], $this->crudPanel->fields()['dynamicRelation.nickname']);
+    }
 }
 
 class Invokable

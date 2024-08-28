@@ -210,7 +210,7 @@ trait ColumnsProtectedMethods
         }
 
         // if there's a method on the model with this name
-        if (method_exists($this->model, $column['name'])) {
+        if (method_exists($this->model, $column['name']) || $this->model->isRelation($column['name'])) {
             // check model method for possibility of being a relationship
             $column['entity'] = $this->modelMethodIsRelationship($this->model, $column['name']);
 

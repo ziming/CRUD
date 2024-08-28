@@ -149,7 +149,7 @@ trait FieldsProtectedMethods
 
         //if the name is dot notation we are sure it's a relationship
         if (strpos($field['name'], '.') !== false) {
-            $possibleMethodName = Str::of($field['name'])->before('.');
+            $possibleMethodName = Str::of($field['name'])->before('.')->value();
             // check model method for possibility of being a relationship
             $field['entity'] = $this->modelMethodIsRelationship($model, $possibleMethodName) ? $field['name'] : false;
 
@@ -157,7 +157,7 @@ trait FieldsProtectedMethods
         }
 
         // if there's a method on the model with this name
-        if (method_exists($model, $field['name'])) {
+        if (method_exists($model, $field['name']) || $model->isRelation($field['name'])) {
             // check model method for possibility of being a relationship
             $field['entity'] = $this->modelMethodIsRelationship($model, $field['name']);
 

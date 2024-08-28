@@ -19,7 +19,7 @@ trait Relationships
         $possible_method = Str::before($entity, '.');
         $model = isset($field['baseModel']) ? app($field['baseModel']) : $this->model;
 
-        if (method_exists($model, $possible_method)) {
+        if (method_exists($model, $possible_method) || $model->isRelation($possible_method)) {
             $parts = explode('.', $entity);
             // here we are going to iterate through all relation parts to check
             foreach ($parts as $i => $part) {
@@ -328,6 +328,10 @@ trait Relationships
      */
     private function modelMethodIsRelationship($model, $method)
     {
+        if($model->isRelation($method)) {
+            return $method;
+        }
+        
         $methodReflection = new \ReflectionMethod($model, $method);
 
         // relationship methods function does not have parameters

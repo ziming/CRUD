@@ -127,19 +127,26 @@ trait Input
                     // the key used to store the values is the main relation key
                     $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');
 
+                    if (! isset($field['parentFieldName']) && isset($field['entity'])) {
+                        $mainField = $field;
+                        $mainField['entity'] = Str::beforeLast($field['entity'], '.');
+
+                        $inferredRelation = $this->inferRelationTypeFromRelationship($mainField);
+                    }
+
                     break;
             }
 
             // we don't need to re-setup this relation method values, we just want the relations
             if ($key === $relationMethod) {
+                unset($inferredRelation);
                 continue;
             }
 
             $fieldDetails = Arr::get($relationDetails, $key, []);
-
             $fieldDetails['values'][$attributeName] = Arr::get($input, $fieldName);
             $fieldDetails['model'] = $fieldDetails['model'] ?? $field['model'];
-            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $field['relation_type'];
+            $fieldDetails['relation_type'] = $fieldDetails['relation_type'] ?? $inferredRelation ?? $field['relation_type'];
             $fieldDetails['crudFields'][] = $field;
             $fieldDetails['entity'] = $this->getOnlyRelationEntity($field);
 
@@ -151,6 +158,7 @@ trait Input
             }
 
             Arr::set($relationDetails, $key, $fieldDetails);
+            unset($inferredRelation);
         }
 
         return $relationDetails;

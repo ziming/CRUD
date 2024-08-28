@@ -979,6 +979,45 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals($account_details->bangsPivot->count(), 0);
     }
 
+    public function testCreateHasOneWithNestedRelationAsTheFirstField()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->setOperation('create');
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addFields([
+            [
+                'name' => 'accountDetails.article',
+            ],
+            [
+                'name' => 'accountDetails.nickname',
+            ],
+            [
+                'name' => 'accountDetails.profile_picture',
+            ],
+        ]);
+
+        $faker = Factory::create();
+
+        $inputData = [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'roles' => [1, 2],
+            'accountDetails' => [
+                'article' => 1,
+                'nickname' => 'i_have_has_one',
+                'profile_picture' => 'ohh my picture 1.jpg',
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+        $updateFields = $this->crudPanel->getUpdateFields($entry->id);
+        $account_details = $entry->accountDetails()->first();
+
+        $this->assertEquals($account_details->article, Article::find(1));
+    }
+
     public function testMorphOneRelationship()
     {
         $this->crudPanel->setModel(User::class);

@@ -126,7 +126,7 @@ trait Input
                     // when it's a nested belongsTo relation we want to make sure
                     // the key used to store the values is the main relation key
                     $key = Str::beforeLast($this->getOnlyRelationEntity($field), '.');
-                    //dump($field);
+
                     if (! isset($field['parentFieldName']) && isset($field['entity'])) {
                         $mainField = $field;
                         $mainField['entity'] = Str::beforeLast($field['entity'], '.');

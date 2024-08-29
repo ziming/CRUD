@@ -683,6 +683,51 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $this->assertEquals('my first article note', $entry->fresh()->superArticles->first()->pivot->notes);
     }
 
+    public function testBelongsToManyWithPivotDataDynamicRelationship()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->belongsToMany(\Backpack\CRUD\Tests\config\Models\Article::class, 'articles_user')->withPivot(['notes', 'start_date', 'end_date']);
+        });
+
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addFields($this->userInputFieldsNoRelationships);
+        $this->crudPanel->addField([
+            'name' => 'dynamicRelation',
+            'subfields' => [
+                [
+                    'name' => 'notes',
+                ],
+            ],
+        ]);
+
+        $faker = Factory::create();
+        $articleData = [
+            'content' => $faker->text(),
+            'tags' => $faker->words(3, true),
+            'user_id' => 1,
+        ];
+
+        $article = Article::create($articleData);
+
+        $inputData = [
+            'name' => $faker->name,
+            'email' => $faker->safeEmail,
+            'password' => Hash::make($faker->password()),
+            'remember_token' => null,
+            'dynamicRelation' => [
+                [
+                    'dynamicRelation' => $article->id,
+                    'notes' => 'my first article note',
+                ],
+            ],
+        ];
+
+        $entry = $this->crudPanel->create($inputData);
+
+        $this->assertCount(1, $entry->fresh()->dynamicRelation);
+        $this->assertEquals('my first article note', $entry->fresh()->dynamicRelation->first()->pivot->notes);
+    }
+
     public function testBelongsToManyWithMultipleSameRelationIdAndPivotDataRelationship()
     {
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
@@ -712,9 +757,9 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $entry = $entry->fresh();
 
         $this->assertCount(3, $entry->superArticlesDuplicates);
-        $this->assertEquals('my first article note', $entry->superArticles->first()->pivot->notes);
-        $this->assertEquals('my second article note', $entry->superArticles[1]->pivot->notes);
-        $this->assertEquals('my first article2 note', $entry->superArticles[2]->pivot->notes);
+        $this->assertEquals('my first article note', $entry->superArticlesDuplicates->first()->pivot->notes);
+        $this->assertEquals('my second article note', $entry->superArticlesDuplicates[1]->pivot->notes);
+        $this->assertEquals('my first article2 note', $entry->superArticlesDuplicates[2]->pivot->notes);
 
         $inputData = $this->getPivotInputData(['superArticlesDuplicates' => [
             [
@@ -742,9 +787,77 @@ class CrudPanelCreateTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseDBCr
         $entry = $entry->fresh();
 
         $this->assertCount(3, $entry->superArticlesDuplicates);
-        $this->assertEquals('my first article note updated', $entry->superArticles[0]->pivot->notes);
-        $this->assertEquals('my second article note updated', $entry->superArticles[1]->pivot->notes);
-        $this->assertEquals('my first article2 note updated', $entry->superArticles[2]->pivot->notes);
+        $this->assertEquals('my first article note updated', $entry->superArticlesDuplicates[0]->pivot->notes);
+        $this->assertEquals('my second article note updated', $entry->superArticlesDuplicates[1]->pivot->notes);
+        $this->assertEquals('my first article2 note updated', $entry->superArticlesDuplicates[2]->pivot->notes);
+    }
+
+    public function testBelongsToManyWithMultipleSameRelationIdAndPivotDataDynamicRelationship()
+    {
+        User::resolveRelationUsing('dynamicRelation', function ($user) {
+            return $user->belongsToMany(\Backpack\CRUD\Tests\config\Models\Article::class, 'articles_user')->withPivot(['notes', 'start_date', 'end_date', 'id'])->using('Backpack\CRUD\Tests\config\Models\SuperArticlePivot');
+        });
+
+        $inputData = $this->getPivotInputData(['dynamicRelation' => [
+            [
+                'dynamicRelation' => 1,
+                'notes' => 'my first article note',
+                'id' => null,
+            ],
+            [
+                'dynamicRelation' => 1,
+                'notes' => 'my second article note',
+                'id' => null,
+            ],
+            [
+                'dynamicRelation' => 2,
+                'notes' => 'my first article2 note',
+                'id' => null,
+            ],
+        ],
+        ], true, true);
+
+        $entry = $this->crudPanel->create($inputData);
+        $relationField = $this->crudPanel->getUpdateFields($entry->id)['dynamicRelation'];
+
+        $this->assertCount(3, $relationField['value']);
+
+        $entry = $entry->fresh();
+
+        $this->assertCount(3, $entry->dynamicRelation);
+        $this->assertEquals('my first article note', $entry->dynamicRelation->first()->pivot->notes);
+        $this->assertEquals('my second article note', $entry->dynamicRelation[1]->pivot->notes);
+        $this->assertEquals('my first article2 note', $entry->dynamicRelation[2]->pivot->notes);
+
+        $inputData = $this->getPivotInputData(['dynamicRelation' => [
+            [
+                'dynamicRelation' => 1,
+                'notes' => 'my first article note updated',
+                'id' => 1,
+            ],
+            [
+                'dynamicRelation' => 1,
+                'notes' => 'my second article note updated',
+                'id' => 2,
+            ],
+            [
+                'dynamicRelation' => 2,
+                'notes' => 'my first article2 note updated',
+                'id' => 3,
+            ],
+        ],
+        ], false, true);
+
+        $entry = $this->crudPanel->update($entry->id, $inputData);
+        $relationField = $this->crudPanel->getUpdateFields($entry->id)['dynamicRelation'];
+        $this->assertCount(3, $relationField['value']);
+
+        $entry = $entry->fresh();
+
+        $this->assertCount(3, $entry->dynamicRelation);
+        $this->assertEquals('my first article note updated', $entry->dynamicRelation[0]->pivot->notes);
+        $this->assertEquals('my second article note updated', $entry->dynamicRelation[1]->pivot->notes);
+        $this->assertEquals('my first article2 note updated', $entry->dynamicRelation[2]->pivot->notes);
     }
 
     public function testBelongsToManyAlwaysSaveSinglePivotWhenMultipleNotAllowed()

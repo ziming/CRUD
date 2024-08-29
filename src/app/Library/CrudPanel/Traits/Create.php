@@ -153,7 +153,7 @@ trait Create
                             }
                             foreach ($values as $value) {
                                 // if it's an existing pivot, update it
-                                $attributes = $this->preparePivotAttributesForSave($value, $relation, $item->getKey(), $keyName);
+                                $attributes = $this->preparePivotAttributesForSave($value, $relation, $item->getKey(), $keyName, $relationMethod);
                                 if (isset($value[$keyName])) {
                                     $relation->newPivot()->where($keyName, $value[$keyName])->update($attributes);
                                 } else {
@@ -188,16 +188,16 @@ trait Create
         }
     }
 
-    private function preparePivotAttributesForSave(array $attributes, BelongsToMany|MorphToMany $relation, string|int $relatedItemKey, $pivotKeyName)
+    private function preparePivotAttributesForSave(array $attributes, BelongsToMany|MorphToMany $relation, string|int $relatedItemKey, $pivotKeyName, $relationMethod): array
     {
         $attributes[$relation->getForeignPivotKeyName()] = $relatedItemKey;
-        $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relation->getRelationName()];
+        $attributes[$relation->getRelatedPivotKeyName()] = $attributes[$relationMethod];
 
         if ($relation instanceof MorphToMany) {
             $attributes[$relation->getMorphType()] = $relation->getMorphClass();
         }
 
-        return Arr::except($attributes, [$relation->getRelationName(), $pivotKeyName]);
+        return Arr::except($attributes, [$relationMethod, $pivotKeyName]);
     }
 
     /**

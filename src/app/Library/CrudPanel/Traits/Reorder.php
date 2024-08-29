@@ -40,6 +40,12 @@ trait Reorder
             return $item;
         })->toArray();
 
+        $sentIds = array_column($reorderItems, $primaryKey);
+
+        $itemKeys = $itemKeys->filter(function ($id) use ($sentIds) {
+            return in_array($id, $sentIds);
+        });
+
         // wrap the queries in a transaction to avoid partial updates
         DB::transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
             // create a string of ?,?,?,? to use as bind placeholders for item keys

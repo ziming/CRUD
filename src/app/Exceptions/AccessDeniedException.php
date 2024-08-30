@@ -2,18 +2,9 @@
 
 namespace Backpack\CRUD\app\Exceptions;
 
-use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 
-class AccessDeniedException extends Exception
+class AccessDeniedException extends AuthorizationException
 {
-    /**
-     * Render the exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request)
-    {
-        return abort(403, $this->getMessage());
-    }
+    
 }

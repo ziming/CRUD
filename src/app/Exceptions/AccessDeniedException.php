@@ -6,5 +6,4 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class AccessDeniedException extends AuthorizationException
 {
-    
 }

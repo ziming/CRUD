@@ -369,6 +369,7 @@ class CrudPanel
                 if (! $result instanceof Relation) {
                     throw new Exception('Not a relation');
                 }
+
                 return $result->getRelated();
             } catch (Exception $e) {
                 return $obj;

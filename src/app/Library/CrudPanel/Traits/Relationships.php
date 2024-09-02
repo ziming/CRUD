@@ -65,10 +65,10 @@ trait Relationships
     public function getOnlyRelationEntity($field)
     {
         $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
-        $model = $this->getRelationModel($entity, -1);
-        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
+        $model = new ($this->getRelationModel($entity, -1));
+        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.')->value();
 
-        if (! method_exists($model, $lastSegmentAfterDot)) {
+        if (! $this->modelMethodIsRelationship($model, $lastSegmentAfterDot)) {
             return (string) Str::of($field['entity'])->beforeLast('.');
         }
 
@@ -328,8 +328,11 @@ trait Relationships
      */
     private function modelMethodIsRelationship($model, $method)
     {
-        if (! method_exists($model, $method) && $model->isRelation($method)) {
-            return $method;
+        if (! method_exists($model, $method)) {
+            if($model->isRelation($method)) {
+                return $method;
+            }
+            return false;
         }
 
         $methodReflection = new \ReflectionMethod($model, $method);
@@ -382,9 +385,9 @@ trait Relationships
         foreach ($parts as $i => $part) {
             try {
                 $model = $model->$part();
-
-                if (! is_a($model, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
-                    return false;
+                
+                if(! is_a($model, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
+                   return true;
                 }
 
                 $model = $model->getRelated();

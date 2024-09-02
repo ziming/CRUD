@@ -329,9 +329,10 @@ trait Relationships
     private function modelMethodIsRelationship($model, $method)
     {
         if (! method_exists($model, $method)) {
-            if($model->isRelation($method)) {
+            if ($model->isRelation($method)) {
                 return $method;
             }
+
             return false;
         }
 
@@ -385,9 +386,9 @@ trait Relationships
         foreach ($parts as $i => $part) {
             try {
                 $model = $model->$part();
-                
-                if(! is_a($model, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
-                   return true;
+
+                if (! is_a($model, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
+                    return true;
                 }
 
                 $model = $model->getRelated();

@@ -3,8 +3,8 @@
 namespace Backpack\CRUD\Tests\Config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 
 class AccountDetails extends Model
 {

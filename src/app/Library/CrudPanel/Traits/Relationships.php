@@ -24,6 +24,9 @@ trait Relationships
             // here we are going to iterate through all relation parts to check
             foreach ($parts as $i => $part) {
                 $relation = $model->$part();
+                if (! is_a($relation, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
+                    return $model;
+                }
                 $model = $relation->getRelated();
             }
 
@@ -62,10 +65,10 @@ trait Relationships
     public function getOnlyRelationEntity($field)
     {
         $entity = isset($field['baseEntity']) ? $field['baseEntity'].'.'.$field['entity'] : $field['entity'];
-        $model = $this->getRelationModel($entity, -1);
-        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.');
+        $model = new ($this->getRelationModel($entity, -1));
+        $lastSegmentAfterDot = Str::of($field['entity'])->afterLast('.')->value();
 
-        if (! method_exists($model, $lastSegmentAfterDot)) {
+        if (! $this->modelMethodIsRelationship($model, $lastSegmentAfterDot)) {
             return (string) Str::of($field['entity'])->beforeLast('.');
         }
 
@@ -325,8 +328,12 @@ trait Relationships
      */
     private function modelMethodIsRelationship($model, $method)
     {
-        if (! method_exists($model, $method) && $model->isRelation($method)) {
-            return $method;
+        if (! method_exists($model, $method)) {
+            if ($model->isRelation($method)) {
+                return $method;
+            }
+
+            return false;
         }
 
         $methodReflection = new \ReflectionMethod($model, $method);
@@ -378,7 +385,13 @@ trait Relationships
         // if the attribute is present in the relation string.
         foreach ($parts as $i => $part) {
             try {
-                $model = $model->$part()->getRelated();
+                $model = $model->$part();
+
+                if (! is_a($model, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
+                    return true;
+                }
+
+                $model = $model->getRelated();
             } catch (\Exception $e) {
                 // return true if the last part of a relation string is not a method on the model
                 // so it's probably the attribute that we should show

@@ -370,6 +370,43 @@ class CrudPanelColumnsTest extends \Backpack\CRUD\Tests\config\CrudPanel\BaseCru
         }
     }
 
+    public function testAddRelationByNameWithMutator()
+    {
+        $this->crudPanel->setModel(User::class);
+        $this->crudPanel->addColumn('accountDetails.nicknamutator');
+        if (backpack_pro()) {
+            $this->assertEquals(['accountDetails__nicknamutator' => [
+                'name' => 'accountDetails.nicknamutator',
+                'label' => 'AccountDetails.nicknamutator',
+                'type' => 'relationship',
+                'key' => 'accountDetails__nicknamutator',
+                'priority' => 0,
+                'attribute' => 'nicknamutator',
+                'tableColumn' => false,
+                'orderable' => false,
+                'searchLogic' => false,
+                'relation_type' => 'HasOne',
+                'entity' => 'accountDetails.nicknamutator',
+                'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            ]], $this->crudPanel->columns());
+        } else {
+            $this->assertEquals(['accountDetails__nicknamutator' => [
+                'name' => 'accountDetails.nicknamutator',
+                'label' => 'AccountDetails.nicknamutator',
+                'type' => 'text',
+                'key' => 'accountDetails__nicknamutator',
+                'priority' => 0,
+                'attribute' => 'nicknamutator',
+                'tableColumn' => false,
+                'orderable' => false,
+                'searchLogic' => false,
+                'relation_type' => 'HasOne',
+                'entity' => 'accountDetails.nicknamutator',
+                'model' => 'Backpack\CRUD\Tests\Config\Models\AccountDetails',
+            ]], $this->crudPanel->columns());
+        }
+    }
+
     public function testAddRelationColumn()
     {
         $this->crudPanel->setModel(User::class);

@@ -3,6 +3,7 @@
 namespace Backpack\CRUD\Tests\Config\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountDetails extends Model
@@ -48,5 +49,10 @@ class AccountDetails extends Model
     public function bangsPivot()
     {
         return $this->belongsToMany('Backpack\CRUD\Tests\config\Models\Bang', 'account_details_bangs_pivot')->withPivot('pivot_field');
+    }
+
+    public function nicknamutator(): Attribute
+    {
+        return Attribute::get(fn ($value) => strtoupper($value));
     }
 }

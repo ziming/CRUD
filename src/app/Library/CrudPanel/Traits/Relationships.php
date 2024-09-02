@@ -24,6 +24,9 @@ trait Relationships
             // here we are going to iterate through all relation parts to check
             foreach ($parts as $i => $part) {
                 $relation = $model->$part();
+                if(! is_a($relation, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
+                    return $model;
+                }
                 $model = $relation->getRelated();
             }
 
@@ -378,7 +381,13 @@ trait Relationships
         // if the attribute is present in the relation string.
         foreach ($parts as $i => $part) {
             try {
-                $model = $model->$part()->getRelated();
+                $model = $model->$part();
+                
+                if(! is_a($model, \Illuminate\Database\Eloquent\Relations\Relation::class, true)) {
+                   return false;
+                }
+
+                $model = $model->getRelated();
             } catch (\Exception $e) {
                 // return true if the last part of a relation string is not a method on the model
                 // so it's probably the attribute that we should show

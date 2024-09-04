@@ -9,16 +9,25 @@
 
 @include('crud::fields.inc.wrapper_start')
 
-    <label>{!! $field['label'] !!}</label>
-    <?php
-        $entity_model = $crud->getModel();
+<label>{!! $field['label'] !!}</label>
+<?php
+    $entity_model = $crud->getModel();
 
     //short name for dependency fields
     $primary_dependency = $field['subfields']['primary'];
     $secondary_dependency = $field['subfields']['secondary'];
 
     //all items with relation
-    $dependencies = $primary_dependency['model']::with($primary_dependency['entity_secondary'])->get();
+    $dependencies = $primary_dependency['model']::with($primary_dependency['entity_secondary']);
+
+    if(isset($primary_dependency['options']) && $primary_dependency['options'] instanceof \Closure){
+        $dependencies = $primary_dependency['options']($dependencies);
+    }
+
+    // check if dependencies are a query builder, or the developer already called `->get()` on it.
+    if ($dependencies instanceof \Illuminate\Contracts\Database\Query\Builder) {
+        $dependencies = $dependencies->get();
+    }
 
     $dependencyArray = [];
 
@@ -64,6 +73,22 @@
 
     //json encode of dependency matrix
     $dependencyJson = json_encode($dependencyArray);
+
+    $primaryDependencyOptionQuery = $primary_dependency['model']::query();
+
+    if(isset($primary_dependency['options']) && $primary_dependency['options'] instanceof \Closure){
+        $primaryDependencyOptionQuery = $primary_dependency['options']($primaryDependencyOptionQuery);
+    }
+
+    $primaryDependencyOptions = $primaryDependencyOptionQuery->get();
+
+    $secondaryDependencyOptionQuery = $secondary_dependency['model']::query();
+
+    if(isset($secondary_dependency['options']) && $secondary_dependency['options'] instanceof \Closure){
+        $secondaryDependencyOptionQuery = $secondary_dependency['options']($secondaryDependencyOptionQuery);
+    }
+
+    $secondaryDependencyOptions = $secondaryDependencyOptionQuery->get();
     ?>
 
     <div class="container">
@@ -92,7 +117,7 @@
             @endif
           </div>
 
-      @foreach ($primary_dependency['model']::all() as $connected_entity_entry)
+      @foreach ($primaryDependencyOptions as $connected_entity_entry)
           <div class="col-sm-{{ isset($primary_dependency['number_columns']) ? intval(12/$primary_dependency['number_columns']) : '4'}}">
               <div class="checkbox">
                   <label class="font-weight-normal">
@@ -103,7 +128,7 @@
                               @if (is_string($attribute) && $attribute != 'value')
                                   @if ($attribute=='name')
                                   {{ $attribute }}="{{ $value }}_show[]"
-                                  @else
+                                  @elseif(! $value instanceof \Closure)
                                   {{ $attribute }}="{{ $value }}"
                                   @endif
                               @endif
@@ -143,18 +168,18 @@
             @endif
           </div>
 
-          @foreach ($secondary_dependency['model']::all() as $connected_entity_entry)
+          @foreach ($secondaryDependencyOptions as $connected_entity_entry)
               <div class="col-sm-{{ isset($secondary_dependency['number_columns']) ? intval(12/$secondary_dependency['number_columns']) : '4'}}">
                   <div class="checkbox">
                       <label class="font-weight-normal">
                       <input type="checkbox"
-                          class = 'secondary_list'
-                          data-id = "{{ $connected_entity_entry->id }}"
+                              class="secondary_list"
+                              data-id="{{ $connected_entity_entry->id }}"
                           @foreach ($secondary_dependency as $attribute => $value)
                               @if (is_string($attribute) && $attribute != 'value')
                                 @if ($attribute=='name')
                                   {{ $attribute }}="{{ $value }}_show[]"
-                                @else
+                                @elseif(! $value instanceof \Closure)
                                   {{ $attribute }}="{{ $value }}"
                                 @endif
                               @endif
@@ -162,9 +187,9 @@
                            value="{{ $connected_entity_entry->id }}"
 
                           @if( ( isset($field['value']) && is_array($field['value']) && (  in_array($connected_entity_entry->id, $field['value'][1]->pluck('id', 'id')->toArray()) || isset( $secondary_ids[$connected_entity_entry->id])) || $old_secondary_dependency && in_array($connected_entity_entry->id, $old_secondary_dependency)))
-                               checked = "checked"
+                               checked="checked"
                                @if(isset( $secondary_ids[$connected_entity_entry->id]))
-                                disabled = disabled
+                                disabled="disabled"
                                @endif
                           @endif > {{ $connected_entity_entry->{$secondary_dependency['attribute']} }}
                       </label>

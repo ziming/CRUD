@@ -180,10 +180,11 @@ class CrudPanelQueryTest extends BaseCrudPanel
 
         $this->assertEquals(5, $this->crudPanel->getTotalQueryCount());
     }
+
     public function testItCanSetTheQueryOnTheCrudPanel()
     {
         $this->assertEquals(User::query()->toSql(), $this->crudPanel->query->toSql());
-        
+
         $this->crudPanel->setQuery(User::query()->where('id', 1));
 
         $this->assertEquals(User::query()->where('id', 1)->toSql(), $this->crudPanel->query->toSql());

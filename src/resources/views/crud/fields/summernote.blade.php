@@ -33,7 +33,7 @@
     {{-- include summernote css --}}
     @basset('https://unpkg.com/summernote@0.8.20/dist/summernote-lite.min.css')
     @basset('https://unpkg.com/summernote@0.8.20/dist/font/summernote.woff2', false)
-    @bassetBlock('backpack/crud/fields/checklist-field.css')
+    @bassetBlock('backpack/crud/fields/summernote-field.css')
     <style type="text/css">
         .note-editor.note-frame .note-status-output, .note-editor.note-airframe .note-status-output {
                 height: auto;

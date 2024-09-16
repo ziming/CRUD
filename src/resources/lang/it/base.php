@@ -71,4 +71,11 @@ return [
     'confirm_new_password' => 'Conferma la nuova password',
     'throttled' => 'Hai richiesto un reset della password di recente. Per favore, controlla la tua email. Se non hai ricevuto la mail, allora riprova più tardi.',
     'throttled_request' => 'Hai eseguito troppi tentativi. Per favore, aspetta qualche minuto quindi riprova.',
+
+    'verify_email' => [
+        'email_verification' => 'Verifica Email',
+        'verification_link_sent' => 'Un collegamento di verifica è stato inviato al tuo indirizzo email.',
+        'email_verification_required' => 'Verifica il tuo indirizzo email facendo clic sul collegamento che ti abbiamo inviato.',
+        'resend_verification_link' => 'Invia nuovamente il link di verifica',
+    ],
 ];

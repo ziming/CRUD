@@ -47,7 +47,7 @@ trait Reorder
         });
 
         // wrap the queries in a transaction to avoid partial updates
-        DB::transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
+        DB::connection($this->model->getConnectionName())->transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
             // create a string of ?,?,?,? to use as bind placeholders for item keys
             $reorderItemsBindString = implode(',', array_fill(0, count($reorderItems), '?'));
 
@@ -68,7 +68,7 @@ trait Reorder
                 // add the where clause to the query to help match the items
                 $query .= "ELSE {$column} END WHERE {$primaryKey} IN ({$reorderItemsBindString})";
 
-                DB::statement($query, $bindings);
+                DB::connection($this->model->getConnectionName())->statement($query, $bindings);
             }
         });
 

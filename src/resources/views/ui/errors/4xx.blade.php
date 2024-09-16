@@ -9,7 +9,7 @@
 @endsection
 
 @section('description')
-  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error_page.message_4xx', [
+  {!! $exception?->getMessage() && config('app.debug') ? e($exception->getMessage()) : trans('backpack::base.error_page.message_4xx', [
     'href_back' => 'href="javascript:history.back()"',
     'href_homepage' => 'href="'.url('').'"',
   ]) !!}

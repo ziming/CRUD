@@ -9,5 +9,5 @@
 @endsection
 
 @section('description')
-  {!! $exception?->getMessage() ? e($exception->getMessage()) : trans('backpack::base.error_page.message_500') !!}
+  {!! $exception?->getMessage() && config('app.debug') ? e($exception->getMessage()) : trans('backpack::base.error_page.message_500') !!}
 @endsection

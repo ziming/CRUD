@@ -219,6 +219,7 @@
 
 		        fileInput.change(function() {
 					let selectedFiles = [];
+					let existingFiles = fileInput.parent().siblings('.existing-file');
 
 					Array.from($(this)[0].files).forEach(file => {
 						selectedFiles.push({name: file.name, type: file.type})
@@ -231,11 +232,11 @@
 					selectedFiles.forEach(file => {
 						files += '<span class="badge mt-1 mb-1 text-bg-secondary badge-primary">'+file.name+'</span> ';
 					});
-				
+					
 					// if existing files is not on the page, create a new div a prepend it to the fileInput
 					if(existingFiles.length === 0) {
 						existingFiles = $('<div class="well well-sm existing-file mb-2"></div>');
-						existingFiles.insertBefore(element.find('input[type=hidden]'));
+						existingFiles.insertBefore(element.find('input[type=hidden]').first());
 						existingFiles.html(files);
 					}else {
 						// if existing files is on page show the added files after the uploaded ones

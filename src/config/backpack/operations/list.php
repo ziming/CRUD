@@ -49,6 +49,16 @@ return [
     // Nest action buttons within a dropdown in actions column
     'lineButtonsAsDropdown' => false,
 
+    // What is the minimum actions for the dropdown to be created
+    // Example: when minimum to drop is «2»,  any row with less than «2» action buttons
+    // will not create a dropdown, but will show the buttons inline
+    'lineButtonsAsDropdownMinimum' => 1,
+
+    // Force «X» actions to be shown inline before the dropdown is created
+    // Example: when setting this to «2», the first «2» actions will be shown inline
+    // and the rest will be moved to the dropdown
+    'lineButtonsAsDropdownShowBefore' => 0,
+
     // Show a "Reset" button next to the List operation subheading
     // (Showing 1 to 25 of 9999 entries. Reset)
     // that allows the user to erase local storage for that datatable,

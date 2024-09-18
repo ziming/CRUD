@@ -401,26 +401,40 @@
       @endif
 
     });
-
+ 
     function formatActionColumnAsDropdown() {
         // Get action column
         const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
         if (actionColumnIndex === -1) return;
 
+        const minimumButtonsToBuildDropdown = $('#crudTable').data('line-buttons-as-dropdown-minimum');
+        const buttonsToShowBeforeDropdown = $('#crudTable').data('line-buttons-as-dropdown-show-before-dropdown');
+
         $('#crudTable tbody tr').each(function (i, tr) {
             const actionCell = $(tr).find('td').eq(actionColumnIndex);
-            if(actionCell.find('.actions-buttons-column').length) return;
+            const actionButtons = actionCell.find('a.btn.btn-link');
+            if (actionCell.find('.actions-buttons-column').length) return;
+            if (actionButtons.length < minimumButtonsToBuildDropdown) return;
 
-            // Wrap the cell with the component needed for the dropdown
-            actionCell.wrapInner('<div class="nav-item dropdown"></div>');
-            actionCell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
-            
             // Prepare buttons as dropdown items
-            actionCell.find('a.btn.btn-link').each((index, action) => {
+            const dropdownItems = actionButtons.slice(buttonsToShowBeforeDropdown).map((index, action) => {
                 $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
                 $(action).find('i').addClass('me-2 text-primary');
+                return action;
             });
-            actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
+
+            // Only create dropdown if there are items to drop
+            if (dropdownItems.length > 0) {
+                // Wrap the cell with the component needed for the dropdown
+                actionCell.wrapInner('<div class="nav-item dropdown"></div>');
+                actionCell.wrapInner('<div class="dropdown-menu dropdown-menu-left"></div>');
+
+                actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
+                
+                // Move the remaining buttons outside the dropdown
+                const remainingButtons = actionButtons.slice(0, buttonsToShowBeforeDropdown);
+                actionCell.prepend(remainingButtons);
+            }
         });
     }
   </script>

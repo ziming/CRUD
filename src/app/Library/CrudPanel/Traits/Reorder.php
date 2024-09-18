@@ -29,8 +29,8 @@ trait Reorder
         $reorderItems = collect($request)->filter(function ($item) use ($itemKeys) {
             return $item['item_id'] !== '' && $item['item_id'] !== null && $itemKeys->contains($item['item_id']);
         })->map(function ($item) use ($primaryKey) {
-            $item[$primaryKey] = (int) $item['item_id'];
-            $item['parent_id'] = empty($item['parent_id']) ? null : (int) $item['parent_id'];
+            $item[$primaryKey] = $item['item_id'];
+            $item['parent_id'] = empty($item['parent_id']) ? null : $item['parent_id'];
             $item['depth'] = empty($item['depth']) ? null : (int) $item['depth'];
             $item['lft'] = empty($item['left']) ? null : (int) $item['left'];
             $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];

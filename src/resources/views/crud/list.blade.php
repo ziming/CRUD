@@ -62,8 +62,8 @@
               data-has-details-row="{{ (int) $crud->getOperationSetting('detailsRow') }}"
               data-has-bulk-actions="{{ (int) $crud->getOperationSetting('bulkActions') }}"
               data-has-line-buttons-as-dropdown="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdown') }}"
-              data-line-buttons-as-dropdown-minimum-to-drop="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdownMinimumToDrop') }}"
-              data-line-buttons-as-dropdown-drop-after="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdownDropAfter') }}"
+              data-line-buttons-as-dropdown-minimum="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdownMinimum') }}"
+              data-line-buttons-as-dropdown-show-before-dropdown="{{ (int) $crud->getOperationSetting('lineButtonsAsDropdownShowBefore') }}"
               cellspacing="0">
             <thead>
               <tr>

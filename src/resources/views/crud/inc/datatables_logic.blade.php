@@ -407,17 +407,17 @@
         const actionColumnIndex = $('#crudTable').find('th[data-action-column=true]').index();
         if (actionColumnIndex === -1) return;
 
-        const minimumToDrop = $('#crudTable').data('line-buttons-as-dropdown-minimum-to-drop');
-        const dropAfter = $('#crudTable').data('line-buttons-as-dropdown-drop-after');
+        const minimumButtonsToBuildDropdown = $('#crudTable').data('line-buttons-as-dropdown-minimum');
+        const buttonsToShowBeforeDropdown = $('#crudTable').data('line-buttons-as-dropdown-show-before-dropdown');
 
         $('#crudTable tbody tr').each(function (i, tr) {
             const actionCell = $(tr).find('td').eq(actionColumnIndex);
             const actionButtons = actionCell.find('a.btn.btn-link');
             if (actionCell.find('.actions-buttons-column').length) return;
-            if (actionButtons.length < minimumToDrop) return;
+            if (actionButtons.length < minimumButtonsToBuildDropdown) return;
 
             // Prepare buttons as dropdown items
-            const dropdownItems = actionButtons.slice(dropAfter).map((index, action) => {
+            const dropdownItems = actionButtons.slice(buttonsToShowBeforeDropdown).map((index, action) => {
                 $(action).addClass('dropdown-item').removeClass('btn btn-sm btn-link');
                 $(action).find('i').addClass('me-2 text-primary');
                 return action;
@@ -432,7 +432,7 @@
                 actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('backpack::crud.actions') }}</a>');
                 
                 // Move the remaining buttons outside the dropdown
-                const remainingButtons = actionButtons.slice(0, dropAfter);
+                const remainingButtons = actionButtons.slice(0, buttonsToShowBeforeDropdown);
                 actionCell.prepend(remainingButtons);
             }
         });

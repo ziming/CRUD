@@ -1,5 +1,6 @@
-@if(isset($saveAction['active']) && !is_null($saveAction['active']['value']))
-    <div id="saveActions" class="form-group my-3">
+<div id="saveActions" class="form-group my-3">
+    @if(isset($saveAction['active']) && !is_null($saveAction['active']['value']))
+    
         <input type="hidden" name="_save_action" value="{{ $saveAction['active']['value'] }}">
 
         @if(empty($saveAction['options']))
@@ -23,16 +24,16 @@
                 </ul>
             </div>
         @endif
+    @endif
+    @if(!$crud->hasOperationSetting('showCancelButton') || $crud->getOperationSetting('showCancelButton') == true)
+        <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-secondary text-decoration-none"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
+    @endif
 
-        @if(!$crud->hasOperationSetting('showCancelButton') || $crud->getOperationSetting('showCancelButton') == true)
-            <a href="{{ $crud->hasAccess('list') ? url($crud->route) : url()->previous() }}" class="btn btn-secondary text-decoration-none"><span class="la la-ban"></span> &nbsp;{{ trans('backpack::crud.cancel') }}</a>
-        @endif
+    @if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration') && $crud->hasAccess('delete'))
+        <button onclick="confirmAndDeleteEntry()" type="button" class="btn btn-danger float-right float-end"><i class="la la-trash-alt"></i> {{ trans('backpack::crud.delete') }}</button>
+    @endif
+</div>
 
-        @if ($crud->get('update.showDeleteButton') && $crud->get('delete.configuration') && $crud->hasAccess('delete'))
-            <button onclick="confirmAndDeleteEntry()" type="button" class="btn btn-danger float-right float-end"><i class="la la-trash-alt"></i> {{ trans('backpack::crud.delete') }}</button>
-        @endif
-    </div>
-@endif
 
 @push('after_scripts')
 <script>

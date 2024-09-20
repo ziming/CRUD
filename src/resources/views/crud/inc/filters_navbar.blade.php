@@ -85,14 +85,13 @@
        * 
        * FROM: https://stackoverflow.com/questions/27787768/debounce-function-in-jquery
        */
-      function callOnce(func, within=300, timerId=null){
+      function callOnce(func, within = 300, timerId = null) {
           window.callOnceTimers = window.callOnceTimers || {};
-          if (timerId == null) 
-              timerId = func;
-          var timer = window.callOnceTimers[timerId];
-          clearTimeout(timer);
-          timer = setTimeout(() => func(), within);
-          window.callOnceTimers[timerId] = timer;
+          timerId = timerId || func;
+          if (window.callOnceTimers[timerId]) {
+            clearTimeout(window.callOnceTimers[timerId]);
+          }
+          window.callOnceTimers[timerId] = setTimeout(func, within);
       }
 
       function refreshDatatablesOnFilterChange(url)

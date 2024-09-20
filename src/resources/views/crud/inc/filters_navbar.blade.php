@@ -53,7 +53,7 @@
 
       }
 
-      function updateDatatablesOnFilterChange(filterName, filterValue, update_url = false) {
+      function updateDatatablesOnFilterChange(filterName, filterValue, update_url = false, debounce = 500) {
         // behaviour for ajax table
         var current_url = crud.table.ajax.url();
         var new_url = addOrUpdateUriParameter(current_url, filterName, filterValue);
@@ -68,7 +68,7 @@
         // and we have a function that will do this update for us after all filters had been cleared.
         if(update_url) {
           // replace the datatables ajax url with new_url and reload it
-          callOnce(function() { refreshDatatablesOnFilterChange(new_url) }, 300, 'refreshDatatablesOnFilterChange');
+          callOnce(function() { refreshDatatablesOnFilterChange(new_url) }, debounce, 'refreshDatatablesOnFilterChange');
         }
 
         return new_url;

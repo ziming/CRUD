@@ -68,10 +68,37 @@
         // and we have a function that will do this update for us after all filters had been cleared.
         if(update_url) {
           // replace the datatables ajax url with new_url and reload it
-          crud.table.ajax.url(new_url).load();
+          callOnce(function() { refreshDatatablesOnFilterChange(new_url) }, 300, 'refreshDatatablesOnFilterChange');
         }
 
         return new_url;
+      }
+
+      /**
+       * calls the function func once within the within time window.
+       * this is a debounce function which actually calls the func as
+       * opposed to returning a function that would call func.
+       * 
+       * @param func    the function to call
+       * @param within  the time window in milliseconds, defaults to 300
+       * @param timerId an optional key, defaults to func
+       * 
+       * FROM: https://stackoverflow.com/questions/27787768/debounce-function-in-jquery
+       */
+      function callOnce(func, within=300, timerId=null){
+          window.callOnceTimers = window.callOnceTimers || {};
+          if (timerId == null) 
+              timerId = func;
+          var timer = window.callOnceTimers[timerId];
+          clearTimeout(timer);
+          timer = setTimeout(() => func(), within);
+          window.callOnceTimers[timerId] = timer;
+      }
+
+      function refreshDatatablesOnFilterChange(url)
+      {
+        // replace the datatables ajax url with new_url and reload it
+        crud.table.ajax.url(url).load();
       }
 
 

@@ -275,6 +275,10 @@ trait SaveActions
         //get only the save actions that pass visibility callback
         $saveOptions = $this->getVisibleSaveActions();
 
+        if (empty($saveOptions)) {
+            return [];
+        }
+
         //get the current action
         $saveCurrent = $this->getCurrentSaveAction($saveOptions);
 
@@ -287,7 +291,7 @@ trait SaveActions
         }
 
         return [
-            'active' => $saveCurrent,
+            'active'  => $saveCurrent,
             'options' => $dropdownOptions,
         ];
     }
@@ -345,8 +349,8 @@ trait SaveActions
         // if the request is AJAX, return a JSON response
         if ($this->getRequest()->ajax()) {
             return response()->json([
-                'success' => true,
-                'data' => $this->entry,
+                'success'      => true,
+                'data'         => $this->entry,
                 'redirect_url' => $redirectUrl,
                 'referrer_url' => $referrer_url ?? false,
             ]);
@@ -368,7 +372,7 @@ trait SaveActions
     {
         $defaultSaveActions = [
             [
-                'name' => 'save_and_back',
+                'name'    => 'save_and_back',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('list');
                 },
@@ -378,7 +382,7 @@ trait SaveActions
                 'button_text' => trans('backpack::crud.save_action_save_and_back'),
             ],
             [
-                'name' => 'save_and_edit',
+                'name'    => 'save_and_edit',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('update');
                 },
@@ -400,7 +404,7 @@ trait SaveActions
                 'button_text' => trans('backpack::crud.save_action_save_and_edit'),
             ],
             [
-                'name' => 'save_and_new',
+                'name'    => 'save_and_new',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('create');
                 },

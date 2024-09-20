@@ -32,6 +32,9 @@ return [
     // Should we show a cancel button to the user?
     'showCancelButton' => true,
 
+    // Should we show the delete button on the edit form?
+    'showDeleteButton' => false,
+
     // Should we warn a user before leaving the page with unsaved changes?
     'warnBeforeLeaving' => false,
 

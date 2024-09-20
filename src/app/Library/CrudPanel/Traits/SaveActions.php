@@ -275,6 +275,10 @@ trait SaveActions
         //get only the save actions that pass visibility callback
         $saveOptions = $this->getVisibleSaveActions();
 
+        if (empty($saveOptions)) {
+            return [];
+        }
+
         //get the current action
         $saveCurrent = $this->getCurrentSaveAction($saveOptions);
 

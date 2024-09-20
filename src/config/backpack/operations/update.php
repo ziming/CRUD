@@ -16,7 +16,7 @@ return [
 
     // How would you like the validation errors to be shown?
     'groupedErrors' => true,
-    'inlineErrors' => true,
+    'inlineErrors'  => true,
 
     // when the page loads, put the cursor on the first input?
     'autoFocusOnFirstField' => true,
@@ -31,6 +31,9 @@ return [
 
     // Should we show a cancel button to the user?
     'showCancelButton' => true,
+
+    // Should we show the delete button on the edit form?
+    'showDeleteButton' => false,
 
     // Should we warn a user before leaving the page with unsaved changes?
     'warnBeforeLeaving' => false,

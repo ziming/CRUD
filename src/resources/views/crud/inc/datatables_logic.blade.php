@@ -261,6 +261,7 @@
           },
           processing: true,
           serverSide: true,
+          searchDelay: {{ $crud->getOperationSetting('searchDelay') }},
           @if($crud->getOperationSetting('showEntryCount') === false)
             pagingType: "simple",
           @endif

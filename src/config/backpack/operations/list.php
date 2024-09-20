@@ -22,6 +22,9 @@ return [
     // show search bar in the top-right corner?
     'searchableTable' => true,
 
+    // how much time should the system wait before triggering the search function after the user stops typing?
+    'searchDelay' => 400,
+
     // the time the table will be persisted in minutes
     // after this the table info is cleared from localStorage.
     // use false to never force localStorage clear. (default)

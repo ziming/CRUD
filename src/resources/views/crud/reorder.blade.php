@@ -7,6 +7,8 @@
       trans('backpack::crud.reorder') => false,
     ];
 
+    $columns = $crud->getOperationSetting('reorderColumnNames');
+
     // if breadcrumbs aren't defined in the CrudController, use the default breadcrumbs
     $breadcrumbs = $breadcrumbs ?? $defaultBreadcrumbs;
 @endphp
@@ -24,9 +26,11 @@
 @endsection
 
 @section('content')
-    <?php
-    function tree_element($entry, $key, $all_entries, $crud)
-    {
+<?php
+if(!function_exists('tree_element')) {
+    function tree_element($entry, $key, $all_entries, $crud) {
+        $columns = $crud->getOperationSetting('reorderColumnNames');
+
         if (! isset($entry->tree_element_shown)) {
             // mark the element as shown
             $all_entries[$key]->tree_element_shown = true;
@@ -39,12 +43,12 @@
             // see if this element has any children
             $children = [];
             foreach ($all_entries as $key => $subentry) {
-                if ($subentry->parent_id == $entry->getKey()) {
+                if ($subentry->{$columns['parent_id']} == $entry->getKey()) {
                     $children[] = $subentry;
                 }
             }
 
-            $children = collect($children)->sortBy('lft');
+            $children = collect($children)->sortBy($columns['lft']);
 
             // if it does have children, show them
             if (count($children)) {
@@ -59,6 +63,7 @@
 
         return $entry;
     }
+}
 
     ?>
 
@@ -68,15 +73,15 @@
                 <p>{{ trans('backpack::crud.reorder_text') }}</p>
 
                 <ol class="sortable mt-0 mb-0">
-                    <?php
-                    $all_entries = collect($entries->all())->sortBy('lft')->keyBy($crud->getModel()->getKeyName());
-    $root_entries = $all_entries->filter(function ($item) {
-        return $item->parent_id == 0;
-    });
-    foreach ($root_entries as $key => $entry) {
-        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
-    }
-    ?>
+                <?php
+                    $all_entries = collect($entries->all())->sortBy($columns['lft'])->keyBy($crud->getModel()->getKeyName());
+                    $root_entries = $all_entries->filter(function ($item) use ($columns) {
+                        return $item->{$columns['parent_id']} == 0;
+                    });
+                    foreach ($root_entries as $key => $entry) {
+                        $root_entries[$key] = tree_element($entry, $key, $all_entries, $crud);
+                    }
+                ?>
                 </ol>
 
             </div>{{-- /.card --}}

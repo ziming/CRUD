@@ -38,6 +38,12 @@ trait ReorderOperation
 
         $this->crud->operation('reorder', function () {
             $this->crud->loadDefaultOperationSettingsFromConfig();
+            $this->crud->setOperationSetting('reorderColumnNames', [
+                'parent_id' => 'parent_id',
+                'lft' => 'lft',
+                'rgt' => 'rgt',
+                'depth' => 'depth',
+            ]);
         });
 
         $this->crud->operation('list', function () {

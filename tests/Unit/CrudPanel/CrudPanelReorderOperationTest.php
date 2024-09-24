@@ -16,6 +16,13 @@ class CrudPanelReorderOperationTest extends BaseDBCrudPanel
         $this->createReorderItems();
         $this->crudPanel->setModel(Reorder::class);
 
+        $this->crudPanel->setOperationSetting('reorderColumnNames', [
+            'parent_id' => 'parent_id',
+            'depth' => 'depth',
+            'lft' => 'lft',
+            'rgt' => 'rgt',
+        ]);
+
         $this->crudPanel->updateTreeOrder(
             [
                 [

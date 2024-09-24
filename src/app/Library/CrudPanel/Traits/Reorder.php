@@ -36,13 +36,21 @@ trait Reorder
             $item[$columns['depth']] = empty($item['depth']) ? null : (int) $item['depth'];
             $item[$columns['lft']] = empty($item['left']) ? null : (int) $item['left'];
             $item[$columns['rgt']] = empty($item['right']) ? null : (int) $item['right'];
-            
+
             // unset mapped items properties.
-            if($columns['parent_id'] !== 'parent_id') { unset($item['parent_id']); };
-            if($columns['depth'] !== 'depth') { unset($item['depth']); }
-            if($columns['lft'] !== 'left') { unset($item['left']); }
-            if($columns['rgt'] !== 'right') { unset($item['right']); }
-            
+            if ($columns['parent_id'] !== 'parent_id') {
+                unset($item['parent_id']);
+            }
+            if ($columns['depth'] !== 'depth') {
+                unset($item['depth']);
+            }
+            if ($columns['lft'] !== 'left') {
+                unset($item['left']);
+            }
+            if ($columns['rgt'] !== 'right') {
+                unset($item['right']);
+            }
+
             // unset the item_id property
             unset($item['item_id']);
 

@@ -19,6 +19,8 @@ trait Reorder
     {
         $primaryKey = $this->model->getKeyName();
 
+        $columns = $this->getOperationSetting('reorderColumnNames');
+
         // we use the upsert method that should update the values of the matching ids.
         // it has the drawback of creating new entries when the id is not found
         // for that reason we get a list of all the ids and filter the ones
@@ -28,14 +30,21 @@ trait Reorder
         // filter the items that are not in the database and map the request
         $reorderItems = collect($request)->filter(function ($item) use ($itemKeys) {
             return $item['item_id'] !== '' && $item['item_id'] !== null && $itemKeys->contains($item['item_id']);
-        })->map(function ($item) use ($primaryKey) {
+        })->map(function ($item) use ($primaryKey, $columns) {
             $item[$primaryKey] = $item['item_id'];
-            $item['parent_id'] = empty($item['parent_id']) ? null : $item['parent_id'];
-            $item['depth'] = empty($item['depth']) ? null : (int) $item['depth'];
-            $item['lft'] = empty($item['left']) ? null : (int) $item['left'];
-            $item['rgt'] = empty($item['right']) ? null : (int) $item['right'];
+            $item[$columns['parent_id']] = empty($item['parent_id']) ? null : $item['parent_id'];
+            $item[$columns['depth']] = empty($item['depth']) ? null : (int) $item['depth'];
+            $item[$columns['lft']] = empty($item['left']) ? null : (int) $item['left'];
+            $item[$columns['rgt']] = empty($item['right']) ? null : (int) $item['right'];
+            
             // unset mapped items properties.
-            unset($item['item_id'], $item['left'], $item['right']);
+            if($columns['parent_id'] !== 'parent_id') { unset($item['parent_id']); };
+            if($columns['depth'] !== 'depth') { unset($item['depth']); }
+            if($columns['lft'] !== 'left') { unset($item['left']); }
+            if($columns['rgt'] !== 'right') { unset($item['right']); }
+            
+            // unset the item_id property
+            unset($item['item_id']);
 
             return $item;
         })->toArray();
@@ -47,13 +56,13 @@ trait Reorder
         });
 
         // wrap the queries in a transaction to avoid partial updates
-        DB::connection($this->model->getConnectionName())->transaction(function () use ($reorderItems, $primaryKey, $itemKeys) {
+        DB::connection($this->model->getConnectionName())->transaction(function () use ($reorderItems, $primaryKey, $itemKeys, $columns) {
             // create a string of ?,?,?,? to use as bind placeholders for item keys
             $reorderItemsBindString = implode(',', array_fill(0, count($reorderItems), '?'));
 
             // each of this properties will be updated using a single query with a CASE statement
             // this ensures that only 4 queries are run, no matter how many items are reordered
-            foreach (['parent_id', 'depth', 'lft', 'rgt'] as $column) {
+            foreach (array_values($columns) as $column) {
                 $query = '';
                 $bindings = [];
                 $query .= "UPDATE {$this->model->getTable()} SET {$column} = CASE ";

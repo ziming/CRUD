@@ -202,7 +202,7 @@ class CrudField
      */
     public function size($numberOfColumns)
     {
-        $this->attributes['wrapper']['class'] = 'form-group col-md-'.$numberOfColumns;
+        $this->attributes['wrapper']['class'] = 'form-group col-md-'.$numberOfColumns.' mb-3';
 
         return $this->save();
     }

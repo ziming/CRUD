@@ -777,7 +777,7 @@ class CrudPanelFieldsTest extends BaseCrudPanel
             ],
             'store_in' => 'some',
             'wrapper' => [
-                'class' => 'form-group col-md-6',
+                'class' => 'form-group col-md-6 mb-3',
             ],
             'events' => [
                 'created' => function () {

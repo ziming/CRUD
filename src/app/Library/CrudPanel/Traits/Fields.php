@@ -475,7 +475,7 @@ trait Fields
         if (is_string($setting) && class_exists($setting)) {
             $setting = new $setting();
 
-            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.');
+            return is_callable($setting) ? $setting($request) : abort(500, get_class($setting).' is not invokable.', ['developer-error-exception']);
         }
 
         return $request->only($this->getAllFieldNames());

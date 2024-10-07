@@ -73,11 +73,11 @@ trait Filters
 
         // check if another filter with the same name exists
         if (! isset($options['name'])) {
-            abort(500, 'All your filters need names.');
+            abort(500, 'All your filters need names.', ['developer-error-exception']);
         }
 
         if ($this->filters()->contains('name', $options['name'])) {
-            abort(500, "Sorry, you can't have two filters with the same name.");
+            abort(500, "Sorry, you can't have two filters with the same name.", ['developer-error-exception']);
         }
 
         // add a new filter to the interface
@@ -168,7 +168,7 @@ trait Filters
         $filter = $this->filters()->firstWhere('name', $name);
 
         if (! $filter) {
-            abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.');
+            abort(500, 'CRUD Filter "'.$name.'" not found. Please check the filter exists before you modify it.', ['developer-error-exception']);
         }
 
         if (is_array($modifications)) {

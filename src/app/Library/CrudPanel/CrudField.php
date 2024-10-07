@@ -46,7 +46,7 @@ class CrudField
     public function __construct($nameOrDefinitionArray)
     {
         if (empty($nameOrDefinitionArray)) {
-            abort(500, 'Field name can\'t be empty.');
+            abort(500, 'Field name can\'t be empty.', ['developer-error-exception']);
         }
 
         if (is_array($nameOrDefinitionArray)) {
@@ -57,7 +57,7 @@ class CrudField
         }
 
         if (is_array($name)) {
-            abort(500, 'Field name can\'t be an array. It should be a string. Error in field: '.json_encode($name));
+            abort(500, 'Field name can\'t be an array. It should be a string. Error in field: '.json_encode($name), ['developer-error-exception']);
         }
 
         $field = $this->crud()->firstFieldWhere('name', $name);
@@ -325,7 +325,7 @@ class CrudField
         $morphField = $this->crud()->fields()[$this->attributes['name']];
 
         if (empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
-            throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
+            abort(500, 'Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.', ['developer-error-exception']);
         }
         [$morphTypeField, $morphIdField] = $morphField['subfields'];
 
@@ -351,7 +351,7 @@ class CrudField
         $morphField = $this->crud()->fields()[$this->attributes['name']];
 
         if (empty($morphField) || ($morphField['relation_type'] ?? '') !== 'MorphTo') {
-            throw new \Exception('Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.');
+            abort(500, 'Trying to configure the morphType on a non-morphTo field. Check if field and relation name matches.', ['developer-error-exception']);
         }
 
         [$morphTypeField, $morphIdField] = $morphField['subfields'];

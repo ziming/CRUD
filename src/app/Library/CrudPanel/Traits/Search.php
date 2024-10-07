@@ -25,7 +25,7 @@ trait Search
         return $this->query->where(function ($query) use ($searchTerm) {
             foreach ($this->columns() as $column) {
                 if (! isset($column['type'])) {
-                    abort(400, 'Missing column type when trying to apply search term.');
+                    abort(500, 'Missing column type when trying to apply search term.', ['developer-error-exception']);
                 }
 
                 $this->applySearchLogicForColumn($query, $column, $searchTerm);
@@ -395,10 +395,10 @@ trait Search
         }
 
         return [
-            'draw' => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
-            'recordsTotal' => $totalRows,
+            'draw'            => (isset($this->getRequest()['draw']) ? (int) $this->getRequest()['draw'] : 0),
+            'recordsTotal'    => $totalRows,
             'recordsFiltered' => $filteredRows,
-            'data' => $rows,
+            'data'            => $rows,
         ];
     }
 

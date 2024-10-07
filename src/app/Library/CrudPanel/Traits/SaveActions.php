@@ -80,7 +80,7 @@ trait SaveActions
     {
         $orderCounter = $this->getOperationSetting('save_actions') !== null ? (count($this->getOperationSetting('save_actions')) + 1) : 1;
         //check for some mandatory fields
-        $saveAction['name'] ?? abort(500, 'Please define save action name.');
+        $saveAction['name'] ?? abort(500, 'Please define save action name.', ['developer-error-exception']);
         $saveAction['redirect'] = $saveAction['redirect'] ?? fn ($crud, $request, $itemId) => $request->has('_http_referrer') ? $request->get('_http_referrer') : $crud->route;
         $saveAction['visible'] = $saveAction['visible'] ?? true;
         $saveAction['button_text'] = $saveAction['button_text'] ?? $saveAction['name'];
@@ -291,7 +291,7 @@ trait SaveActions
         }
 
         return [
-            'active' => $saveCurrent,
+            'active'  => $saveCurrent,
             'options' => $dropdownOptions,
         ];
     }
@@ -349,8 +349,8 @@ trait SaveActions
         // if the request is AJAX, return a JSON response
         if ($this->getRequest()->ajax()) {
             return response()->json([
-                'success' => true,
-                'data' => $this->entry,
+                'success'      => true,
+                'data'         => $this->entry,
                 'redirect_url' => $redirectUrl,
                 'referrer_url' => $referrer_url ?? false,
             ]);
@@ -372,7 +372,7 @@ trait SaveActions
     {
         $defaultSaveActions = [
             [
-                'name' => 'save_and_back',
+                'name'    => 'save_and_back',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('list');
                 },
@@ -382,7 +382,7 @@ trait SaveActions
                 'button_text' => trans('backpack::crud.save_action_save_and_back'),
             ],
             [
-                'name' => 'save_and_edit',
+                'name'    => 'save_and_edit',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('update');
                 },
@@ -404,7 +404,7 @@ trait SaveActions
                 'button_text' => trans('backpack::crud.save_action_save_and_edit'),
             ],
             [
-                'name' => 'save_and_new',
+                'name'    => 'save_and_new',
                 'visible' => function ($crud) {
                     return $crud->hasAccess('create');
                 },

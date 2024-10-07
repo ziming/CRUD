@@ -184,7 +184,7 @@ class CrudButton implements Arrayable
                 break;
 
             default:
-                abort(500, "Unknown button position - please use 'beginning' or 'end'.");
+                abort(500, "Unknown button position - please use 'beginning' or 'end'.", ['developer-error-exception']);
         }
 
         return $this;
@@ -314,7 +314,7 @@ class CrudButton implements Arrayable
             return view($button->getFinalViewPath(), compact('button', 'crud', 'entry'));
         }
 
-        abort(500, 'Unknown button type');
+        abort(500, 'Unknown button type', ['developer-error-exception']);
     }
 
     /**
@@ -342,7 +342,7 @@ class CrudButton implements Arrayable
             }
         }
 
-        abort(500, 'Button view and fallbacks do not exist for '.$this->name.' button.');
+        abort(500, 'Button view and fallbacks do not exist for '.$this->name.' button.', ['developer-error-exception']);
     }
 
     /**

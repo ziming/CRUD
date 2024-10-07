@@ -172,7 +172,7 @@ class Widget extends Fluent
         if (! backpack_pro()) {
             throw new BackpackProRequiredException('Cannot find the widget view: '.$this->attributes['type'].'. Please check for typos.'.(backpack_pro() ? '' : ' If you are trying to use a PRO widget, please first purchase and install the backpack/pro addon from backpackforlaravel.com'), 1);
         }
-        abort(500, 'Cannot find the view for «'.$this->attributes['type'].'» widget type. Please check for typos.');
+        abort(500, 'Cannot find the view for «'.$this->attributes['type'].'» widget type. Please check for typos.', ['developer-error-exception']);
     }
 
     // -------

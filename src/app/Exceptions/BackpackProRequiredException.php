@@ -20,6 +20,6 @@ class BackpackProRequiredException extends \Exception
                 break;
         }
 
-        return abort(500, $this->getMessage());
+        return abort(500, $this->getMessage(), ['developer-error-exception']);
     }
 }

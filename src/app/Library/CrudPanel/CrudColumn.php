@@ -88,7 +88,7 @@ class CrudColumn
     public function key(string $key)
     {
         if (! isset($this->attributes['name'])) {
-            abort(500, 'Column name must be defined before changing the key.');
+            abort(500, 'Column name must be defined before changing the key.', ['developer-error-exception']);
         }
 
         $columns = $this->crud()->columns();

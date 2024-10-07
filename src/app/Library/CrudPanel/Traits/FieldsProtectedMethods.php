@@ -320,8 +320,8 @@ trait FieldsProtectedMethods
                     if ($field['allow_duplicate_pivots'] ?? false) {
                         $pivotSelectorField['allow_duplicate_pivots'] = true;
                         $field['subfields'] = Arr::prepend($field['subfields'], [
-                            'name'    => $field['pivot_key_name'] ?? 'id',
-                            'type'    => 'hidden',
+                            'name' => $field['pivot_key_name'] ?? 'id',
+                            'type' => 'hidden',
                             'wrapper' => [
                                 'class' => 'd-none',
                             ],

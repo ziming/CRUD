@@ -108,7 +108,7 @@ trait FieldsProtectedMethods
     protected function makeSureFieldHasName($field)
     {
         if (empty($field)) {
-            abort(500, 'Field name can\'t be empty');
+            abort(500, 'Field name can\'t be empty', ['developer-error-exception']);
         }
 
         if (is_string($field)) {
@@ -116,11 +116,11 @@ trait FieldsProtectedMethods
         }
 
         if (is_array($field) && ! isset($field['name'])) {
-            abort(500, 'All fields must have their name defined');
+            abort(500, 'All fields must have their name defined', ['developer-error-exception']);
         }
 
         if (is_array($field['name'])) {
-            abort(500, 'Field name can\'t be an array. It should be a string. Error in field: '.json_encode($field['name']));
+            abort(500, 'Field name can\'t be an array. It should be a string. Error in field: '.json_encode($field['name']), ['developer-error-exception']);
         }
 
         $field['name'] = Str::replace(' ', '', $field['name']);
@@ -265,12 +265,12 @@ trait FieldsProtectedMethods
         }
 
         if (! is_multidimensional_array($field['subfields'], true)) {
-            abort(500, 'Subfields of «'.$field['name'].'» are malformed. Make sure you provide an array of subfields.');
+            abort(500, 'Subfields of «'.$field['name'].'» are malformed. Make sure you provide an array of subfields.', ['developer-error-exception']);
         }
 
         foreach ($field['subfields'] as $key => $subfield) {
             if (empty($subfield) || ! isset($subfield['name'])) {
-                abort(500, 'A subfield of «'.$field['name'].'» is malformed. Subfield attribute name can\'t be empty.');
+                abort(500, 'A subfield of «'.$field['name'].'» is malformed. Subfield attribute name can\'t be empty.', ['developer-error-exception']);
             }
 
             // make sure the field definition is an array

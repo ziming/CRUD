@@ -27,7 +27,7 @@ class CrudPanelMacroTest extends BaseCrudPanel
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Cannot register \'setModel\' macro. \'setModel()\' already exists on Backpack\CRUD\app\Library\CrudPanel\CrudPanel'),
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Cannot register \'setModel\' macro. \'setModel()\' already exists on Backpack\CRUD\app\Library\CrudPanel\CrudPanel', null, ['developer-error-exception']),
             $e
         );
     }

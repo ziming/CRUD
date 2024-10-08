@@ -21,7 +21,7 @@ final class RegisterUploadEvents
         $this->crudObjectType = is_a($crudObject, CrudField::class) ? 'field' : (is_a($crudObject, CrudColumn::class) ? 'column' : null);
 
         if (! $this->crudObjectType) {
-            abort(500, 'Upload handlers only work for CrudField and CrudColumn classes.');
+            abort(500, 'Upload handlers only work for CrudField and CrudColumn classes.', ['developer-error-exception']);
         }
     }
 

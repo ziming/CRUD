@@ -203,7 +203,7 @@ class CrudPanelValidationTest extends \Backpack\CRUD\Tests\config\CrudPanel\Base
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Please pass setValidation() nothing, a rules array or a FormRequest class.'),
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Please pass setValidation() nothing, a rules array or a FormRequest class.', null, ['developer-error-exception']),
             $e
         );
     }

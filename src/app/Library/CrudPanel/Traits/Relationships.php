@@ -33,7 +33,7 @@ trait Relationships
             return $relation;
         }
 
-        abort(500, 'Looks like field <code>'.$field['name'].'</code> is not properly defined. The <code>'.$field['entity'].'()</code> relationship doesn\'t seem to exist on the <code>'.get_class($model).'</code> model.');
+        abort(500, 'Looks like field <code>'.$field['name'].'</code> is not properly defined. The <code>'.$field['entity'].'()</code> relationship doesn\'t seem to exist on the <code>'.get_class($model).'</code> model.', ['developer-error-exception']);
     }
 
     /**

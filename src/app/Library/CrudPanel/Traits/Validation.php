@@ -73,7 +73,7 @@ trait Validation
         } elseif (is_string($classOrRulesArray) && class_exists($classOrRulesArray) && is_a($classOrRulesArray, FormRequest::class, true)) {
             $this->setValidationFromRequest($classOrRulesArray);
         } else {
-            abort(500, 'Please pass setValidation() nothing, a rules array or a FormRequest class.');
+            abort(500, 'Please pass setValidation() nothing, a rules array or a FormRequest class.', ['developer-error-exception']);
         }
     }
 

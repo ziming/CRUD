@@ -362,7 +362,7 @@ class CrudPanelButtonsTest extends BaseCrudPanel
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Unknown button position - please use \'beginning\' or \'end\'.'),
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Unknown button position - please use \'beginning\' or \'end\'.', null, ['developer-error-exception']),
             $e
         );
     }

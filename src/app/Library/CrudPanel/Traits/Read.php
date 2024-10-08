@@ -385,7 +385,7 @@ trait Read
     private function abortIfInvalidPageLength($value)
     {
         if ($value === 0 || (is_array($value) && in_array(0, $value))) {
-            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.');
+            abort(500, 'You should not use 0 as a key in paginator. If you are looking for "ALL" option, use -1 instead.', ['developer-error-exception']);
         }
     }
 

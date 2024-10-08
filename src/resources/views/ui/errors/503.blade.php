@@ -2,6 +2,7 @@
 
 @php
   $error_number = 503;
+  $shouldEscape = ! in_array('developer-error-exception', $exception->getHeaders());
 @endphp
 
 @section('title')
@@ -9,5 +10,5 @@
 @endsection
 
 @section('description')
-  {!! $exception?->getMessage() && config('app.debug') ? e($exception->getMessage()) : trans('backpack::base.error_page.message_503') !!}
+  {!! $exception?->getMessage() && config('app.debug') ? ($shouldEscape ? e($exception->getMessage()) : $exception->getMessage()) : trans('backpack::base.error_page.message_503') !!}
 @endsection

@@ -38,7 +38,7 @@ trait Buttons
         // we parse the ordered buttons
         collect($order)->each(function ($btnKey) use ($newButtons, $stackButtons) {
             if (! $button = $stackButtons->where('name', $btnKey)->first()) {
-                abort(500, 'Button name [«'.$btnKey.'»] not found.');
+                abort(500, 'Button name [«'.$btnKey.'»] not found.', ['developer-error-exception']);
             }
             $newButtons->push($button);
         });
@@ -117,7 +117,7 @@ trait Buttons
         $button = $this->buttons()->firstWhere('name', $name);
 
         if (! $button) {
-            abort(500, 'CRUD Button "'.$name.'" not found. Please ensure the button exists before you modify it.');
+            abort(500, 'CRUD Button "'.$name.'" not found. Please ensure the button exists before you modify it.', ['developer-error-exception']);
         }
 
         if (is_array($modifications)) {

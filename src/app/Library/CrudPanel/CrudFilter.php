@@ -558,7 +558,7 @@ class CrudFilter
                 break;
 
             default:
-                abort(500, 'Unknown filter operator.');
+                abort(500, 'Unknown filter operator.', ['developer-error-exception']);
                 break;
         }
     }

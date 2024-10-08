@@ -272,7 +272,7 @@ if (! function_exists('backpack_view')) {
             return '- Called in: '.Str::after($functionFile, base_path()).' on line: '.$functionLine;
         })();
 
-        abort(500, $errorMessage.$errorDetails);
+        abort(500, $errorMessage.$errorDetails, ['developer-error-exception']);
     }
 }
 

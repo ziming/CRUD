@@ -6,6 +6,11 @@
         }
         foreach(session()->get('errors')->getBags() as $bag => $errorMessages) {
             foreach($errorMessages->getMessages() as $fieldName => $messages) {
+
+                # Transform subfield $fieldNames into the correct CRUD fieldName format 
+                # preg_split by the array separator .digits. and take only the first element
+                $fieldName = preg_split('/\.\d+\./',$fieldName)[0];
+
                 if(array_key_exists($fieldName, $crud->getCurrentFields()) && array_key_exists('tab', $crud->getCurrentFields()[$fieldName])) {
                     return $crud->getCurrentFields()[$fieldName]['tab'];
                 }

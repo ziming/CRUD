@@ -7,8 +7,8 @@
         foreach(session()->get('errors')->getBags() as $bag => $errorMessages) {
             foreach($errorMessages->getMessages() as $fieldName => $messages) {
 
-                # Transform subfield $fieldNames into the correct CRUD fieldName format 
-                # preg_split by the array separator .digits. and take only the first element
+                // extract the "parent" field name by separating the field name string by `.digit.` (eg. relation.0.fieldName)
+                // and take the first element,  AKA the "parent" name. In the above example: `relation` 
                 $fieldName = preg_split('/\.\d+\./',$fieldName)[0];
 
                 if(array_key_exists($fieldName, $crud->getCurrentFields()) && array_key_exists('tab', $crud->getCurrentFields()[$fieldName])) {

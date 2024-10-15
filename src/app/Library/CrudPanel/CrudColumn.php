@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Support\HasSubfields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 use Illuminate\Support\Traits\Conditionable;
 
@@ -36,6 +37,7 @@ class CrudColumn
 {
     use Conditionable;
     use MacroableWithAttributes;
+    use HasSubfields;
 
     protected $attributes;
 

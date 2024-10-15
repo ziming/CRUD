@@ -2,6 +2,7 @@
 
 namespace Backpack\CRUD\app\Library\CrudPanel;
 
+use Backpack\CRUD\app\Library\CrudPanel\Support\HasSubfields;
 use Backpack\CRUD\app\Library\CrudPanel\Traits\Support\MacroableWithAttributes;
 use Illuminate\Support\Traits\Conditionable;
 
@@ -40,6 +41,7 @@ class CrudField
 {
     use MacroableWithAttributes;
     use Conditionable;
+    use HasSubfields;
 
     protected $attributes;
 
@@ -217,25 +219,6 @@ class CrudField
     public function on(string $event, \Closure $closure)
     {
         $this->attributes['events'][$event] = $closure;
-
-        return $this->save();
-    }
-
-    /**
-     * When subfields are defined, pass them through the guessing function
-     * so that they have label, relationship attributes, etc.
-     *
-     * @param  array  $subfields  Subfield definition array
-     * @return self
-     */
-    public function subfields($subfields)
-    {
-        $callAttributeMacro = ! isset($this->attributes['subfields']);
-        $this->attributes['subfields'] = $subfields;
-        $this->attributes = $this->crud()->makeSureFieldHasNecessaryAttributes($this->attributes);
-        if ($callAttributeMacro) {
-            $this->callRegisteredAttributeMacros();
-        }
 
         return $this->save();
     }

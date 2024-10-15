@@ -222,19 +222,6 @@ class CrudField
     }
 
     /**
-     * Mark the field has having upload functionality, so that the form would become multipart.
-     *
-     * @param  bool  $upload
-     * @return self
-     */
-    public function upload($upload = true)
-    {
-        $this->attributes['upload'] = $upload;
-
-        return $this->save();
-    }
-
-    /**
      * When subfields are defined, pass them through the guessing function
      * so that they have label, relationship attributes, etc.
      *
@@ -249,6 +236,19 @@ class CrudField
         if ($callAttributeMacro) {
             $this->callRegisteredAttributeMacros();
         }
+
+        return $this->save();
+    }
+
+    /**
+     * Mark the field has having upload functionality, so that the form would become multipart.
+     *
+     * @param  bool  $upload
+     * @return self
+     */
+    public function upload($upload = true)
+    {
+        $this->attributes['upload'] = $upload;
 
         return $this->save();
     }

@@ -84,7 +84,7 @@ return [
     'loadingRecords' => 'Ielādē...',
     'processing' => 'Apstrādā...',
     'search' => 'Meklēšana',
-    'zeroRecords' => 'Peimēroti ieraksti nav atrasti',
+    'zeroRecords' => 'Piemēroti ieraksti nav atrasti',
     'paginate' => [
         'first' => 'Pirmā',
         'last' => 'Pēdējā',

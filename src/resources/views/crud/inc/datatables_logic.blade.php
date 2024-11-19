@@ -155,7 +155,9 @@
                         // return data[0];
                         return '';
                     }
-                } ),
+                }),
+                type: 'none',
+                target: '.dtr-control',
                 renderer: function ( api, rowIdx, columns ) {
 
                   var data = $.map( columns, function ( col, i ) {

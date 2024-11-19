@@ -272,6 +272,7 @@ trait Search
                                 ->render();
         }
 
+
         // add the bulk actions checkbox to the first column
         if ($this->getOperationSetting('bulkActions')) {
             $bulk_actions_checkbox = \View::make('crud::columns.inc.bulk_actions_checkbox', ['entry' => $entry])->render();
@@ -288,8 +289,8 @@ trait Search
             $row_items[0] = $details_row_button.$row_items[0];
         }
 
-        if ($this->getResponsiveTable()) {
-            $responsiveTableTrigger = \View::make('crud::columns.inc.responsive_table_trigger', ['entry' => $entry])->render();
+        if($this->getResponsiveTable()) {
+            $responsiveTableTrigger = '<div class="dtr-control d-inline">';
             $row_items[0] = $responsiveTableTrigger.$row_items[0];
         }
 

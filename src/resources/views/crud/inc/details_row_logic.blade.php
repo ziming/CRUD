@@ -13,7 +13,7 @@
 
             // Add event listener for opening and closing details
             $('#crudTable tbody td .details-control').on('click', function (e) {
-              e.stopPropagation();
+                e.stopPropagation();
 
                 var tr = $(this).closest('tr');
                 var btn = $(this).find('.details-row-button');

@@ -105,6 +105,7 @@
         }
       },
       responsiveToggle: function(dt) {
+        console.log(dt.table().header());
           $(dt.table().header()).find('th').toggleClass('all');
           dt.responsive.rebuild();
           dt.responsive.recalc();

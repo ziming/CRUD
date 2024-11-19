@@ -288,7 +288,7 @@ trait Search
             $row_items[0] = $details_row_button.$row_items[0];
         }
 
-        if($this->getResponsiveTable()) {
+        if ($this->getResponsiveTable()) {
             $responsiveTableTrigger = \View::make('crud::columns.inc.responsive_table_trigger', ['entry' => $entry])->render();
             $row_items[0] = $responsiveTableTrigger.$row_items[0];
         }

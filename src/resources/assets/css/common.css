@@ -94,6 +94,10 @@ form .select2.select2-container {
     margin-top: 0 !important;
 }
 
+#crudTable_wrapper #crudTable .crud_bulk_actions_line_checkbox {
+    vertical-align: text-top;
+}
+
 #crudTable_wrapper #crudTable.dtr-none > tbody > tr > td > div.dtr-control:before,
 #crudTable_wrapper table.dataTable.dtr-none > tbody > tr > td > div.dtr-control:before {
     background-color: transparent;

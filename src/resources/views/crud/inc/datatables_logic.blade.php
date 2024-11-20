@@ -379,8 +379,11 @@
         // the table should have the has-hidden-columns class
         crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
             if (crud.table.responsive.hasHidden()) {
-              $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
+                $('.dtr-control').removeClass('d-none'); 
+                $('.dtr-control').addClass('d-inline');
+                $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
              } else {
+              $('.dtr-control').removeClass('d-none').removeClass('d-inline').addClass('d-none');  
               $("#crudTable").removeClass('has-hidden-columns');
              }
         } );

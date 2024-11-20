@@ -289,7 +289,7 @@ trait Search
         }
 
         if ($this->getResponsiveTable()) {
-            $responsiveTableTrigger = '<div class="dtr-control d-inline cursor-pointer"></div>';
+            $responsiveTableTrigger = '<div class="dtr-control d-none cursor-pointer"></div>';
             $row_items[0] = $responsiveTableTrigger.$row_items[0];
         }
 

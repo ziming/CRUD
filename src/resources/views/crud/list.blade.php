@@ -98,7 +98,7 @@
                   >
                     {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))
-                      {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                      	{!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
                     @endif
                     {!! $column['label'] !!}
                   </th>
@@ -122,7 +122,7 @@
                   <th>
                     {{-- Bulk checkbox --}}
                     @if($loop->first && $crud->getOperationSetting('bulkActions'))
-                      {!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
+                      	{!! View::make('crud::columns.inc.bulk_actions_checkbox')->render() !!}
                     @endif
                     {!! $column['label'] !!}
                   </th>

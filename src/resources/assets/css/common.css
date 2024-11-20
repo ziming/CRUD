@@ -94,18 +94,22 @@ form .select2.select2-container {
     margin-top: 0 !important;
 }
 
-#crudTable_wrapper #crudTable.dtr-inline.collapsed > tbody > tr > .dtr-control:before,
-#crudTable_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr > .dtr-control:before {
+#crudTable_wrapper #crudTable .crud_bulk_actions_line_checkbox {
+    vertical-align: text-top;
+}
+
+#crudTable_wrapper #crudTable.dtr-none > tbody > tr > td > div.dtr-control:before,
+#crudTable_wrapper table.dataTable.dtr-none > tbody > tr > td > div.dtr-control:before {
     background-color: transparent;
     color: #636161;
     font-family: "Line Awesome Free";
     font-weight: 900;
-    width: 16px;
+    width: 1rem;
     content: "\f142";
     font-size: 21px;
     box-shadow: none;
     border: none;
-    display: inline;
+    display: inline-block;
     position: relative;
     top: 0;
     left: 0;

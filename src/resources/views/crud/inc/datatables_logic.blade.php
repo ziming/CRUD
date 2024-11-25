@@ -366,11 +366,19 @@
          if ($('#crudTable').data('has-line-buttons-as-dropdown')) {
           formatActionColumnAsDropdown();
          }
+
+         if (crud.table.responsive.hasHidden()) {
+            $('.dtr-control').removeClass('d-none'); 
+            $('.dtr-control').addClass('d-inline');
+            $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
+         }
+
       }).dataTable();
 
       // when datatables-colvis (column visibility) is toggled
       // rebuild the datatable using the datatable-responsive plugin
       $('#crudTable').on( 'column-visibility.dt',   function (event) {
+        console.log('column-visibility.dt');
          crud.table.responsive.rebuild();
       } ).dataTable();
 

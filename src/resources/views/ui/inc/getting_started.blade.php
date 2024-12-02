@@ -21,13 +21,25 @@
             <p>To dig a little deeper, <a href="#" data-bs-toggle="collapse" data-bs-target="#customizeUsersCRUD" data-toggle="collapse" data-target="#customizeUsersCRUD" aria-expanded="true" aria-controls="customizeUsersCRUD">let's make a few changes to the Users CRUD <i class="la la-angle-double-right"></i></a></p>
 
             <div class="collapse" id="customizeUsersCRUD">
-              <p><strong>1. When Listing, let's remove the "password" column</strong> - no point in showing the hash. To do that, go to <code class="text-primary bg-light p-1 rounded">UserCrudController::setupListOperation()</code> and remove the line saying <code class="text-primary bg-light p-1 rounded">CRUD::column('password');</code> - easy-peasy, right?</p>
+              <p><strong>1. When listing, let's remove <code>setFromDb()</code> and define each column</strong>. To do that, navigate to <code class="text-primary bg-light p-1 rounded">UserCrudController::setupListOperation()</code> and remove the line that says <code class="text-primary bg-light p-1 rounded">setFromDb();</code> - Afterward, manually add the columns for <em>name</em> and <em>email</em>.</p>
+                <p>
+                  <pre class="language-php rounded"><code class="language-php p-1">
+                  protected function setupListOperation()
+                  {
+                      CRUD::column('name');
+                      CRUD::column('email');
+                  }
+                  </code></pre>
+                </p>
               <p><strong>2. On Create & Update, let's add validation to forms</strong>. There are <a href="https://backpackforlaravel.com/docs/crud-operation-create#validation?ref=getting-started-widget" target="_blank">multiple ways to add validation</a> but we've already chosen the simplest, <a href="https://backpackforlaravel.com/docs/crud-operation-create#validating-fields-using-field-attributes?ref=getting-started-widget" target="_blank">validation using field attributes</a>. Let's go to <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code> and specify our validation rules directly on the fields:
                 <p>
                   <pre class="language-php rounded"><code class="language-php p-1">
-                    CRUD::field('name')->validationRules('required|min:5');
-                    CRUD::field('email')->validationRules('required|email|unique:users,email');
-                    CRUD::field('password')->validationRules('required');
+                  protected function setupCreateOperation()
+                  {
+                      CRUD::field('name')->validationRules('required|min:5');
+                      CRUD::field('email')->validationRules('required|email|unique:users,email');
+                      CRUD::field('password')->validationRules('required');
+                  }
                   </code></pre>
                 </p>
               <p><strong>3. On Create, let's hash the password.</strong> Currently, if we create a new User, it'll work. But if you look in the database... you'll notice the password is stored in plain text. We don't want that - we want it hashed. There are <a href="https://backpackforlaravel.com/docs/crud-operation-create#use-events-in-your-setup-method?ref=getting-started-widget" target="_blank">multiple ways to achieve this too</a>. Let's use Model Events inside <code class="text-primary bg-light p-1 rounded">setupCreateOperation()</code>. Here's how our method could look, when we also tap into the <code class="text-primary bg-light p-1 rounded">creating</code> event, to hash the password:</p>
@@ -38,7 +50,7 @@
                       CRUD::field('name')->validationRules('required|min:5');
                       CRUD::field('email')->validationRules('required|email|unique:users,email');
                       CRUD::field('password')->validationRules('required');
-                      
+
                       // if you are using Laravel 10+ your User model should already include the password hashing in the model casts.
                       // if that's the case, you can skip this step. You can check your model $casts property or `casts()` method.
                       \App\Models\User::creating(function ($entry) {
@@ -114,6 +126,7 @@
               <li><strong><a target="_blank" href="https://backpackforlaravel.com/products/devtools?ref=getting-started-widget">DevTools</a></strong> - easily generate Laravel migrations and models, from a web interface</li>
               <li><strong><a target="_blank" href="https://backpackforlaravel.com/products/figma-template?ref=getting-started-widget">FigmaTemplate</a></strong> - create designs and mockups that are easy to implement in Backpack</li>
               <li><strong><a target="_blank" href="https://backpackforlaravel.com/products/editable-columns?ref=getting-started-widget">EditableColumns</a></strong> - let your admins make quick edits, right from the table view</li>
+              <li><strong><a target="_blank" href="https://backpackforlaravel.com/products/calendar-operation?ref=getting-started-widget">CalendarOperation</a></strong> - let your admins see and manage model entries, directly on a calendar</li>
             </ul>
           </div>
         </div>

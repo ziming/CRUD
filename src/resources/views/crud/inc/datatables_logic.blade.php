@@ -367,6 +367,10 @@
           formatActionColumnAsDropdown();
          }
 
+        if (! crud.table.responsive.hasHidden()) {
+            crud.table.columns().header()[0].style.paddingLeft = '0.6rem';
+        }
+
          if (crud.table.responsive.hasHidden()) {
             $('.dtr-control').removeClass('d-none'); 
             $('.dtr-control').addClass('d-inline');

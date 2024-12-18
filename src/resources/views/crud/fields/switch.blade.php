@@ -14,7 +14,7 @@
 
     <div class="d-inline-flex align-items-center">
         {{-- Switch --}}
-        <label class="form-switch switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-color: {{ $field['color'] }};">
+        <label class="form-switch switch switch-sm switch-label switch-pill switch-{{ $field['color'] }} mb-0" style="--bg-switch-checked-color: {{ $field['color'] }};">
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"
@@ -23,7 +23,8 @@
                 type="checkbox"
                 data-init-function="bpFieldInitSwitch"
                 {{ (bool) $field['value'] ? 'checked' : '' }}
-                class="switch-input form-check-input" />
+                class="switch-input form-check-input" 
+                />
             <span
                 class="switch-slider"
                 data-checked="{{ $field['onLabel'] ?? '' }}"
@@ -86,7 +87,10 @@
     @bassetBlock('backpack/crud/fields/switch-field.css')
     <style>
         .switch-input:checked+.switch-slider {
-            background-color: var(--bg-color);
+            background-color: var(--bg-switch-checked-color);
+        }
+        .form-switch .form-check-input:checked {
+            background-color: var(--bg-switch-checked-color);
         }
     </style>
     @endBassetBlock

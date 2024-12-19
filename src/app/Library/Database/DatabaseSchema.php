@@ -22,7 +22,7 @@ final class DatabaseSchema
         return self::$schema[$connection][$table] ?? null;
     }
 
-    public static function getTables(string $connection = null): array
+    public static function getTables(?string $connection = null): array
     {
         $connection = $connection ?: config('database.default');
 
@@ -53,7 +53,7 @@ final class DatabaseSchema
         return self::getIndexColumnNames($connection, $table);
     }
 
-    public function getManager(string $connection = null)
+    public function getManager(?string $connection = null)
     {
         $connection = $connection ?: config('database.default');
 

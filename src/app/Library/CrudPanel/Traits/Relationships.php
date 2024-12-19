@@ -274,7 +274,9 @@ trait Relationships
     {
         $relation = $this->getRelationInstance($field);
 
-        if (Str::afterLast($field['name'], '.') === $relation->getRelationName() || Str::endsWith($relation->getRelationName(), '{closure}')) {
+        if (Str::afterLast($field['name'], '.') === $relation->getRelationName() ||
+            Str::endsWith($relation->getRelationName(), '{closure}') || // php < 8.3
+            Str::startsWith($relation->getRelationName(), '{closure:')) { // php 8.4+
             return $relation->getForeignKeyName();
         }
 

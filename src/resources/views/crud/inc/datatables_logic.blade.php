@@ -23,11 +23,18 @@
     let $dtCachedInfo = JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}'))
         ? JSON.parse(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}')) : [];
     var $dtDefaultPageLength = {{ $crud->getDefaultPageLength() }};
-    let $dtStoredPageLength = localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength');
+    let $pageLength = @json($crud->getPageLengthMenu());
+    
+    let $dtStoredPageLength = parseInt(localStorage.getItem('DataTables_crudTable_/{{$crud->getRoute()}}_pageLength'));
 
     if(!$dtStoredPageLength && $dtCachedInfo.length !== 0 && $dtCachedInfo.length !== $dtDefaultPageLength) {
         localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
     }
+
+    if($dtCachedInfo.length !== 0 && $pageLength.indexOf($dtCachedInfo.length) === -1) {
+        localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
+    }
+
 
     // in this page we always pass the alerts to localStorage because we can be redirected with
     // persistent table, and this way we guarantee non-duplicate alerts.
@@ -226,7 +233,7 @@
         @endif
         autoWidth: false,
         pageLength: $dtDefaultPageLength,
-        lengthMenu: @json($crud->getPageLengthMenu()),
+        lengthMenu: $pageLength,
         /* Disable initial sort */
         aaSorting: [],
         language: {

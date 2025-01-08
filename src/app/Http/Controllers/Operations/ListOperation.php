@@ -110,7 +110,8 @@ trait ListOperation
             $filteredEntryCount = $this->crud->getFilteredQueryCount() ?? $totalEntryCount;
         } else {
             $totalEntryCount = $length;
-            $filteredEntryCount = $entries->count() < $length ? 0 : $length + $start + 1;
+            $entryCount = $entries->count();
+            $filteredEntryCount = $entryCount < $length ? $entryCount : $length + $start + 1;
         }
 
         // store the totalEntryCount in CrudPanel so that multiple blade files can access it

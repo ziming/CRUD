@@ -19,7 +19,7 @@
         }
     }
 
-    if(!isset($column['options'])) {
+    if(!isset($column['options']) && is_array($column['value'])) {
         $column['options'] = (function() use ($entry, $column) {
 
             // if we are in a PHP version where PHP enums are not available, it can only be a database enum

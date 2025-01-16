@@ -11,7 +11,7 @@
                 }
                 
                 $column['value'] = isset($column['enum_function']) ? $enumClass->{$column['enum_function']}() : $column['value'];
-            }else{
+            }elseif($column['value'] instanceof \Illuminate\Support\Collection) {
                 $column['value'] = $column['value']->transform(function($item) use ($column) {
                     return $item instanceof \BackedEnum ? $item->value : $item->name;
                 })->toArray();

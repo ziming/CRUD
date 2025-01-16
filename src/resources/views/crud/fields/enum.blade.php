@@ -74,8 +74,9 @@
             })->toArray(),
             default => null
         };
-        $field['value'] = is_array($field['value']) ? $field['value'] : [$field['value']];
     }
+    $field['value'] = is_array($field['value']) ? $field['value'] : (!empty($field['value']) ? [$field['value']] : []);
+
 @endphp
 
 @include('crud::fields.inc.wrapper_start')

@@ -3,7 +3,7 @@
     $field['value'] = old_empty_or_null($field['name'], '') ?? $field['value'] ?? $field['default'] ?? '0';
     $field['onLabel'] = $field['onLabel'] ?? '';
     $field['offLabel'] = $field['offLabel'] ?? '';
-    $field['color'] = $field['color'] ?? 'var(--bg-switch-checked-color)';
+    $field['color'] = $field['color'] ?? 'var(--bg-switch-checked-color, black)';
 @endphp
 
 {{-- Wrapper --}}

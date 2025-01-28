@@ -6,7 +6,7 @@
 
     $allowMultipleValues = $field['multiple'] ?? false;
 
-    $possible_values = (function() use ($entity_model, $field) {
+    $possible_values = (function() use ($entity_model, $field, &$allowMultipleValues) {
         $fieldName = $field['baseFieldName'] ?? $field['name'];
         // if developer provided the options, use them, no need to guess.
         if(isset($field['options'])) {

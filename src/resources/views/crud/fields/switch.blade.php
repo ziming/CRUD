@@ -4,6 +4,7 @@
     $field['onLabel'] = $field['onLabel'] ?? '';
     $field['offLabel'] = $field['offLabel'] ?? '';
     $field['color'] = $field['color'] ?? 'var(--bg-switch-checked-color, black)';
+    $switchClass = (str_starts_with($field['color'], 'var(') || str_starts_with($field['color'], '#')) ? '' : 'switch-'.$field['color'];
 @endphp
 
 {{-- Wrapper --}}
@@ -14,7 +15,7 @@
 
     <div class="d-inline-flex align-items-center">
         {{-- Switch --}}
-        <label class="form-switch switch switch-sm switch-label switch-pill mb-0" @if($field['color'] !== 'var(--bg-switch-checked-color, black)') style="--bg-switch-checked-color: {{ $field['color'] }};"  @endif>
+        <label class="form-switch switch switch-sm switch-label switch-pill mb-0 {{$switchClass}}" @if($field['color'] !== 'var(--bg-switch-checked-color, black)') style="--bg-switch-checked-color: {{ $field['color'] }};"  @endif>
             <input
                 type="hidden"
                 name="{{ $field['name'] }}"

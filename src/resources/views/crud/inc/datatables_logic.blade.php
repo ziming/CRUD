@@ -31,7 +31,7 @@
         localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
     }
 
-    if($dtCachedInfo.length !== 0 && $pageLength.indexOf($dtCachedInfo.length) === -1) {
+    if($dtCachedInfo.length !== 0 && $pageLength[0].indexOf($dtCachedInfo.length) === -1) {
         localStorage.removeItem('DataTables_crudTable_/{{$crud->getRoute()}}');
     }
 

@@ -26,7 +26,7 @@ trait HasFakeFields
 
             $column_contents = $this->{$column};
 
-            if ($this->shouldDecodeFake($column)) {
+            if ($this->shouldDecodeFake($column) || ($this->translationEnabled() && $this->isTranslatableAttribute($column))) {
                 $column_contents = json_decode($column_contents);
             }
 
@@ -67,7 +67,7 @@ trait HasFakeFields
      */
     public function shouldDecodeFake($column)
     {
-        return ! in_array($column, array_keys($this->casts));
+        return ! in_array($column, array_keys($this->getCasts()));
     }
 
     /**
@@ -78,6 +78,6 @@ trait HasFakeFields
      */
     public function shouldEncodeFake($column)
     {
-        return ! in_array($column, array_keys($this->casts));
+        return ! in_array($column, array_keys($this->getCasts()));
     }
 }

@@ -138,7 +138,7 @@ For tasks & details about how you can help our project, please see [CONTRIBUTING
 - [290+ wonderful contributors][link-contributors]
 
 Special thanks go to:
-- [Mauro Martinez](https://github.com/maurohmartinez), [Owen Melbourne](https://github.com/OwenMelbz), [Oliver Ziegler](https://github.com/OliverZiegler), [Thomas Swonke](https://github.com/tswonke), [Catalin Tudorache](https://github.com/tumf87), [Abby Janke](https://github.com/AbbyJanke), [David Lloyd](https://github.com/lloy0076) - A LOT of new features, bug fixing, support, feedback and code review;
+- [Mauro Martinez](https://github.com/maurohmartinez), [Owen Melbourne](https://github.com/OwenMelbz), [Oliver Ziegler](https://github.com/OliverZiegler), [Thomas Swonke](https://github.com/tswonke), [Catalin Tudorache](https://github.com/ctudorache87), [Abby Janke](https://github.com/AbbyJanke), [David Lloyd](https://github.com/lloy0076) - A LOT of new features, bug fixing, support, feedback and code review;
 - [Paweł Kuna](https://github.com/codecalm/) - creator of Tabler;
 - [Łukasz Holeczek](https://github.com/mrholek/) - creator of CoreUI;
 - [Taylor Otwell](https://github.com/taylorotwell) & the wonderful Laravel community (of course);

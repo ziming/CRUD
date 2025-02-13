@@ -26,7 +26,7 @@ class TranslatableFieldsTest extends BaseDBCrudPanel
     public function testFieldsGetsTranslated()
     {
         $this->crudPanel->create([
-            'title'       => 'english title',
+            'title' => 'english title',
             'description' => 'english description',
         ]);
 

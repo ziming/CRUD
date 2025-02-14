@@ -398,12 +398,15 @@
         // the table should have the has-hidden-columns class
         crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
             if (crud.table.responsive.hasHidden()) {
-                let firstVisibleColumn = $('.dtr-control').closest('tr').find('td').filter(function() {
-                    return $(this).is(':visible');
-                }).first();
+                $('.dtr-control').each(function() {
+                    var $this = $(this);
+                    var $row = $this.closest('tr');
+                    var $firstVisibleColumn = $row.find('td').filter(function() {
+                        return $(this).css('display') !== 'none';
+                    }).first();
+                    $this.prependTo($firstVisibleColumn);
+                });
 
-                // move the dtr-control to the first visible column
-                $('.dtr-control').prependTo(firstVisibleColumn);
                 $('.dtr-control').removeClass('d-none'); 
                 $('.dtr-control').addClass('d-inline');
                 $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');

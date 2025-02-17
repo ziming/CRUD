@@ -166,24 +166,41 @@
                 type: 'none',
                 target: '.dtr-control',
                 renderer: function ( api, rowIdx, columns ) {
+                    var data = $.map( columns, function ( col, i ) {
+                        var columnHeading = crud.table.columns().header()[col.columnIndex];
+                        // hide columns that have VisibleInModal false
+                        if ($(columnHeading).attr('data-visible-in-modal') == 'false') {
+                            return '';
+                        }
 
-                  var data = $.map( columns, function ( col, i ) {
-                      var columnHeading = crud.table.columns().header()[col.columnIndex];
+                        if (col.data.indexOf('crud_bulk_actions_checkbox') !== -1) {
+                            col.data = col.data.replace('crud_bulk_actions_checkbox', 'crud_bulk_actions_checkbox d-none');
+                        }
 
-                      // hide columns that have VisibleInModal false
-                      if ($(columnHeading).attr('data-visible-in-modal') == 'false') {
-                        return '';
-                      }
+                        let colTitle = '';
+                        if (col.title) {
+                            let tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = col.title;
+                            
+                            let checkboxSpan = tempDiv.querySelector('.crud_bulk_actions_checkbox');
+                            if (checkboxSpan) {
+                                checkboxSpan.remove();
+                            }
+                            
+                            colTitle = tempDiv.textContent.trim();
+                        } else {
+                            colTitle = '';
+                        }
 
-                      return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                '<td style="vertical-align:top; border:none;"><strong>'+col.title.trim()+':'+'<strong></td> '+
+                        return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                '<td style="vertical-align:top; border:none;"><strong>'+colTitle+':'+'<strong></td> '+
                                 '<td style="padding-left:10px;padding-bottom:10px; border:none;">'+col.data+'</td>'+
-                              '</tr>';
-                  } ).join('');
+                                '</tr>';
+                    }).join('');
 
-                  return data ?
-                      $('<table class="table table-striped mb-0">').append( '<tbody>' + data + '</tbody>' ) :
-                      false;
+                    return data ?
+                        $('<table class="table table-striped mb-0">').append( '<tbody>' + data + '</tbody>' ) :
+                        false;
                 },
             }
         },

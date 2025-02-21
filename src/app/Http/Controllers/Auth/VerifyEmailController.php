@@ -67,7 +67,7 @@ class VerifyEmailController extends Controller
         }
 
         $user->sendEmailVerificationNotification();
-        Alert::success('Email verification link sent successfully.')->flash();
+        Alert::success(trans('backpack.base.verify_email.email_sent_with_success'))->flash();
 
         return back()->with('status', 'verification-link-sent');
     }

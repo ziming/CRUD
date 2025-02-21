@@ -93,5 +93,6 @@ return [
         'verification_link_sent' => 'A verification link has been sent to your email address.',
         'email_verification_required' => 'Please verify your email address, by clicking on the link we\'ve sent you.',
         'resend_verification_link' => 'Resend link',
+        'email_sent_with_success' => 'Email verification link sent successfully.',
     ],
 ];

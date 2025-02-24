@@ -35,10 +35,10 @@
         }
     ],
     "require": {
-        "laravel/framework": "^10.0|^11.0",
-        "prologue/alerts": "^1.0",
+        "laravel/framework": "^10.0|^11.0|^12",
         "backpack/basset": "^1.1.1|^1.3.2",
-        "creativeorange/gravatar": "~1.0",
+        "creativeorange/gravatar": "^1.0",
+        "prologue/alerts": "^1.0",
         "doctrine/dbal": "^3.0|^4.0",
         "guzzlehttp/guzzle": "^7.0"
     },

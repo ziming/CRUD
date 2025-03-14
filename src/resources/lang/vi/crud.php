@@ -156,6 +156,7 @@ return [
     // Fields
     'browse_uploads' => 'Chọn tập tin',
     'select_all' => 'Chọn tất cả',
+    'unselect_all' => 'Bỏ chọn tất cả',
     'select_files' => 'Chọn các tập tin',
     'select_file' => 'Chọn tập tin',
     'clear' => 'Xoá',

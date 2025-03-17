@@ -93,6 +93,6 @@ return [
         'verification_link_sent' => 'Một liên kết xác thực đã được gửi đến địa chỉ email của bạn.',
         'email_verification_required' => 'Vui lòng xác thực địa chỉ email của bạn bằng cách nhấn vào liên kết chúng tôi đã gửi cho bạn.',
         'resend_verification_link' => 'Gửi lại liên kết',
-        'email_sent_with_success'     => 'Đã gửi liên kết xác minh email thành công.',
+        'email_sent_with_success' => 'Đã gửi liên kết xác minh email thành công.',
     ],
 ];

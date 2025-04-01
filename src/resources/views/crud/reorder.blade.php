@@ -229,7 +229,7 @@ if(!function_exists('tree_element')) {
 @endsection
 
 @section('after_scripts')
-    @basset('https://unpkg.com/jquery-ui@1.13.2/dist/jquery-ui.min.js')
+    @basset('https://cdn.jsdelivr.net/npm/jquery-ui@1.13.2/dist/jquery-ui.min.js')
     @basset(base_path('vendor/backpack/crud/src/resources/assets/libs/jquery.mjs.nestedSortable2.js'))
 
     <script type="text/javascript">

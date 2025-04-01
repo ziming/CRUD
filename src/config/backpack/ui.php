@@ -116,9 +116,9 @@ return [
     // JS files that are loaded in all pages, using Laravel's asset() helper
     'scripts' => [
         // 'js/example.js',
-        // 'https://unpkg.com/vue@2.4.4/dist/vue.min.js',
-        // 'https://unpkg.com/react@16/umd/react.production.min.js',
-        // 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+        // 'https://cdn.jsdelivr.net/npm/vue@2.4.4/dist/vue.min.js',
+        // 'https://cdn.jsdelivr.net/npm/react@16/umd/react.production.min.js',
+        // 'https://cdn.jsdelivr.net/npm/react-dom@16/umd/react-dom.production.min.js',
     ],
 
     // JS files that are loaded in all pages, using Laravel's mix() helper

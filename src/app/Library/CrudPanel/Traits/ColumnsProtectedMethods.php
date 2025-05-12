@@ -291,6 +291,8 @@ trait ColumnsProtectedMethods
         $targetColumnName = is_array($targetColumn) ? $targetColumn['name'] : $targetColumn;
         $columnsArray = $this->columns();
 
+        $targetColumnName = str_replace('.', '__', $targetColumnName);
+
         if (array_key_exists($targetColumnName, $columnsArray)) {
             $targetColumnPosition = $before ? array_search($targetColumnName, array_keys($columnsArray)) :
                 array_search($targetColumnName, array_keys($columnsArray)) + 1;

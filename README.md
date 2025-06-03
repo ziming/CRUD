@@ -82,7 +82,7 @@ Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/
 ## Install
 
 For the current version (recommended):
-- [Install Backpack v6 on Laravel 10 & 11](https://backpackforlaravel.com/docs/installation);
+- [Install Backpack v6 on Laravel 10, 11 & 12](https://backpackforlaravel.com/docs/installation);
 
 For the previous versions (not recommended):
 - [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/5.x/installation)  - last feature update was 27th April 2023;
@@ -102,7 +102,7 @@ Please see [the Releases tab](https://github.com/Laravel-Backpack/CRUD/releases)
 
 > It's _heavily_ recommended that you **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We send an email about 1-2 emails per year. Sometimes less.
 
-If you discover any security related issues, please email hello@backpackforlaravel.com instead of using the issue tracker. Alternatively, please disclose the issue on [huntr.dev](https://huntr.dev/) to also get a small bounty ($25-40).
+If you discover any security related issues, please email hello@backpackforlaravel.com instead of using the issue tracker.
 
 ## License
 

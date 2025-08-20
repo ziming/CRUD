@@ -8,13 +8,13 @@ final class Table
     private array $columns = [];
     private array $indexes = [];
 
-    public function __construct(string $name, array $columns = [])
+    public function __construct(string $name, array $columns = [], $schemaManager = null)
     {
         $this->name = $name;
         foreach ($columns as $column) {
-            $this->columns[$column['name']] = new class($column)
+            $this->columns[$column['name']] = new class($column, $schemaManager)
             {
-                public function __construct(private array $column)
+                public function __construct(private array $column, private $schemaManager)
                 {
                 }
 
@@ -30,7 +30,11 @@ final class Table
 
                 public function getDefault()
                 {
-                    return $this->column['default'];
+                    return isset($this->schemaManager) ? 
+                        (is_a($this->schemaManager->getConnection(), \Illuminate\Database\MariaDbConnection::class) && 
+                            is_string($this->column['default']) &&
+                            $this->column['nullable'] === true &&  
+                            ($this->column['default'] === 'null' || $this->column['default'] === 'NULL') ? null : $this->column['default']) : $this->column['default'];
                 }
 
                 public function getUnsigned()

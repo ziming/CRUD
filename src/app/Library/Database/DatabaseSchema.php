@@ -95,7 +95,7 @@ final class DatabaseSchema
             return $index['columns'];
         }, $indexes);
 
-        $table = new Table($tableName, $table);
+        $table = new Table($tableName, $table, $schemaManager);
 
         $indexes = Arr::flatten($indexes);
         $table->setIndexes(array_unique($indexes));

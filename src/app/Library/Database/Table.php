@@ -30,7 +30,7 @@ final class Table
 
                 public function getDefault()
                 {
-                    return isset($this->schemaManager) ?
+                    return isset($this->schemaManager) && class_exists(\Illuminate\Database\MariaDbConnection::class) ?
                         (is_a($this->schemaManager->getConnection(), \Illuminate\Database\MariaDbConnection::class) &&
                             is_string($this->column['default']) &&
                             $this->column['nullable'] === true &&

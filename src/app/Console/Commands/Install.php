@@ -23,8 +23,8 @@ class Install extends Command
      */
     protected $signature = 'backpack:install
                                 {--timeout=300} : How many seconds to allow each process to run.
-                                {--debug} : Show process output or not. Useful for debugging.';
-
+                                {--debug} : Show process output or not. Useful for debugging.
+                                {--skip-basset-check : Skip running "php artisan basset:check" at the end of the installation.}';
     /**
      * The console command description.
      *
@@ -114,7 +114,11 @@ class Install extends Command
         }
 
         //execute basset checks
-        $this->call('basset:check');
+        if (! $this->option('skip-basset-check')) {
+            $this->progressBlock('Running Basset checks');
+            $this->executeArtisanProcess('basset:check');
+            $this->closeProgressBlock();
+        }
         // Done
         $url = Str::of(config('app.url'))->finish('/')->append('admin/');
         $this->infoBlock('Backpack installation complete.', 'done');

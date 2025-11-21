@@ -5,13 +5,13 @@ namespace Backpack\CRUD;
 use Backpack\Basset\Facades\Basset;
 use Backpack\CRUD\app\Http\Middleware\EnsureEmailVerification;
 use Backpack\CRUD\app\Http\Middleware\ThrottlePasswordRecovery;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\Database\DatabaseSchema;
 use Backpack\CRUD\app\Library\Uploaders\Support\UploadersRepository;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -64,6 +64,26 @@ class BackpackServiceProvider extends ServiceProvider
         $this->sendUsageStats();
 
         Basset::addViewPath(realpath(__DIR__.'/resources/views'));
+
+        foreach (config('backpack.ui.styles', []) as $style) {
+            if (is_array($style)) {
+                foreach ($style as $file) {
+                    Basset::map($file);
+                }
+            } else {
+                Basset::map($style);
+            }
+        }
+
+        foreach (config('backpack.ui.scripts', []) as $script) {
+            if (is_array($script)) {
+                foreach ($script as $file) {
+                    Basset::map($file);
+                }
+            } else {
+                Basset::map($script);
+            }
+        }
     }
 
     /**
@@ -79,17 +99,27 @@ class BackpackServiceProvider extends ServiceProvider
         $this->loadViewsWithFallbacks('crud');
         $this->loadViewsWithFallbacks('ui', 'backpack.ui');
         $this->loadViewNamespace('widgets', 'backpack.ui::widgets');
+        ViewNamespaces::addFor('widgets', 'crud::widgets');
+
         $this->loadViewComponents();
+        $this->registerDynamicBladeComponents();
 
         $this->registerBackpackErrorViews();
 
-        // Bind the CrudPanel object to Laravel's service container
-        $this->app->scoped('crud', function ($app) {
-            return new CrudPanel();
+        $this->app->bind('crud', function ($app) {
+            return CrudManager::identifyCrudPanel();
+        });
+
+        $this->app->scoped('CrudManager', function ($app) {
+            return new CrudPanelManager();
         });
 
         $this->app->scoped('DatabaseSchema', function ($app) {
             return new DatabaseSchema();
+        });
+
+        $this->app->scoped('BackpackLifecycleHooks', function ($app) {
+            return new app\Library\CrudPanel\Hooks\LifecycleHooks();
         });
 
         $this->app->singleton('BackpackViewNamespaces', function ($app) {
@@ -178,7 +208,7 @@ class BackpackServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  Router  $router
      * @return void
      */
     public function setupRoutes(Router $router)
@@ -197,7 +227,7 @@ class BackpackServiceProvider extends ServiceProvider
     /**
      * Load custom routes file.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  Router  $router
      * @return void
      */
     public function setupCustomRoutes(Router $router)
@@ -316,6 +346,38 @@ class BackpackServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register dynamic Blade components from the Components directory.
+     *
+     * Any Blade component classes that are in that directory will be registered
+     * as dynamic components with the 'bp-{component-name}' prefix.
+     */
+    private function registerDynamicBladeComponents()
+    {
+        $path = __DIR__.'/app/View/Components';
+        $namespace = 'Backpack\\CRUD\\app\\View\\Components';
+
+        if (! is_dir($path)) {
+            return;
+        }
+
+        foreach (File::allFiles($path) as $file) {
+            $relativePath = str_replace(
+                ['/', '.php'],
+                ['\\', ''],
+                Str::after($file->getRealPath(), realpath($path).DIRECTORY_SEPARATOR)
+            );
+
+            $class = $namespace.'\\'.$relativePath;
+
+            // Check if the class exists and is a subclass of Illuminate\View\Component
+            // This ensures that only valid Blade components are registered.
+            if (class_exists($class) && is_subclass_of($class, \Illuminate\View\Component::class)) {
+                Blade::component('bp-'.Str::kebab(class_basename($class)), $class);
+            }
+        }
+    }
+
+    /**
      * Load the Backpack helper methods, for convenience.
      */
     public function loadHelpers()
@@ -330,7 +392,7 @@ class BackpackServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['crud', 'widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository'];
+        return ['widgets', 'BackpackViewNamespaces', 'DatabaseSchema', 'UploadersRepository', 'CrudManager'];
     }
 
     private function registerBackpackErrorViews()

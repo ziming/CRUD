@@ -658,7 +658,7 @@ class CrudPanelFieldsTest extends BaseCrudPanel
         } catch (\Throwable $e) {
         }
         $this->assertEquals(
-            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\Config\Models\TestModel</code> model.', null, ['developer-error-exception']),
+            new \Symfony\Component\HttpKernel\Exception\HttpException(500, 'Looks like field <code>doesNotExist</code> is not properly defined. The <code>doesNotExist()</code> relationship doesn\'t seem to exist on the <code>Backpack\CRUD\Tests\config\Models\TestModel</code> model.', null, ['developer-error-exception']),
             $e
         );
     }
@@ -790,6 +790,7 @@ class CrudPanelFieldsTest extends BaseCrudPanel
                     'type' => 'text',
                     'entity' => false,
                     'label' => 'Sub 1',
+                    'baseFieldName' => 'sub_1',
                 ],
             ],
 

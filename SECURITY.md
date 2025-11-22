@@ -25,6 +25,9 @@ If you discover any security related issues, please email hello@tabacitu.ro inst
 Please note that even though Backpack has only had minor reported security issues, its dependencies _have_ had security flaws discovered and fixed - even major ones like Laravel, Bootstrap and jQuery. That's why it's a good idea for any project to be reasonably up-to-date. If we consider a security issue is something that affects our users, we'll email you.  Please **[subscribe to the Backpack Newsletter](http://backpackforlaravel.com/newsletter)** so you can find out about any security updates, breaking changes or major features. We only send an email 1-2 emails per year. Sometimes less.
 
 **Past security issues:**
+- 2025 - none
+- 2024 - none
+- 2023 - none
 - 2022
     - June - [Error Messages Not Escaped in Error Pages](https://backpackforlaravel.com/articles/news/we-recommend-you-fix-this-vulnerability)
 - 2021 

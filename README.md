@@ -82,9 +82,10 @@ Start with the ["Introduction" page in our docs](https://backpackforlaravel.com/
 ## Install
 
 For the current version (recommended):
-- [Install Backpack v6 on Laravel 10, 11 & 12](https://backpackforlaravel.com/docs/installation);
+- [Install Backpack v7 on Laravel 12](https://backpackforlaravel.com/docs/installation);
 
 For the previous versions (not recommended):
+- [Install Backpack v6 on Laravel 10, 11 or 12](https://backpackforlaravel.com/docs/6.x/installation)  - last feature update was 21st November 2025;
 - [Install Backpack v5 on Laravel 10, 9 or 8](https://backpackforlaravel.com/docs/5.x/installation)  - last feature update was 27th April 2023;
 - [Install Backpack 4.1 on Laravel 6, 7 or 8](https://backpackforlaravel.com/docs/4.1/installation) - last feature update was 1st Jan 2021;
 - [Install Backpack 4.0 on Laravel 5.8, 6 or 7](https://backpackforlaravel.com/docs/4.0/installation) - last feature update was 21st Apr 2020;
@@ -109,18 +110,19 @@ If you discover any security related issues, please email hello@backpackforlarav
 Backpack is open-core:
 - **Backpack CRUD is licensed under the [MIT License](LICENSE.md)** (open-source free software); it is perfect if you're building a simple admin panel - it's packed with features! It's also perfect if you're building an open-source project, the permissive license allows you to do whatever you want;
 - **Backpack PRO is licensed under our [EULA](https://backpackforlaravel.com/eula)**; it is a closed-source, paid add-on; [PRO](https://backpackforlaravel.com/products/pro) will be useful when your admin panel needs grow, because it adds A LOT of features for complex use cases (see our [FREE vs PRO comparison](https://backpackforlaravel.com/docs/features-free-vs-paid));
+- other 1st party addons are either under MIT License or EULA - depending on whether they are free or paid;
 
 [Our documentation](https://backpackforlaravel.com/docs) covers both CRUD and PRO, with all the PRO features clearly labeled <span class="badge badge-pill badge-info">PRO</span>. You do not _need_ PRO, that is just an add-on. But we're hoping you find it useful, and pay for it, to support the development of our open-core.
 
 <a name="versioning"></a>
 ## Versioning
 
-Our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `6.0.1`) means for us:
+Our packages follow [semantic versioning](https://semver.org/). Here's what `major.minor.patch` (eg. `7.0.1`) means for us:
 - `major` - breaking changes, major new features, complete rewrites; released **once a year**, in the first quarter; it adds features that were previously impossible and upgrades our dependencies; upgrading is done by following our clear and detailed upgrade guides;
 - `minor` - new features, released in backwards-compatible ways; **every few months**; update takes seconds;
 - `patch` - bug fixes & small non-breaking changes; historically **every week**; update takes seconds;
 
-When we release a new Backpack\CRUD version, all premium addons receive support for it the same day. When you buy a premium Backpack addon, you get access to not only _updates_, but also _upgrades_ (for 12mo), that means that... **any time you buy a Backpack addon, it is very likely that you're not only buying the _current_ version** (`v6` at the moment), **but also the upgrade to the _next version_** (`v7` for example).
+When we release a new Backpack\CRUD version, all premium addons receive support for it the same day. When you buy a premium Backpack addon, you get access to not only _updates_, but also _upgrades_ (for 12mo), that means that... **any time you buy a Backpack addon, it is very likely that you're not only buying the _current_ version** (`v7` at the moment), **but also the upgrade to the _next version_** (`v8` for example).
 
 ## Contributing Guidelines
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Fluent;
  */
 class Widget extends Fluent
 {
-    protected $attributes = [];
+    public $attributes = [];
 
     public function __construct($attributes)
     {
@@ -106,14 +106,62 @@ class Widget extends Fluent
         return $this;
     }
 
-    // TODO: add ability to push a widget right after another widget
+    /**
+     * Move this widget to appear right after another widget.
+     *
+     * @param  string  $destination  The name of the destination widget.
+     * @return Widget
+     */
     public function after($destination)
     {
+        $collection = $this->collection();
+
+        if (! $collection->has($destination)) {
+            return $this;
+        }
+
+        $target = $collection->pull($this->attributes['name']);
+        $offset = $collection->keys()->search($destination) + 1;
+
+        $newCollection = $collection->slice(0, $offset)
+            ->put($this->attributes['name'], $target)
+            ->union($collection->slice($offset));
+
+        $collection->forget($collection->keys()->toArray());
+        foreach ($newCollection->all() as $key => $value) {
+            $collection->put($key, $value);
+        }
+
+        return $this;
     }
 
-    // TODO: add ability to push a widget right before another widget
+    /**
+     * Move this widget to appear right before another widget.
+     *
+     * @param  string  $destination  The name of the destination widget.
+     * @return Widget
+     */
     public function before($destination)
     {
+        $collection = $this->collection();
+
+        if (! $collection->has($destination)) {
+            return $this;
+        }
+
+        $target = $collection->pull($this->attributes['name']);
+        $offset = $collection->keys()->search($destination);
+
+        $newCollection = $collection->slice(0, $offset)
+            ->put($this->attributes['name'], $target)
+            ->union($collection->slice($offset));
+
+        $collection->forget($collection->keys()->toArray());
+        foreach ($newCollection->all() as $key => $value) {
+            $collection->put($key, $value);
+        }
+
+        return $this;
     }
 
     /**

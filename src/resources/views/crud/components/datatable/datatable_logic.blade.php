@@ -242,38 +242,32 @@ window.crud.initializeTable = function(tableId, customConfig = {}) {
         
         // Check if saved url has any parameter or is empty after clearing filters
         if (savedListUrl && savedListUrl.indexOf('?') >= 1) {
-            const persistentUrl = savedListUrl + '&persistent-table=true';
-            
-            const arr = window.location.href.split('?');
-            // Check if url has parameters
-            if (arr.length > 1 && arr[1] !== '') {
-                // Check if it is our own persistence redirect
-                if (window.location.search.indexOf('persistent-table=true') < 1) {
-                    // If not, we don't want to redirect the user
-                    if (persistentUrl != window.location.href) {
-                        // Check duration if specified
-                        if (config.persistentTableDuration) {
-                            const savedListUrlTime = localStorage.getItem(`${config.persistentTableSlug}_list_url_time`);
-                            
-                            if (savedListUrlTime) {
-                                const currentDate = new Date();
-                                const savedTime = new Date(parseInt(savedListUrlTime));
-                                savedTime.setMinutes(savedTime.getMinutes() + config.persistentTableDuration);
-                                
-                                // If the save time is not expired, redirect
-                                if (savedTime > currentDate) {
-                                    window.location.href = persistentUrl;
-                                }
-                            }
-                        } else {
-                            // No duration specified, just redirect
+            const isOurOwnPersistenceRedirect = window.location.search.indexOf('persistent-table=true') >= 1;
+            const currentUrlHasParams = window.location.search.length > 1;
+
+            if (isOurOwnPersistenceRedirect) {
+                // This is the result of our own redirect, nothing to do
+            } else if (currentUrlHasParams) {
+                localStorage.setItem(`${config.persistentTableSlug}_list_url`, window.location.href);
+            } else {
+                // No params in current URL — restore the persistent state
+                const persistentUrl = savedListUrl + '&persistent-table=true';
+                
+                if (config.persistentTableDuration) {
+                    const savedListUrlTime = localStorage.getItem(`${config.persistentTableSlug}_list_url_time`);
+                    
+                    if (savedListUrlTime) {
+                        const currentDate = new Date();
+                        const savedTime = new Date(parseInt(savedListUrlTime));
+                        savedTime.setMinutes(savedTime.getMinutes() + config.persistentTableDuration);
+                        
+                        if (savedTime > currentDate) {
                             window.location.href = persistentUrl;
                         }
                     }
+                } else {
+                    window.location.href = persistentUrl;
                 }
-            } else {
-                // No parameters in current URL, redirect
-                window.location.href = persistentUrl;
             }
         }
     }

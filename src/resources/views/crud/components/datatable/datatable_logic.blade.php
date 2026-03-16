@@ -558,7 +558,7 @@ window.crud.initializeTable = function(tableId, customConfig = {}) {
     
     // Initialize the DataTable with the config
     window.crud.tables[tableId] = $('#'+tableId).DataTable(dataTableConfig);
-    
+
     // For backward compatibility
     if (!window.crud.table) {
         window.crud.table = window.crud.tables[tableId];
@@ -834,7 +834,7 @@ function setupTableEvents(tableId, config) {
                         display: flex !important;
                         justify-content: center !important;
                         align-items: center !important;
-                        background: rgba(255, 255, 255, 0.8) !important;
+                        background: var(--bp-processing-bg, rgba(255, 255, 255, 0.8)) !important;
                         font-size: 0 !important;
                         color: transparent !important;
                         text-indent: -9999px !important;

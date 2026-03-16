@@ -791,7 +791,7 @@ table.dataTable td {
 .dataTables_processing,
 .dt-processing {
     position: absolute !important;
-    background: rgba(255, 255, 255, 0.8) !important;
+    background: var(--bp-processing-bg, rgba(255, 255, 255, 0.8)) !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
@@ -863,6 +863,13 @@ table.dataTable td {
 
 .dt-processing.card > div {
     display: none !important;
+}
+
+.dataTables_processing.card,
+.dt-processing.card {
+    font-size: 0 !important;
+    color: transparent !important;
+    text-indent: -9999px !important;
 }
 
 .dtr-modal .details-control,

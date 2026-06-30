@@ -132,6 +132,9 @@ class Install extends Command
 
             // Addons
             $this->installAddons();
+
+            // Offer Boost MCP guidelines installation
+            $this->offerBoostInstallation();
         }
 
         //execute basset checks
@@ -304,6 +307,66 @@ class Install extends Command
             $this->line('  ──────────', 'fg=gray');
             $this->newLine();
         }
+    }
+
+    private function offerBoostInstallation()
+    {
+        if (! $this->isBoostInstalled()) {
+            return;
+        }
+
+        $this->newLine();
+        $this->infoBlock('Laravel Boost detected.', 'AI Boost');
+
+        if (! $this->confirm('Would you like to add Backpack AI guidelines and skills to the Boost MCP server?', true)) {
+            $this->note('You can add them later by running <fg=blue>php artisan boost:install</>.');
+
+            return;
+        }
+
+        // Pre-populate boost.json with backpack/crud so it's pre-selected
+        // in the third-party packages multiselect prompt.
+        $this->preSelectBackpackInBoostConfig();
+
+        $this->note('Launching Boost installer — <fg=blue>backpack/crud</> is pre-selected. Press Enter to confirm.');
+        $this->newLine();
+
+        $this->call('boost:install');
+    }
+
+    /**
+     * Add backpack/crud to the pre-existing packages in boost.json
+     * so it appears pre-checked in Boost's multiselect prompt.
+     */
+    private function preSelectBackpackInBoostConfig(): void
+    {
+        $configPath = base_path('boost.json');
+
+        $config = file_exists($configPath)
+            ? json_decode(file_get_contents($configPath), true)
+            : [];
+
+        if (! is_array($config)) {
+            $config = [];
+        }
+
+        $packages = $config['packages'] ?? [];
+
+        if (! in_array('backpack/crud', $packages)) {
+            $packages[] = 'backpack/crud';
+        }
+
+        $config['packages'] = $packages;
+
+        file_put_contents(
+            $configPath,
+            json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL
+        );
+    }
+
+    private function isBoostInstalled(): bool
+    {
+        return class_exists(\Laravel\Boost\BoostServiceProvider::class);
     }
 
     private function isAnyThemeInstalled()

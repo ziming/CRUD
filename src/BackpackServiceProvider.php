@@ -141,6 +141,14 @@ class BackpackServiceProvider extends ServiceProvider
 
         // register the artisan commands
         $this->commands($this->commands);
+
+        // Inject search-backpack-docs into the laravel-boost MCP server when boost is installed
+        if (class_exists(\Laravel\Boost\BoostServiceProvider::class)) {
+            $this->mergeConfigFrom(
+                __DIR__.'/config/backpack/boost.php',
+                'boost'
+            );
+        }
     }
 
     public function registerMiddlewareGroup(Router $router)
